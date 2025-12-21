@@ -1,0 +1,91 @@
+# Cursor Rules - Project Scaffolding (Meta-Project)
+
+## What This Project Is
+
+This is the **meta-project** - extracting patterns from experiments to build better projects faster.
+
+**NOT a product.** This is a living collection of:
+- Patterns that repeat across projects
+- Safety systems that saved us (scars → protections)
+- Structures that make maintenance easier
+- Decision frameworks we wish we'd had earlier
+
+---
+
+## Philosophy
+
+**Core Reference:** `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
+
+**Summary:**
+- We're explorers building experiments, not products
+- Data before decisions (30-60 days minimum)
+- Two-level game: Domain patterns + **Meta patterns (THIS PROJECT)**
+- The scaffolding is the real product
+
+---
+
+## Source Projects
+
+This project learns from:
+
+1. **image-workflow** - 2.5 months, battle-tested
+   - Documentation structure (`Documents/` pattern)
+   - Safety systems ("every safety system was a scar")
+   - Disaster recovery, session archives
+
+2. **Trading Co-Pilot** - 3 weeks, Layer 1-3 complete
+   - Railway + Postgres deployment
+   - Cron dispatcher pattern
+   - Fuzzy grading, multi-model comparison
+
+3. **Hypocrisy Now** - RSS infrastructure, sentiment analysis
+4. **AI Journal** - Documentation patterns
+
+---
+
+## Working on This Project
+
+### When to Add a Pattern
+- **After 2-3 instances** across projects (not just 1)
+- **When you wish you'd had it earlier** in a new project
+- **After a "scar"** (something broke, now you protect against it)
+- **When maintenance gets easier** due to a structure
+
+### What NOT to Do
+- Don't create patterns before they prove themselves
+- Don't force rigid frameworks (keep it fuzzy)
+- Don't extract too early (let patterns emerge naturally)
+- Don't make this a product (it's a tool for explorers)
+
+### Structure
+```
+patterns/          ← Documented patterns (empty until proven)
+templates/         ← Reusable starting points
+examples/          ← Real examples from projects
+docs/              ← Meta-documentation
+```
+
+---
+
+## Current Status
+
+**Phase:** Discovery & Pattern Collection (Month 1-2)
+
+**Next phases:**
+- Month 3: Consolidate patterns into categories
+- Month 4: Extract templates from proven patterns
+- Month 6: Consider creating actual `project-scaffolding-template` repo
+
+---
+
+## Related Files
+
+- Philosophy: `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
+- AI Journal: `/Users/eriksjaastad/projects/AI-journal/`
+- Source Projects: All under `/Users/eriksjaastad/projects/`
+
+---
+
+*This meta-project compounds learning across all projects.*  
+*Let patterns emerge. Don't force them.*
+
