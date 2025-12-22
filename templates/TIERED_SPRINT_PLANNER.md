@@ -90,9 +90,21 @@ Result:
   Score 8-10 → Tier 1 (Big Brain)
 ```
 
-### Step 3: Organize by Tier
+### Step 3: Organize by Tier (Bottom-Up)
 
-**TIER 1 TASKS** (Architecture, Complex, High-Risk)
+**IMPORTANT:** Start at the BOTTOM (Tier 3), work your way UP.
+
+**Process:**
+1. **Pass 1 - Tier 3:** Go through ALL tasks. What can Tier 3 handle with explicit instructions?
+2. **Pass 2 - Tier 2:** From remaining tasks, what can Tier 2 implement with clear architecture?
+3. **Pass 3 - Tier 1:** What's left? These are your Tier 1 tasks.
+4. **Verification:** Go back through Tier 1 list - can these ONLY be done by Tier 1?
+
+**Why bottom-up?** Catches tasks that LOOK complex but are actually Tier 3 with good instructions.
+
+---
+
+**TIER 3 TASKS** (Boilerplate, Docs, Clear Instructions)
 ```markdown
 ## Tier 1: Big Brain Work (Claude Sonnet, GPT-4, ~20% of tasks)
 
@@ -114,6 +126,8 @@ Result:
   - Risk: 5 (visual only)
   - Score: 6.7 → Tier 1 ✅
 ```
+
+---
 
 **TIER 2 TASKS** (Features, Implementation, Medium Complexity)
 ```markdown
@@ -148,36 +162,45 @@ Result:
 ```markdown
 ## Tier 3: Worker Bee Tasks (GPT-4o-mini, ~30% of tasks)
 
-- [ ] Generate boilerplate for adapter pattern
-  - Complexity: 2 (copy-paste with tweaks)
-  - Ambiguity: 1 (pattern is defined)
-  - Risk: 2 (easy to fix)
-  - Score: 1.7 → Tier 3 ✅
+**CRITICAL:** Instructions must be VERY explicit. Include code examples if possible.
 
 - [ ] Create .gitignore and .env.example
   - Complexity: 1 (standard files)
   - Ambiguity: 1 (known structure)
   - Risk: 2 (won't break anything)
   - Score: 1.3 → Tier 3 ✅
+  - **Instructions:** "Create .gitignore for Python project with: venv/, __pycache__/, *.pyc, .env, .DS_Store, logs/"
 
 - [ ] Document installation process
   - Complexity: 2 (straightforward steps)
   - Ambiguity: 2 (clear what to document)
   - Risk: 1 (docs only)
   - Score: 1.7 → Tier 3 ✅
+  - **Instructions:** "Document these exact steps: 1. Clone repo, 2. Create venv, 3. Install requirements.txt, 4. Copy .env.example to .env"
+
+- [ ] Generate boilerplate for adapter pattern
+  - Complexity: 2 (copy-paste with tweaks)
+  - Ambiguity: 1 (pattern is defined)
+  - Risk: 2 (easy to fix)
+  - Score: 1.7 → Tier 3 ✅
+  - **Instructions:** "Using the pattern in api_abstraction.py, create GoogleAdapter class with same methods: chat(), stream(), get_models()"
 
 - [ ] Write README with quick start
   - Complexity: 3 (needs context)
   - Ambiguity: 2 (standard README structure)
   - Risk: 1 (docs only)
   - Score: 2.0 → Tier 3 ✅
+  - **Instructions:** "README sections: 1. Project name/description, 2. Installation (link to docs/), 3. Quick start (3 commands), 4. License"
 
 - [ ] Set up Electron app structure
   - Complexity: 3 (boilerplate with examples)
   - Ambiguity: 2 (documented process)
   - Risk: 3 (foundational but fixable)
   - Score: 2.7 → Tier 3 ✅
+  - **Instructions:** "Use electron-forge init. Create src/main/, src/renderer/, src/preload/. Copy package.json scripts from Hologram project."
 ```
+
+**Note:** See how explicit? If Tier 3 can't execute with these instructions, it's mis-tiered.
 
 ### Step 4: Set Execution Order
 
@@ -249,9 +272,9 @@ If this task requires:
 - Complex problem-solving beyond clear instructions
 - Ambiguous requirements you cannot clarify with questions
 
-Then respond with: "🚨 ESCALATE TO TIER 2: [Reason why this is too complex]"
+Then respond IMMEDIATELY with: "🚨 ESCALATE TO TIER 2: [Reason]"
 
-Do NOT spend more than 2-3 attempts on a task that's beyond your tier.
+Do NOT attempt more than 2 tries. Escalate immediately if stuck.
 ```
 
 **Estimated Cost:** ~$0.50-1 per task
@@ -285,9 +308,9 @@ If this task requires:
 - Resolving ambiguous requirements (not just implementation details)
 - High-risk design choices affecting multiple systems
 
-Then respond with: "🚨 ESCALATE TO TIER 1: [Reason why this needs architecture-level thinking]"
+Then respond IMMEDIATELY with: "🚨 ESCALATE TO TIER 1: [Reason]"
 
-Do NOT make architectural assumptions. Escalate instead.
+Do NOT make architectural assumptions. Escalate on first sign of ambiguity.
 ```
 
 **Estimated Cost:** ~$2-4 per task
@@ -316,10 +339,7 @@ Please:
 4. Recommend a solution with rationale
 5. Anticipate edge cases and failure modes
 
-⚠️ DE-ESCALATION OPPORTUNITY:
-If, after analysis, this task is actually straightforward implementation:
-- Break it down into clear steps
-- Recommend: "This can be de-escalated to Tier 2 with these instructions: [...]"
+Note: If this turns out to be straightforward, just implement it. Don't overthink.
 ```
 
 **Estimated Cost:** ~$5-10 per task
@@ -362,9 +382,9 @@ If this task requires:
 - Complex problem-solving beyond clear instructions
 - Ambiguous requirements you cannot clarify with questions
 
-Then respond with: "🚨 ESCALATE TO TIER 2: [Reason why this is too complex]"
+Then respond IMMEDIATELY with: "🚨 ESCALATE TO TIER 2: [Reason]"
 
-Do NOT spend more than 2-3 attempts on a task that's beyond your tier.
+Do NOT attempt more than 2 tries. Escalate immediately if stuck.
 ```
 
 ---
@@ -392,9 +412,9 @@ If this task requires:
 - Resolving ambiguous requirements (not just implementation details)
 - High-risk design choices affecting multiple systems
 
-Then respond with: "🚨 ESCALATE TO TIER 1: [Reason why this needs architecture-level thinking]"
+Then respond IMMEDIATELY with: "🚨 ESCALATE TO TIER 1: [Reason]"
 
-Do NOT make architectural assumptions. Escalate instead.
+Do NOT make architectural assumptions. Escalate on first sign of ambiguity.
 ```
 
 ---
@@ -417,10 +437,7 @@ Please:
 4. Recommend a solution with rationale
 5. Anticipate edge cases and failure modes
 
-⚠️ DE-ESCALATION OPPORTUNITY:
-If, after analysis, this task is actually straightforward implementation:
-- Break it down into clear steps
-- Recommend: "This can be de-escalated to Tier 2 with these instructions: [...]"
+Note: If this turns out to be straightforward, just implement it. Don't overthink.
 ```
 
 ---
@@ -474,20 +491,6 @@ LESSON: "Implement X" hides architectural decisions - needs Tier 1 first
 
 ---
 
-**Example 3: Tier 1 → Tier 2 (De-escalation)**
-
-```markdown
-TASK: Design real-time data synchronization between client and server
-ATTEMPTED WITH: Claude Sonnet (Tier 1)
-ANALYSIS: After investigation, WebSockets pattern is well-established
-          No novel architecture needed
-RESULT: Tier 1 provided clear WebSocket implementation spec
-DE-ESCALATED TO: GPT-4o (Tier 2) for implementation
-LESSON: Some "design" tasks become clear after brief Tier 1 analysis
-```
-
----
-
 ### Anti-Pattern: The Sunk Cost Trap
 
 **DON'T DO THIS:**
@@ -505,38 +508,46 @@ SHOULD HAVE: Escalated at 11:15 PM, finished by 11:30 PM with Tier 2 ($3)
 
 ---
 
-### Automation Idea: Multi-Model Review
+### Automation Idea: Multi-Model Document Review
 
-**Pattern from image-workflow project:**
+**Pattern from Hologram project:**
 
-The `image-workflow` project built an automated review system that:
-1. Takes a task/code/decision
-2. Sends it to multiple AI models simultaneously
-3. Collects their responses
-4. Compares outputs to find consensus or red flags
+The Hologram project used multi-model review for Phase 1 planning documents (see `hologram/docs/reviews/`):
+1. Take initial ROADMAP.md or architecture doc
+2. Send to multiple AI models (Claude Opus, GPT-4, Gemini, Grok, etc.)
+3. Each model reviews independently
+4. Collect feedback: what's missing, what could break, what's over-engineered
+5. Revise document based on consensus
 
-**Reference:** `/Users/eriksjaastad/projects/image-workflow/Documents/guides/AI_TO_AI_PR_REVIEW_WORKFLOW.md`
+**Example from Hologram:**
+- 7 different AIs reviewed the roadmap
+- Found "unprecedented consensus"
+- Caught blind spots before building
 
 **How this applies to Tiered Sprint Planning:**
 
-Instead of manually escalating, you could:
-1. Define a task
-2. Send to Tier 3, Tier 2, and Tier 1 simultaneously
-3. If Tier 3 says "escalate," you already have Tier 2's answer ready
-4. Compare quality vs. cost for future tiering decisions
+During Phase 1 (planning), automate the multi-model review:
+1. Write initial project doc (ROADMAP.md)
+2. Script sends it to multiple models via API
+3. Each responds with structured feedback
+4. Compare reviews side-by-side
+5. Revise based on common themes
 
 **Why this matters:**
-- Saves time on escalation (parallel not sequential)
-- Builds data: "These task types need Tier 2 minimum"
-- Catches mis-tiering early
+- Catches architectural flaws early (cheap to fix)
+- Parallel review faster than sequential
+- Builds confidence in plan quality
+- Multiple perspectives reveal blindspots
 
 **Implementation:**
-- Could be a script that takes a task prompt
-- Calls multiple model APIs in parallel
-- Collects responses, shows side-by-side
-- Helps you learn which tiers handle which tasks well
+- Script that calls Claude API, OpenAI API, Google AI API, etc.
+- Structured prompt: "Review this doc for: missing pieces, risks, over-engineering"
+- Collect all responses in `docs/reviews/` directory
+- Human reads, identifies patterns, revises
 
-**Future consideration:** Not required for v1 of this template, but worth exploring if you find yourself frequently mis-tiering tasks.
+**Note:** This is for Phase 1 (planning docs), not for tiering execution tasks.
+
+**Future consideration:** Worth exploring if you find Phase 1 plans often need major revisions after starting implementation.
 
 ---
 
