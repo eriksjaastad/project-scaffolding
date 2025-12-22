@@ -20,6 +20,43 @@
 
 ---
 
+## Tiered AI Approach
+
+This project uses **Tiered AI Sprint Planning** to manage costs effectively.
+
+**Pattern Reference:**  
+`/Users/eriksjaastad/projects/project-scaffolding/patterns/tiered-ai-sprint-planning.md`
+
+**Sprint Planner Template:**  
+`/Users/eriksjaastad/projects/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md`
+
+**Project Sprint Plan:**  
+`docs/SPRINT_PLAN.md` (created during Phase 2)
+
+### Before Starting Work
+
+1. **Check the task tier** in `docs/SPRINT_PLAN.md`
+2. **Use the appropriate model:**
+   - **Tier 1 (Big Brain):** Claude Sonnet 4.5, GPT-4 - Architecture, complex design, ambiguous problems
+   - **Tier 2 (Mid-Weight):** GPT-4o, Claude Haiku - Feature implementation, refactoring, testing
+   - **Tier 3 (Worker Bee):** GPT-4o-mini - Boilerplate, documentation, simple tasks
+3. **Default to Tier 3** - Start with the cheapest model; escalate only when stuck
+4. **Document escalations** - If Tier 3 struggles, note why (helps improve tiering)
+
+### Budget Allocation (Adjust as needed)
+
+- **Tier 1:** ~20% of budget (architecture, complex decisions)
+- **Tier 2:** ~50% of budget (most implementation)
+- **Tier 3:** ~30% of budget (boilerplate, docs)
+
+### Red Flags
+
+- 🚩 **Using Tier 1 for boilerplate?** Drop to Tier 3
+- 🚩 **Tier 3 says "too complex"?** Escalate to Tier 2
+- 🚩 **Burning Tier 1 budget fast?** Review task tiering
+
+---
+
 ## Required Reading
 
 Before writing code, AI collaborators must read:
@@ -49,6 +86,29 @@ Before writing code, AI collaborators must read:
 - Always use atomic writes for critical data
 - Move files, don't modify in place
 - Use trash/recycle bin for deletions, not rm -rf
+
+### External Resources Management
+
+When adding **ANY** external service to this project:
+
+**MUST update:** `/Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.md`
+
+**External services include:**
+- APIs (OpenAI, Anthropic, Google AI, etc.)
+- Cloud platforms (Railway, Vercel, Netlify, etc.)
+- Storage (S3, R2, Google Drive, Dropbox, etc.)
+- Databases (hosted Postgres, MongoDB, etc.)
+- Monitoring (Discord webhooks, Slack, etc.)
+- Any service with an account, API key, or recurring cost
+
+**Document:**
+1. Service name and purpose
+2. Which project uses it
+3. Monthly cost
+4. API key location (project's `.env`, not shared)
+5. Status (active/testing/deprecated)
+
+**Why:** Prevents duplicate service signups and forgotten accounts causing surprise bills.
 
 ---
 

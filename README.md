@@ -18,23 +18,15 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ## Quick Start
 
-### Using This Scaffolding
+### Starting a New Project
 
-1. **Read** `docs/USAGE_GUIDE.md` - How to use templates and patterns
-2. **Browse** `patterns/` - Understand proven patterns
-3. **Copy** templates you need - Start with Documents/ and CLAUDE.md
-4. **Customize** for your project - Make them yours
-5. **Watch** for new patterns - Contribute back what you learn
+1. **Read** `docs/PROJECT_KICKOFF_GUIDE.md` - Complete walkthrough for new projects
+2. **Copy** templates to your new project - Documentation, .cursorrules, CLAUDE.md
+3. **Plan** using Tiered AI Sprint Planning - Break work into cost-effective tiers
+4. **Execute** with appropriate models - Tier 1 for architecture, Tier 3 for boilerplate
+5. **Track** external resources - Update EXTERNAL_RESOURCES.md when adding services
 
-### Managing Your Projects
-
-**NEW:** `EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
-- Prevents "I got a bill but don't know which project" situations
-- Cost tracking across all projects
-- Credential locations documented
-- Service health monitoring
-
-### Understanding the Patterns
+### Understanding This Scaffolding
 
 1. **Pattern Analysis** (`docs/PATTERN_ANALYSIS.md`)
    - See all identified patterns with confidence levels
@@ -49,6 +41,19 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
    - 7 core principles: Layer-by-layer, data before decisions, etc.
    - When to apply, when not to apply
    - Anti-patterns to avoid
+
+4. **Tiered AI Sprint Planning** (`patterns/tiered-ai-sprint-planning.md`)
+   - Route tasks to cost-appropriate AI models
+   - 3 tiers: Big Brain (architecture), Mid-Weight (features), Worker Bee (boilerplate)
+   - Manage AI spending effectively
+
+### Managing Your Projects
+
+**NEW:** `EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
+- Prevents "I got a bill but don't know which project" situations
+- Cost tracking across all projects
+- Credential locations documented
+- Service health monitoring
 
 ---
 
@@ -117,10 +122,13 @@ A **template repository** that gives every new project:
 
 **What's Ready:**
 - ✅ **Pattern Analysis** - 20+ patterns identified and documented
-- ✅ **Templates** - Documentation structure, CLAUDE.md, .cursorrules
+- ✅ **Templates** - Documentation structure, CLAUDE.md, .cursorrules, Tiered Sprint Planner
 - ✅ **Safety Systems** - 6 proven patterns documented with code examples
 - ✅ **Development Philosophy** - 7 core principles extracted
+- ✅ **Tiered AI Sprint Planning** - Cost-effective AI usage pattern documented
+- ✅ **Project Kickoff Guide** - Complete walkthrough for starting new projects
 - ✅ **Usage Guide** - How to use this scaffolding in new projects
+- ✅ **External Resources Tracking** - System to prevent duplicate services and surprise bills
 
 **Ready for:**
 - ✅ Using templates in new projects
@@ -145,7 +153,8 @@ project-scaffolding/
 │
 ├── patterns/                    ← Documented patterns (proven & emerging)
 │   ├── safety-systems.md        ← Data protection patterns ✅
-│   └── development-philosophy.md ← Development principles ✅
+│   ├── development-philosophy.md ← Development principles ✅
+│   └── tiered-ai-sprint-planning.md ← Cost-effective AI usage ✅
 │
 ├── templates/                   ← Reusable starting points
 │   ├── Documents/               ← Documentation structure template ✅
@@ -156,14 +165,16 @@ project-scaffolding/
 │   │   ├── safety/              ← Safety systems
 │   │   └── archives/            ← Historical docs with retention
 │   ├── .cursorrules.template    ← Project rules template ✅
-│   └── CLAUDE.md.template       ← AI instructions template ✅
+│   ├── CLAUDE.md.template       ← AI instructions template ✅
+│   └── TIERED_SPRINT_PLANNER.md ← Sprint planning template ✅
 │
 ├── examples/                    ← Real examples from source projects
 │   └── (Coming soon - extracted from battle-tested projects)
 │
 └── docs/                        ← Meta-documentation
     ├── PATTERN_ANALYSIS.md      ← Pattern extraction analysis ✅
-    └── USAGE_GUIDE.md           ← How to use this scaffolding ✅
+    ├── USAGE_GUIDE.md           ← How to use this scaffolding ✅
+    └── PROJECT_KICKOFF_GUIDE.md ← Starting new projects guide ✅
 ```
 
 ---
