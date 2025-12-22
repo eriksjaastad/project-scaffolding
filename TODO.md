@@ -86,6 +86,357 @@ Everything is a learning opportunity. We're building the system, using the syste
 
 ---
 
+## 💭 Vision: Full Automation Pipeline (Pie-in-the-Sky Ideal)
+
+**From Erik (Dec 22, 2025 - Driving thoughts):**
+
+### The Three-Stage Pipeline
+
+```
+STAGE 1: Project Creation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You + AI → Initial roadmap
+     ↓
+Multiple AI rounds (grumpy reviewers)
+  - Not sunshine: "Great idea! You're so smart!"
+  - Real critique: Poke holes, find issues
+  - Multiple perspectives
+     ↓
+Human review/revision
+     ↓
+Output: Solid roadmap + tiered sprint plan
+
+STAGE 2: Build Process (Automated Execution)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sprint plan (Tier 1/2/3) → Dispatch system
+     ↓
+Tier 3 builds boilerplate
+Tier 2 builds features
+Tier 1 handles architecture
+     ↓
+Output: Working code
+
+STAGE 3: Code Review (Multi-AI Review)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Code → Multiple AI reviewers
+  - Different models, different perspectives
+  - Pattern: Already exists in image-workflow
+     ↓
+Human final review
+     ↓
+Output: Reviewed, merged code
+```
+
+### Directory Structure
+
+**Default for all projects:**
+```
+project/
+├── roadmap-reviews/
+│   ├── 2025-12-22_claude-opus-4-review.md
+│   ├── 2025-12-22_gpt-4-review.md
+│   ├── 2025-12-22_gemini-review.md
+│   └── 2025-12-23_revision-v2-reviews/
+│
+├── code-reviews/
+│   ├── 2025-12-25_feature-x-reviews/
+│   │   ├── claude-review.md
+│   │   ├── gpt-review.md
+│   │   └── grok-review.md
+│   └── 2025-12-26_refactor-y-reviews/
+│
+└── docs/
+    ├── ROADMAP.md (final version)
+    └── SPRINT_PLAN.md (tiered)
+```
+
+**Why these directories:**
+- Project Tracker can scan them for insights
+- Learn which reviewers catch which issues
+- Track improvement over time
+- Audit trail of decisions
+
+---
+
+### Critical Questions (Holes to Poke)
+
+#### Q1: Prompt Engineering Challenge
+**Question:** How do you make reviewers "grumpy" without making them useless?
+
+**The problem:**
+- Too nice: "Everything's perfect!" (not helpful)
+- Too grumpy: "Everything sucks!" (also not helpful)
+- Right balance: Constructive criticism with specific actionable feedback
+
+**Solution needed:**
+- Prompt engineering for "constructive skeptic" persona
+- Examples of good critique vs bad critique
+- Calibration: Test prompts, measure usefulness
+
+**Who solves this:** Tier 1 (architecture of prompts)
+
+---
+
+#### Q2: Cost Explosion Risk
+**Question:** How many AI calls are we making?
+
+**Math:**
+```
+Stage 1 (Project Creation):
+  - 1 initial roadmap (you + Claude): $5
+  - 5 grumpy reviewers: 5 × $3 = $15
+  - 2 revision rounds: 2 × (you + Claude + reviewers) = $40
+  Total: ~$60 per project
+
+Stage 2 (Build):
+  - Tier 1 tasks: 10 × $8 = $80
+  - Tier 2 tasks: 30 × $3 = $90
+  - Tier 3 tasks: 20 × $0.50 = $10
+  Total: ~$180 per project
+
+Stage 3 (Code Review):
+  - 5 files × 3 reviewers × $2 = $30
+  - 2 review rounds = $60
+  Total: ~$60 per project
+
+GRAND TOTAL: ~$300 per project
+```
+
+**Questions:**
+- Is $300/project worth it?
+- Which stages provide most value?
+- Can we skip any rounds?
+- Should smaller projects use fewer reviewers?
+
+---
+
+#### Q3: Human Bottleneck Problem
+**Question:** Where does human review fit?
+
+**The tension:**
+- Full automation = fast but risky
+- Human-in-loop = safe but slow
+- Hybrid = complicated
+
+**Current pipeline has human review after:**
+1. Stage 1 (before building)
+2. Stage 3 (before merging)
+
+**But NOT in Stage 2 (build)** - is that safe?
+
+**Risk:** Automated build goes wrong direction, waste time/money
+
+**Solution options:**
+- A) Full automation, trust the system
+- B) Checkpoints: Human review at key milestones
+- C) Parallel tracks: Human codes alongside automation, compare results
+
+**Decision needed:** How much automation vs human oversight?
+
+---
+
+#### Q4: Quality vs Speed Tradeoff
+**Question:** Does more AI review = better quality?
+
+**Hypothesis:** Diminishing returns after N reviewers
+
+**To test:**
+- Start with 3 reviewers, measure quality
+- Add 4th reviewer, does quality improve?
+- Add 5th reviewer, still improving?
+- Find optimal N (probably 3-5)
+
+**Project Tracker integration:**
+- Track: # of reviewers vs bugs found later
+- Learn: Optimal reviewer count per project type
+- Optimize: Adjust based on data
+
+---
+
+#### Q5: Reviewer Diversity Problem
+**Question:** Do we want different models or different prompts?
+
+**Option A: Different models (Claude, GPT, Gemini)**
+- Pro: Genuinely different architectures, different blind spots
+- Con: Expensive, some models worse than others
+
+**Option B: Same model, different prompts (multiple Claudes with different personas)**
+- Pro: Cheaper, controlled diversity
+- Con: Same underlying model = similar biases
+
+**Option C: Hybrid (2-3 models, each with different prompts)**
+- Pro: Real diversity, manageable cost
+- Con: Complex to orchestrate
+
+**Decision needed:** Which option?
+
+---
+
+#### Q6: The "Sunshine Problem"
+**Question:** How do you detect and prevent useless positive reviews?
+
+**Example useless review:**
+```
+"This is a great idea! You're so smart! 
+I see no issues. Ship it!"
+```
+
+**Detection strategies:**
+- A) Word count minimum (must be >500 words)
+- B) Required sections (must address: risks, edge cases, alternatives)
+- C) Critique quota ("find at least 3 potential issues")
+- D) Meta-review: Another AI checks if review is useful
+
+**Implementation:**
+- Prompt: "Your job is to find problems. If you don't find at least 3 concerns, you're not doing your job."
+- Format: "RISKS: [list], EDGE CASES: [list], ALTERNATIVES: [list]"
+- Validation: Check if these sections exist and have content
+
+---
+
+#### Q7: Integration Complexity
+**Question:** How does this integrate with existing tools?
+
+**Current tools:**
+- Tiered Sprint Planner (scaffolding)
+- Project Tracker (in progress)
+- Dispatch system (planned)
+
+**New tools needed:**
+- Roadmap Review Orchestrator
+- Build Automation System  
+- Code Review Orchestrator
+
+**Question:** Are these separate tools or one big system?
+
+**My vote:** Separate but coordinated
+- Roadmap Review: Part of project kickoff (scaffolding related)
+- Build Automation: Part of dispatch system
+- Code Review: Standalone (already exists in image-workflow)
+
+---
+
+### What Needs to Happen
+
+**Phase 1: Prove Value (Don't Build Full System Yet)**
+- [ ] **Stage 1 Manual Test:** Take next new project, do multi-AI roadmap review manually
+  - Use 3 reviewers (Claude, GPT-4, Gemini)
+  - Engineer "grumpy" prompts
+  - Measure: Did reviews catch real issues?
+  - Measure: Was it worth $15 vs just building?
+
+- [ ] **Stage 3 Already Exists:** Study image-workflow code review pattern
+  - What worked?
+  - What didn't?
+  - Extract pattern if proven
+
+- [ ] **Stage 2 Don't Automate Yet:** Build dispatch system first, use manually
+
+**Phase 2: If Manual Tests Work, Build Automation**
+- [ ] Roadmap Review Orchestrator (script that calls multiple APIs)
+- [ ] Build Dispatch System (already planned)
+- [ ] Code Review Orchestrator (if image-workflow pattern proves out)
+
+**Phase 3: Integration with Project Tracker**
+- [ ] Scan roadmap-reviews/ and code-reviews/ directories
+- [ ] Extract insights (which reviewers catch what)
+- [ ] Optimize (adjust based on data)
+
+---
+
+### Directory Structure Pattern (Add to Templates)
+
+When proven, add to scaffolding templates:
+
+```
+templates/
+├── roadmap-reviews/
+│   └── README.md (how to use this directory)
+├── code-reviews/
+│   └── README.md (how to use this directory)
+└── .cursorrules.template (updated with review workflow)
+```
+
+---
+
+### Prompt Engineering Challenges
+
+**For each stage, need to engineer:**
+
+**Stage 1 (Roadmap Review):**
+- Constructive skeptic persona
+- Must find N issues (not just praise)
+- Specific, actionable feedback
+- Compare to alternatives
+
+**Stage 2 (Build Dispatch):**
+- Clear tier identification
+- Escalation triggers
+- Error handling
+
+**Stage 3 (Code Review):**
+- Security focus
+- Performance focus
+- Maintainability focus
+- Different reviewers = different angles
+
+**This is hard!** Prompt engineering is Tier 1 work.
+
+---
+
+### Erik's Concern: Pushback Needed
+
+**My pushback:**
+
+**1. Cost:** $300/project is significant. Prove value before automating.
+
+**2. Complexity:** Three stages × multiple AIs × orchestration = LOT of moving parts. Start with manual, automate gradually.
+
+**3. Diminishing Returns:** After 3-5 reviewers, probably not much new insight. Test to find optimal N.
+
+**4. Human Still Needed:** Automation doesn't replace judgment, it augments it. Don't remove human from critical decisions.
+
+**5. Prompt Engineering is Hard:** Getting "grumpy but useful" reviewers is non-trivial. Needs iteration.
+
+**6. Integration Debt:** More systems = more maintenance. Each automation adds technical debt.
+
+**But...**
+
+**It's a compelling vision IF:**
+- Start small (manual tests)
+- Prove value at each stage
+- Automate only what's proven
+- Measure effectiveness
+- Iterate based on data
+
+**The learning loop matters more than the automation.**
+
+If manual multi-AI review teaches you something, that's valuable even without automation.
+
+---
+
+### Next Steps (If Pursuing This)
+
+**Immediate (This Week):**
+- [ ] Create prompts for "grumpy reviewer" personas
+- [ ] Test on a small project (or refactor)
+- [ ] Measure: Did it catch real issues?
+
+**Short Term (This Month):**
+- [ ] Extract image-workflow code review pattern
+- [ ] Document what worked/didn't
+- [ ] Decide if worth automating
+
+**Long Term (2026):**
+- [ ] If proven: Build orchestration
+- [ ] If not: Learn from manual process, maybe automate later
+
+---
+
+**Status:** Vision documented, holes poked, needs discussion (Tier 1!)
+
+---
+
 ## Current Status
 
 **Phase:** Pattern extraction and template creation  
