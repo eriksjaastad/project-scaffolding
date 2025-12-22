@@ -5,6 +5,23 @@
 
 ---
 
+## 🎯 Next Active Task
+
+### Reevaluate TODO List for Tiered Implementation
+
+**Goal:** Apply tiered sprint planning TO the TODO list itself
+
+**Task:** Break down the TODO list into Tier 1 / Tier 2 / Tier 3 tasks
+- Tier 1 (Big Brain): Questions, architecture decisions, pattern design
+- Tier 2 (Mid-Weight): Pattern extraction, documentation writing
+- Tier 3 (Worker Bee): Maintenance, updates, simple docs
+
+**Why:** First attempt to use our own tiered system on our own work (dogfooding!)
+
+**Status:** Ready to start after gas run
+
+---
+
 ## Current Status
 
 **Phase:** Pattern extraction and template creation  
