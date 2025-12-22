@@ -71,6 +71,17 @@ A system that:
 - This could be Project Tracker Phase 4: "Task Execution"
 - Or separate tool: "Task Dispatcher"
 
+**Integration Alert:**
+🔗 **Project Tracker will include monitoring for tiered system effectiveness**
+- Track: Is tiered sprint planning working?
+- Measure: Time saved, cost savings, quality maintained
+- Learn: Which tasks tier well vs poorly
+- Optimize: Adjust tiering based on actual data
+- **Coming soon:** Integration between scaffolding patterns and tracker monitoring
+
+**Why this matters:**
+Everything is a learning opportunity. We're building the system, using the system, AND measuring if the system works. That's the meta-meta level.
+
 **Status:** Discussion needed (Tier 1 work!)
 
 ---
