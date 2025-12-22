@@ -30,7 +30,9 @@ This phase is conversations with expensive models. That's correct and necessary.
 
 **Duration:** Few hours of back-and-forth chatting
 
-**Cost:** $10-30 (worth it - this is architecture work)
+**Estimated Cost:** $10-30 (worth it - this is architecture work)
+
+> **Note:** Cost estimates are for backtesting against actual usage data, not real-time tracking.
 
 ---
 
@@ -221,6 +223,8 @@ Within each tier, order by:
 
 Now you execute using the appropriate tier for each task.
 
+> **CRITICAL:** Use the escalation-aware prompts below. Don't fight a wrong-tier model for hours.
+
 ### For Tier 3 Tasks (Worker Bee)
 
 **Prompt Template:**
@@ -238,8 +242,23 @@ Please:
 1. Generate the code/content
 2. Follow existing patterns in the codebase
 3. Ask clarifying questions if requirements are unclear
-4. Flag if this task is more complex than expected (might need Tier 2)
+
+⚠️ ESCALATION RULE:
+If this task requires:
+- Architectural decisions
+- Complex problem-solving beyond clear instructions
+- Ambiguous requirements you cannot clarify with questions
+
+Then respond with: "🚨 ESCALATE TO TIER 2: [Reason why this is too complex]"
+
+Do NOT spend more than 2-3 attempts on a task that's beyond your tier.
 ```
+
+**Estimated Cost:** ~$0.50-1 per task
+
+> **Note:** Cost estimates for backtesting, not real-time tracking.
+
+---
 
 ### For Tier 2 Tasks (Mid-Weight)
 
@@ -259,8 +278,23 @@ Please:
 2. Implement following best practices
 3. Include error handling
 4. Write tests if applicable
-5. Flag if you encounter architectural ambiguity (might need Tier 1)
+
+⚠️ ESCALATION RULE:
+If this task requires:
+- Fundamental architectural decisions not defined in docs
+- Resolving ambiguous requirements (not just implementation details)
+- High-risk design choices affecting multiple systems
+
+Then respond with: "🚨 ESCALATE TO TIER 1: [Reason why this needs architecture-level thinking]"
+
+Do NOT make architectural assumptions. Escalate instead.
 ```
+
+**Estimated Cost:** ~$2-4 per task
+
+> **Note:** Cost estimates for backtesting, not real-time tracking.
+
+---
 
 ### For Tier 1 Tasks (Big Brain)
 
@@ -281,36 +315,228 @@ Please:
 3. Identify trade-offs
 4. Recommend a solution with rationale
 5. Anticipate edge cases and failure modes
+
+⚠️ DE-ESCALATION OPPORTUNITY:
+If, after analysis, this task is actually straightforward implementation:
+- Break it down into clear steps
+- Recommend: "This can be de-escalated to Tier 2 with these instructions: [...]"
+```
+
+**Estimated Cost:** ~$5-10 per task
+
+> **Note:** Cost estimates for backtesting, not real-time tracking.
+
+---
+
+## Tier Escalation System
+
+### The Problem: Getting Stuck with Wrong-Tier Model
+
+**Scenario:** You're using GPT-4o-mini (Tier 3) for what looked like simple boilerplate, but it keeps struggling. You spend an hour trying to make it work.
+
+**Solution:** Built-in escalation protocol in your prompts.
+
+---
+
+### Escalation Protocol
+
+**For Tier 3 (Worker Bee) Prompts:**
+
+```
+You are a Worker Bee AI (Tier 3 - GPT-4o-mini). 
+
+Your specialty: Well-defined tasks with clear instructions.
+
+Current task: [Task name]
+Context: [Link to project docs or describe]
+Requirements: [Specific requirements]
+
+Please:
+1. Generate the code/content
+2. Follow existing patterns in the codebase
+3. Ask clarifying questions if requirements are unclear
+
+⚠️ ESCALATION RULE:
+If this task requires:
+- Architectural decisions
+- Complex problem-solving beyond clear instructions
+- Ambiguous requirements you cannot clarify with questions
+
+Then respond with: "🚨 ESCALATE TO TIER 2: [Reason why this is too complex]"
+
+Do NOT spend more than 2-3 attempts on a task that's beyond your tier.
 ```
 
 ---
 
-## Budget Tracking (Optional)
+**For Tier 2 (Mid-Weight) Prompts:**
 
-Track your spend by tier:
+```
+You are a Mid-Weight AI (Tier 2 - GPT-4o).
+
+Your specialty: Feature implementation, refactoring, testing.
+
+Current task: [Task name]
+Context: [Link to architecture docs]
+Constraints: [Performance, security, etc.]
+
+Please:
+1. Review the architecture/design
+2. Implement following best practices
+3. Include error handling
+4. Write tests if applicable
+
+⚠️ ESCALATION RULE:
+If this task requires:
+- Fundamental architectural decisions not defined in docs
+- Resolving ambiguous requirements (not just implementation details)
+- High-risk design choices affecting multiple systems
+
+Then respond with: "🚨 ESCALATE TO TIER 1: [Reason why this needs architecture-level thinking]"
+
+Do NOT make architectural assumptions. Escalate instead.
+```
+
+---
+
+**For Tier 1 (Big Brain) Prompts:**
+
+```
+You are a Big Brain AI (Tier 1 - Claude Sonnet/GPT-4).
+
+Your specialty: Architecture, complex problems, ambiguous requirements.
+
+Current task: [Task name]
+Context: [Full project context]
+Challenge: [What makes this complex]
+
+Please:
+1. Analyze the problem space
+2. Consider multiple approaches
+3. Identify trade-offs
+4. Recommend a solution with rationale
+5. Anticipate edge cases and failure modes
+
+⚠️ DE-ESCALATION OPPORTUNITY:
+If, after analysis, this task is actually straightforward implementation:
+- Break it down into clear steps
+- Recommend: "This can be de-escalated to Tier 2 with these instructions: [...]"
+```
+
+---
+
+### Erik's Escalation Checklist
+
+When you catch yourself spending >30 minutes on a task that's not progressing:
+
+**Stop. Ask:**
+1. **Is the model struggling?** → Escalate
+2. **Are requirements unclear?** → Escalate to Tier 1 for architecture decision
+3. **Is this taking way longer than expected?** → Probably mis-tiered
+4. **Am I re-explaining the same thing?** → Model doesn't have capability, escalate
+
+**Then:**
+1. Document what you tried (so next tier doesn't repeat)
+2. Copy the escalation prompt for next tier
+3. Include context: "Tier 3 struggled with [X], attempted [Y, Z]"
+4. Update your sprint plan: mark task as higher tier
+
+---
+
+### Tier Migration Examples
+
+**Example 1: Tier 3 → Tier 2**
 
 ```markdown
-## Week 1 Budget Log
-
-### Tier 1 Sessions
-- [ ] API abstraction layer design: ~$5
-- [ ] Skin-swapping architecture: ~$8
-- [ ] **Tier 1 Total: $13 / $20 weekly budget** ✅
-
-### Tier 2 Sessions
-- [ ] Claude adapter implementation: ~$3
-- [ ] Glassmorphism window: ~$2
-- [ ] Three.js particle sphere: ~$4
-- [ ] **Tier 2 Total: $9 / $25 weekly budget** ✅
-
-### Tier 3 Sessions
-- [ ] Electron boilerplate: ~$0.50
-- [ ] .gitignore/.env.example: ~$0.25
-- [ ] README: ~$0.75
-- [ ] **Tier 3 Total: $1.50 / $5 weekly budget** ✅
-
-**Week 1 Total: $23.50 / $50 weekly budget** ✅
+TASK: Create .gitignore for Python project
+ATTEMPTED WITH: GPT-4o-mini (Tier 3)
+ISSUE: Project uses unusual tools (PyTorch, CUDA) - mini doesn't know patterns
+ESCALATED TO: GPT-4o (Tier 2)
+RESULT: Generated comprehensive .gitignore with ML-specific patterns
+LESSON: Specialized domains need Tier 2 minimum
 ```
+
+---
+
+**Example 2: Tier 2 → Tier 1**
+
+```markdown
+TASK: Implement caching layer for API responses
+ATTEMPTED WITH: GPT-4o (Tier 2)
+ISSUE: Unclear if cache should be in-memory, Redis, or database
+         Unclear cache invalidation strategy
+         Unclear if this affects other services
+ESCALATED TO: Claude Sonnet (Tier 1)
+RESULT: Analyzed system architecture, recommended Redis with TTL strategy
+        Provided implementation plan for Tier 2 to execute
+LESSON: "Implement X" hides architectural decisions - needs Tier 1 first
+```
+
+---
+
+**Example 3: Tier 1 → Tier 2 (De-escalation)**
+
+```markdown
+TASK: Design real-time data synchronization between client and server
+ATTEMPTED WITH: Claude Sonnet (Tier 1)
+ANALYSIS: After investigation, WebSockets pattern is well-established
+          No novel architecture needed
+RESULT: Tier 1 provided clear WebSocket implementation spec
+DE-ESCALATED TO: GPT-4o (Tier 2) for implementation
+LESSON: Some "design" tasks become clear after brief Tier 1 analysis
+```
+
+---
+
+### Anti-Pattern: The Sunk Cost Trap
+
+**DON'T DO THIS:**
+
+```
+11:00 PM: GPT-4o-mini struggling with task
+11:15 PM: "Let me try explaining it differently..."
+11:30 PM: "Maybe if I give it an example..."
+11:45 PM: "One more attempt with clearer instructions..."
+12:15 AM: "Just need to tweak this one part..."
+12:45 AM: "Finally got it!" (spent $2 on mini, wasted 1.75 hours)
+
+SHOULD HAVE: Escalated at 11:15 PM, finished by 11:30 PM with Tier 2 ($3)
+```
+
+---
+
+### Automation Idea: Multi-Model Review
+
+**Pattern from image-workflow project:**
+
+The `image-workflow` project built an automated review system that:
+1. Takes a task/code/decision
+2. Sends it to multiple AI models simultaneously
+3. Collects their responses
+4. Compares outputs to find consensus or red flags
+
+**Reference:** `/Users/eriksjaastad/projects/image-workflow/Documents/guides/AI_TO_AI_PR_REVIEW_WORKFLOW.md`
+
+**How this applies to Tiered Sprint Planning:**
+
+Instead of manually escalating, you could:
+1. Define a task
+2. Send to Tier 3, Tier 2, and Tier 1 simultaneously
+3. If Tier 3 says "escalate," you already have Tier 2's answer ready
+4. Compare quality vs. cost for future tiering decisions
+
+**Why this matters:**
+- Saves time on escalation (parallel not sequential)
+- Builds data: "These task types need Tier 2 minimum"
+- Catches mis-tiering early
+
+**Implementation:**
+- Could be a script that takes a task prompt
+- Calls multiple model APIs in parallel
+- Collects responses, shows side-by-side
+- Helps you learn which tiers handle which tasks well
+
+**Future consideration:** Not required for v1 of this template, but worth exploring if you find yourself frequently mis-tiering tasks.
 
 ---
 
@@ -318,31 +544,48 @@ Track your spend by tier:
 
 ### 🚩 Task Mis-Tiered
 
-**Symptom:** Tier 3 model says "This is more complex than I can handle"
+**Symptom:** Tier 3 model says "This is more complex than I can handle" OR you're spending >30 minutes on no progress
 
-**Fix:** Escalate to Tier 2. Update your tier scoring - you underestimated complexity.
+**Fix:** 
+1. Stop immediately - don't fall into sunk cost trap
+2. Use escalation prompt for next tier
+3. Document what was tried
+4. Update sprint plan to mark task as higher tier
 
 ---
 
-### 🚩 Spending Too Much on Tier 1
+### 🚩 Spending Too Much Time (Not Money)
 
-**Symptom:** Burning through Tier 1 budget in first 2 weeks
+**Symptom:** Task is taking 3x longer than estimated
 
 **Fix:**
-1. Are you using Tier 1 for implementation? (Should be Tier 2)
-2. Are you using Tier 1 for docs? (Should be Tier 3)
-3. Re-tier your task list with stricter scoring
+1. Is the model capable? (Escalate if not)
+2. Are requirements clear? (Go back to Tier 1 for architecture decision)
+3. Is scope creep happening? (Break into smaller tasks)
+4. Update task estimates based on reality
 
 ---
 
-### 🚩 Quality Issues from Tier 3
+### 🚩 Quality Issues from Lower Tiers
 
-**Symptom:** Tier 3 code is buggy or doesn't match requirements
+**Symptom:** Tier 3 code is buggy, doesn't match requirements, or needs major rework
 
 **Fix:** 
 1. Were requirements clear enough? (Write more detailed spec)
 2. Was task actually more complex? (Re-tier to Tier 2)
-3. Is Tier 3 model appropriate for your domain? (Some domains need Tier 2 minimum)
+3. Is this domain too specialized? (Some domains need Tier 2 minimum)
+4. Update tiering guidelines based on what you learned
+
+---
+
+### 🚩 Tier 1 Overuse
+
+**Symptom:** Using Claude Sonnet for boilerplate tasks because you like it
+
+**Fix:**
+1. Remind yourself: Tier 1 is for architecture and complex problems
+2. Force yourself to try Tier 3 first (default down, escalate up)
+3. Build discipline: tier by task complexity, not model preference
 
 ---
 
@@ -394,15 +637,17 @@ Track your spend by tier:
 ## Success Metrics
 
 **After 1 sprint (2 weeks):**
-- [ ] Did you stay within tier budgets?
 - [ ] Were tasks correctly tiered? (or did you have to escalate?)
 - [ ] Did Tier 3 handle simple tasks well?
 - [ ] Did you avoid using Tier 1 for boilerplate?
+- [ ] Did escalation protocol work when needed?
+- [ ] Are you getting better at scoring task complexity?
 
 **After 1 month:**
-- [ ] Total spend under monthly budget?
 - [ ] Task tiering becoming intuitive?
 - [ ] Quality maintained across all tiers?
+- [ ] Escalations happening smoothly (not fighting wrong-tier models)?
+- [ ] Building patterns: "These tasks always need Tier 2"?
 
 ---
 
@@ -434,8 +679,7 @@ Before starting execution:
 - [ ] Each task scored (complexity + ambiguity + risk)
 - [ ] Tasks organized into Tier 1, 2, 3
 - [ ] Execution order determined (dependencies, risk, value)
-- [ ] Budget allocated per tier (20% / 50% / 30%)
-- [ ] Tier-specific prompts prepared
+- [ ] Tier-specific prompts prepared (including escalation rules)
 - [ ] Ready to execute!
 
 ---

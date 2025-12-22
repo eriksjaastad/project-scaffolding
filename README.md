@@ -45,7 +45,8 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 4. **Tiered AI Sprint Planning** (`patterns/tiered-ai-sprint-planning.md`)
    - Route tasks to cost-appropriate AI models
    - 3 tiers: Big Brain (architecture), Mid-Weight (features), Worker Bee (boilerplate)
-   - Manage AI spending effectively
+   - Escalation system to avoid getting stuck with wrong-tier models
+   - Multi-model review automation (from image-workflow)
 
 ### Managing Your Projects
 
