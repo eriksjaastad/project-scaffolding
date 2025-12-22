@@ -22,6 +22,59 @@
 
 ---
 
+## 🚨 Critical Missing Piece: Task Dispatch System
+
+**The Problem:**
+- We have planning side: Break TODO into Tier 1/2/3 ✅
+- We DON'T have execution side: Automated dispatch to tiers ❌
+
+**Without dispatch automation:**
+- Need 3 chat windows per project (one per tier)
+- 2 projects = 6 windows
+- 3 projects = 9 windows
+- **Unmanageable!**
+
+**What We Need:**
+A system that:
+1. **Ingests the tiered TODO list** (parses Tier 1/2/3 sections)
+2. **Dispatches tasks to appropriate tiers** (routes to correct chat/API)
+3. **Tracks execution** (what's running, what's done)
+4. **Prevents window juggling chaos**
+
+**Possible Approaches:**
+
+**Option A: Prompt Generator**
+- Read TODO.md
+- Generate ready-to-paste prompts for each tier
+- Copy/paste into appropriate chat window
+- Simple, no API needed
+
+**Option B: CLI Dispatcher**
+- `pt dispatch --tier 3 "next task"`
+- Calls appropriate API (OpenAI/Anthropic) with tier-appropriate model
+- Returns result, marks task complete
+- More automated, needs API keys
+
+**Option C: Web Dashboard + API**
+- Visual task board (like Project Tracker)
+- Click task → dispatches to appropriate API
+- Shows results inline
+- Most sophisticated, highest effort
+
+**Decision Needed:**
+- Which approach fits workflow best?
+- Start simple (Option A) or build full system (Option B/C)?
+- Should this be part of Project Tracker or separate tool?
+
+**Related:**
+- This is why Project Tracker exists (visibility + orchestration)
+- This could be Project Tracker Phase 4: "Task Execution"
+- Or separate tool: "Task Dispatcher"
+
+**Status:** Discussion needed (Tier 1 work!)
+
+---
+
 ## Current Status
 
 **Phase:** Pattern extraction and template creation  
