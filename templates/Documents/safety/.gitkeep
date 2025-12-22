@@ -1,0 +1,12 @@
+# Safety
+
+Safety systems, policies, and lessons learned.
+
+Philosophy: "Every safety system was a scar"
+
+Document:
+- Data integrity rules
+- File safety systems
+- Backup/recovery procedures
+- Incident post-mortems (what broke, why, how we fixed it)
+

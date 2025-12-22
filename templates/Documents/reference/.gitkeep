@@ -1,0 +1,9 @@
+# Reference
+
+Standards, conventions, and knowledge base.
+
+Suggested files:
+- CODE_QUALITY_RULES.md - Linting, typing, style standards
+- TECHNICAL_KNOWLEDGE_BASE.md - Domain-specific knowledge
+- DECISION_LOG.md - Technical decision rationales
+

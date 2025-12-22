@@ -38,8 +38,15 @@ This project learns from:
    - Cron dispatcher pattern
    - Fuzzy grading, multi-model comparison
 
-3. **Hypocrisy Now** - RSS infrastructure, sentiment analysis
-4. **AI Journal** - Documentation patterns
+3. **Cortana Personal AI** - Layer 1 complete
+   - Privacy-first architecture (local data, API-only for processing)
+   - Daily automation via launchd
+   - Layer-by-layer development (incrementally useful)
+   - Structured memory storage (JSON + Markdown)
+   - Cost-conscious AI usage (~$0.60/month)
+
+4. **Hypocrisy Now** - RSS infrastructure, sentiment analysis
+5. **AI Journal** - Documentation patterns
 
 ---
 
@@ -80,7 +87,7 @@ docs/              ← Meta-documentation
 
 ## Related Files
 
-- Philosophy: `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
+- Philosophy: `PROJECT_PHILOSOPHY.md` (this directory)
 - AI Journal: `/Users/eriksjaastad/projects/AI-journal/`
 - Source Projects: All under `/Users/eriksjaastad/projects/`
 

@@ -16,6 +16,42 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ---
 
+## Quick Start
+
+### Using This Scaffolding
+
+1. **Read** `docs/USAGE_GUIDE.md` - How to use templates and patterns
+2. **Browse** `patterns/` - Understand proven patterns
+3. **Copy** templates you need - Start with Documents/ and CLAUDE.md
+4. **Customize** for your project - Make them yours
+5. **Watch** for new patterns - Contribute back what you learn
+
+### Managing Your Projects
+
+**NEW:** `EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
+- Prevents "I got a bill but don't know which project" situations
+- Cost tracking across all projects
+- Credential locations documented
+- Service health monitoring
+
+### Understanding the Patterns
+
+1. **Pattern Analysis** (`docs/PATTERN_ANALYSIS.md`)
+   - See all identified patterns with confidence levels
+   - Understand which are proven (🟢), emerging (🟡), or candidates (🔵)
+
+2. **Safety Systems** (`patterns/safety-systems.md`)
+   - 6 proven patterns with code examples
+   - "Every safety system was a scar" philosophy
+   - Real scar stories from projects
+
+3. **Development Philosophy** (`patterns/development-philosophy.md`)
+   - 7 core principles: Layer-by-layer, data before decisions, etc.
+   - When to apply, when not to apply
+   - Anti-patterns to avoid
+
+---
+
 ## Current Source Projects
 
 Patterns are being extracted from:
@@ -32,12 +68,19 @@ Patterns are being extracted from:
    - Fuzzy grading systems
    - Multi-model comparison
 
-3. **Hypocrisy Now** (ongoing)
+3. **Cortana Personal AI** (Layer 1 complete)
+   - Privacy-first architecture
+   - Daily automation via launchd
+   - Layer-by-layer development (incrementally useful)
+   - Local-first data with structured memory storage
+   - Cost-conscious AI usage (~$0.60/month)
+
+4. **Hypocrisy Now** (ongoing)
    - RSS infrastructure
    - Sentiment analysis
    - Content aggregation
 
-4. **AI Journal** (ongoing)
+5. **AI Journal** (ongoing)
    - Documentation patterns
    - Personal knowledge management
 
@@ -45,7 +88,7 @@ Patterns are being extracted from:
 
 ## Philosophy
 
-**Core document:** `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
+**Core document:** `PROJECT_PHILOSOPHY.md` (this directory)
 
 Key principles:
 - **We're explorers** - Building experiments, not products
@@ -70,39 +113,57 @@ A **template repository** that gives every new project:
 
 ## Current Status
 
-**Phase:** Discovery & Pattern Collection
+**Phase:** Discovery & Pattern Collection → **Initial Extraction Complete! ✅**
 
-**Not ready for:**
-- Creating the template repo yet
-- Rigid frameworks or rules
-- Forcing patterns before they're proven
+**What's Ready:**
+- ✅ **Pattern Analysis** - 20+ patterns identified and documented
+- ✅ **Templates** - Documentation structure, CLAUDE.md, .cursorrules
+- ✅ **Safety Systems** - 6 proven patterns documented with code examples
+- ✅ **Development Philosophy** - 7 core principles extracted
+- ✅ **Usage Guide** - How to use this scaffolding in new projects
 
 **Ready for:**
-- Documenting patterns as we notice them
-- Cross-project comparisons
-- Collecting "scar stories" (what broke and how we fixed it)
+- ✅ Using templates in new projects
+- ✅ Following documented patterns
+- ✅ Contributing new patterns as they emerge
+- ✅ Extracting examples from source projects
+
+**Next phases:**
+- Month 2-3: Extract real examples from source projects
+- Month 3: Consolidate patterns into categories
+- Month 4: Refine templates based on usage
+- Month 6: Consider creating actual `project-scaffolding-template` repo
 
 ---
 
-## Structure (Growing)
+## Structure
 
 ```
 project-scaffolding/
 ├── README.md                    ← You are here
-├── patterns/
-│   ├── documentation.md         ← How to structure project docs
-│   ├── safety-systems.md        ← Data protection patterns
-│   ├── testing.md               ← Testing philosophy
-│   ├── deployment.md            ← Railway, env, cron patterns
-│   └── ai-collaboration.md      ← Working with AI assistants
-├── templates/
-│   ├── .cursorrules.template    ← Project rules template
-│   ├── CLAUDE.md.template       ← AI instructions template
-│   └── README.template          ← Project README template
-├── examples/
-│   └── (Real examples from source projects)
-└── docs/
-    └── extracting-patterns.md   ← How to identify patterns worth documenting
+├── .cursorrules                 ← Project rules for this meta-project
+│
+├── patterns/                    ← Documented patterns (proven & emerging)
+│   ├── safety-systems.md        ← Data protection patterns ✅
+│   └── development-philosophy.md ← Development principles ✅
+│
+├── templates/                   ← Reusable starting points
+│   ├── Documents/               ← Documentation structure template ✅
+│   │   ├── README.md            ← Index and usage guide
+│   │   ├── core/                ← Architecture, operations
+│   │   ├── guides/              ← How-to documents
+│   │   ├── reference/           ← Standards, knowledge base
+│   │   ├── safety/              ← Safety systems
+│   │   └── archives/            ← Historical docs with retention
+│   ├── .cursorrules.template    ← Project rules template ✅
+│   └── CLAUDE.md.template       ← AI instructions template ✅
+│
+├── examples/                    ← Real examples from source projects
+│   └── (Coming soon - extracted from battle-tested projects)
+│
+└── docs/                        ← Meta-documentation
+    ├── PATTERN_ANALYSIS.md      ← Pattern extraction analysis ✅
+    └── USAGE_GUIDE.md           ← How to use this scaffolding ✅
 ```
 
 ---

@@ -1,0 +1,9 @@
+# Core Documentation
+
+Essential architecture and operations documentation.
+
+Suggested starter files:
+- ARCHITECTURE_OVERVIEW.md - System design and component relationships
+- OPERATIONS_GUIDE.md - How to run, deploy, maintain
+- DISASTER_RECOVERY_GUIDE.md - Emergency procedures
+

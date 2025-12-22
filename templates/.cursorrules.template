@@ -1,0 +1,330 @@
+# Cursor Rules Template
+
+> **Purpose:** Project-specific rules for Cursor AI  
+> **Pattern Source:** [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding)
+
+---
+
+## Project Overview
+
+**What this project does:**
+[Brief description]
+
+**Current phase:**
+[Layer/stage of development]
+
+**Key principles:**
+- [Principle 1]
+- [Principle 2]
+- [Principle 3]
+
+---
+
+## Required Reading
+
+Before writing code, AI collaborators must read:
+
+1. **README.md** - Project overview
+2. **CLAUDE.md** - Detailed coding standards and safety rules
+3. **Documents/core/** - Architecture and operations (if exists)
+
+---
+
+## Critical Safety Rules
+
+### 🔴 NEVER Modify
+
+[List append-only or read-only files/directories]
+
+**Examples:**
+- `data/critical_data/` - Append-only archives
+- Source data files - Read-only
+- `.env` files - Never commit
+
+### File Operation Safety
+
+[Specify any file safety patterns]
+
+**Example:**
+- Always use atomic writes for critical data
+- Move files, don't modify in place
+- Use trash/recycle bin for deletions, not rm -rf
+
+---
+
+## Code Quality Standards
+
+### Python 3.11+ Modern Typing
+
+**CRITICAL:** Use built-in generic types, not `typing` module classes.
+
+```python
+# ✅ CORRECT
+from typing import Any
+
+data: dict[str, Any] = {}
+items: list[int] = []
+names: list[str] = ["alice", "bob"]
+value: str | None = None
+result: int | str = 42
+
+# ❌ WRONG - Never use these
+from typing import Dict, List, Optional, Union  # NO!
+
+data: Dict[str, Any] = {}         # Use dict[str, Any]
+items: List[int] = []             # Use list[int]
+value: Optional[str] = None       # Use str | None
+result: Union[int, str] = 42      # Use int | str
+```
+
+**Rationale:** Python 3.9+ supports built-in generics. Modern syntax is cleaner, faster, and the future standard.
+
+**Applies to:** All new code. Migrate old code opportunistically.
+
+---
+
+### General Python Standards
+
+```python
+from pathlib import Path
+from dataclasses import dataclass
+from datetime import datetime
+
+# ✅ Use pathlib for file operations
+config_path = Path("config") / "settings.json"
+data = config_path.read_text()
+
+# ✅ Use dataclasses for data structures
+@dataclass
+class Config:
+    api_key: str
+    timeout: int = 30
+
+# ✅ Type hints on all functions
+def process_data(input_path: Path, limit: int = 100) -> list[dict[str, Any]]:
+    """Process data from file."""
+    pass
+
+# ✅ F-strings for formatting
+message = f"Processed {count} items in {elapsed:.2f}s"
+
+# ✅ Context managers for resources
+with open(path, 'r') as f:
+    data = f.read()
+```
+
+---
+
+### Linting & Validation
+
+**Before committing:**
+
+```bash
+# Check syntax
+python -m py_compile [directory]/**/*.py
+
+# Type checking (if mypy configured)
+mypy [directory] --ignore-missing-imports --allow-untyped-defs
+
+# Linting (if ruff configured)
+ruff check [directory]/
+```
+
+**Configuration:** See `pyproject.toml` (if exists)
+
+---
+
+## Testing Philosophy
+
+**Test these:**
+- ✅ Data parsers (fragile)
+- ✅ Business logic (critical)
+- ✅ Data integrity checks
+- ✅ Complex algorithms
+
+**Don't test these:**
+- ❌ One-off scripts
+- ❌ Simple CRUD
+- ❌ UI tools (early stages)
+
+**Approach:**
+- Layer 1: Manual testing (establish patterns)
+- Layer 2+: Automated tests (proven patterns)
+
+---
+
+## Documentation Standards
+
+### File Headers
+
+```python
+"""
+Module: [name].py
+Purpose: [Brief description]
+Status: [Active | Deprecated]
+
+Usage:
+    [Example usage]
+
+Dependencies:
+    - [Dependency 1]
+    - [Dependency 2]
+
+Safety:
+    - [Any safety considerations]
+"""
+```
+
+### Function Docstrings
+
+```python
+def process_items(items: list[str], max_count: int = 100) -> dict[str, int]:
+    """
+    Process items and return statistics.
+    
+    Args:
+        items: List of item names to process
+        max_count: Maximum items to process (default: 100)
+    
+    Returns:
+        Dictionary with processing statistics
+    
+    Raises:
+        ValueError: If items list is empty
+        IOError: If processing fails
+    
+    Example:
+        >>> items = ["apple", "banana", "cherry"]
+        >>> stats = process_items(items, max_count=2)
+        >>> print(stats)
+        {"processed": 2, "skipped": 1}
+    """
+```
+
+---
+
+## Git Practices
+
+### .gitignore Essentials
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+
+# Environment
+.env
+.env.local
+*.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+data/logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+[Add your excludes here]
+```
+
+### Commit Guidelines
+
+- **Atomic commits** - One logical change per commit
+- **Clear messages** - What and why, not how
+- **Test before commit** - Run validation commands
+- **No secrets** - Never commit API keys, passwords
+
+---
+
+## Project-Specific Patterns
+
+[Add patterns specific to your project]
+
+**Example:**
+
+### Data Loading Pattern
+
+```python
+from pathlib import Path
+import json
+
+def load_data(data_dir: str, filename: str) -> dict[str, Any]:
+    """Standard data loading pattern."""
+    path = Path(data_dir) / filename
+    if not path.exists():
+        raise FileNotFoundError(f"Data file not found: {path}")
+    return json.loads(path.read_text())
+```
+
+### Logging Pattern
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+
+def setup_logging(log_file: str = "app.log") -> None:
+    """Configure logging."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(f"data/logs/{log_file}"),
+            logging.StreamHandler()
+        ]
+    )
+```
+
+---
+
+## Related Files
+
+- **CLAUDE.md** - Comprehensive AI collaboration guide
+- **Documents/reference/CODE_QUALITY_RULES.md** - Detailed standards (if exists)
+- **pyproject.toml** - Linter configuration (if exists)
+
+---
+
+## Quick Reference
+
+### Daily Commands
+
+```bash
+# Run validation
+[your validation command]
+
+# Run tests
+[your test command]
+
+# Start development
+[your dev server command]
+```
+
+### Common Issues
+
+**Issue:** [Common problem]  
+**Solution:** [How to fix]
+
+**Issue:** [Another problem]  
+**Solution:** [How to fix]
+
+---
+
+*Based on the project-scaffolding pattern. Adapt to your project's needs.*
+
