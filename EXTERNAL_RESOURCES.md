@@ -11,6 +11,29 @@
 
 ---
 
+## ⚠️ API Key Management Pattern
+
+**CRITICAL:** Each project manages its own API keys. Never share API keys across projects.
+
+**Pattern:** `{project-name}-{service}` → `{project}/.env`
+
+**Examples:**
+- `cortana-openai` → stored in `Cortana personal AI/.env`
+- `trading-openai` → stored in `Trading Projects/.env`  
+- `trading-anthropic` → stored in `Trading Projects/.env`
+
+**Why this matters:**
+- ✅ Cost attribution (which project spent what?)
+- ✅ Failure isolation (one project's rate limit doesn't affect others)
+- ✅ Security isolation (compromise one → others safe)
+- ✅ Clear ownership (each project pays for itself)
+
+**Full documentation:** See `patterns/api-key-management.md`
+
+**Migration status:** In progress (Cortana pending)
+
+---
+
 ## Before Adding a New Service
 
 **STOP and check this file first!**
@@ -214,8 +237,14 @@ Ask yourself:
   - Trading: ~$4/month
   - Cortana: ~$0.60/month
   - image-workflow: Variable (batch processing)
-- **Key location:** 
-  - Trading: `.env`
+- **API Keys (Per-Project Pattern):**
+  - `cortana-openai` → `Cortana personal AI/.env`
+  - `trading-openai` → `Trading Projects/.env`
+  - `image-workflow-openai` → `image-workflow/.env`
+  - ⚠️ **Never share keys across projects** (see `patterns/api-key-management.md`)
+- **Status:** Active
+- **Account:** Erik's OpenAI account
+- **Dashboard:** https://platform.openai.com/usage
   - Cortana: Uses agent_os `.env`
   - image-workflow: Local `.env`
 - **Dashboard:** https://platform.openai.com
@@ -223,8 +252,12 @@ Ask yourself:
 #### Anthropic (Claude)
 - **Projects:** Trading Projects (Opus 4, Sonnet 4, Haiku 3.5)
 - **Cost:** ~$2/month
-- **Key location:** Trading Projects `.env`
-- **Dashboard:** https://console.anthropic.com
+- **API Keys (Per-Project Pattern):**
+  - `trading-anthropic` → `Trading Projects/.env`
+  - ⚠️ **Never share keys across projects** (see `patterns/api-key-management.md`)
+- **Status:** Active
+- **Account:** Erik's Anthropic account
+- **Dashboard:** https://console.anthropic.com/settings/keys
 
 #### Google AI (Gemini)
 - **Projects:** Trading Projects (Gemini 2.0/2.5 Flash)
