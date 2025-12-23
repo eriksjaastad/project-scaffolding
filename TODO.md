@@ -104,7 +104,192 @@ A system that:
 **Why this matters:**
 Everything is a learning opportunity. We're building the system, using the system, AND measuring if the system works. That's the meta-meta level.
 
-**Status:** Discussion needed (Tier 1 work!)
+---
+
+## 📊 Learning & Analytics Layer (Critical!)
+
+**The Problem Erik Identified:**
+- Projects finish in days/weeks
+- Data becomes available immediately  
+- Waiting 3 months to review is TOO SLOW
+- Need continuous learning loop
+
+**The Separation:**
+```
+DOING THE WORK          REVIEWING THE RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sprint planning    ←→   Cost estimate accuracy
+Build project      ←→   Tiering effectiveness  
+Code reviews       ←→   Review quality/usefulness
+Ship               ←→   Final quality assessment
+```
+
+**We need BOTH layers running:**
+- **Execution layer:** Do the work
+- **Learning layer:** Review how the work went
+
+---
+
+### Learning Loop Cadence
+
+**NOT quarterly - that's way too slow!**
+
+**Per-Project Learning (Immediate):**
+After EACH project completes:
+- [ ] Download actual costs from Cursor/APIs
+- [ ] Compare: Estimated costs vs actual costs
+- [ ] Analyze: Where were we way off? Over? Under?
+- [ ] Document: Lessons learned
+- [ ] Update: Cost estimation models
+
+**Frequency:** After every project (could be days apart!)
+
+**Why:** Data is fresh, lessons are actionable, next project benefits immediately
+
+---
+
+**Weekly Learning (Pattern Level):**
+Every week:
+- [ ] Review: Which tasks tier well consistently?
+- [ ] Review: Which tasks always mis-tier?
+- [ ] Review: Are reviews catching real issues?
+- [ ] Review: Is one-pass code review working?
+- [ ] Update: Tiering guidelines based on patterns
+
+**Frequency:** Weekly (not monthly, not quarterly)
+
+**Why:** Projects finish quickly, patterns emerge fast, need rapid iteration
+
+---
+
+**Monthly Learning (System Level):**
+Every month:
+- [ ] Review: Is the whole system worth it?
+- [ ] Review: Cost savings vs added complexity?
+- [ ] Review: Time saved vs time invested?
+- [ ] Review: Quality improvement measurable?
+- [ ] Decide: Continue, adjust, or abandon?
+
+**Frequency:** Monthly reality checks
+
+**Why:** Big picture assessment, course correction if needed
+
+---
+
+### Data Collection Points
+
+**From Sprint Planning:**
+- Estimated costs per task
+- Estimated costs per tier
+- Estimated total project cost
+- Time to complete planning
+
+**From Build Phase:**
+- Actual API calls made
+- Actual costs per task
+- Escalations (Tier 3 → 2 → 1)
+- One-pass success rate
+
+**From Code Review:**
+- Issues found by each reviewer
+- Issues actually valid (not false positives)
+- Issues that shipped to production (reviews missed)
+- Review round count (should be 1)
+
+**From Project Completion:**
+- Total actual cost
+- Total actual time
+- Quality assessment (bugs found later?)
+- Would we do this again?
+
+---
+
+### Learning Questions to Answer
+
+**Cost estimation:**
+- Where are estimates most accurate? (Tier 1/2/3?)
+- What types of tasks consistently over/under-estimated?
+- Is estimation improving over time?
+
+**Tiering effectiveness:**
+- Which tasks tier well?
+- Which tasks always mis-tier?
+- Is Tier 3 actually useful or just cheap-but-wrong?
+
+**Review quality:**
+- Which reviewers catch real issues?
+- Which reviewers produce sunshine?
+- Are adversarial prompts working?
+- Is one-pass code review viable?
+
+**System ROI:**
+- Time: Faster than manual?
+- Cost: Worth the AI spend?
+- Quality: Better than without system?
+- Stress: Reducing cognitive load?
+
+---
+
+### Analytics Integration (Project Tracker)
+
+**Project Tracker will:**
+- Read cost estimates from sprint plans
+- Read actual costs from billing data
+- Calculate: Estimate accuracy per project
+- Track: Tiering success rate
+- Show: Which patterns work, which don't
+- Alert: "Estimates consistently 50% low on Tier 2 tasks"
+
+**Visualization ideas:**
+```
+COST ESTIMATION ACCURACY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Project A: Estimated $180, Actual $165 (8% under) ✅
+Project B: Estimated $200, Actual $320 (60% over) 🚨
+Project C: Estimated $150, Actual $145 (3% under) ✅
+
+Trend: Tier 2 tasks consistently 40% over estimate
+Action: Revise Tier 2 cost multiplier
+
+TIERING EFFECTIVENESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tier 3 success rate: 60% (40% needed escalation)
+Tier 2 success rate: 85%
+Tier 1 success rate: 95%
+
+Insight: Tier 3 only useful for true boilerplate
+Action: Be more conservative with Tier 3 assignments
+```
+
+---
+
+### Where This Lives
+
+**In project-scaffolding:**
+- Pattern: How to do learning loop
+- Template: Learning review checklist
+
+**In project-tracker:**
+- Implementation: Actual analytics/visualization
+- Data collection: From projects
+- Insights: What's working/not working
+
+**In each project:**
+- Data files: Cost estimates, actual costs, lessons learned
+- Directory: `project/analytics/` or `project/metrics/`
+
+---
+
+### Immediate Action Items
+
+**To enable learning loop:**
+- [ ] Add cost estimates to sprint planner template
+- [ ] Create post-project review checklist
+- [ ] Define data format for tracking
+- [ ] Build into Project Tracker (Phase 4?)
+- [ ] Test on next project
+
+**Status:** Critical for system to improve, design needed
 
 ---
 
@@ -488,10 +673,11 @@ vs. if they're one system, integration is easier but system is more complex.
 - Revise based on feedback
 - Result: Solid sprint plan with Tier 1/2/3 tasks
 
-**Round 4: Generate prompts**
+**Round 4: Generate prompts + cost estimates**
 - AI looks at finalized tasks
 - Generates **build prompts** for each task (what Tier X needs to execute)
 - Generates **code review prompts** for each task (what reviewers should check)
+- **Estimates costs** per task and total project
 - Context is fresh, prompts are specific
 
 **Example output:**
@@ -499,6 +685,8 @@ vs. if they're one system, integration is easier but system is more complex.
 ## Tier 2 Tasks
 
 ### Task: Implement user authentication
+**Estimated cost:** ~$3 (Tier 2, medium complexity)
+
 **Build prompt for Tier 2:**
 "Implement user authentication with:
 - bcrypt password hashing
@@ -515,11 +703,22 @@ Follow pattern in docs/architecture/AUTH.md"
 - Rate limiting: Actually working?"
 ```
 
-**Why this works:**
-- Build prompts are explicit (Tier 2/3 can execute)
-- Review prompts are targeted (not generic "review this")
-- Both generated when context is fresh
-- Reduces back-and-forth
+**Cost estimation purpose:**
+- NOT for real-time tracking (not possible across IDEs)
+- FOR backtesting against actual data
+- Download Cursor usage data → compare estimates vs actual
+- Learn: Where were we way off? Over or under?
+- Improve: Adjust future estimates based on real results
+
+**Project total estimate example:**
+```
+Tier 1: 10 tasks × $8 = $80
+Tier 2: 30 tasks × $3 = $90
+Tier 3: 20 tasks × $0.50 = $10
+Total estimate: $180
+
+(Compare against actual spend after project complete)
+```
 
 **Status:** Design this into sprint planner flow
 
@@ -756,10 +955,26 @@ If manual multi-AI review teaches you something, that's valuable even without au
 ## Maintenance Tasks
 
 ### Regular Updates
-- [ ] Review patterns monthly (quarterly too slow given pace)
+- [ ] Review patterns after each project (not quarterly - too slow!)
+- [ ] Run learning loop weekly (pattern-level insights)
+- [ ] Run learning loop monthly (system-level reality check)
 - [ ] Update EXTERNAL_RESOURCES.md as services added (automated via Cursor rule)
 - [ ] Extract patterns when 2-3 projects show same approach
 - [ ] Update templates based on real usage (scaffolding is living, not static)
+- [ ] Update cost estimation models based on actual data
+
+### Documentation Health
+- [ ] Keep README current with project status
+- [ ] Archive outdated session notes (prevent "should have cleaned this 6 months ago")
+- [ ] Ensure all patterns have "last updated" dates
+- [ ] Check that examples still match current projects
+- [ ] Document lessons learned from each project
+
+**Note on cadence:**
+- **Per-project:** Learn immediately (cost accuracy, tiering effectiveness)
+- **Weekly:** Pattern-level insights (what's working/not working)
+- **Monthly:** System-level reality check (is this worth it?)
+- **NOT quarterly:** Way too slow when projects finish in days/weeks
 
 ### Documentation Health
 - [ ] Keep README current with project status
