@@ -25,10 +25,10 @@
 This project uses **Tiered AI Sprint Planning** to manage costs effectively.
 
 **Pattern Reference:**  
-`/Users/eriksjaastad/projects/project-scaffolding/patterns/tiered-ai-sprint-planning.md`
+See project-scaffolding repo: `patterns/tiered-ai-sprint-planning.md`
 
 **Sprint Planner Template:**  
-`/Users/eriksjaastad/projects/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md`
+See project-scaffolding repo: `templates/TIERED_SPRINT_PLANNER.md`
 
 **Project Sprint Plan:**  
 `docs/SPRINT_PLAN.md` (created during Phase 2)
@@ -91,7 +91,7 @@ Before writing code, AI collaborators must read:
 
 When adding **ANY** external service to this project:
 
-**MUST update:** `/Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.md`
+**MUST update:** Central tracking in project-scaffolding repo: `EXTERNAL_RESOURCES.md`
 
 **External services include:**
 - APIs (OpenAI, Anthropic, Google AI, etc.)
