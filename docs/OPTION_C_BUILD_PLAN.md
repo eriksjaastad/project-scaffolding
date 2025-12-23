@@ -416,7 +416,7 @@ scaffold dispatch --tier 3 --cursor
 - Marks task complete manually
 
 **Why hybrid?**
-- Cursor: $20/mo for $400 credits (2000% value!)
+- Cursor: $200/mo for $400 credits (2x value!)
 - APIs: Pay per token (expensive)
 - Reviews need API (for cost tracking)
 - Build can use Cursor (for value)
