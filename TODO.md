@@ -7,51 +7,209 @@
 
 ## 🎯 Next Active Task
 
-### Step-by-Step Walkthrough of Complete System
+### Build Option C: Full API Dispatcher + Multi-AI Review Automation
 
-**Goal:** Map out the entire flow from idea → shipped code
+**Erik's Decision:** "I don't want to work manually today. I want to work on setting up the automation today."
 
-**When to do:** When Erik has full attention (not distracted by work computer)
+**Why Option C:**
+- ✅ Been doing manual reviews for 4 months - pain is REAL
+- ✅ Already doing multi-AI reviews - just need to automate
+- ✅ Copy/paste is a clear automation signal
+- ✅ 3x speed potential if tiers work in parallel
+- ✅ Real-time cost tracking via APIs (can't get this from Cursor)
+- ✅ This IS solving a real problem (even for one project)
 
-**What to do:**
-1. **Map each stage:** Idea → Sprint planning → Build → Code review → Ship
-2. **Detail each step:** Who does what, what inputs/outputs, what prompts used
-3. **Identify tools needed:** What exists, what needs building
-4. **Check for over-engineering:** Are we making this too complex?
-5. **Check for gaps:** What are we missing?
+**Key Insight:** "If we're just doing things copying and pasting, that is a clear sign that it should be automated."
 
-**Output:** Complete process diagram with:
-- Clear stages
-- Clear handoffs
-- Clear prompts
-- Clear automation opportunities
-- **Reality check on complexity (over-engineering gauge)**
+**Status:** Ready to start building NOW
 
-**Over-Engineering Concerns (Erik's Question):**
+---
 
-"How will we know if this is overly engineered?"
+## 🛠️ What We're Building (Option C Architecture)
 
-**Warning signs to watch for:**
-1. **Complexity Tax:** Does setup take longer than first project delivery?
-2. **Cognitive Overhead:** Is it harder to think about the system than just do the work?
-3. **Maintenance Burden:** Are we spending more time fixing the system than using it?
-4. **Diminishing Returns:** Is each new feature adding less value than the last?
-5. **Analysis Paralysis:** Are we stuck planning instead of building?
+### Phase 1: Multi-AI Review System (Document & Code)
 
-**Reality checks:**
-- If scaffolding project takes 2 weeks, first real project should ship in < 1 week
-- If we're on TODO item #50 and still planning, we're over-engineering
-- If Erik's image-workflow instincts kick in ("left alone too long"), pull back
-- If we can't explain the system in 5 minutes, it's too complex
+**Purpose:** Automate the sprint plan reviews and code reviews via APIs
 
-**Simple litmus test:**
-- Can Erik start a new project in < 30 minutes using scaffolding?
-- Does it make next project faster/better/cheaper?
-- Would Erik use this if he wasn't building it?
+**Components:**
 
-If any answer is "no," we over-engineered.
+1. **Review Orchestrator**
+   - Reads review prompts
+   - Dispatches to 3 APIs in parallel (OpenAI, Anthropic, maybe Google)
+   - Collects responses
+   - Saves to `docs/reviews/` or `docs/code_reviews/`
+   - **Tracks cost per review in real-time**
 
-**Status:** Ready when Erik has focus time
+2. **Cost Monitor**
+   - After each review round: Show total cost
+   - Breakdown by API (OpenAI vs Anthropic)
+   - Breakdown by reviewer (A vs B vs C)
+   - Alert if cost > threshold
+
+3. **Prompt Versioning System**
+   - Store prompts in `prompts/versions/`
+   - Track: Why was this prompt replaced?
+   - Compare: Which prompt version caught more issues?
+   - Learn: Which prompts work best?
+
+**API Usage:**
+- Document reviews: Via APIs (for cost tracking)
+- Code reviews: Via APIs (for cost tracking)
+- Build execution: **Might stay in Cursor** ($400 credits for $20/mo)
+
+**Why split build vs review?**
+- Cursor credits are cheap for building
+- API usage gives us real-time cost data for reviews
+- We don't know how close to API limits (need to max out APIs)
+
+**Time to build:** ~1 week
+**Priority:** HIGH (this is the main reason for the system)
+
+---
+
+### Phase 2: Task Dispatch System (Option C)
+
+**Purpose:** Automate task execution via APIs (or hybrid with Cursor)
+
+**Components:**
+
+1. **Task Parser**
+   - Reads `TIERED_SPRINT_PLANNER.md`
+   - Extracts Tier 1/2/3 tasks
+   - Knows which tasks are done/in-progress
+
+2. **Tier Router**
+   - Tier 1 → Claude Sonnet/Opus (Anthropic API)
+   - Tier 2 → GPT-4o (OpenAI API)
+   - Tier 3 → GPT-4o-mini or Haiku (cheapest)
+
+3. **Execution Engine**
+   - Dispatches tasks to APIs
+   - Handles escalations (Tier 3 → 2 → 1)
+   - Saves results
+   - **Tracks cost per task**
+
+4. **Progress Tracker**
+   - Updates sprint plan checkboxes
+   - Shows what's running, what's done
+   - Alerts on escalations
+
+**Hybrid Option (Erik's suggestion):**
+- Reviews: Via APIs (need cost tracking)
+- Build: Via Cursor (cheaper, better credits)
+- Dispatch system: Points to Cursor for build tasks, APIs for reviews
+
+**Time to build:** ~1 week
+**Priority:** MEDIUM (reviews are more important)
+
+---
+
+### Phase 3: Analytics & Cost Monitoring
+
+**Purpose:** Real-time cost tracking and post-project analysis
+
+**Components:**
+
+1. **Real-Time Cost Dashboard**
+   - Shows costs as reviews run
+   - API usage breakdown
+   - Per-reviewer breakdown
+   - Alerts if over budget
+
+2. **Post-Project Analysis**
+   - Compare estimated vs actual
+   - Tiering effectiveness
+   - Review quality metrics
+   - Lessons learned
+
+3. **Data Export Automation**
+   - Auto-fetch from APIs after project done
+   - No manual download needed (APIs give us the data)
+   - Analysis runs automatically
+
+**Time to build:** ~3 days
+**Priority:** MEDIUM (can add after reviews working)
+
+---
+
+## 🚨 Critical: Cost Explosion Risk Management
+
+**Erik's Biggest Concern:** "Cost could explode to 2x as expensive."
+
+**Mitigation Strategy:**
+
+1. **Cost Gates at Each Stage**
+   ```
+   Document Review Round 1: $X
+   Continue to Round 2? [y/n]
+   
+   Document Review Round 2: $Y
+   Total so far: $X + $Y
+   Continue to Build? [y/n]
+   
+   Code Review: $Z
+   Total project: $X + $Y + ... + $Z
+   ```
+
+2. **Cost Estimates vs Actual**
+   - Show estimate before running
+   - Show actual after running
+   - Alert if >20% over estimate
+
+3. **Per-API Limits**
+   - Set max spend per API per month
+   - Alert at 80% of limit
+   - Fail-safe at 100%
+
+4. **Comparison Mode**
+   - Run first project with full tracking
+   - Compare: What would this cost if all Tier 1?
+   - Prove: Tiering saves X%
+
+5. **Escape Hatch**
+   - If costs explode, can disable automation
+   - Fall back to manual (Cursor credits)
+   - System degrades gracefully
+
+---
+
+## 📋 Prompt Versioning System (NEW!)
+
+**Erik's Insight:** "We need to work really well on prompting. We're going to be learning about prompting as we do this."
+
+**Structure:**
+```
+prompts/
+├── versions/
+│   ├── document_review/
+│   │   ├── v1_security_focused.md
+│   │   ├── v2_security_focused.md (replaced v1 because...)
+│   │   └── CHANGELOG.md
+│   ├── code_review/
+│   │   ├── v1_security_audit.md
+│   │   └── v2_security_audit.md
+│   └── build/
+│       ├── v1_tier3_boilerplate.md
+│       └── v2_tier3_boilerplate.md
+└── active/
+    ├── document_review_security.md → versions/.../v2_security_focused.md
+    ├── document_review_performance.md
+    ├── code_review_security.md
+    └── build_tier3.md
+```
+
+**Tracking:**
+- Each prompt version has metadata (created, replaced, why)
+- CHANGELOG explains: "v1 missed edge cases, v2 adds explicit checklist"
+- Compare effectiveness: Which version caught more bugs?
+
+**Learning Loop:**
+- After each project: Review which prompts worked
+- Update prompts based on what was missed
+- Archive old versions with explanations
+
+**Time to build:** ~1 day (simple file structure + metadata)
+**Priority:** HIGH (foundational for learning)
 
 ---
 
