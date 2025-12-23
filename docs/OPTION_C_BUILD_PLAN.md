@@ -372,25 +372,66 @@ Recommendation: Use v2 (more effective, slight cost increase acceptable)
 
 ### 3.2 Tier Router
 
-**Maps tiers to APIs:**
+**Maps tiers to execution methods:**
 ```python
 TIER_CONFIG = {
     "tier_1": {
-        "model": "claude-opus-4",
-        "api": "anthropic",
-        "max_cost": 50.00
+        "method": "kiro_cli",  # NEW: Use Kiro CLI for architecture
+        "cost_per_interaction": 0.019,  # $19/1000 interactions
+        "max_interactions": 1000,
+        "notes": "Spec-driven, writes files to disk"
     },
     "tier_2": {
-        "model": "gpt-4o",
+        "method": "api",
         "api": "openai",
+        "model": "gpt-4o",
         "max_cost": 10.00
     },
     "tier_3": {
-        "model": "gpt-4o-mini",
+        "method": "api",
         "api": "openai",
+        "model": "gpt-4o-mini",
         "max_cost": 2.00
     }
 }
+```
+
+**Tier 1 (Kiro CLI) Execution:**
+```python
+import subprocess
+from pathlib import Path
+
+def execute_tier_1_task(task: Task) -> Result:
+    """Execute Tier 1 task via Kiro CLI"""
+    # Kiro expects a spec file
+    spec_file = Path(f"specs/{task.id}_requirements.md")
+    spec_file.write_text(task.requirements)
+    
+    # Call Kiro CLI
+    result = subprocess.run(
+        [
+            "kiro", "run",
+            "--spec", str(spec_file),
+            "--task", task.description,
+            "--output", task.output_dir
+        ],
+        capture_output=True,
+        text=True
+    )
+    
+    if result.returncode != 0:
+        raise ExecutionError(f"Kiro failed: {result.stderr}")
+    
+    # Kiro writes files to disk
+    # Read what it created
+    created_files = list(Path(task.output_dir).rglob("*.py"))
+    
+    return Result(
+        files=created_files,
+        cost=0.019,  # One interaction
+        method="kiro_cli",
+        output=result.stdout
+    )
 ```
 
 ---
@@ -761,12 +802,15 @@ scaffold analyze --project cortana-extension
 **Dependencies:**
 - `openai` - OpenAI API
 - `anthropic` - Anthropic API
-- `google-generativeai` - Google AI
 - `aiohttp` - Async HTTP
 - `rich` - Beautiful terminal output
 - `pydantic` - Data validation
 - `pyyaml` - YAML parsing
 - `click` - CLI framework
+
+**External Tools:**
+- **Kiro CLI** - For Tier 1 architecture tasks (subprocess integration)
+- **Cursor IDE** - For manual complex building (optional)
 
 **Structure:**
 ```
