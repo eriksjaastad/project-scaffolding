@@ -7,18 +7,40 @@
 
 ## 🎯 Next Active Task
 
+### Step-by-Step Walkthrough of Complete System
+
+**Goal:** Map out the entire flow from idea → shipped code
+
+**When to do:** When Erik has full attention (not distracted by work computer)
+
+**What to do:**
+1. **Map each stage:** Idea → Sprint planning → Build → Code review → Ship
+2. **Detail each step:** Who does what, what inputs/outputs, what prompts used
+3. **Identify tools needed:** What exists, what needs building
+4. **Check for over-engineering:** Are we making this too complex?
+5. **Check for gaps:** What are we missing?
+
+**Output:** Complete process diagram with:
+- Clear stages
+- Clear handoffs
+- Clear prompts
+- Clear automation opportunities
+- Reality check on complexity
+
+**Status:** Ready when Erik has focus time
+
+---
+
+## 🔄 Previous Active Task (Completed for Now)
+
 ### Reevaluate TODO List for Tiered Implementation
 
-**Goal:** Apply tiered sprint planning TO the TODO list itself
-
-**Task:** Break down the TODO list into Tier 1 / Tier 2 / Tier 3 tasks
-- Tier 1 (Big Brain): Questions, architecture decisions, pattern design
-- Tier 2 (Mid-Weight): Pattern extraction, documentation writing
-- Tier 3 (Worker Bee): Maintenance, updates, simple docs
-
-**Why:** First attempt to use our own tiered system on our own work (dogfooding!)
-
-**Status:** Ready to start after gas run
+**Status:** Planning phase in progress
+- ✅ Captured automation pipeline vision
+- ✅ Answered 7 critical questions
+- ✅ Defined 3 rounds + 1 prompt generation approach
+- ✅ Identified task dispatcher as first priority
+- ⏸️ Paused: Erik distracted by work, will continue when focused
 
 ---
 
@@ -458,38 +480,48 @@ vs. if they're one system, integration is easier but system is more complex.
 
 **CRITICAL INSIGHT (Dec 22, driving thoughts + discussion):**
 
-**Sprint planning should include code review prompts dynamically!**
+**Sprint planning process: 3 rounds + 1 prompt generation**
 
-When planning the sprint:
-- Plan the building (Tier 1/2/3 tasks)
-- Plan the reviewing (when reviews happen, what prompts to use)
-- **Generate prompts during planning** based on what's being built
+**Round 1-3: Create sprint plan**
+- You + AI create initial roadmap
+- 3 grumpy reviewers critique (different angles)
+- Revise based on feedback
+- Result: Solid sprint plan with Tier 1/2/3 tasks
 
-Example sprint plan output:
+**Round 4: Generate prompts**
+- AI looks at finalized tasks
+- Generates **build prompts** for each task (what Tier X needs to execute)
+- Generates **code review prompts** for each task (what reviewers should check)
+- Context is fresh, prompts are specific
+
+**Example output:**
 ```markdown
 ## Tier 2 Tasks
-- [ ] Implement user authentication
-  - Code review prompt: "Review auth implementation for:
-    - Security vulnerabilities
-    - Password storage (bcrypt/argon2?)
-    - Session management
-    - Token expiration"
 
-- [ ] Build API endpoint /users
-  - Code review prompt: "Review /users endpoint for:
-    - Input validation
-    - SQL injection risks
-    - Rate limiting
-    - Error handling"
+### Task: Implement user authentication
+**Build prompt for Tier 2:**
+"Implement user authentication with:
+- bcrypt password hashing
+- JWT tokens (15min expiry)
+- Session storage in Redis
+- Rate limiting (5 attempts/min)
+Follow pattern in docs/architecture/AUTH.md"
+
+**Code review prompt:**
+"Review auth implementation for:
+- Security: bcrypt properly configured?
+- Tokens: Expiry enforced?
+- Sessions: Redis connection handling?
+- Rate limiting: Actually working?"
 ```
 
-**Why this matters:**
-- Reviewers get specific context
-- Not generic "review this code"
-- Targeted critique based on what was built
-- Prompts generated when context is fresh
+**Why this works:**
+- Build prompts are explicit (Tier 2/3 can execute)
+- Review prompts are targeted (not generic "review this")
+- Both generated when context is fresh
+- Reduces back-and-forth
 
-**Status:** Design this into sprint planner template
+**Status:** Design this into sprint planner flow
 
 ---
 
