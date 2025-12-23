@@ -8,11 +8,18 @@
 
 This is the **scaffolding project** - a collection of patterns, principles, and templates extracted from building multiple deep projects.
 
+**Our Mission:** Help all projects get done quickly at the highest quality and at the lowest cost.
+
 **Not a framework.** Not rigid rules. Just battle-tested patterns that make future projects:
 - Faster to start
 - Easier to maintain  
 - Safer (data doesn't get lost)
 - More consistent across collaborators (AI and human)
+
+**What We DON'T Do:**
+- ❌ Cost tracking (that's `AI usage-billing tracker`'s job)
+- ❌ Project status monitoring (that's `project-tracker`'s job)
+- ✅ We recommend patterns and build automation; others implement monitoring
 
 ---
 
