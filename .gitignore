@@ -1,44 +1,39 @@
-# Environment variables
-.env
-.env.local
-.env.*
-*.env
+# Project Scaffolding - Environment Setup
 
-# API keys and secrets
-*secret*
-*token*
-*key.txt
-credentials.json
+# Virtual environment
+venv/
 
-# OS files
-.DS_Store
-Thumbs.db
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 
-# Editor files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-.venv/
-env/
-ENV/
+# Env files
+.env
+.env.local
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+*.egg-info/
 
 # Logs
 *.log
-logs/
 
-# Temporary files
-*.tmp
-*.bak
-*.backup
-.cache/
-
+# OS
+.DS_Store
+Thumbs.db
