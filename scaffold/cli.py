@@ -8,10 +8,14 @@ from pathlib import Path
 from typing import List, Optional
 
 import click
+from dotenv import load_dotenv
 from rich.console import Console
 from rich.prompt import Confirm
 
 from scaffold.review import ReviewConfig, create_orchestrator
+
+# Load environment variables from .env
+load_dotenv()
 
 console = Console()
 
@@ -67,6 +71,11 @@ def cli():
     envvar="SCAFFOLDING_GOOGLE_KEY",
     help="Google AI API key (or set SCAFFOLDING_GOOGLE_KEY env var)"
 )
+@click.option(
+    "--deepseek-key",
+    envvar="DEEPSEEK_API_KEY",
+    help="DeepSeek API key (or set DEEPSEEK_API_KEY env var)"
+)
 def review(
     review_type: str,
     input_path: Path,
@@ -74,7 +83,8 @@ def review(
     output_dir: Optional[Path],
     openai_key: Optional[str],
     anthropic_key: Optional[str],
-    google_key: Optional[str]
+    google_key: Optional[str],
+    deepseek_key: Optional[str]
 ):
     """
     Run multi-AI review on document or code
@@ -102,7 +112,7 @@ def review(
         return
     
     # Load review configurations
-    configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key)
+    configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key, deepseek_key)
     
     if not configs:
         console.print("[red]Error: No review configurations found[/red]")
@@ -113,7 +123,8 @@ def review(
     orchestrator = create_orchestrator(
         openai_key=openai_key,
         anthropic_key=anthropic_key,
-        google_key=google_key
+        google_key=google_key,
+        deepseek_key=deepseek_key
     )
     
     # Run review
@@ -152,7 +163,8 @@ def _load_review_configs(
     prompt_dir: Path,
     openai_key: Optional[str],
     anthropic_key: Optional[str],
-    google_key: Optional[str]
+    google_key: Optional[str],
+    deepseek_key: Optional[str]
 ) -> List[ReviewConfig]:
     """Load review configurations from prompt directory"""
     configs = []
@@ -160,10 +172,10 @@ def _load_review_configs(
     # Map prompt names to API and model
     # Format: {filename_prefix}: (api, model, display_name)
     default_mapping = {
-        "security": ("openai", "gpt-4o", "Security Reviewer"),
-        "performance": ("anthropic", "claude-sonnet-4-20250514", "Performance Reviewer"),
-        "architecture": ("anthropic", "claude-sonnet-4-20250514", "Architecture Reviewer"),
-        "quality": ("openai", "gpt-4o", "Code Quality Reviewer"),
+        "security": ("deepseek", "deepseek-chat", "Security Reviewer"),
+        "performance": ("deepseek", "deepseek-chat", "Performance Reviewer"),
+        "architecture": ("deepseek", "deepseek-chat", "Architecture Reviewer"),
+        "quality": ("deepseek", "deepseek-chat", "Code Quality Reviewer"),
     }
     
     # Find all .md files in prompt directory
@@ -190,6 +202,9 @@ def _load_review_configs(
             continue
         if api == "google" and not google_key:
             console.print(f"[yellow]Skipping {display_name} (no Google key)[/yellow]")
+            continue
+        if api == "deepseek" and not deepseek_key:
+            console.print(f"[yellow]Skipping {display_name} (no DeepSeek key)[/yellow]")
             continue
         
         configs.append(ReviewConfig(

@@ -26,7 +26,7 @@ console = Console()
 class ReviewConfig:
     """Configuration for a single reviewer"""
     name: str
-    api: str  # "openai", "anthropic", "google"
+    api: str  # "openai", "anthropic", "google", "deepseek"
     model: str
     prompt_path: Path
     
@@ -84,11 +84,16 @@ class ReviewOrchestrator:
         self,
         openai_key: Optional[str] = None,
         anthropic_key: Optional[str] = None,
-        google_key: Optional[str] = None
+        google_key: Optional[str] = None,
+        deepseek_key: Optional[str] = None
     ):
         self.openai_client = AsyncOpenAI(api_key=openai_key) if openai_key else None
         self.anthropic_client = AsyncAnthropic(api_key=anthropic_key) if anthropic_key else None
         self.google_key = google_key  # Will implement Google AI if needed
+        self.deepseek_client = AsyncOpenAI(
+            api_key=deepseek_key,
+            base_url="https://api.deepseek.com/v1"
+        ) if deepseek_key else None
         
     async def run_review(
         self,
@@ -209,6 +214,8 @@ class ReviewOrchestrator:
             result = await self._call_anthropic(config.model, full_prompt)
         elif config.api == "google":
             result = await self._call_google(config.model, full_prompt)
+        elif config.api == "deepseek":
+            result = await self._call_deepseek(config.model, full_prompt)
         else:
             raise ValueError(f"Unknown API: {config.api}")
         
@@ -294,6 +301,31 @@ class ReviewOrchestrator:
         # TODO: Implement Google AI if needed
         raise NotImplementedError("Google AI not yet implemented")
     
+    async def _call_deepseek(self, model: str, prompt: str) -> Dict[str, Any]:
+        """Call DeepSeek API"""
+        if not self.deepseek_client:
+            raise ValueError("DeepSeek client not initialized")
+        
+        response = await self.deepseek_client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are a thorough, critical reviewer."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.0
+        )
+        
+        # Calculate cost
+        # DeepSeek pricing: $0.27 per 1M tokens (input + output combined)
+        total_tokens = response.usage.total_tokens
+        cost = total_tokens * 0.00000027
+        
+        return {
+            "content": response.choices[0].message.content,
+            "cost": cost,
+            "tokens": total_tokens
+        }
+    
     def _display_summary(self, summary: ReviewSummary, output_dir: Path):
         """Display review summary in terminal"""
         console.print("\n[bold green]Review Complete![/bold green]\n")
@@ -341,12 +373,14 @@ class ReviewOrchestrator:
 def create_orchestrator(
     openai_key: Optional[str] = None,
     anthropic_key: Optional[str] = None,
-    google_key: Optional[str] = None
+    google_key: Optional[str] = None,
+    deepseek_key: Optional[str] = None
 ) -> ReviewOrchestrator:
     """Factory function to create a review orchestrator"""
     return ReviewOrchestrator(
         openai_key=openai_key,
         anthropic_key=anthropic_key,
-        google_key=google_key
+        google_key=google_key,
+        deepseek_key=deepseek_key
     )
 
