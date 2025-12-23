@@ -25,7 +25,31 @@
 - Clear handoffs
 - Clear prompts
 - Clear automation opportunities
-- Reality check on complexity
+- **Reality check on complexity (over-engineering gauge)**
+
+**Over-Engineering Concerns (Erik's Question):**
+
+"How will we know if this is overly engineered?"
+
+**Warning signs to watch for:**
+1. **Complexity Tax:** Does setup take longer than first project delivery?
+2. **Cognitive Overhead:** Is it harder to think about the system than just do the work?
+3. **Maintenance Burden:** Are we spending more time fixing the system than using it?
+4. **Diminishing Returns:** Is each new feature adding less value than the last?
+5. **Analysis Paralysis:** Are we stuck planning instead of building?
+
+**Reality checks:**
+- If scaffolding project takes 2 weeks, first real project should ship in < 1 week
+- If we're on TODO item #50 and still planning, we're over-engineering
+- If Erik's image-workflow instincts kick in ("left alone too long"), pull back
+- If we can't explain the system in 5 minutes, it's too complex
+
+**Simple litmus test:**
+- Can Erik start a new project in < 30 minutes using scaffolding?
+- Does it make next project faster/better/cheaper?
+- Would Erik use this if he wasn't building it?
+
+If any answer is "no," we over-engineered.
 
 **Status:** Ready when Erik has focus time
 
@@ -136,7 +160,8 @@ Ship               ←→   Final quality assessment
 
 **Per-Project Learning (Immediate):**
 After EACH project completes:
-- [ ] Download actual costs from Cursor/APIs
+- [ ] **AUTOMATED:** Spin up local server with data export links
+- [ ] Download actual costs from Cursor/APIs (via served links)
 - [ ] Compare: Estimated costs vs actual costs
 - [ ] Analyze: Where were we way off? Over? Under?
 - [ ] Document: Lessons learned
@@ -145,6 +170,32 @@ After EACH project completes:
 **Frequency:** After every project (could be days apart!)
 
 **Why:** Data is fresh, lessons are actionable, next project benefits immediately
+
+**Automation (Remove the weakest link):**
+Erik's insight: "Weakest link is relying on me to do something at the right time."
+
+**Solution:** At end of sprint (all code reviews done):
+```bash
+# Automatically runs:
+python scripts/data_export_server.py
+```
+
+**What it does:**
+- Spins up local web server (e.g., http://localhost:8000)
+- Shows page with links to:
+  - Cursor API usage export
+  - OpenAI API usage export
+  - Anthropic API usage export
+  - Any other relevant data sources
+- Erik clicks links, exports data
+- Data automatically goes to `project/analytics/raw/`
+- Analysis script runs automatically
+
+**Why this works:**
+- Project completion triggers data collection
+- In lockstep with finishing project
+- Not relying on Erik to remember
+- Data captured at the right moment
 
 ---
 
@@ -230,9 +281,24 @@ Every month:
 
 ---
 
-### Analytics Integration (Project Tracker)
+### Analytics Integration (Project Tracker - SEPARATE PROJECT)
 
-**Project Tracker will:**
+**SCOPE CLARITY:**
+- **Project Scaffolding:** Standards, patterns, templates, recommendations
+- **Project Tracker:** Actual implementation of monitoring/visualization
+- **Relationship:** Scaffolding defines what to measure, Tracker implements it
+
+**Project Tracker will show (Erik's vision):**
+- All projects (which are active)
+- Which have cron jobs running
+- Which actively use AI (costing money)
+- What hosted services each uses
+- Active TODOs (first item, incomplete count)
+- Cost estimates vs actual costs
+- Tiering success rates
+- Which patterns work/don't
+
+**Project Tracker will do (for analytics):**
 - Read cost estimates from sprint plans
 - Read actual costs from billing data
 - Calculate: Estimate accuracy per project
@@ -260,6 +326,11 @@ Tier 1 success rate: 95%
 Insight: Tier 3 only useful for true boilerplate
 Action: Be more conservative with Tier 3 assignments
 ```
+
+**Why separation matters:**
+- Project Scaffolding stays in scope (patterns, not implementations)
+- Project Tracker is a real project (builds the actual monitoring)
+- Scaffolding can recommend tracker patterns back to itself (meta-loop!)
 
 ---
 
