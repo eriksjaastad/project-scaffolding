@@ -193,24 +193,24 @@ def _load_review_configs(
             model = "gpt-4o"
             display_name = f"{prefix.title()} Reviewer"
         
-        # Check if we have the API key
+        # Check if we have the API key (fail loud!)
         if api == "openai" and not openai_key:
-            console.print(f"[yellow]Skipping {display_name} (no OpenAI key)[/yellow]")
+            console.print(f"[red]✗ {display_name} requires OpenAI API key (OPENAI_API_KEY)[/red]")
             continue
         if api == "anthropic" and not anthropic_key:
-            console.print(f"[yellow]Skipping {display_name} (no Anthropic key)[/yellow]")
+            console.print(f"[red]✗ {display_name} requires Anthropic API key (ANTHROPIC_API_KEY)[/red]")
             continue
         if api == "google" and not google_key:
-            console.print(f"[yellow]Skipping {display_name} (no Google key)[/yellow]")
+            console.print(f"[red]✗ {display_name} requires Google API key (GOOGLE_API_KEY)[/red]")
             continue
         if api == "deepseek" and not deepseek_key:
-            console.print(f"[yellow]Skipping {display_name} (no DeepSeek key)[/yellow]")
+            console.print(f"[red]✗ {display_name} requires DeepSeek API key (DEEPSEEK_API_KEY)[/red]")
             continue
         if api == "kiro":
             # Check if Kiro CLI is available
             import shutil
             if not shutil.which("kiro-cli") and not os.path.exists("/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"):
-                console.print(f"[yellow]Skipping {display_name} (Kiro CLI not installed)[/yellow]")
+                console.print(f"[red]✗ {display_name} requires Kiro CLI installed[/red]")
                 continue
         
         configs.append(ReviewConfig(
