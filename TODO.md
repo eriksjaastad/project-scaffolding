@@ -370,29 +370,40 @@ if sunshine_count > critical_count:
 
 ---
 
-**Detection Strategy D: The "Fuck Them" Framing**
-Based on Erik's discovery:
+**Detection Strategy D: Constructive Skeptic Framing**
+Based on Erik's discovery, but avoiding "competitor" trap:
 
 ```
-Prompt: "You're reviewing someone else's project proposal. 
-They're a competitor applying for the same grant/job/funding.
-If their proposal is funded, yours won't be.
+Prompt: "You're a senior architect reviewing a junior's project proposal.
 
-Be ruthlessly critical. Find every flaw.
-This is adversarial - you want to win."
+Your job is NOT to judge if the idea is good or profitable.
+Your job IS to make this idea as solid as possible.
+
+Assume the project WILL be built. Your goal:
+- Find every technical flaw
+- Identify every edge case
+- Question every assumption
+- Suggest better approaches
+
+Be ruthlessly critical of the EXECUTION, not the VISION.
+
+Don't say: "This project won't make money" or "Who would use this?"
+DO say: "This implementation will fail because..." or "What if the user does X?"
+
+You're making it better, not killing it."
 ```
 
-**Psychology:** Changes incentive from "be helpful" to "find problems."
+**Psychology:** Critical of HOW, not WHY. Focuses on technical execution, not business viability.
 
-**Risk:** Might be TOO negative, but better than sunshine.
+**Erik's constraint:** These are personal/learning projects. We want best implementation, not business critique.
 
 ---
 
-**My recommendation: Combine A + D**
-- Use "adversarial competitor" framing (D)
-- Require structured format with minimum items (A)
-- If reviewer can't fill sections, review is useless
-- Forces specificity and depth
+**My recommendation: Combine A (structure) + D (constructive skeptic)**
+- Force structured format with minimum items (A)
+- Frame as "make it better" not "is it good" (D)
+- Avoids money/usefulness rabbit holes
+- Focuses on technical execution
 
 **Status:** Multiple strategies available, recommend A + D
 
@@ -437,7 +448,104 @@ vs. if they're one system, integration is easier but system is more complex.
 
 ### What Needs to Happen
 
-**Phase 1: Prove Value (Don't Build Full System Yet)**
+**Where we are now:** Planning Phase (Tier 1 conversation - THIS conversation!)
+- Defining the system
+- Poking holes  
+- Answering architecture questions
+- **Sprint planning comes AFTER this**
+
+---
+
+**CRITICAL INSIGHT (Dec 22, driving thoughts + discussion):**
+
+**Sprint planning should include code review prompts dynamically!**
+
+When planning the sprint:
+- Plan the building (Tier 1/2/3 tasks)
+- Plan the reviewing (when reviews happen, what prompts to use)
+- **Generate prompts during planning** based on what's being built
+
+Example sprint plan output:
+```markdown
+## Tier 2 Tasks
+- [ ] Implement user authentication
+  - Code review prompt: "Review auth implementation for:
+    - Security vulnerabilities
+    - Password storage (bcrypt/argon2?)
+    - Session management
+    - Token expiration"
+
+- [ ] Build API endpoint /users
+  - Code review prompt: "Review /users endpoint for:
+    - Input validation
+    - SQL injection risks
+    - Rate limiting
+    - Error handling"
+```
+
+**Why this matters:**
+- Reviewers get specific context
+- Not generic "review this code"
+- Targeted critique based on what was built
+- Prompts generated when context is fresh
+
+**Status:** Design this into sprint planner template
+
+---
+
+**First Priority: Task Dispatcher/Runner**
+
+**Why first:**
+- Reusable between sprint planning phase AND code review phase
+- Both need to call multiple AIs
+- Both need to collect responses
+- Both need structured output
+
+**What it needs to do:**
+1. Take a prompt (or set of prompts)
+2. Send to multiple AIs (3 reviewers or 3 tiers)
+3. Collect responses
+4. Format output (markdown in appropriate directory)
+5. Track status (what's done)
+
+**Status:** Architecture needed (Tier 1), then build (Tier 2)
+
+---
+
+**Code Review Flow (Must Be One-Pass)**
+
+Erik's concern: Can't have multiple review rounds on same code. That's failure.
+
+**Correct flow:**
+```
+Code written (by Tier X)
+    ↓
+Reviewers review (3 AIs with specific prompts)
+    ↓
+Original AI implements changes
+    ↓
+Reviewers CHECK changes were made correctly
+    ↓
+DONE
+```
+
+**WRONG flow (red flag):**
+```
+Code written
+    ↓
+Review 1 → Changes → Review 2 → More changes → Review 3...
+(This means Tier 3 isn't capable or instructions weren't clear)
+```
+
+**If multiple rounds needed:**
+- Task was mis-tiered (should have been higher tier)
+- Instructions weren't explicit enough
+- Model not capable
+- **FIX:** Re-tier task, escalate, or improve instructions
+
+**Status:** Document this in sprint planner pattern
+
+---
 - [ ] **Stage 1 Manual Test:** Take next new project, do multi-AI roadmap review manually
   - Use 3 reviewers (Claude, GPT-4, Gemini)
   - Engineer "grumpy" prompts
@@ -587,7 +695,11 @@ If manual multi-AI review teaches you something, that's valuable even without au
 - [ ] Plugin system pattern (provider-agnostic infrastructure)
 - [ ] Idempotent execution pattern (database constraints)
 
-**Wait for:** agent_os architecture decisions, other projects adopting patterns
+**Clarification:** This means extracting patterns FROM agent_os TO scaffolding as reusable documentation. NOT about making every project use agent_os.
+
+**Example:** "Run tracking pattern" = how to log execution status, timestamps, errors in SQLite. Other projects can use this pattern even if not using agent_os itself.
+
+**Wait for:** agent_os architecture decisions, patterns proven across multiple projects
 
 ---
 
@@ -612,16 +724,26 @@ If manual multi-AI review teaches you something, that's valuable even without au
 ## Maintenance Tasks
 
 ### Regular Updates
-- [ ] Review patterns quarterly (are they still accurate?)
-- [ ] Update EXTERNAL_RESOURCES.md as services added
+- [ ] Review patterns monthly (quarterly too slow given pace)
+- [ ] Update EXTERNAL_RESOURCES.md as services added (automated via Cursor rule)
 - [ ] Extract patterns when 2-3 projects show same approach
-- [ ] Update templates based on real project usage
+- [ ] Update templates based on real usage (scaffolding is living, not static)
 
 ### Documentation Health
 - [ ] Keep README current with project status
-- [ ] Archive outdated session notes
+- [ ] Archive outdated session notes (prevent "should have cleaned this 6 months ago")
 - [ ] Ensure all patterns have "last updated" dates
 - [ ] Check that examples still match current projects
+
+**Note on Tier 3:**
+Need to figure out what Tier 3 is actually good at. Fast doesn't matter if code review is wrong and needs redoing. 
+
+**Red flag:** If Tier 3 produces work that needs multiple review rounds, either:
+- Task was mis-tiered (should be Tier 2)
+- Instructions weren't explicit enough
+- Model isn't capable for this type of work
+
+**Goal:** One-pass reviews. If review fails, that's a tiering problem, not a "do it again" problem.
 
 ---
 
