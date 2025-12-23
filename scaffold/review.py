@@ -7,6 +7,9 @@ tracks costs, and collects responses.
 
 import asyncio
 import json
+import logging
+import re
+import subprocess
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -18,6 +21,17 @@ from openai import AsyncOpenAI
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential,
+    retry_if_exception_type,
+    before_sleep_log
+)
+
+# Setup logging for retry attempts
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 console = Console()
 
@@ -237,6 +251,13 @@ class ReviewOrchestrator:
             timestamp=datetime.utcnow().isoformat()
         )
     
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=retry_if_exception_type((aiohttp.ClientError, asyncio.TimeoutError)),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+        reraise=True
+    )
     async def _call_openai(self, model: str, prompt: str) -> Dict[str, Any]:
         """Call OpenAI API"""
         if not self.openai_client:
@@ -266,6 +287,13 @@ class ReviewOrchestrator:
             "tokens": tokens
         }
     
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=retry_if_exception_type((Exception,)),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+        reraise=True
+    )
     async def _call_anthropic(self, model: str, prompt: str) -> Dict[str, Any]:
         """Call Anthropic API"""
         if not self.anthropic_client:
@@ -303,6 +331,13 @@ class ReviewOrchestrator:
         # TODO: Implement Google AI if needed
         raise NotImplementedError("Google AI not yet implemented")
     
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=retry_if_exception_type((Exception,)),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+        reraise=True
+    )
     async def _call_deepseek(self, model: str, prompt: str) -> Dict[str, Any]:
         """Call DeepSeek API"""
         if not self.deepseek_client:
@@ -329,7 +364,7 @@ class ReviewOrchestrator:
         }
     
     async def _call_kiro(self, model: str, prompt: str) -> Dict[str, Any]:
-        """Call Kiro CLI"""
+        """Call Kiro CLI with defensive parsing"""
         import subprocess
         import tempfile
         import os
@@ -355,17 +390,43 @@ class ReviewOrchestrator:
             except:
                 pass
             
+            if result.returncode != 0:
+                raise RuntimeError(f"Kiro CLI exited with code {result.returncode}: {result.stderr}")
+            
             # Parse output (Kiro includes ANSI codes, need to strip them)
             import re
             output = result.stdout
+            
+            # Check for expected markers BEFORE parsing
+            if not output or len(output.strip()) == 0:
+                return {
+                    "content": "ERROR: Kiro returned empty output",
+                    "cost": 0.0,
+                    "tokens": 0,
+                    "error": "Empty Kiro response - CLI may have changed behavior"
+                }
             
             # Remove ANSI escape codes
             ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
             cleaned_output = ansi_escape.sub('', output)
             
-            # Kiro outputs raw response with minimal formatting
+            # DEFENSIVE: Check for credits marker
+            if '▸ Credits:' not in output and 'Credits:' not in output:
+                logger.warning(f"Kiro output format may have changed - no Credits marker found")
+                # Log raw output for debugging
+                logger.debug(f"Raw Kiro output: {output[:500]}")
+                return {
+                    "content": cleaned_output.strip(),
+                    "cost": 0.0,
+                    "tokens": 0,
+                    "error": "Kiro output format changed - cannot parse credits"
+                }
+            
             # Extract content before the credits line
             parts = cleaned_output.split('▸ Credits:')
+            if len(parts) == 0:
+                parts = cleaned_output.split('Credits:')
+            
             if len(parts) > 0:
                 content = parts[0].strip()
                 # Remove any ASCII art banner and prompts at the start
@@ -380,12 +441,15 @@ class ReviewOrchestrator:
             else:
                 content = cleaned_output.strip()
             
-            # Extract cost from "▸ Credits: X" line
+            # Extract cost from "▸ Credits: X" or "Credits: X" line
             credits_match = re.search(r'Credits:\s*([\d.]+)', output)
-            credits_used = float(credits_match.group(1)) if credits_match else 0.0
-            
-            # Convert Kiro credits to cost ($19/mo for 1000 credits = $0.019 per credit)
-            cost = credits_used * 0.019
+            if credits_match:
+                credits_used = float(credits_match.group(1))
+                # Convert Kiro credits to cost ($19/mo for 1000 credits = $0.019 per credit)
+                cost = credits_used * 0.019
+            else:
+                logger.warning("Could not parse Kiro credits from output")
+                cost = 0.0
             
             # Estimate tokens (rough: 1 credit ≈ 1000 tokens)
             tokens = int(credits_used * 1000)
