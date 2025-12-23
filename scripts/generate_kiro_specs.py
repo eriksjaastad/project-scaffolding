@@ -226,7 +226,7 @@ Be specific, actionable, and include time estimates.
     def _call_kiro(self, prompt: str) -> str:
         """Call Kiro CLI with a prompt"""
         result = subprocess.run(
-            [self.KIRO_CLI, "chat", "--no-interactive"],
+            [self.KIRO_CLI, "chat", "--no-interactive", "--trust-all-tools"],
             input=prompt,
             capture_output=True,
             text=True,
