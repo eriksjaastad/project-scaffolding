@@ -1047,6 +1047,37 @@ If manual multi-AI review teaches you something, that's valuable even without au
 - **Monthly:** System-level reality check (is this worth it?)
 - **NOT quarterly:** Way too slow when projects finish in days/weeks
 
+---
+
+## 📋 Project Scaffolding: Mission & Scope
+
+**What We Are:**
+> "A standards and [best practices] recommending body to help all projects get done quickly, at the highest quality, and at the lowest cost."
+
+**Our Job:**
+- Define patterns that work across projects
+- Create templates that accelerate project starts
+- Recommend processes that improve quality/speed/cost
+- **Measure if our recommendations actually work** (meta level 3)
+- Continuously improve based on real project data
+
+**What We Are NOT:**
+- Not a specific project implementation (that's Project Tracker's job)
+- Not domain-specific code (that's trading/images/etc.)
+- Not a product (we're the factory that builds factories)
+
+**Success Criteria:**
+- Other projects start faster because of scaffolding
+- Other projects cost less because of scaffolding
+- Other projects have higher quality because of scaffolding
+- **We can prove it with data**
+
+**Scope Boundary:**
+- **IN SCOPE:** Patterns, templates, guidelines, measurements, recommendations
+- **OUT OF SCOPE:** Implementing monitoring tools (Project Tracker), domain code (trading, images)
+
+---
+
 ### Documentation Health
 - [ ] Keep README current with project status
 - [ ] Archive outdated session notes (prevent "should have cleaned this 6 months ago")
@@ -1085,10 +1116,14 @@ Need to figure out what Tier 3 is actually good at. Fast doesn't matter if code 
 
 ## Related Projects
 
-**project-tracker:** 
+**project-tracker (SEPARATE PROJECT):**
+- **Purpose:** Implement the monitoring/visualization that scaffolding defines
+- **Relationship:** Scaffolding says "measure this," Tracker builds the tool
 - Integration documented in `project-tracker/docs/INTEGRATION_WITH_SCAFFOLDING.md`
 - Tracker reads EXTERNAL_RESOURCES.md
 - Tracker shows which projects use scaffolding templates
+- Tracker implements the analytics layer scaffolding designed
+- **Erik's Vision:** Show all projects, active status, cron jobs, AI usage, hosted services, TODOs, cost tracking
 
 **Other projects:**
 - Source patterns from: image-workflow, Trading Co-Pilot, Cortana, Hologram
@@ -1099,13 +1134,16 @@ Need to figure out what Tier 3 is actually good at. Fast doesn't matter if code 
 
 ## Notes
 
-**The two-level game:**
-- Level 1: Domain projects (trading, images, AI)
-- Level 2: Meta projects (scaffolding, tracker)
+**The three-level game:**
+- **Level 1:** Domain projects (trading, images, AI) - Build things
+- **Level 2:** Meta projects (scaffolding, tracker) - Build tools to build things
+- **Level 3:** Measurement (analytics layer) - Measure if the tools work
 
-This is a Level 2 project. It doesn't ship product. It ships TOOLS to build products.
+**This is a Level 2 + 3 project:**
+- Level 2: Define patterns, create templates
+- Level 3: Measure if patterns/templates actually help
 
-Success = Other projects are easier because of this one.
+**Success = Other projects are easier/better/cheaper because of this one. And we can prove it.**
 
 ---
 
