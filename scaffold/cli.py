@@ -174,7 +174,7 @@ def _load_review_configs(
     default_mapping = {
         "security": ("deepseek", "deepseek-chat", "Security Reviewer"),
         "performance": ("deepseek", "deepseek-chat", "Performance Reviewer"),
-        "architecture": ("deepseek", "deepseek-chat", "Architecture Reviewer"),
+        "architecture": ("kiro", "claude-sonnet-4", "Architecture Reviewer"),  # Tier 1: Kiro
         "quality": ("deepseek", "deepseek-chat", "Code Quality Reviewer"),
     }
     
@@ -206,6 +206,12 @@ def _load_review_configs(
         if api == "deepseek" and not deepseek_key:
             console.print(f"[yellow]Skipping {display_name} (no DeepSeek key)[/yellow]")
             continue
+        if api == "kiro":
+            # Check if Kiro CLI is available
+            import shutil
+            if not shutil.which("kiro-cli") and not os.path.exists("/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"):
+                console.print(f"[yellow]Skipping {display_name} (Kiro CLI not installed)[/yellow]")
+                continue
         
         configs.append(ReviewConfig(
             name=display_name,

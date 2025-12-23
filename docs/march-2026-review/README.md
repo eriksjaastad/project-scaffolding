@@ -1,4 +1,4 @@
-# Deferred Research & Strategies
+# March 2026 Review - AWS Strategy
 
 > **Purpose:** Ideas and strategies to revisit when circumstances change
 
@@ -8,7 +8,7 @@
 
 1. **AWS Activate Strategy** (`aws_activate_strategy.md`)
    - **What:** Using $1,000 AWS credits to subsidize AI costs via Bedrock
-   - **Why Deferred:** Want real business (not "fake"), focused on speed/simplicity now
+   - **Why March 2026:** Want real business (not "fake"), focused on speed/simplicity now
    - **Revisit When:** Q2 2026 or when first client secured
    - **Open Questions:**
      - Does Bedrock pricing match direct Anthropic pricing? (Gemini claimed yes, needs verification)
@@ -16,7 +16,7 @@
 
 2. **AWS Business Setup** (`aws_business_setup.md`)
    - **What:** Tactical guide to qualifying for AWS Activate Founders ($1k credits)
-   - **Why Deferred:** Same as above
+   - **Why March 2026:** Same as above
    - **Note:** Contains good info on Bedrock API integration (boto3 examples)
 
 ---

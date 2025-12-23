@@ -1,0 +1,36 @@
+{
+  "round": 2,
+  "document": "templates/TIERED_SPRINT_PLANNER.md",
+  "results": [
+    {
+      "reviewer": "Architecture Reviewer",
+      "api": "kiro",
+      "model": "claude-sonnet-4",
+      "cost": 0.0,
+      "tokens": 0,
+      "duration": 0.0,
+      "error": "Command '['/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli', 'chat']' timed out after 300 seconds"
+    },
+    {
+      "reviewer": "Performance Reviewer",
+      "api": "deepseek",
+      "model": "deepseek-chat",
+      "cost": 0.00215703,
+      "tokens": 7989,
+      "duration": 58.21769783299533,
+      "error": null
+    },
+    {
+      "reviewer": "Security Reviewer",
+      "api": "deepseek",
+      "model": "deepseek-chat",
+      "cost": 0.00207252,
+      "tokens": 7676,
+      "duration": 49.975913500005845,
+      "error": null
+    }
+  ],
+  "total_cost": 0.00422955,
+  "total_duration": 58.21769783299533,
+  "timestamp": "2025-12-23T19:16:34.617096"
+}

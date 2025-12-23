@@ -26,7 +26,7 @@ console = Console()
 class ReviewConfig:
     """Configuration for a single reviewer"""
     name: str
-    api: str  # "openai", "anthropic", "google", "deepseek"
+    api: str  # "openai", "anthropic", "google", "deepseek", "kiro"
     model: str
     prompt_path: Path
     
@@ -216,6 +216,8 @@ class ReviewOrchestrator:
             result = await self._call_google(config.model, full_prompt)
         elif config.api == "deepseek":
             result = await self._call_deepseek(config.model, full_prompt)
+        elif config.api == "kiro":
+            result = await self._call_kiro(config.model, full_prompt)
         else:
             raise ValueError(f"Unknown API: {config.api}")
         
@@ -325,6 +327,78 @@ class ReviewOrchestrator:
             "cost": cost,
             "tokens": total_tokens
         }
+    
+    async def _call_kiro(self, model: str, prompt: str) -> Dict[str, Any]:
+        """Call Kiro CLI"""
+        import subprocess
+        import tempfile
+        import os
+        
+        try:
+            # Write prompt to a temp file (Kiro prompts are often too long for command line args)
+            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
+                f.write(prompt)
+                prompt_file = f.name
+            
+            # Call Kiro CLI in non-interactive mode with prompt from file
+            result = subprocess.run(
+                ["/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli", "chat", "--no-interactive"],
+                input=prompt,
+                capture_output=True,
+                text=True,
+                timeout=120  # 2 minute timeout
+            )
+            
+            # Clean up temp file
+            try:
+                os.unlink(prompt_file)
+            except:
+                pass
+            
+            # Parse output (Kiro includes ANSI codes, need to strip them)
+            import re
+            output = result.stdout
+            
+            # Remove ANSI escape codes
+            ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+            cleaned_output = ansi_escape.sub('', output)
+            
+            # Kiro outputs raw response with minimal formatting
+            # Extract content before the credits line
+            parts = cleaned_output.split('▸ Credits:')
+            if len(parts) > 0:
+                content = parts[0].strip()
+                # Remove any ASCII art banner and prompts at the start
+                lines = content.split('\n')
+                # Skip banner (usually starts with spaces and special chars)
+                start_idx = 0
+                for i, line in enumerate(lines):
+                    if line.strip() and not line.startswith('⠀') and not line.startswith('╭') and not line.startswith('│'):
+                        start_idx = i
+                        break
+                content = '\n'.join(lines[start_idx:]).strip()
+            else:
+                content = cleaned_output.strip()
+            
+            # Extract cost from "▸ Credits: X" line
+            credits_match = re.search(r'Credits:\s*([\d.]+)', output)
+            credits_used = float(credits_match.group(1)) if credits_match else 0.0
+            
+            # Convert Kiro credits to cost ($19/mo for 1000 credits = $0.019 per credit)
+            cost = credits_used * 0.019
+            
+            # Estimate tokens (rough: 1 credit ≈ 1000 tokens)
+            tokens = int(credits_used * 1000)
+            
+            return {
+                "content": content if content else "Error: No response from Kiro",
+                "cost": cost,
+                "tokens": tokens
+            }
+        except subprocess.TimeoutExpired:
+            raise TimeoutError(f"Kiro CLI timed out after 120 seconds")
+        except Exception as e:
+            raise RuntimeError(f"Error calling Kiro CLI: {e}")
     
     def _display_summary(self, summary: ReviewSummary, output_dir: Path):
         """Display review summary in terminal"""

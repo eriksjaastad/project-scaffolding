@@ -1,0 +1,36 @@
+{
+  "round": 3,
+  "document": "templates/TIERED_SPRINT_PLANNER.md",
+  "results": [
+    {
+      "reviewer": "Architecture Reviewer",
+      "api": "kiro",
+      "model": "claude-sonnet-4",
+      "cost": 0.0,
+      "tokens": 0,
+      "duration": 1.3195638750039507,
+      "error": null
+    },
+    {
+      "reviewer": "Performance Reviewer",
+      "api": "deepseek",
+      "model": "deepseek-chat",
+      "cost": 0.00205281,
+      "tokens": 7603,
+      "duration": 46.57847924999078,
+      "error": null
+    },
+    {
+      "reviewer": "Security Reviewer",
+      "api": "deepseek",
+      "model": "deepseek-chat",
+      "cost": 0.00216567,
+      "tokens": 8021,
+      "duration": 60.58403349999571,
+      "error": null
+    }
+  ],
+  "total_cost": 0.00421848,
+  "total_duration": 60.58403349999571,
+  "timestamp": "2025-12-23T19:19:06.634675"
+}
