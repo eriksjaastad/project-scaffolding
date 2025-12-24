@@ -219,7 +219,7 @@ class TestReviewCLI:
         
         result = subprocess.run(
             [
-                "python", str(cli_path), "review",
+                sys.executable, str(cli_path), "review",
                 "--type", "document",
                 "--input", str(sample_document),
                 "--round", "1",
