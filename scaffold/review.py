@@ -9,15 +9,16 @@ import asyncio
 import json
 import logging
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import aiohttp
 from anthropic import AsyncAnthropic
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, APIError, APIConnectionError, RateLimitError
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -176,7 +177,7 @@ class ReviewOrchestrator:
                     cost=0.0,
                     tokens_used=0,
                     duration_seconds=0.0,
-                    timestamp=datetime.utcnow().isoformat(),
+                    timestamp=datetime.now(UTC).isoformat(),
                     error=str(result)
                 ))
             else:
@@ -195,7 +196,7 @@ class ReviewOrchestrator:
             results=review_results,
             total_cost=sum(r.cost for r in review_results),
             total_duration=max(r.duration_seconds for r in review_results),
-            timestamp=datetime.utcnow().isoformat()
+            timestamp=datetime.now(UTC).isoformat()
         )
         
         # Save cost summary
@@ -248,13 +249,13 @@ class ReviewOrchestrator:
             cost=result["cost"],
             tokens_used=result["tokens"],
             duration_seconds=duration,
-            timestamp=datetime.utcnow().isoformat()
+            timestamp=datetime.now(UTC).isoformat()
         )
     
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=2, max=10),
-        retry=retry_if_exception_type((aiohttp.ClientError, asyncio.TimeoutError)),
+        retry=retry_if_exception_type((APIError, APIConnectionError, RateLimitError, asyncio.TimeoutError)),
         before_sleep=before_sleep_log(logger, logging.WARNING),
         reraise=True
     )
@@ -376,8 +377,9 @@ class ReviewOrchestrator:
                 prompt_file = f.name
             
             # Call Kiro CLI in non-interactive mode with prompt from file
+            kiro_path = shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
             result = subprocess.run(
-                ["/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli", "chat", "--no-interactive"],
+                [kiro_path, "chat", "--no-interactive"],
                 input=prompt,
                 capture_output=True,
                 text=True,
@@ -443,6 +445,7 @@ class ReviewOrchestrator:
             
             # Extract cost from "▸ Credits: X" or "Credits: X" line
             credits_match = re.search(r'Credits:\s*([\d.]+)', output)
+            credits_used = 0.0
             if credits_match:
                 credits_used = float(credits_match.group(1))
                 # Convert Kiro credits to cost ($19/mo for 1000 credits = $0.019 per credit)
