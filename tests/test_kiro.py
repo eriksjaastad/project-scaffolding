@@ -24,7 +24,7 @@ class TestKiroCLI:
     @pytest.fixture
     def kiro_cli(self):
         """Path to Kiro CLI"""
-        return "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
+        return shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
     
     def test_kiro_cli_exists(self, kiro_cli):
         """Test that Kiro CLI is installed"""
@@ -230,7 +230,7 @@ class TestKiroIntegrationWorkflow:
         assert design_path.exists()
         
         # Step 3: Review with Kiro CLI
-        kiro_cli = "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
+        kiro_cli = shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
         
         # Change to project directory so Kiro can read .kiro/
         os.chdir(temp_project)
