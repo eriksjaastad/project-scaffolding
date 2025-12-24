@@ -1,7 +1,7 @@
 # External Resources & Services
 
 > **Purpose:** Track which external services, APIs, and resources are used across all projects  
-> **Last Updated:** December 21, 2025
+> **Last Updated:** December 24, 2025
 
 **Why this exists:** When you get a bill or notification, you need to know which project uses that service.
 
@@ -94,8 +94,10 @@ Ask yourself:
 ### Monitoring/Notifications
 **What we have:**
 - Discord Webhooks (free, unlimited)
+- Healthchecks.io (cron job monitoring)
 
-**Before adding Slack/Telegram/etc:** Discord already works.
+**Before adding Slack/Telegram/etc:** Discord already works.  
+**Before adding UptimeRobot/Cronitor/etc:** Check if Healthchecks.io can handle it.
 
 ---
 
@@ -161,6 +163,7 @@ Ask yourself:
 | rclone | 3D Pose Factory, image-workflow | Free (tool) | Active |
 | Postgres (Railway) | Trading | Included in Railway | Active |
 | Discord Webhooks | Trading | Free | Active |
+| Healthchecks.io | Trading Projects | Free tier | Active |
 | SuperWhisper | Cortana | One-time purchase | Active |
 | Google Drive | image-workflow | Free (personal storage) | Active |
 
@@ -302,6 +305,15 @@ Ask yourself:
 - **Webhook URLs:** In Trading Projects `.env`
 - **Notes:** 4x daily + weekly/monthly reports
 
+#### Healthchecks.io
+- **Projects:** Trading Projects (I Usage Billing Tracker)
+- **Cost:** Free tier
+- **Purpose:** Cron job monitoring and uptime checks
+- **Dashboard:** https://healthchecks.io/projects/bea3ac8d-2c7d-4a11-b87c-14f409e13813/checks/
+- **Ping URL:** https://hc-ping.com/97dd5e5b-c7ac-4e7b-a8b2-d75fd8f13c36
+- **Check Name:** I Usage Billing Tracker
+- **Notes:** Monitors critical scheduled jobs for silent failures
+
 ---
 
 ### Local Services
@@ -345,6 +357,7 @@ Ask yourself:
 - ✅ Google AI (Gemini 2.0/2.5 Flash)
 - ✅ xAI (Grok-3)
 - ✅ Discord Webhooks
+- ✅ Healthchecks.io (I Usage Billing Tracker)
 
 **Monthly cost:** ~$12
 
@@ -483,6 +496,7 @@ Ask yourself:
 | Anthropic | ✅ Active | Dec 21, 2025 |
 | Google AI | ✅ Active | Dec 21, 2025 |
 | Discord | ✅ Active | Dec 21, 2025 |
+| Healthchecks.io | ✅ Active | Dec 24, 2025 |
 | Cloudflare | ✅ Active | Dec 21, 2025 - Found: 3D Pose Factory (R2) |
 
 ---
