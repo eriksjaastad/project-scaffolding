@@ -99,6 +99,17 @@ def review(
         else:
             output_dir = Path("docs/code_reviews")
     
+    # Check for Definition of Done (DoD) in input file
+    try:
+        content = input_path.read_text()
+        if "Definition of Done" not in content and "DoD" not in content:
+            console.print("[red]Error: Input file missing 'Definition of Done' or 'DoD' section.[/red]")
+            console.print("[yellow]Standard: All code review requests MUST include a Definition of Done for tracking.[/yellow]")
+            return
+    except Exception as e:
+        console.print(f"[red]Error reading input file: {e}[/red]")
+        return
+    
     # Get prompt directory
     prompt_base = Path("prompts/active")
     if review_type == "document":
