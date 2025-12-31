@@ -186,7 +186,9 @@ class ReviewOrchestrator:
         # Save results
         for result in review_results:
             if not result.error:
-                output_file = round_dir / f"{result.reviewer_name.lower().replace(' ', '_')}.md"
+                # Standardize filename: CODE_REVIEW_{NAME_UPPER}.md
+                safe_name = result.reviewer_name.upper().replace(' ', '_')
+                output_file = round_dir / f"CODE_REVIEW_{safe_name}.md"
                 output_file.write_text(result.content)
         
         # Create summary

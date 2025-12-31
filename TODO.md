@@ -10,6 +10,7 @@
 **Templates:**
 - `.kiro/` templates (steering + specs)
 - `CLAUDE.md.template`
+- `CODE_REVIEW.md.template` ✅ NEW (Dec 30)
 - `.cursorrules.template`
 - `Documents/` structure
 - `TIERED_SPRINT_PLANNER.md`
@@ -56,7 +57,11 @@
 - Fixed UnboundLocalError in Kiro parsing
 - Removed hardcoded Kiro CLI paths
 - Fixed OpenAI retry logic
-- Simplified over-generic templates
+- Simplified over-engineered templates
+- Standardized code review result naming (`CODE_REVIEW_ALL_CAPS`)
+- Enforced Definition of Done (DoD) in CLI requests
+- Created `templates/CODE_REVIEW.md.template`
+- Documented `patterns/code-review-standard.md`
 
 ### ⏭️ NEXT: Chunk 4 (Dogfood & Validate)
 - [ ] Test on real project
@@ -71,14 +76,12 @@
 
 **Goal:** Standardize code review process across all projects
 
-- [ ] Create CODE_REVIEW.md.template
-- [ ] Define standard code review format:
-  - [ ] Review request info (date, requester, purpose)
-  - [ ] Files/components under review
-  - [ ] Review checklist (security, performance, maintainability)
-  - [ ] Reviewer notes and feedback
-  - [ ] Status tracking (Pending, In Progress, Changes Requested, Approved)
-  - [ ] Resolution info (date completed, summary)
+- [x] Create CODE_REVIEW.md.template
+- [x] Define standard code review format:
+  - [x] Review request info (date, author, purpose)
+  - [x] Review checklist (Definition of Done)
+  - [x] Reviewer notes and feedback
+  - [x] Standard result naming (`CODE_REVIEW_ALL_CAPS`)
 - [ ] Add to PROJECT_STRUCTURE_STANDARDS.md
 - [ ] Document in PROJECT_KICKOFF_GUIDE.md
 - [ ] Integrate with TODO.md format:

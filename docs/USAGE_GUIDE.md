@@ -16,6 +16,7 @@ This scaffolding provides:
    - Safety systems patterns
    - Development philosophy
    - Testing approaches
+   - **Code Review Standardization** (`patterns/code-review-standard.md`)
 
 3. **Examples** (`examples/`)
    - Real implementations from source projects

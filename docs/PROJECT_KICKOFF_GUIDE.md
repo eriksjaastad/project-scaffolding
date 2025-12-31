@@ -208,6 +208,28 @@ Please:
 
 ---
 
+## Phase 4: Code Reviews (Quality Control)
+
+**Goal:** Ensure every significant change is reviewed by multiple AI models.
+
+### Standardization Rules
+
+1. **Request Requirements:**
+   - Every review request MUST include a **Definition of Done (DoD)**.
+   - Use `templates/CODE_REVIEW.md.template` for the request.
+   - See `patterns/code-review-standard.md` for details.
+
+2. **Standard Result Format:**
+   - Results are saved with the prefix `CODE_REVIEW_` in all caps.
+   - This enables dashboard tracking (e.g., `CODE_REVIEW_SECURITY_REVIEWER.md`).
+
+3. **How to Run:**
+   ```bash
+   scaffold review --type code --input path/to/your/request.md --round 1
+   ```
+
+---
+
 ## Adding to Cursor Rules
 
 ### Required Sections in `.cursorrules`

@@ -1,0 +1,43 @@
+# CODE_REVIEW: [TITLE]
+
+**Date:** [DATE]
+**Status:** [DRAFT | FINAL]
+**Author:** [NAME]
+
+---
+
+## 🎯 Definition of Done (DoD)
+
+- [ ] [Requirement 1]
+- [ ] [Requirement 2]
+- [ ] [Requirement 3]
+
+---
+
+## 🔍 Context
+
+[Brief explanation of what is being reviewed and why.]
+
+---
+
+## 🛠️ Implementation Details
+
+[Link to code, design docs, or specific commits.]
+
+---
+
+## 📋 Feedback Summary
+
+[Models' consensus on the implementation.]
+
+---
+
+## 🎯 Remediation Plan
+
+- [ ] [Action 1]
+- [ ] [Action 2]
+
+---
+
+*This review follows the project-scaffolding standardization.*
+
