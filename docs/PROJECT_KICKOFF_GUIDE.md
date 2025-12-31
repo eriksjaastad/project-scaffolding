@@ -510,6 +510,75 @@ Key references:
 
 ---
 
+## Future Enhancement: Agent Skills Library
+
+> **Status:** In development (December 2025)  
+> **Location:** `/Users/eriksjaastad/projects/agent-skills-library/`
+
+### What Is It?
+
+A centralized library of reusable AI agent instructions (playbooks) that work across **all AI tools** - Cursor, Claude, ChatGPT, VS Code, and future tools.
+
+**Problem it solves:**  
+- No more copying/pasting the same instructions into every project
+- No more inconsistent instructions across different AI tools
+- One source of truth for AI agent behaviors
+
+### How It Works
+
+**Three-layer architecture:**
+
+1. **Playbooks** (`/playbooks/`) - Canonical, tool-agnostic instructions
+   - Example: `playbooks/pr-review/README.md`
+   - Written once, referenced everywhere
+
+2. **Tool Adapters** - Thin wrappers for specific tools
+   - Cursor: `/cursor-rules/pr-review/RULE.md`
+   - Claude: `/claude-skills/pr-review/SKILL.md`
+   - Adapters just reference the playbook + add tool-specific formatting
+
+3. **Project Integration** - Projects reference the global library
+   - Add to `.cursorrules`: Reference skills library path
+   - Skills are versioned, tested, and upgraded like software
+
+### When Should I Use It?
+
+**Use for instructions you'll reuse across projects:**
+- ✅ PR review checklists
+- ✅ Debugging routines
+- ✅ Code quality standards
+- ✅ Testing strategies
+- ✅ Architecture review processes
+
+**Don't use for project-specific rules:**
+- ❌ "Never modify production database"
+- ❌ "This project uses Next.js 14"
+- ❌ "API key is in .env"
+
+### Integration Status
+
+**Currently being developed:**
+- [ ] Initial playbooks created
+- [ ] Cursor adapter pattern established
+- [ ] Claude adapter pattern established
+- [ ] Integration guide completed
+- [ ] Testing methodology defined
+- [ ] Versioning strategy implemented
+- [ ] Template updates with skills library references
+
+**When it's ready:**
+- New projects will automatically reference the skills library
+- Templates will include skills library integration
+- Documentation will guide skill creation and usage
+
+### Where to Learn More
+
+- **Library README:** `/Users/eriksjaastad/projects/agent-skills-library/README.md`
+- **Integration Guide:** `/Users/eriksjaastad/projects/agent-skills-library/INTEGRATION_GUIDE.md`
+- **Playbook Creation:** `/Users/eriksjaastad/projects/agent-skills-library/playbooks/README.md`
+
+---
+
 ## Related Files
 
 - **Tiered Sprint Planner:** `templates/TIERED_SPRINT_PLANNER.md`

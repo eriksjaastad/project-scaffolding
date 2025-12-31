@@ -1,7 +1,7 @@
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding  
-> **Last Updated:** December 23, 2025
+> **Last Updated:** December 30, 2025
 
 ---
 
@@ -13,6 +13,11 @@
 - `.cursorrules.template`
 - `Documents/` structure
 - `TIERED_SPRINT_PLANNER.md`
+- `TODO.md.template` ✅ NEW (Dec 30)
+
+**Standards:**
+- `TODO_FORMAT_STANDARD.md` (650 lines) ✅ NEW (Dec 30)
+- `PROJECT_STRUCTURE_STANDARDS.md` (comprehensive) ✅ NEW (Dec 30)
 
 **Automation:**
 - Multi-AI review orchestrator (DeepSeek + Kiro CLI)
@@ -44,11 +49,14 @@
 - Made Kiro parsing defensive
 - Better error messages
 
-### 🚧 IN PROGRESS: Chunk 3 (Delete the Theater)
-- [ ] Archive TODO.md brain dump → `docs/archives/planning-notes-dec-2025.md`
-- [ ] Simplify over-generic templates
-- [ ] Archive historical planning docs
-- [ ] Clean up root directory
+### ✅ DONE: Chunk 3 (Clean up & Stability)
+- Archived TODO.md brain dump → `docs/archives/planning-notes-dec-2025.md`
+- Archived historical planning docs
+- Cleaned up root directory
+- Fixed UnboundLocalError in Kiro parsing
+- Removed hardcoded Kiro CLI paths
+- Fixed OpenAI retry logic
+- Simplified over-generic templates
 
 ### ⏭️ NEXT: Chunk 4 (Dogfood & Validate)
 - [ ] Test on real project
@@ -58,6 +66,34 @@
 ---
 
 ## 📋 Backlog (After Chunk 4)
+
+### 🔴 CRITICAL - Code Review System (NEW - Dec 30)
+
+**Goal:** Standardize code review process across all projects
+
+- [ ] Create CODE_REVIEW.md.template
+- [ ] Define standard code review format:
+  - [ ] Review request info (date, requester, purpose)
+  - [ ] Files/components under review
+  - [ ] Review checklist (security, performance, maintainability)
+  - [ ] Reviewer notes and feedback
+  - [ ] Status tracking (Pending, In Progress, Changes Requested, Approved)
+  - [ ] Resolution info (date completed, summary)
+- [ ] Add to PROJECT_STRUCTURE_STANDARDS.md
+- [ ] Document in PROJECT_KICKOFF_GUIDE.md
+- [ ] Integrate with TODO.md format:
+  - [ ] Add syntax: `- [ ] Task **[IN REVIEW]** - See CODE_REVIEW.md #123`
+  - [ ] Update TODO_FORMAT_STANDARD.md
+  - [ ] Update TODO.md.template
+- [ ] Create examples from real code reviews
+- [ ] Test with project-tracker (dogfood it!)
+
+**Why this matters:**
+- Project-tracker dashboard will display pending code reviews
+- Alerts table will show code review status
+- Need standard format to parse and display
+
+---
 
 ### High Priority
 - [ ] Add cost tracking log (`logs/cost-tracking.jsonl`)

@@ -28,10 +28,12 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 ### Starting a New Project
 
 1. **Read** `docs/PROJECT_KICKOFF_GUIDE.md` - Complete walkthrough for new projects
-2. **Copy** templates to your new project - Documentation, .cursorrules, CLAUDE.md
-3. **Plan** using Tiered AI Sprint Planning - Break work into cost-effective tiers
-4. **Execute** with appropriate models - Tier 1 for architecture, Tier 3 for boilerplate
-5. **Track** external resources - Update EXTERNAL_RESOURCES.md when adding services
+2. **Follow** `docs/PROJECT_STRUCTURE_STANDARDS.md` - Standard directory layout (venv in root!)
+3. **Follow** `docs/CODE_QUALITY_STANDARDS.md` - **MANDATORY** rules (NO silent failures!)
+4. **Copy** templates to your new project - Documentation, .cursorrules, CLAUDE.md
+5. **Plan** using Tiered AI Sprint Planning - Break work into cost-effective tiers
+6. **Execute** with appropriate models - Tier 1 for architecture, Tier 3 for boilerplate
+7. **Track** external resources - Update EXTERNAL_RESOURCES.md when adding services
 
 ### Understanding This Scaffolding
 

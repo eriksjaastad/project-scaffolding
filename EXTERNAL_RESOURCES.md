@@ -401,6 +401,17 @@ Ask yourself:
 
 ---
 
+### project-tracker
+- ✅ **NO EXTERNAL SERVICES** (All local, $0 cost)
+- SQLite (local database)
+- FastAPI (local web server)
+- Python dependencies (local)
+- Purpose: Dashboard to track all projects, status, AI agents, cron jobs
+
+**Monthly cost:** $0 (100% local)
+
+---
+
 ### Hypocrisy Now
 - ⚠️ **NEEDS AUDIT**
 - Likely using:
