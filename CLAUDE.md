@@ -11,6 +11,7 @@
 2. **PROJECT_PHILOSOPHY.md** - The core "why" behind this project
 3. **patterns/development-philosophy.md** - How we build things
 4. **patterns/code-review-standard.md** - Standardized review rules
+5. **patterns/ssot-via-yaml.md** - Data management standards
 
 ---
 
@@ -21,6 +22,7 @@ This is the **heart and brain** of the ecosystem. It provides the reusable start
 - Core review orchestrator (DeepSeek + Kiro) is operational.
 - Code review standardization (DoD enforcement + naming) is implemented.
 - Archive system is established.
+- **Data Standardization:** Transitioning external resource tracking to YAML.
 - 19/19 tests passing.
 
 ---
@@ -31,6 +33,7 @@ This is the **heart and brain** of the ecosystem. It provides the reusable start
 - All functions must have type hints.
 - Use built-in generics for type hints (`dict[str, Any]`, not `Dict`).
 - Modern datetime handling: Use `datetime.now(UTC)` (from `datetime import UTC`).
+- **Data Management:** Use YAML for structured data that isn't in a database (e.g., `EXTERNAL_RESOURCES.yaml`). Follow the SSOT (Single Source of Truth) pattern.
 
 ### Code Organization
 - **Library code** (`scaffold/`): No print statements, use `logging`, raise exceptions with context.
@@ -48,8 +51,9 @@ This is the **heart and brain** of the ecosystem. It provides the reusable start
 2. **`venv/`** - Local environment dependencies.
 
 ### 🟡 Be Careful With These:
-1. **`EXTERNAL_RESOURCES.md`** - Update immediately when adding services.
-2. **API Callers** (`scaffold/review.py`) - Must have retry logic and cost tracking.
+1. **`EXTERNAL_RESOURCES.yaml`** - Update immediately when adding services (Single Source of Truth).
+2. **`EXTERNAL_RESOURCES.md`** - Legacy format; avoid updating manually if YAML is available.
+3. **API Callers** (`scaffold/review.py`) - Must have retry logic and cost tracking.
 
 ### ✅ Safe to Modify:
 1. **`scaffold/`** - Core logic.

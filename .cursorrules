@@ -85,10 +85,24 @@ docs/              ← Meta-documentation
 
 ---
 
+## External Resources Tracking
+
+When adding ANY external service (API, cloud platform, database, etc):
+
+**MUST update:** `/Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.yaml`
+
+**Standard:**
+- Use YAML for all structured data (SSOT pattern).
+- Document service name, project, cost, and purpose.
+- Never share API keys across projects.
+
+---
+
 ## Related Files
 
 - Philosophy: `PROJECT_PHILOSOPHY.md` (this directory)
 - AI Journal: `/Users/eriksjaastad/projects/AI-journal/`
+- Data Management: `patterns/ssot-via-yaml.md`
 - Source Projects: All under `/Users/eriksjaastad/projects/`
 
 ---
