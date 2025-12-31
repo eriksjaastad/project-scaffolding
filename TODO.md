@@ -64,6 +64,8 @@
 - Enforced Definition of Done (DoD) in CLI requests
 - Created `templates/CODE_REVIEW.md.template`
 - Documented `patterns/code-review-standard.md`
+- Established **YAML SSOT Pattern** for data management
+- Transitioned `EXTERNAL_RESOURCES.yaml` as the source of truth
 
 ### ⏭️ NEXT: Chunk 4 (Dogfood & Validate)
 - [ ] Test on real project
