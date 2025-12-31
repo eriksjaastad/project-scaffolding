@@ -1,0 +1,248 @@
+# External Resources & Services
+# Purpose: Track which external services, APIs, and resources are used across all projects
+# Last Updated: 2025-12-31
+
+metadata:
+  purpose: "Track external services and costs across all projects"
+  last_updated: "2025-12-31"
+  why_exists: "When you get a bill or notification, you need to know which project uses that service"
+
+# PROJECT SERVICE USAGE
+# This is the main data structure - parsed by project-tracker dashboard
+projects:
+  trading-projects:
+    monthly_cost: 12
+    services:
+      - name: Railway
+        purpose: "hosting + Postgres"
+        type: hosting
+        cost: 5
+      - name: OpenAI
+        purpose: "GPT-4o, 4o-mini, o1"
+        type: ai
+        cost: 4
+      - name: Anthropic
+        purpose: "Claude Opus 4, Sonnet 4, Haiku 3.5"
+        type: ai
+        cost: 2
+      - name: Google AI
+        purpose: "Gemini 2.0/2.5 Flash"
+        type: ai
+        cost: 1
+      - name: xAI
+        purpose: "Grok-3"
+        type: ai
+        cost: 0.50
+      - name: Discord
+        purpose: "Webhooks for daily briefings"
+        type: notifications
+        cost: 0
+      - name: Healthchecks.io
+        purpose: "Cron job monitoring"
+        type: monitoring
+        cost: 0
+
+  cortana-personal-ai:
+    monthly_cost: 0.60
+    services:
+      - name: OpenAI
+        purpose: "gpt-4o-mini"
+        type: ai
+        cost: 0.60
+      - name: SuperWhisper
+        purpose: "Voice-to-text (one-time purchase)"
+        type: local
+        cost: 0
+      - name: Wispr Flow
+        purpose: "Voice dictation (one-time purchase)"
+        type: local
+        cost: 0
+
+  image-workflow:
+    monthly_cost: 10  # Variable $5-20
+    services:
+      - name: OpenAI
+        purpose: "Batch processing, quality filtering"
+        type: ai
+        cost: 10  # Variable
+      - name: Google Drive
+        purpose: "Offsite backups via rclone"
+        type: storage
+        cost: 0
+      - name: rclone
+        purpose: "Backup tool"
+        type: local
+        cost: 0
+
+  3d-pose-factory:
+    monthly_cost: 7  # $3-10 for R2
+    services:
+      - name: Cloudflare R2
+        purpose: "S3-compatible storage for pose outputs"
+        type: storage
+        cost: 7
+      - name: rclone
+        purpose: "Sync tool for R2"
+        type: local
+        cost: 0
+
+  agent_os:
+    monthly_cost: 0
+    services:
+      - name: SQLite
+        purpose: "Local data storage"
+        type: database
+        cost: 0
+    notes: "Provides .env for other projects"
+
+  project-tracker:
+    monthly_cost: 0
+    services:
+      - name: SQLite
+        purpose: "Local database"
+        type: database
+        cost: 0
+      - name: FastAPI
+        purpose: "Local web server"
+        type: local
+        cost: 0
+    notes: "100% local, no external services"
+
+# SERVICES BY FUNCTION
+# Purpose: Prevent signing up for duplicate services
+services_by_function:
+  ai_apis:
+    - OpenAI (GPT-4o, 4o-mini, o1)
+    - Anthropic (Claude Opus 4, Sonnet 4, Haiku 3.5)
+    - Google AI (Gemini 2.0/2.5 Flash)
+    - xAI (Grok-3)
+  
+  hosting:
+    - Railway (Python cron jobs + Postgres)
+  
+  storage:
+    - Cloudflare R2 (S3-compatible)
+    - Google Drive (via rclone)
+  
+  databases:
+    - PostgreSQL (Railway)
+    - SQLite (local)
+  
+  monitoring:
+    - Discord Webhooks
+    - Healthchecks.io
+  
+  voice_to_text:
+    - SuperWhisper (local)
+    - Wispr Flow (local)
+  
+  tools:
+    - rclone (cloud sync)
+
+# API KEY MANAGEMENT PATTERN
+api_key_pattern:
+  rule: "Each project manages its own API keys - NEVER share across projects"
+  format: "{project-name}-{service} → {project}/.env"
+  examples:
+    - "cortana-openai → Cortana personal AI/.env"
+    - "trading-openai → Trading Projects/.env"
+    - "trading-anthropic → Trading Projects/.env"
+  why:
+    - "Cost attribution (which project spent what?)"
+    - "Failure isolation (one project's rate limit doesn't affect others)"
+    - "Security isolation (compromise one → others safe)"
+    - "Clear ownership (each project pays for itself)"
+
+# COST SUMMARY
+cost_summary:
+  infrastructure: 5  # Railway
+  ai_apis: 18  # Variable 15-20
+  total_known: 23  # $20-25/month
+  total_unknown: 0  # Need audits for some projects
+
+# REJECTED/UNUSED SERVICES
+# Purpose: Don't re-sign up for things we already tried
+rejected_services: []
+  # Add entries when evaluating alternatives
+  # Format:
+  #   - name: "Service X"
+  #     date_tried: "2025-XX-XX"
+  #     why_tried: "Reason"
+  #     why_rejected: "Reason"
+  #     alternative_used: "Service Y"
+
+cancelled_accounts: []
+  # Add entries when cancelling
+  # Format:
+  #   - name: "Service X"
+  #     date_cancelled: "2025-XX-XX"
+  #     reason: "Reason"
+  #     data_migrated_to: "Location"
+
+# ACTION ITEMS
+action_items:
+  immediate:
+    - "✅ Find where Cloudflare is used - FOUND: 3D Pose Factory (R2 storage)"
+    - "✅ Find where rclone is used - FOUND: 3D Pose Factory & image-workflow"
+    - "Audit for orphaned accounts (check email, credit card, password manager)"
+  
+  this_week:
+    - "Audit 3D Pose Factory resources"
+    - "Audit Hypocrisy Now resources"
+    - "Audit Hologram resources"
+    - "Audit agent_os plugin resource usage"
+  
+  ongoing:
+    - "Update this file when adding new services"
+    - "Monthly cost review (end of each month)"
+    - "Clean up unused accounts"
+    - "Document credential locations"
+
+# WHEN YOU GET A BILL/NOTIFICATION
+emergency_response:
+  - "Check this file - See which project uses the service"
+  - "Update cost if changed - Keep estimates current"
+  - "Verify still needed - Cancel if not being used"
+  - "Document any issues - Add notes"
+
+# BEFORE ADDING A NEW SERVICE
+before_adding_service:
+  checklist:
+    - "Do we already have something that does this? (Check services_by_function)"
+    - "Have we tried this before? (Check rejected_services)"
+    - "Which project needs this? (Document immediately)"
+    - "What's the cost? (Know before committing)"
+    - "Can we use existing service instead? (Avoid proliferation)"
+  
+  steps_to_add:
+    - "Check services_by_function - avoid duplicates"
+    - "Check rejected_services - don't retry failures"
+    - "Add to projects section above"
+    - "Add to services_by_function category"
+    - "Update cost_summary"
+    - "Document credential location"
+    - "Update metadata.last_updated"
+
+# SECURITY NOTES
+security:
+  credential_locations:
+    - "Trading Projects: .env file (not committed)"
+    - "Cortana: Uses ../agent_os/.env"
+    - "image-workflow: Local .env file"
+    - "agent_os: Master .env file (shared pattern being phased out)"
+  
+  good_practices:
+    - "✅ All .env files in .gitignore"
+    - "✅ Never committed to git"
+    - "⚠️ Consider password manager for backup"
+    - "⚠️ Consider key rotation policy (every 6-12 months)"
+
+# RECENT DISCOVERIES
+recent_changes:
+  - date: "2025-12-31"
+    change: "Converted to YAML format for better parsing"
+  - date: "2025-12-21"
+    change: "Found Cloudflare R2 usage in 3D Pose Factory"
+  - date: "2025-12-21"
+    change: "Found rclone usage in 3D Pose Factory (R2) and image-workflow (Drive)"
+

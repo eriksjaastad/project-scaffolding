@@ -1,7 +1,8 @@
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding  
-> **Last Updated:** December 30, 2025
+> **Last Updated:** December 30, 2025  
+> **Type:** Infrastructure
 
 ---
 
