@@ -10,6 +10,7 @@
 **Templates:**
 - `.kiro/` templates (steering + specs)
 - `CLAUDE.md.template`
+- `CLAUDE.md` (Project standard) ✅ NEW (Dec 30)
 - `CODE_REVIEW.md.template` ✅ NEW (Dec 30)
 - `.cursorrules.template`
 - `Documents/` structure
