@@ -1,0 +1,47 @@
+# Agent Skills Library
+
+> **Reference skills from central library**
+
+This project can use skills from the agent-skills-library.
+
+**Library location:** `/Users/eriksjaastad/projects/agent-skills-library/`
+
+---
+
+## Available Skills
+
+When working in this project, reference these skills as needed:
+
+### PR Review
+**Path:** `agent-skills-library/playbooks/pr-review/`  
+**Use when:** Reviewing pull requests or code changes
+
+### Debugging Routine
+**Path:** `agent-skills-library/playbooks/debugging-routine/`  
+**Use when:** Investigating bugs or unexpected behavior
+
+---
+
+## How to Use
+
+Simply reference the playbook path when asking for help:
+
+```
+"Review this PR following agent-skills-library/playbooks/pr-review/"
+
+"Debug this issue using agent-skills-library/playbooks/debugging-routine/"
+```
+
+---
+
+## Adding More Skills
+
+See the full library at:
+`/Users/eriksjaastad/projects/agent-skills-library/`
+
+Browse `playbooks/` to see all available skills.
+
+---
+
+*Skills library managed separately. Don't copy skill content into this project.*
+
