@@ -1,0 +1,65 @@
+# Cursor Rules - [Project Name]
+
+## 📝 Markdown & Documentation Standards
+
+### YAML Frontmatter (CRITICAL)
+- **ALWAYS preserve YAML frontmatter** when editing `.md` files
+- Every markdown file should have frontmatter with:
+  ```yaml
+  ---
+  tags:
+    - p/[project_name]
+    - type/[document_type]
+    - domain/[domain]
+  status: #status/[active|archived]
+  created: YYYY-MM-DD
+  ---
+  ```
+
+### Tag Taxonomy
+- Use **nested tags** for hierarchy: `#type/project`, `#tech/python/pandas`, `#status/active`
+- Tag structure:
+  - `#p/[project_name]` - Project namespace
+  - `#type/[project|tool|agent|dashboard|library]` - What it is
+  - `#domain/[web-scraping|ai|trading|image-processing]` - What it does
+  - `#tech/[language]/[framework]` - Technology stack
+  - `#status/[active|archived|planning]` - Current state
+
+### Obsidian Wikilinks
+- Use `[[Project Name]]` to link between project indexes
+- Link to `[[00_Index_project-name]]` when referencing project documentation
+
+---
+
+## 🚫 Context Window Management
+
+### Ignore Patterns (Already in .cursorignore, but reminder)
+**NEVER waste context on:**
+- `node_modules/` - NPM packages
+- `__pycache__/` - Python bytecode
+- `.git/` - Git internals
+- `*.pyc` - Compiled Python
+- `venv/`, `.venv/` - Virtual environments
+- `.DS_Store` - macOS metadata
+- `*.log` - Log files (unless debugging)
+- `dist/`, `build/` - Build artifacts
+
+**When reading files:**
+- Use targeted reads with line ranges for large files
+- Prefer `codebase_search` over reading entire files
+- Use `grep` for specific symbol lookups
+
+---
+
+## 📋 Project-Specific Rules
+
+[Add project-specific rules here]
+
+---
+
+## 🔗 Related Resources
+
+- **Project Philosophy:** `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
+- **Project Scaffolding:** `/Users/eriksjaastad/projects/project-scaffolding/`
+- **Code Quality Standards:** `/Users/eriksjaastad/projects/project-scaffolding/docs/CODE_QUALITY_STANDARDS.md`
+
