@@ -412,6 +412,27 @@ Ask yourself:
 
 ---
 
+### audit-agent
+- ✅ **NO EXTERNAL SERVICES** (100% local, $0 cost)
+- **Purpose:** Autonomous Vault Warden for monitoring project health
+- **Services used:**
+  - Ollama (local LLM server)
+  - Llama 3.2:3b (frontmatter validation)
+  - DeepSeek-R1:14b (code analysis)
+  - Watchdog (file monitoring)
+  - AI Router (`_tools/ai_router` for model selection)
+- **What it does:**
+  - Validates YAML frontmatter in `.md` files
+  - Generates summaries of Python code changes
+  - Updates project indexes automatically
+  - Logs activity to `_obsidian/WARDEN_LOG.md`
+- **Integration:** Uses existing AI Router and Ollama MCP
+- **Status:** Active (2025-12-31)
+
+**Monthly cost:** $0 (100% local, no cloud API calls)
+
+---
+
 ### Hypocrisy Now
 - ⚠️ **NEEDS AUDIT**
 - Likely using:

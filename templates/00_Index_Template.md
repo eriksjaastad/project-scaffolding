@@ -1,0 +1,112 @@
+---
+tags:
+  - p/project-scaffolding
+  - type/template
+  - domain/documentation
+  - status/active
+created: 2025-12-31
+---
+
+# Project Index Template
+
+**Purpose:** Template for creating `00_Index_[ProjectName].md` files in project folders.
+
+**Instructions:**
+1. Copy this file to your project root
+2. Rename to `00_Index_[YourProjectName].md`
+3. Fill in all `[PLACEHOLDER]` sections
+4. Update tags in frontmatter
+5. Delete this instruction block
+
+---
+
+# [PROJECT_NAME]
+
+[Sentence 1: What this project does - the core purpose.] [Sentence 2: Key technologies, frameworks, or approaches used.] [Sentence 3: Current status, maturity level, or notable achievements.]
+
+## Key Components
+
+### [Component Category 1]
+- `directory_name/` - Brief description ([X] files)
+  - Key file or subdirectory 1
+  - Key file or subdirectory 2
+  - Key file or subdirectory 3
+
+### [Component Category 2]
+- `another_directory/` - Brief description ([X] files)
+  - Important file 1
+  - Important file 2
+
+### [Component Category 3]
+- Configuration files
+- Documentation
+- Other notable components
+
+[Repeat sections as needed for major components]
+
+## Status
+
+**Tags:** #map/project #p/[project-name]  
+**Status:** #status/[active|production|archived|planning]  
+**Last Major Update:** [Month Year or specific date]  
+**Priority:** [Optional: #mission-critical, #high-volume, etc.]  
+**Infrastructure:** [Optional: #infra/railway, #api/openai, etc.]
+
+---
+
+## Frontmatter Tag Guide
+
+Replace the placeholder tags in the frontmatter above with appropriate values:
+
+### Required Tags
+- `map/project` - Always include (marks as project index)
+- `p/[project-name]` - Replace with your project folder name (lowercase, hyphenated)
+- `type/[type]` - Choose from: ai-agent, pipeline, platform, desktop-app, webapp, tool, framework, knowledge-base, monitoring, automation, etc.
+- `domain/[domain]` - Choose from: ai-orchestration, image-processing, finance, documentation, political-analysis, personal-ai, etc.
+- `status/[status]` - Choose from: active, production, archived, planning, experimental
+- `tech/[tech]` - Primary technology: python, typescript, javascript, etc.
+
+### Optional Tags (add as applicable)
+- `tech/[framework]` - Specific frameworks: python/pandas, typescript/electron, etc.
+- `infra/[platform]` - Infrastructure: railway, runpod, r2, vercel
+- `api/[service]` - External APIs: openai, anthropic, google, twitter
+- `arch/[pattern]` - Architecture: plugin-system, multi-agent, pipeline
+- `#high-volume` - Processes >1000 items/day
+- `#mission-critical` - Critical to workflow
+- `#local-first` - Local-first architecture
+- `#privacy-first` - Privacy-focused
+
+### Status Detection
+- **#status/active** - Last edit within 6 months
+- **#status/production** - Live, in production use
+- **#status/archived** - No edits in 6+ months
+- **#status/planning** - Planning phase
+- **#status/experimental** - Experimental/R&D
+
+---
+
+## Tips for Writing Good Indexes
+
+### 3-Sentence Summary
+- **Sentence 1:** Core purpose - what problem does it solve?
+- **Sentence 2:** How it works - key technologies/approach
+- **Sentence 3:** Current state - status, metrics, or achievements
+
+### Key Components
+- List 3-6 major directories or file groups
+- Include file counts to show size/complexity
+- Mention 2-3 important files per section
+- Focus on what someone needs to know to understand the structure
+
+### Status Section
+- Always include `#map/project` and `#p/[project-name]` tags
+- Be specific about last update (helps detect staleness)
+- Add infrastructure/API tags if project has external dependencies
+- Include priority flags for mission-critical systems
+
+---
+
+**Template Version:** 1.0  
+**Created:** 2025-12-31  
+**Location:** `project-scaffolding/templates/00_Index_Template.md`
+

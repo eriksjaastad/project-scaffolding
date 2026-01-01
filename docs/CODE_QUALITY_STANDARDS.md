@@ -6,6 +6,125 @@
 
 ---
 
+## 🚨 Critical Rule #0: EVERY PROJECT MUST HAVE AN INDEX FILE
+
+### The Rule
+
+**EVERY project MUST have a `00_Index_[ProjectName].md` file in its root directory.**
+
+### Why This Exists
+
+**Projects without indexes are invisible and forgotten.** We've had:
+- Projects started and abandoned without documentation
+- Forgotten what a project does 3 months later
+- Duplicate work because we didn't know a project existed
+- No way to search or organize 36+ projects
+- Lost context on tech decisions and architecture
+
+### What the Index Must Contain
+
+#### ✅ REQUIRED: Index File Structure
+
+```markdown
+---
+tags:
+  - map/project
+  - p/[project-name]
+  - type/[project-type]
+  - domain/[domain]
+  - status/[active|production|archived]
+  - tech/[primary-tech]
+created: YYYY-MM-DD
+---
+
+# Project Name
+
+[Sentence 1: What this project does.] 
+[Sentence 2: Key technologies and approach.] 
+[Sentence 3: Current status.]
+
+## Key Components
+
+### [Component Name]
+- `directory/` - Description
+  - Key files
+
+## Status
+
+**Tags:** #map/project #p/[project-name]
+**Status:** #status/[active|archived|production]
+**Last Major Update:** [Date]
+```
+
+#### Template Location
+`project-scaffolding/templates/00_Index_Template.md`
+
+#### Full Documentation
+`project-scaffolding/docs/PROJECT_INDEXING_SYSTEM.md`
+
+### When to Create/Update
+
+**CREATE:**
+- Day 1 of new project (mandatory)
+- Before first commit
+- Part of project initialization
+
+**UPDATE:**
+- Major feature additions
+- Status changes (active → production, active → archived)
+- Tech stack changes
+- Every 3-6 months minimum
+
+### Enforcement
+
+**Validation Script:**
+```bash
+# Check if project has index
+./project-scaffolding/scripts/validate_project.py [project-name]
+
+# Check all projects
+./project-scaffolding/scripts/validate_project.py --all
+
+# Create missing indexes
+./project-scaffolding/scripts/reindex_projects.py --missing
+```
+
+**Git Pre-Commit Hook (Optional):**
+```bash
+# .git/hooks/pre-commit
+if [ ! -f "00_Index_*.md" ]; then
+  echo "ERROR: Missing project index file (00_Index_*.md)"
+  echo "Create one using: project-scaffolding/templates/00_Index_Template.md"
+  exit 1
+fi
+```
+
+### The Scar
+
+**We had 36 projects and couldn't find things.** No way to:
+- Know what a project does without exploring code
+- See which projects use which technologies
+- Identify abandoned projects
+- Search across projects
+- Remember context 6 months later
+
+**The pain:**
+- Duplicated work because forgot similar project existed
+- Wasted time re-learning what a project does
+- No visibility into project health
+- Couldn't organize or prioritize effectively
+
+### Non-Negotiable
+
+This is **not optional**. If a project doesn't have an index:
+1. It's not a project yet, it's an experiment
+2. It shouldn't be committed to the main projects folder
+3. It should stay in `_inbox/` until properly documented
+
+**Rule:** No project leaves `_inbox/` without an index file.
+
+---
+
 ## 🚨 Critical Rule #1: NO SILENT FAILURES
 
 ### The Rule

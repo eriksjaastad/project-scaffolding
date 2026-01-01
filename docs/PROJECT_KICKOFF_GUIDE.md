@@ -45,12 +45,64 @@ cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore  # if exists
 - Adjust directory structure if needed
 - Update quick start links
 
-### Step 3: Initialize Git
+### Step 3: Create Project Index (MANDATORY)
+
+**This is required. No project goes forward without this.**
+
+```bash
+# Copy template
+cp "$SCAFFOLDING/templates/00_Index_Template.md" \
+   "./00_Index_$(basename "$NEW_PROJECT").md"
+
+# Edit the file:
+# 1. Replace all [PLACEHOLDER] text
+# 2. Write 3-sentence summary
+# 3. List key components
+# 4. Update tags in frontmatter
+# 5. Set correct status
+```
+
+**What to write:**
+- **Sentence 1:** What problem does this solve?
+- **Sentence 2:** Key technologies/approach
+- **Sentence 3:** Current status/next steps
+
+**Example:**
+```markdown
+# trading-copilot
+
+Multi-AI trading intelligence platform that compares GPT, Claude, and Gemini 
+for market analysis. Built with Python, PostgreSQL on Railway with cron 
+dispatcher for automated analysis. Layer 1-3 complete with full deployment 
+pipeline ready for production.
+```
+
+**Tags to include:**
+- `map/project` (always)
+- `p/[project-name]` (your folder name)
+- `type/[type]` (ai-agent, pipeline, webapp, etc.)
+- `domain/[domain]` (finance, image-processing, etc.)
+- `status/active` (always start as active)
+- `tech/[tech]` (python, typescript, etc.)
+
+**See:** `project-scaffolding/docs/PROJECT_INDEXING_SYSTEM.md` for complete guide
+
+### Step 4: Initialize Git
 
 ```bash
 git init
 git add -A
-git commit -m "Initial commit: Project structure from scaffolding"
+git commit -m "Initial commit: Project structure from scaffolding
+
+- Added project index (mandatory)
+- Copied scaffolding templates
+- Ready for development"
+```
+
+**Verify index exists:**
+```bash
+ls -la 00_Index_*.md
+# Should show: 00_Index_[YourProject].md
 ```
 
 ---
