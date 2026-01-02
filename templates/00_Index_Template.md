@@ -47,7 +47,8 @@ created: 2025-12-31
 ## Status
 
 **Tags:** #map/project #p/[project-name]  
-**Status:** #status/[active|production|archived|planning]  
+**Type:** #type/[standard|evergreen|infrastructure|ai-agent|dashboard|journal|research|book|image-gen|knowledge-base|meta-project]
+**Status:** #status/[active|production|archived|planning|complete]  
 **Last Major Update:** [Month Year or specific date]  
 **Priority:** [Optional: #mission-critical, #high-volume, etc.]  
 **Infrastructure:** [Optional: #infra/railway, #api/openai, etc.]
@@ -61,10 +62,11 @@ Replace the placeholder tags in the frontmatter above with appropriate values:
 ### Required Tags
 - `map/project` - Always include (marks as project index)
 - `p/[project-name]` - Replace with your project folder name (lowercase, hyphenated)
-- `type/[type]` - Choose from: ai-agent, pipeline, platform, desktop-app, webapp, tool, framework, knowledge-base, monitoring, automation, etc.
+- `type/[type]` - Choose from: standard, evergreen, infrastructure, ai-agent, dashboard, journal, research, book, image-gen, knowledge-base, meta-project.
+  - *Note:* `evergreen`, `journal`, and `knowledge-base` types will hide the completion percentage on the dashboard.
 - `domain/[domain]` - Choose from: ai-orchestration, image-processing, finance, documentation, political-analysis, personal-ai, etc.
-- `status/[status]` - Choose from: active, production, archived, planning, experimental
-- `tech/[tech]` - Primary technology: python, typescript, javascript, etc.
+- `status/[status]` - Choose from: active, production, archived, planning, experimental, complete
+- `tech/[tech]` - Primary technology: python, typescript, javascript, go, etc.
 
 ### Optional Tags (add as applicable)
 - `tech/[framework]` - Specific frameworks: python/pandas, typescript/electron, etc.
