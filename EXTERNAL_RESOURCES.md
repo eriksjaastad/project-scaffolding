@@ -1,7 +1,7 @@
 # External Resources & Services
 
 > **Purpose:** Track which external services, APIs, and resources are used across all projects  
-> **Last Updated:** December 24, 2025
+> **Last Updated:** January 1, 2026
 
 **Why this exists:** When you get a bill or notification, you need to know which project uses that service.
 
@@ -154,18 +154,15 @@ Ask yourself:
 
 | Service | Projects Using It | Cost | Status |
 |---------|------------------|------|--------|
+| Vercel | muffinpanrecipes | Free tier | Active |
 | Railway | Trading Projects | ~$5/mo | Active |
 | OpenAI API | Trading, Cortana, image-workflow | ~$15/mo total | Active |
 | Anthropic API | Trading | ~$2/mo | Active |
 | Google AI (Gemini) | Trading | ~$1/mo | Active |
 | xAI (Grok) | Trading | Pay-per-use | Active |
-| Cloudflare R2 | 3D Pose Factory | $3-10/mo (storage) | Active |
+| Cloudflare R2 | 3D Pose Factory, muffinpanrecipes (Planned) | $3-10/mo (storage) | Active |
+| RunPod | 3D Pose Factory, muffinpanrecipes (Planned) | Pay-per-use | Active |
 | rclone | 3D Pose Factory, image-workflow | Free (tool) | Active |
-| Postgres (Railway) | Trading | Included in Railway | Active |
-| Discord Webhooks | Trading | Free | Active |
-| Healthchecks.io | Trading Projects | Free tier | Active |
-| SuperWhisper | Cortana | One-time purchase | Active |
-| Google Drive | image-workflow | Free (personal storage) | Active |
 
 ---
 
@@ -182,7 +179,8 @@ Ask yourself:
 - **Notes:** Runs 4x daily + weekly/monthly jobs
 
 #### Cloudflare R2
-- **Projects:** 3D Pose Factory
+- **Projects:** 3D Pose Factory, muffinpanrecipes (Planned)
+- **Aliases:** Image Generation, Fat AI, 3D Renders, Mission Control, Muffin Recipes
 - **Cost:** $3-10/month (based on storage usage)
 - **Purpose:** S3-compatible object storage for pose outputs
 - **Bucket:** `pose-factory`
@@ -318,6 +316,21 @@ Ask yourself:
 
 ### Local Services
 
+#### Factory CLI (droid)
+- **Projects:** Workspace-wide (Exit strategy for Cursor burn rate)
+- **Cost:** Free (uses local models or BYOK)
+- **Purpose:** Context-heavy file searching, summaries, and local AI orchestration
+- **Key Files:** `~/.factory/settings.json`, root `AGENTS.md`
+- **Models:** Ollama (DeepSeek-R1, Llama 3.2), Cloud Gemini 3 Flash via BYOK
+- **Status:** Active (Installed 2026-01-01)
+
+#### Gemini API (ai_router)
+- **Projects:** Developer Tools, Factory CLI, AI Router
+- **Cost:** Free Tier / Pay-as-you-go (extremely cheap)
+- **Purpose:** Middle-tier reasoning for "Caretaker" tasks (context-heavy search)
+- **API Key:** `ai-router-gemini` → `~/.factory/settings.json`
+- **Status:** Active (2026-01-01)
+
 #### SuperWhisper
 - **Projects:** Cortana Personal AI
 - **Cost:** One-time purchase (~$30?)
@@ -430,6 +443,27 @@ Ask yourself:
 - **Status:** Active (2025-12-31)
 
 **Monthly cost:** $0 (100% local, no cloud API calls)
+
+---
+
+### Ollama MCP
+- ✅ **NO EXTERNAL SERVICES** ($0 cost)
+- Ollama (local model execution)
+- MCP SDK (local protocol)
+
+**Monthly cost:** $0
+
+---
+
+### Ollama MCP
+- ✅ **NO EXTERNAL SERVICES** (100% local, $0 cost)
+- **Purpose:** Bridge between MCP protocol and local Ollama models
+- **Services used:**
+  - Ollama (Local model execution)
+  - MCP SDK (Local protocol implementation)
+- **Status:** Active (2026-01-01)
+
+**Monthly cost:** $0 (Local execution)
 
 ---
 

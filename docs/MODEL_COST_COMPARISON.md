@@ -29,11 +29,13 @@
 
 ## Tier 2: Feature Building & Refactoring
 
-### Current
-- Cursor: Claude Sonnet Thinking
-- Cost: ~$769/month
+### Current (Jan 2026 Update)
+- **Primary:** **Gemini 3 Flash**
+- **Cost:** **40x cheaper** than Claude Sonnet
+- **Context Usage:** <3-6% observed vs 30% with Sonnet for similar output
+- **Verdict:** Promoted to the **Primary Workhorse** for the ecosystem.
 
-### Option A: DeepSeek V3 (CHEAPEST)
+### Option A: DeepSeek V3 (Secondary)
 - **Cost:** $0.27 input / $1.10 output per 1M tokens
 - **vs Claude Sonnet:** 11x cheaper input, 14x cheaper output
 - **Quality:** Similar to Claude 3.5 Sonnet

@@ -743,3 +743,32 @@ Don't force it. Let patterns emerge from experience.
 
 **Remember:** These are patterns, not rules. Use what helps, adapt what doesn't fit, ignore what doesn't apply.
 
+
+8. **The Super Manager Hierarchy** - Orchestrate AI via specialized roles
+
+---
+
+## Pattern 8: The Super Manager Hierarchy
+
+### What
+Orchestrate complex project launches by separating AI agents into specialized roles based on their "altitude" of thinking.
+
+1. **The Conductor (User):** Defines the "Vision" and "Vibe." Sets the constraints and high-level mission orders.
+2. **The Strategic Advisor (Root AI):** Operates at the meta-level (scaffolding). Ensures compliance with global standards, identifies cross-project dependencies, and guards the "Permanent Memory."
+3. **The Floor Manager (Project AI):** Operates inside the project directory. Executes the code, handles the logic, and manages the day-to-day task list.
+
+### Why It Works
+- **Prevents Context Drowning:** The Floor Manager doesn't need to know every detail of the billing history; the Strategic Advisor handles the "EXTERNAL_RESOURCES."
+- **Enforces Standards:** The Strategic Advisor checks the Floor Manager's work against the "Gold Standard" templates.
+- **High-Speed Execution:** By delegating routine tasks to the "Project AI" while the "Root AI" watches the perimeter, the Conductor can move 10x faster.
+
+### Implementation
+- **Project Indexing:** Every project must have a `00_Index_[ProjectName].md` so the Strategic Advisor can orient itself instantly.
+- **Handoff Protocols:** Use structured "Mission Orders" to move between phases.
+- **Governance Logs:** Maintain a central `EXTERNAL_RESOURCES.md` that all agents reference to find aliases and nicknames.
+
+### Evidence from Projects
+**Muffin Pan Recipes Kickoff:**
+- Conductor provided the "Oven-less" vision.
+- Strategic Advisor identified the "Mission Control" alias in the 3D Pose Factory project.
+- Floor Manager executed the Phase 0-2 build in a single 8-hour marathon.

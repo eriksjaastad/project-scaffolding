@@ -103,6 +103,9 @@
 ---
 
 ### High Priority
+- [ ] **Harden Cursor Rules:** Add "Trash, Don't Delete" safety rule to all project `.cursorrules`.
+  - [ ] Update `.cursorrules.template` in scaffolding.
+  - [ ] Retroactively apply to existing 30+ projects.
 - [ ] Add cost tracking log (`logs/cost-tracking.jsonl`)
 - [ ] Validate pricing against real bills (monthly)
 - [ ] Test Kiro spec generator on real feature

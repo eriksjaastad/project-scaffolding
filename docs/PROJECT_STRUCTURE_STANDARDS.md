@@ -399,19 +399,30 @@ python scripts/your_script.py
 
 ---
 
-## Checklist for New Projects
+## 📋 Master Compliance Checklist (The One Checklist)
 
-- [ ] Virtual environment in root (`venv/` or `node_modules/`)
-- [ ] Scripts in `scripts/` directory
-- [ ] Data files in `data/` directory
-- [ ] Documentation in `docs/` directory
-- [ ] Configuration files in root
-- [ ] `.gitignore` includes venv, data, secrets
-- [ ] `README.md` in root with quick start
-- [ ] `TODO.md` in root for task tracking
-- [ ] `requirements.txt` or `package.json` in root
+**Every project I touch MUST meet these requirements to be considered "scaffolded".**
+
+### Mandatory Files (Root Level)
+- [ ] **`00_Index_[ProjectName].md`** - Obsidian index with YAML frontmatter and status tags.
+- [ ] **`AGENTS.md`** - Universal source of truth for AI agents (DoD, Tech Stack, Constraints).
+- [ ] **`CLAUDE.md`** - Project-specific AI instructions and validation commands.
+- [ ] **`.cursorrules`** - Behavioral configuration for Cursor AI.
+- [ ] **`.cursorignore`** - Context window filtering (ignore node_modules, logs, etc.).
+- [ ] **`TODO.md`** - Task tracking following the [standard format](TODO_FORMAT_STANDARD.md).
+- [ ] **`README.md`** - High-level project overview.
+- [ ] **`.gitignore`** - Standard git ignore rules.
+
+### Mandatory Structure
+- [ ] **`Documents/`** directory - Centralized documentation following the [Documents/ pattern](PROJECT_STRUCTURE_STANDARDS.md#documentation-structure).
+  - `Documents/README.md` (Index)
+  - `Documents/core/` (Architecture/Operations)
+- [ ] **`scripts/`** directory - All executable scripts isolated from source code.
+- [ ] **`venv/`** or **`node_modules/`** - Virtual environment/dependencies in the project root.
 
 ---
+
+## Checklist for New Projects (Quick Start)
 
 ## Benefits of This Structure
 

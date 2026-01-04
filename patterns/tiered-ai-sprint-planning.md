@@ -28,18 +28,18 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│ TIER 1: Big Brain (Claude Sonnet 4.5, GPT-4)   │
+│ TIER 1: Big Brain (Sonnet 4.5, GPT-4, Gemini Pro)│
 │ Cost: ~$15/million input tokens                 │
 │ Use for: Architecture, debugging, strategy      │
 │ Budget: 20% of monthly token spend              │
 ├─────────────────────────────────────────────────┤
-│ TIER 2: Mid-Weight (GPT-4o, Claude Haiku)      │
-│ Cost: ~$2.50-5/million input tokens             │
-│ Use for: Implementation, refactoring, testing   │
+│ TIER 2: Implementation (Gemini 3 Flash)         │
+│ Cost: ~$0.075/million input tokens (40x cheaper!)│
+│ Use for: Multi-file build, refactoring, tests   │
 │ Budget: 50% of monthly token spend              │
 ├─────────────────────────────────────────────────┤
-│ TIER 3: Worker Bees (GPT-4o-mini, GPT-3.5)     │
-│ Cost: ~$0.15-0.50/million input tokens          │
+│ TIER 3: Worker Bees (GPT-4o-mini, Local Ollama) │
+│ Cost: ~$0.15/million tokens or $0 (Local)       │
 │ Use for: Boilerplate, docs, repetitive tasks   │
 │ Budget: 30% of monthly token spend              │
 └─────────────────────────────────────────────────┘

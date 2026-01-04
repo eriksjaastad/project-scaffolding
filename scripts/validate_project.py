@@ -24,6 +24,21 @@ PROJECTS_ROOT = Path("/Users/eriksjaastad/projects")
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
 SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
 
+# Mandatory files and directories
+MANDATORY_FILES = [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".cursorrules",
+    ".cursorignore",
+    "TODO.md",
+    "README.md",
+    ".gitignore"
+]
+MANDATORY_DIRS = [
+    "Documents",
+    "Documents/core"
+]
+
 # YAML frontmatter requirements
 REQUIRED_TAGS = ["map/project", "p/"]  # p/ is a prefix that must exist
 REQUIRED_SECTIONS = ["# ", "## Key Components", "## Status"]
@@ -98,38 +113,44 @@ def validate_index_content(index_path: Path) -> List[str]:
 
 def validate_project(project_path: Path, verbose: bool = True) -> bool:
     """
-    Validate a single project.
+    Validate a single project against the Master Compliance Checklist.
     
     Returns:
         True if valid, False otherwise
     """
     project_name = project_path.name
+    errors = []
     
-    # Check for index file
+    # 1. Check for index file
     has_index, index_path = has_index_file(project_path)
-    
     if not has_index:
-        if verbose:
-            print(f"❌ {project_name}")
-            print(f"   ERROR: Missing index file (00_Index_*.md)")
-            print(f"   Create one: cp templates/00_Index_Template.md \"{project_path}/00_Index_{project_name}.md\"")
-        return False
+        errors.append(f"Missing index file (00_Index_*.md)")
+    else:
+        # Validate index content
+        index_errors = validate_index_content(index_path)
+        errors.extend(index_errors)
     
-    # Validate index content
-    errors = validate_index_content(index_path)
+    # 2. Check for mandatory files
+    for filename in MANDATORY_FILES:
+        if not (project_path / filename).exists():
+            errors.append(f"Missing mandatory file: {filename}")
+            
+    # 3. Check for mandatory directories
+    for dirname in MANDATORY_DIRS:
+        if not (project_path / dirname).is_dir():
+            errors.append(f"Missing mandatory directory: {dirname}")
     
     if errors:
         if verbose:
-            print(f"⚠️  {project_name}")
-            print(f"   Index exists: {index_path.name}")
+            status_icon = "⚠️ " if has_index else "❌ "
+            print(f"{status_icon} {project_name}")
             for error in errors:
                 print(f"   - {error}")
         return False
     
     # All good!
     if verbose:
-        print(f"✅ {project_name}")
-        print(f"   Index: {index_path.name}")
+        print(f"✅ {project_name} (Fully Compliant)")
     return True
 
 
