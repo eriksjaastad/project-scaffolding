@@ -16,34 +16,39 @@ SCAFFOLDING="/Users/eriksjaastad/projects/project-scaffolding"
 
 cd "$NEW_PROJECT"
 
-# Copy structure
+# 1. Copy structure
 cp -r "$SCAFFOLDING/templates/Documents" ./Documents
 cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
+cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
 cp "$SCAFFOLDING/templates/.cursorrules.template" ./.cursorrules
-cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore  # if exists
+cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
+cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
+cp "$SCAFFOLDING/templates/README.md.template" ./README.md
+cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore
 
-# Copy .env.example if it exists
+# 2. Copy .env.example if it exists
 [[ -f "$SCAFFOLDING/templates/.env.example" ]] && cp "$SCAFFOLDING/templates/.env.example" ./.env.example
 ```
 
-### Step 2: Customize Templates
+### Step 2: Customize Templates (Critical)
 
-**Edit `.cursorrules`:**
-- Replace `[PROJECT_NAME]` with your project name
-- Update project overview
-- Add project-specific safety rules
-- Add reference to tiered sprint planning
+**Edit `AGENTS.md`:**
+- Replace `{project_description}` with a clear summary.
+- Update `{language}`, `{frameworks}`, and `{ai_strategy}`.
+- Update `{run_command}` and `{test_command}`.
+- This is the **Source of Truth** for AI assistants.
 
 **Edit `CLAUDE.md`:**
-- Replace `[PROJECT_NAME]` placeholders
-- Update project summary
-- Document your tech stack
-- Add project-specific patterns
+- Update project summary and tech stack.
+- List specific validation commands for the AI to run.
+- This tells the AI **how to work** on this specific project.
+
+**Edit `.cursorrules`:**
+- Replace `[PROJECT_NAME]` and update the overview.
+- Add project-specific safety rules.
 
 **Edit `Documents/README.md`:**
-- Update project name
-- Adjust directory structure if needed
-- Update quick start links
+- Update links and descriptions to match your new structure.
 
 ### Step 3: Create Project Index (MANDATORY)
 

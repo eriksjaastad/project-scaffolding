@@ -1,0 +1,25 @@
+# [PROJECT_NAME]
+
+[Brief 2-3 sentence description of the project.]
+
+## Quick Start
+
+### Installation
+```bash
+# [Add installation steps here]
+```
+
+### Usage
+```bash
+# [Add usage steps here]
+```
+
+## Documentation
+See the `Documents/` directory for detailed documentation:
+- [Architecture Overview](Documents/core/ARCHITECTURE_OVERVIEW.md)
+- [Operations Guide](Documents/core/OPERATIONS_GUIDE.md)
+
+## Status
+- **Current Phase:** [Phase Name]
+- **Status:** #status/active
+

@@ -76,6 +76,7 @@ projects:
 
   3d-pose-factory:
     monthly_cost: 7  # $3-10 for R2
+    aliases: ["Image Generation", "Fat AI", "3D Renders", "Mission Control"]
     services:
       - name: Cloudflare R2
         purpose: "S3-compatible storage for pose outputs"
@@ -85,6 +86,10 @@ projects:
         purpose: "Sync tool for R2"
         type: local
         cost: 0
+      - name: RunPod
+        purpose: "GPU Hosting for high-volume image generation"
+        type: hosting
+        cost: "Pay-per-use"
 
   agent_os:
     monthly_cost: 0
