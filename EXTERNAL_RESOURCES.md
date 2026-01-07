@@ -1,7 +1,7 @@
 # External Resources & Services
 
 > **Purpose:** Track which external services, APIs, and resources are used across all projects  
-> **Last Updated:** January 6, 2026
+> **Last Updated:** January 7, 2026
 > **Status:** Using Decentralized .env System
 
 **Why this exists:** When you get a bill or notification, you need to know which project uses that service.
@@ -21,9 +21,9 @@
 **Template:** `../.env.project-template`
 
 **Examples:**
-- `SCAFFOLDING_DEEPSEEK_API_KEY` → `project-scaffolding/.env`
-- `CORTANA_OPENAI_API_KEY` → `Cortana personal AI/.env`
-- `TRADING_OPENAI_API_KEY` → `Trading Projects/.env`
+- `SCAFFOLDING_DEEPSEEK_KEY` → `project-scaffolding/.env`
+- `CORTANA_OPENAI_KEY` → `Cortana personal AI/.env`
+- `TRADING_OPENAI_KEY` → `Trading Projects/.env`
 
 **Why this matters:**
 - ✅ Cost attribution (which project spent what?)
@@ -103,9 +103,9 @@ Ask yourself:
 
 | Service | Projects Using It | Env Var Name | Status |
 |---------|------------------|--------------|--------|
-| DeepSeek | Scaffolding | `SCAFFOLDING_DEEPSEEK_API_KEY` | Active |
-| OpenAI | Trading, Cortana, Scaffolding | `TRADING_OPENAI_API_KEY`, etc. | Active |
-| Anthropic | Trading, Scaffolding | `TRADING_ANTHROPIC_API_KEY`, etc. | Active |
+| DeepSeek | Scaffolding | `SCAFFOLDING_DEEPSEEK_KEY` | Active |
+| OpenAI | Trading, Cortana, Scaffolding | `TRADING_OPENAI_KEY`, etc. | Active |
+| Anthropic | Trading, Scaffolding | `TRADING_ANTHROPIC_KEY`, etc. | Active |
 | Railway | Trading | `TRADING_RAILWAY_API_KEY` | Active |
 | Discord | Trading, Scaffolding | `TRADING_DISCORD_WEBHOOK_URL` | Active |
 | Cloudflare R2 | 3D Pose Factory | `POSE_FACTORY_CLOUDFLARE_R2_KEY` | Active |
@@ -118,12 +118,12 @@ Ask yourself:
 
 #### OpenAI
 - **Projects:** Trading, Cortana, Scaffolding, image-workflow
-- **Env Vars:** `TRADING_OPENAI_API_KEY`, `CORTANA_OPENAI_API_KEY`, `SCAFFOLDING_OPENAI_API_KEY`
+- **Env Vars:** `TRADING_OPENAI_KEY`, `CORTANA_OPENAI_KEY`, `SCAFFOLDING_OPENAI_KEY`
 - **Pattern:** Per-project isolation
 
 #### DeepSeek
 - **Projects:** Scaffolding (Logic/Drafting)
-- **Env Var:** `SCAFFOLDING_DEEPSEEK_API_KEY`
+- **Env Var:** `SCAFFOLDING_DEEPSEEK_KEY`
 - **Status:** Integrated Jan 2026
 
 ---

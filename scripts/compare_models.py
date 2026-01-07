@@ -10,8 +10,16 @@ Test the same Tier 2 task with multiple models and compare:
 """
 
 import time
-from openai import OpenAI
-from anthropic import Anthropic
+import logging
+import os
+import sys
+from openai import OpenAI, APIError, APIConnectionError, RateLimitError
+from anthropic import Anthropic, APIStatusError, APIResponseError
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
 # Test prompt (typical Tier 2 refactoring task)
 TEST_PROMPT = """
@@ -37,11 +45,18 @@ Requirements:
 - Make it more readable
 """
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception_type((APIError, APIConnectionError, RateLimitError, APIStatusError, APIResponseError)),
+    reraise=True
+)
 def test_deepseek(api_key: str) -> dict:
     """Test with DeepSeek V3"""
     client = OpenAI(
         api_key=api_key,
-        base_url="https://api.deepseek.com/v1"
+        base_url="https://api.deepseek.com/v1",
+        timeout=60.0
     )
     
     start = time.time()
@@ -63,13 +78,19 @@ def test_deepseek(api_key: str) -> dict:
         "duration": duration
     }
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception_type((APIError, APIConnectionError, RateLimitError, APIStatusError, APIResponseError)),
+    reraise=True
+)
 def test_claude_opus(api_key: str) -> dict:
     """Test with Claude Opus 4"""
-    client = Anthropic(api_key=api_key)
+    client = Anthropic(api_key=api_key, timeout=60.0)
     
     start = time.time()
     response = client.messages.create(
-        model="claude-opus-4-20250514",
+        model="claude-3-5-opus-latest",
         max_tokens=4096,
         messages=[
             {"role": "user", "content": TEST_PROMPT}
@@ -88,9 +109,15 @@ def test_claude_opus(api_key: str) -> dict:
         "duration": duration
     }
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception_type((APIError, APIConnectionError, RateLimitError, APIStatusError, APIResponseError)),
+    reraise=True
+)
 def test_gpt4o(api_key: str) -> dict:
     """Test with GPT-4o"""
-    client = OpenAI(api_key=api_key)
+    client = OpenAI(api_key=api_key, timeout=60.0)
     
     start = time.time()
     response = client.chat.completions.create(
@@ -144,18 +171,16 @@ def compare_results(results: list) -> None:
         print(f"   {result['model']:20s} ${result['cost']:.6f}  ({savings:+.1f}% vs baseline)")
 
 if __name__ == "__main__":
-    import os
-    import sys
-    
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("Usage: python3 scripts/compare_models.py")
-        print("Requires DEEPSEEK_API_KEY environment variable.")
+        logger.info("Usage: python3 scripts/compare_models.py")
+        logger.info("Requires SCAFFOLDING_DEEPSEEK_KEY environment variable.")
         sys.exit(0)
     
     # Get API keys
-    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
+    deepseek_key = os.getenv("SCAFFOLDING_DEEPSEEK_KEY")
     if not deepseek_key:
-        raise ValueError("DEEPSEEK_API_KEY environment variable is not set")
+        logger.error("SCAFFOLDING_DEEPSEEK_KEY environment variable is not set")
+        sys.exit(1)
     
     anthropic_key = os.getenv("SCAFFOLDING_ANTHROPIC_KEY")
     openai_key = os.getenv("SCAFFOLDING_OPENAI_KEY")
@@ -163,25 +188,32 @@ if __name__ == "__main__":
     results = []
     
     # Test DeepSeek
-    print("Testing DeepSeek...")
-    results.append(test_deepseek(deepseek_key))
+    logger.info("Testing DeepSeek...")
+    try:
+        results.append(test_deepseek(deepseek_key))
+    except Exception as e:
+        logger.error(f"DeepSeek test failed after retries: {e}")
     
     # Test Claude Opus (if key available)
     if anthropic_key:
-        print("Testing Claude Opus...")
+        logger.info("Testing Claude Opus...")
         try:
             results.append(test_claude_opus(anthropic_key))
         except Exception as e:
-            print(f"Claude Opus test failed: {e}")
+            logger.error(f"Claude Opus test failed after retries: {e}")
     
     # Test GPT-4o (if key available)
     if openai_key:
-        print("Testing GPT-4o...")
+        logger.info("Testing GPT-4o...")
         try:
             results.append(test_gpt4o(openai_key))
         except Exception as e:
-            print(f"GPT-4o test failed: {e}")
+            logger.error(f"GPT-4o test failed after retries: {e}")
     
     # Compare
-    compare_results(results)
+    if results:
+        compare_results(results)
+    else:
+        logger.error("No successful tests to compare.")
+        sys.exit(1)
 

@@ -1,28 +1,26 @@
-import os
 import pathlib
 import logging
-import subprocess
+import sys
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
-def is_tier_1_project(index_path: str) -> bool:
+def is_tier_1_project(index_path: pathlib.Path) -> bool:
     """
     Determines if the given markdown index file represents a Tier 1 (Full Stack/Code) project.
-    Drafted by Ollama (deepseek-r1:14b).
     """
-    if not pathlib.Path(index_path).exists():
+    if not index_path.exists():
         return False
     
     tech_languages = {'python', 'javascript', 'java', 'c++', 'ruby', 'php', 'typescript', 'rust', 'go'}
     
     try:
-        with pathlib.Path(index_path).open('r') as f:
+        with index_path.open('r') as f:
             content = f.read()
             
         # Check for the specific tag
         if '#type/code' in content or '#type/project' in content:
-            # We add #type/project as it's often used for coding projects in this ecosystem
             return True
             
         # Check each header line for tech languages
@@ -36,84 +34,86 @@ def is_tier_1_project(index_path: str) -> bool:
         return False
         
     except Exception as e:
-        logging.error(f"Error reading file {index_path}: {e}")
+        logger.error(f"Error reading file {index_path}: {e}")
         return False
 
-def check_dependencies(project_root: str) -> bool:
+def check_dependencies(project_root: pathlib.Path) -> bool:
     """Checks if a Tier 1 project has a dependency manifest."""
     manifests = ['requirements.txt', 'package.json', 'pyproject.toml', 'setup.py']
     for manifest in manifests:
-        if os.path.exists(os.path.join(project_root, manifest)):
+        if (project_root / manifest).exists():
             return True
     return False
 
-def check_dangerous_functions(project_root: str) -> list:
+def check_dangerous_functions(project_root: pathlib.Path) -> list:
     """Greps for dangerous file removal functions."""
     dangerous_patterns = ['os.remove', 'os.unlink', 'shutil.rmtree']
-    # Use grep -r to find patterns in .py files
     found_issues = []
     
     # Simple walk and check to avoid external dependency for basic audit
-    for dirpath, _, filenames in os.walk(project_root):
-        if any(d in dirpath for d in ['venv', 'node_modules', '.git', '__pycache__']):
+    for file_path in project_root.rglob('*.py'):
+        # Skip certain directories
+        if any(part in file_path.parts for part in ['venv', 'node_modules', '.git', '__pycache__']):
             continue
             
-        for filename in filenames:
-            if filename.endswith('.py') and filename != 'warden_audit.py': # Exclude self
-                file_path = os.path.join(dirpath, filename)
-                try:
-                    with open(file_path, 'r') as f:
-                        content = f.read()
-                        for pattern in dangerous_patterns:
-                            if pattern in content:
-                                found_issues.append((file_path, pattern))
-                except Exception as e:
-                    logging.warning(f"Could not read file {file_path}: {e}")
-                    # Add to found issues so it surfaces to the summary
-                    found_issues.append((file_path, f"READ_ERROR: {e}"))
+        if file_path.name == 'warden_audit.py': # Exclude self
+            continue
+
+        try:
+            with file_path.open('r') as f:
+                content = f.read()
+                for pattern in dangerous_patterns:
+                    if pattern in content:
+                        found_issues.append((file_path, pattern))
+        except Exception as e:
+            logger.warning(f"Could not read file {file_path}: {e}")
+            found_issues.append((file_path, f"READ_ERROR: {e}"))
+            
     return found_issues
 
-def run_audit(root_dir: str) -> bool:
+def run_audit(root_dir: pathlib.Path) -> bool:
     """Crawls the ecosystem and performs the audit."""
-    logging.info(f"Starting Warden Audit in: {root_dir}")
+    logger.info(f"Starting Warden Audit in: {root_dir}")
     
     projects_found = 0
     issues_found = 0
     
-    for dirpath, _, filenames in os.walk(root_dir):
-        # Identify project roots by 00_Index_*.md
-        index_files = [f for f in filenames if f.startswith('00_Index_') and f.endswith('.md')]
+    # Find all project roots by looking for 00_Index_*.md files
+    for index_path in root_dir.rglob('00_Index_*.md'):
+        # Skip indices in templates or archives
+        if any(part in index_path.parts for part in ['templates', 'archives', 'venv', '.git']):
+            continue
+            
+        projects_found += 1
+        project_root = index_path.parent
+        project_name = project_root.name
         
-        if index_files:
-            projects_found += 1
-            project_root = dirpath
-            index_path = os.path.join(project_root, index_files[0])
-            project_name = os.path.basename(project_root)
-            
-            is_tier_1 = is_tier_1_project(index_path)
-            tier_label = "Tier 1 (Code)" if is_tier_1 else "Tier 2 (Other)"
-            
-            logging.info(f"Auditing Project: {project_name} [{tier_label}]")
-            
-            # Tier 1 Dependency Check
-            if is_tier_1:
-                if not check_dependencies(project_root):
-                    logging.error(f"[CRITICAL] {project_name}: Missing dependency manifest (requirements.txt/package.json)")
-                    issues_found += 1
-            
-            # Safety Check (All Tiers)
-            dangerous_usage = check_dangerous_functions(project_root)
-            for file_path, pattern in dangerous_usage:
-                logging.warning(f"[DANGEROUS] {project_name}: Raw '{pattern}' found in {os.path.relpath(file_path, root_dir)}")
+        is_tier_1 = is_tier_1_project(index_path)
+        tier_label = "Tier 1 (Code)" if is_tier_1 else "Tier 2 (Other)"
+        
+        logger.info(f"Auditing Project: {project_name} [{tier_label}]")
+        
+        # Tier 1 Dependency Check
+        if is_tier_1:
+            if not check_dependencies(project_root):
+                logger.error(f"[CRITICAL] {project_name}: Missing dependency manifest (requirements.txt/package.json)")
                 issues_found += 1
+        
+        # Safety Check (All Tiers)
+        dangerous_usage = check_dangerous_functions(project_root)
+        for file_path, pattern in dangerous_usage:
+            try:
+                rel_path = file_path.relative_to(root_dir)
+            except ValueError:
+                rel_path = file_path
+            logger.warning(f"[DANGEROUS] {project_name}: Raw '{pattern}' found in {rel_path}")
+            issues_found += 1
                 
-    logging.info("--- Audit Summary ---")
-    logging.info(f"Projects scanned: {projects_found}")
-    logging.info(f"Issues found: {issues_found}")
+    logger.info("--- Audit Summary ---")
+    logger.info(f"Projects scanned: {projects_found}")
+    logger.info(f"Issues found: {issues_found}")
     
-    if issues_found > 0:
-        return False
-    return True
+    return issues_found == 0
 
 if __name__ == "__main__":
     import argparse
@@ -121,8 +121,12 @@ if __name__ == "__main__":
     parser.add_argument("--root", default=".", help="Root directory to scan (default: .)")
     args = parser.parse_args()
     
-    success = run_audit(os.path.abspath(args.root))
-    if not success:
-        exit(1)
-    exit(0)
-
+    # Standardize to pathlib.Path and relative path if possible
+    root_path = pathlib.Path(args.root).resolve()
+    try:
+        root_path = root_path.relative_to(pathlib.Path.cwd())
+    except ValueError:
+        pass # Keep absolute if not under CWD, but preference is relative
+        
+    success = run_audit(root_path)
+    sys.exit(0 if success else 1)

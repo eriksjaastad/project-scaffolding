@@ -13,7 +13,7 @@ created: 2025-12-31
 
 # project-scaffolding
 
-Meta-project for extracting patterns from experiments to build better projects faster, serving as the "scaffolding is the product" philosophy repository. This system documents 20+ proven patterns from battle-tested projects, provides templates for new projects, enforces code quality standards through multi-model review orchestration (DeepSeek + Kiro), and tracks external resources to prevent duplicate services and surprise bills. Initial extraction is complete with comprehensive pattern analysis, safety systems, and development philosophy documentation.
+Meta-project for extracting patterns from experiments to build better projects faster, serving as the "scaffolding is the product" philosophy repository. This system documents 20+ proven patterns from battle-tested projects, provides templates for new projects, enforces code quality standards through multi-model review orchestration (DeepSeek + Ollama), and tracks external resources to prevent duplicate services and surprise bills. Initial extraction is complete with comprehensive pattern analysis, safety systems, and development philosophy documentation.
 
 ## Key Components
 
