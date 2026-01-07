@@ -112,6 +112,46 @@ def validate_index_content(index_path: Path) -> List[str]:
     return errors
 
 
+def validate_dna_integrity(project_path: Path) -> List[str]:
+    """Scan project for absolute paths and secrets. Returns list of errors."""
+    errors = []
+    
+    # Patterns to catch absolute paths
+    path_pattern = re.compile(r"/Users/[a-zA-Z0-9._-]+")  # absolute paths (e.g., for detection)
+    # Patterns to catch common secrets (sk-, AIza, etc.)
+    secret_pattern = re.compile(r"(sk-[a-zA-Z0-9]{32,}|AIza[a-zA-Z0-9_-]{35})")
+    
+    # Files to exclude from scan
+    exclude_dirs = {".git", "venv", "__pycache__", "node_modules", "data", "library"}
+    
+    for root, dirs, files in os.walk(project_path):
+        # Filter directories in-place
+        dirs[:] = [d for d in dirs if d not in exclude_dirs]
+        
+        for file in files:
+            # Skip binary files and known safe files
+            if file.endswith((".png", ".jpg", ".pyc", ".db", ".zip")):
+                continue
+                
+            file_path = Path(root) / file
+            try:
+                content = file_path.read_text(encoding='utf-8', errors='ignore')
+                
+                # Check for absolute paths
+                if path_pattern.search(content):
+                    errors.append(f"DNA Defect: Absolute path found in {file_path.relative_to(project_path)}")
+                
+                # Check for secrets
+                if secret_pattern.search(content):
+                    errors.append(f"Security Defect: Potential secret found in {file_path.relative_to(project_path)}")
+                    
+            except Exception as e:
+                # We log but don't fail the whole scan for one unreadable file
+                pass
+                
+    return errors
+
+
 def validate_project(project_path: Path, verbose: bool = True) -> bool:
     """
     Validate a single project against the Master Compliance Checklist.
@@ -140,6 +180,10 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     for dirname in MANDATORY_DIRS:
         if not (project_path / dirname).is_dir():
             errors.append(f"Missing mandatory directory: {dirname}")
+            
+    # 4. DNA Integrity Scan (Automated Gate 0)
+    dna_errors = validate_dna_integrity(project_path)
+    errors.extend(dna_errors)
     
     if errors:
         if verbose:

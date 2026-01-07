@@ -43,6 +43,12 @@
 
 ## 📋 Pending Tasks
 
+### Phase 0: Industrial Hardening (Gate 0)
+- [ ] **Dependency Pinning:** Replace `>=` with `~=` or `==` in `requirements.txt`.
+- [ ] **DNA Check:** Verify zero `/Users/` paths remain in codebase (absolute paths (e.g., check)).
+- [ ] **Error Audit:** Replace `except: pass` with explicit logging.
+- [ ] **Subprocess Audit:** Ensure all CLI calls have `check=True` and `timeout`.
+
 ### 🔴 CRITICAL - Must Do First
 <!-- High-priority, blocking other work -->
 
