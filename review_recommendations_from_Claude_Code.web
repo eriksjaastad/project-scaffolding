@@ -1,0 +1,349 @@
+# Review Process Recommendations
+## Lessons Learned from the Executioner's Audit
+
+**Created:** 2026-01-07
+**Purpose:** Prevent future blind spots in code reviews for upstream infrastructure projects
+
+---
+
+## The Core Problem
+
+The existing review process focused on **Python scripts** but missed **configuration files, templates, and documentation** that propagate to downstream projects. When your repo is the DNA of 30 projects, every file type matters.
+
+---
+
+## Recommendation 1: Expand the Scope of Automated Checks
+
+### Current State
+```python
+# test_scripts_follow_standards.py only checks scripts/
+["grep", "-rn", "/Users/", "scripts/", "--include=*.py"]
+```
+
+### Recommended State
+```python
+# Check ALL files that could propagate to downstream projects
+SCAN_PATTERNS = [
+    ("*.py", "scripts/"),
+    ("*.py", "scaffold/"),
+    ("*.md", "templates/"),
+    ("*.template", "templates/"),
+    (".cursorrules*", "."),
+    ("*.yaml", "."),
+    ("*.md", "patterns/"),
+    ("*.md", "docs/"),
+]
+
+def test_no_hardcoded_paths_anywhere():
+    """No file in the repo should contain hardcoded user paths"""
+    violations = []
+    for pattern, directory in SCAN_PATTERNS:
+        result = subprocess.run(
+            ["grep", "-rn", "/Users/", directory, "--include=" + pattern],
+            capture_output=True, text=True
+        )
+        if result.returncode == 0:  # Found matches
+            violations.append(f"{directory}/{pattern}:\n{result.stdout}")
+
+    assert not violations, f"Found hardcoded paths:\n{''.join(violations)}"
+```
+
+### Why This Was Missed
+The test was written to verify the *scripts* were clean after fixing them. No one thought to check whether the *templates* and *config files* that generate new projects had the same problem.
+
+**Rule:** If you fix a bug in one place, grep the entire repo for the same pattern.
+
+---
+
+## Recommendation 2: Add "Trickle-Down" Analysis for Upstream Repos
+
+### The Concept
+For any repo that generates or influences other repos, add a dedicated review phase:
+
+```markdown
+## Trickle-Down Checklist (For Upstream Repos Only)
+
+- [ ] **Template Audit:** Do any templates contain machine-specific paths?
+- [ ] **Config Propagation:** Will `.cursorrules`, `.gitignore`, etc. copy cleanly to new projects?
+- [ ] **Documentation Examples:** Do code examples in docs use relative paths?
+- [ ] **Pattern Files:** Do patterns in `patterns/` demonstrate the right behavior?
+- [ ] **YAML/JSON Configs:** Are external resource references portable?
+```
+
+### Implementation
+Add this to your `patterns/code-review-standard.md`:
+
+```markdown
+### Special Considerations for Upstream Infrastructure
+
+When reviewing repos that serve as templates or scaffolding:
+
+1. **Run the "New Machine Test":** Clone to a fresh directory with a different username. Does everything still work?
+
+2. **Grep for Your Username:** `grep -r "$(whoami)" .` should return nothing (except maybe git history).
+
+3. **Check Template Files Separately:** Templates are often excluded from linters. Review them manually.
+
+4. **Consider the Multiplication Factor:** A "minor" issue here becomes 30 issues downstream.
+```
+
+---
+
+## Recommendation 3: Silent Failure Detection
+
+### The Pattern We Missed
+```python
+except Exception:
+    pass  # This swallows errors silently
+```
+
+### Automated Detection
+Add to your test suite:
+
+```python
+def test_no_silent_exception_swallowing():
+    """Catch bare except or except-pass patterns"""
+    import ast
+
+    violations = []
+    for py_file in Path(".").rglob("*.py"):
+        if "venv" in str(py_file) or "__pycache__" in str(py_file):
+            continue
+
+        try:
+            tree = ast.parse(py_file.read_text())
+            for node in ast.walk(tree):
+                if isinstance(node, ast.ExceptHandler):
+                    # Check for bare except
+                    if node.type is None:
+                        violations.append(f"{py_file}:{node.lineno} - bare 'except:'")
+                    # Check for except-pass
+                    if len(node.body) == 1 and isinstance(node.body[0], ast.Pass):
+                        violations.append(f"{py_file}:{node.lineno} - 'except: pass' pattern")
+        except SyntaxError:
+            pass  # Ironic, but we can't parse everything
+
+    assert not violations, f"Silent exception handling found:\n" + "\n".join(violations)
+```
+
+### Why This Matters
+A CI pipeline that exits with code 0 when it skipped files due to errors is **lying about its results**. This is how security vulnerabilities hide.
+
+---
+
+## Recommendation 4: Dependency Health Check
+
+### Current State
+Reviews didn't analyze `requirements.txt` for:
+- Deprecated version ranges
+- Missing upper bounds
+- Known-problematic version combinations
+
+### Recommended Addition
+Add a `test_dependency_health.py`:
+
+```python
+import re
+from pathlib import Path
+
+def test_dependencies_have_upper_bounds():
+    """Dependencies should use ~= or == to prevent surprise breakage"""
+    requirements = Path("requirements.txt").read_text()
+
+    violations = []
+    for line in requirements.split("\n"):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+
+        # Check for >= without upper bound
+        if ">=" in line and "<" not in line and "~=" not in line:
+            violations.append(f"Unbounded dependency: {line}")
+
+        # Check for just package name (no version at all)
+        if re.match(r"^[a-zA-Z][a-zA-Z0-9_-]*$", line):
+            violations.append(f"Unpinned dependency: {line}")
+
+    assert not violations, "Dependency issues:\n" + "\n".join(violations)
+
+def test_no_deprecated_packages():
+    """Check for packages known to have breaking changes"""
+    requirements = Path("requirements.txt").read_text().lower()
+
+    # Packages with known major version migrations
+    risky_patterns = [
+        ("pydantic>=1", "Pydantic 1.x -> 2.x has breaking changes"),
+        ("anthropic>=0.1", "Anthropic 0.x -> 1.x has breaking API changes"),
+    ]
+
+    warnings = []
+    for pattern, reason in risky_patterns:
+        if pattern.split(">=")[0] in requirements:
+            warnings.append(f"{pattern}: {reason}")
+
+    # This is a warning, not a failure
+    if warnings:
+        print("Dependency warnings:\n" + "\n".join(warnings))
+```
+
+---
+
+## Recommendation 5: Review Checklist for "Scaffolding" Repos
+
+Create a dedicated checklist in `patterns/code-review-standard.md`:
+
+```markdown
+## Scaffolding Repository Review Checklist
+
+### Before Approving Any PR:
+
+#### Portability
+- [ ] `grep -rn "/Users/" .` returns nothing (excluding .git)
+- [ ] `grep -rn "/home/" .` returns nothing (excluding .git)
+- [ ] `grep -rn "C:\\Users" .` returns nothing
+- [ ] No hardcoded hostnames, IPs, or domain names
+
+#### Template Safety
+- [ ] All `.template` files use placeholders, not real values
+- [ ] `.cursorrules*` files contain no machine-specific paths
+- [ ] Example code in documentation uses relative paths
+
+#### Exception Handling
+- [ ] No `except: pass` patterns
+- [ ] No `except Exception: pass` without logging
+- [ ] All CLI tools exit with non-zero on failure
+
+#### Dependencies
+- [ ] All dependencies have version constraints
+- [ ] No `>=` without corresponding `<` or use `~=`
+- [ ] Deprecated package versions are flagged
+
+#### Systemic Risk
+- [ ] Changes won't break downstream projects
+- [ ] New patterns are documented before propagation
+- [ ] Breaking changes have migration guide
+```
+
+---
+
+## Recommendation 6: Two-Phase Review for Infrastructure
+
+### Phase 1: Standard Code Review
+- Logic correctness
+- Type hints
+- Test coverage
+- Documentation
+
+### Phase 2: "Propagation Impact" Review (New)
+- What files will be copied to new projects?
+- What patterns will developers imitate?
+- What could go wrong if this is replicated 30 times?
+
+### Implementation
+Add a label or tag system:
+```
+[propagates] - This file/pattern will be copied to downstream projects
+[example] - This code will be imitated by developers
+[config] - This configuration affects all projects
+```
+
+Any PR touching `[propagates]` files gets extra scrutiny.
+
+---
+
+## Recommendation 7: The "Fresh Clone" CI Step
+
+### The Test That Would Have Caught Everything
+
+```yaml
+# .github/workflows/fresh-clone-test.yml
+name: Fresh Clone Portability Test
+
+on: [push, pull_request]
+
+jobs:
+  portability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for hardcoded paths
+        run: |
+          # Fail if any /Users/ or /home/specific-user paths exist
+          if grep -rn "/Users/" --include="*.py" --include="*.md" --include="*.yaml" --include="*.template" .; then
+            echo "ERROR: Found hardcoded /Users/ paths"
+            exit 1
+          fi
+
+      - name: Check for silent exception handling
+        run: |
+          # Simple grep for dangerous patterns
+          if grep -rn "except.*:.*pass" --include="*.py" .; then
+            echo "WARNING: Found potential silent exception handling"
+            # Fail or warn based on your policy
+          fi
+
+      - name: Verify scripts run without machine-specific deps
+        run: |
+          python -c "import scripts.archive_reviews" || exit 1
+          python -c "import scripts.warden_audit" || exit 1
+```
+
+---
+
+## Recommendation 8: Review the Reviewers
+
+### The Meta-Problem
+The automated multi-model reviews (`reviews/round_*/`) focused on the *methodology documentation* but not the *implementation code*. The security reviewer analyzed the tiered sprint planning *concept* but didn't grep the actual Python files.
+
+### Solution: Scope Clarity in Review Prompts
+
+When running automated reviews, be explicit:
+
+```markdown
+## Review Scope
+
+You are reviewing:
+- [ ] The CONCEPT/METHODOLOGY described in documents
+- [ ] The IMPLEMENTATION CODE in Python files
+- [ ] The TEMPLATES that generate new projects
+- [ ] The CONFIGURATION files that affect all projects
+
+If multiple scopes apply, review each separately.
+```
+
+---
+
+## Summary: The 5-Minute Pre-Merge Checklist
+
+Before merging any PR to a scaffolding/upstream repo:
+
+```bash
+# 1. Check for hardcoded paths (30 seconds)
+grep -rn "/Users/\|/home/" . --include="*.py" --include="*.md" --include="*.yaml" --include="*.template" | grep -v ".git"
+
+# 2. Check for silent failures (30 seconds)
+grep -rn "except.*pass" --include="*.py" .
+
+# 3. Check for unbounded deps (30 seconds)
+grep -E "^[a-z].*>=" requirements.txt | grep -v "~="
+
+# 4. Check templates specifically (2 minutes)
+ls templates/
+# Manually review any .template files for machine-specific content
+
+# 5. Ask yourself (1 minute)
+# "If this change is copied to 30 projects, what could go wrong?"
+```
+
+---
+
+## Final Thought
+
+> *"The best review process is one that assumes the reviewer will miss something. Build automated checks for the obvious stuff so humans can focus on the subtle stuff."*
+
+The hardcoded paths weren't subtle — they were in plain sight. But when you're focused on logic and security, you don't think to grep for your own username. Automation catches what humans forget to look for.
+
+---
+
+**End of Recommendations**
