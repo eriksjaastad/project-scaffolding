@@ -391,8 +391,8 @@ class ReviewOrchestrator:
             # Clean up temp file
             try:
                 os.unlink(prompt_file)
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Failed to cleanup temp prompt file {prompt_file}: {e}")
             
             if result.returncode != 0:
                 raise RuntimeError(f"Kiro CLI exited with code {result.returncode}: {result.stderr}")

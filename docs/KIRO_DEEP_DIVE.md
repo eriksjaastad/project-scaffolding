@@ -318,7 +318,7 @@ def generate_kiro_specs(project_root: str, feature_name: str, description: str):
 
 # Usage
 generate_kiro_specs(
-    project_root="/Users/eriksjaastad/projects/my-project",
+    project_root="$PROJECTS_ROOT/my-project",
     feature_name="user-authentication",
     description="JWT-based auth with refresh tokens"
 )

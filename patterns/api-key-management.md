@@ -136,7 +136,7 @@ ANTHROPIC_API_KEY=sk-ant-your-key-here
 
 ### Step 5: Document in EXTERNAL_RESOURCES.md
 
-**Required:** Update `/Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.md`
+**Required:** Update `$PROJECTS_ROOT/project-scaffolding/EXTERNAL_RESOURCES.md`
 
 ```markdown
 ## OpenAI

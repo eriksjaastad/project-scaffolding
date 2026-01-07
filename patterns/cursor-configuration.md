@@ -25,7 +25,7 @@ Without configuration, Cursor AI:
 
 ### 1. `.cursorrules` - Behavior Configuration
 
-**Location:** `/Users/eriksjaastad/projects/.cursorrules`
+**Location:** `$PROJECTS_ROOT/.cursorrules`
 
 **Purpose:** Tell Cursor how to behave in this workspace.
 
@@ -57,7 +57,7 @@ Without configuration, Cursor AI:
 
 ### 2. `.cursorignore` - File Filtering
 
-**Location:** `/Users/eriksjaastad/projects/.cursorignore`
+**Location:** `$PROJECTS_ROOT/.cursorignore`
 
 **Purpose:** Prevent Cursor from reading binary/junk files entirely.
 

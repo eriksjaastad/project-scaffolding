@@ -193,7 +193,7 @@ Summary: 13/15 projects valid (2 need attention)
 ### Next Steps
 ```bash
 # Create remaining indexes
-cd /Users/eriksjaastad/projects/project-scaffolding
+cd $PROJECTS_ROOT/project-scaffolding
 ./scripts/reindex_projects.py --missing
 
 # This will create 22 new index files automatically

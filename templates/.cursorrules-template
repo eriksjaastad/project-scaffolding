@@ -59,7 +59,7 @@
 
 ## 🔗 Related Resources
 
-- **Project Philosophy:** `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
-- **Project Scaffolding:** `/Users/eriksjaastad/projects/project-scaffolding/`
-- **Code Quality Standards:** `/Users/eriksjaastad/projects/project-scaffolding/docs/CODE_QUALITY_STANDARDS.md`
+- **Project Philosophy:** `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`
+- **Project Scaffolding:** `$PROJECTS_ROOT/project-scaffolding/`
+- **Code Quality Standards:** `$PROJECTS_ROOT/project-scaffolding/docs/CODE_QUALITY_STANDARDS.md`
 
