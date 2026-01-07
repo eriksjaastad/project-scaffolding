@@ -5,18 +5,19 @@ Test DeepSeek quality vs Claude Sonnet
 Each project will get its own DeepSeek API key.
 """
 
-from openai import OpenAI
-import sys
 import os
+import sys
+import pytest
+from openai import OpenAI
 
-# Testing API key
-DEEPSEEK_KEY = os.getenv("DEEPSEEK_API_KEY")
+DEEPSEEK_KEY = os.getenv("SCAFFOLDING_DEEPSEEK_KEY") or os.getenv("DEEPSEEK_API_KEY")
 
-def test_deepseek() -> bool:
-    """Test DeepSeek with a real coding task"""
+@pytest.mark.slow
+@pytest.mark.integration
+def test_deepseek() -> None:
+    """Test DeepSeek with a real coding task (integration; costs tokens)."""
     if not DEEPSEEK_KEY:
-        print("\n❌ Error: DEEPSEEK_API_KEY environment variable is not set")
-        return False
+        pytest.skip("SCAFFOLDING_DEEPSEEK_KEY not set")
     
     client = OpenAI(
         api_key=DEEPSEEK_KEY,
@@ -72,11 +73,12 @@ Make it production-ready.
         print(f"   Claude Sonnet (est): ${claude_cost:.6f}")
         print(f"   Savings: {savings:.1f}%")
         
-        return True
-        
+        assert content and len(content) > 50
+        assert tokens > 0
+        assert cost >= 0
+    
     except Exception as e:
-        print(f"\n❌ Error: {e}")
-        return False
+        pytest.fail(f"DeepSeek call failed: {e}")
 
 if __name__ == "__main__":
     if "--help" in sys.argv or "-h" in sys.argv:
