@@ -242,9 +242,9 @@ project-name/
 ```
 
 **⚠️ Portability Rule:**
-- **NEVER** use absolute paths (e.g., `/Users/...`) in scripts or configs.
+- **NEVER** use absolute paths (e.g., `/USER_HOME/...`) in scripts or configs.
 - **ALWAYS** use relative paths or environment variables like `PROJECT_ROOT` to ensure the project is portable across different machines and environments (RunPod, CI/CD).
-- **Rule of Thumb:** If the path starts with `/Users/`, it's a bug.
+- **Rule of Thumb:** If the path starts with `/USER_HOME/`, it's a bug.
 
 ---
 

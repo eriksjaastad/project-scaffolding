@@ -9,26 +9,47 @@ def test_no_hardcoded_paths():
     pattern = "/" + "Users" + "/"
     # grep returns 0 if matches are found, 1 if no matches are found.
     # We want it to NOT find matches.
-    result = subprocess.run(
-        ["grep", "-rn", pattern, "scripts/", "--include=*.py"],
-        capture_output=True,
-        text=True
-    )
+    try:
+        result = subprocess.run(
+            ["grep", "-rn", pattern, "scripts/", "--include=*.py"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=True
+        )
+        stdout = result.stdout
+    except subprocess.CalledProcessError as e:
+        # grep returns 1 if no matches found
+        if e.returncode == 1:
+            stdout = ""
+        else:
+            raise
     
     # Filter out legitimate uses (like regex patterns for detection)
-    lines = [line for line in result.stdout.splitlines() if "re.compile" not in line and "absolute paths (e.g.," not in line]
+    lines = [line for line in stdout.splitlines() if "re.compile" not in line and "absolute paths (e.g.," not in line]
     
     assert not lines, f"Found hardcoded paths:\n" + "\n".join(lines)
 
 def test_no_hardcoded_api_keys():
     """Scripts must not contain API keys"""
     # Regex for sk-... keys
-    result = subprocess.run(
-        ["grep", "-rE", "sk-[a-zA-Z0-9]{32,}", "scripts/", "--include=*.py"],
-        capture_output=True,
-        text=True
-    )
-    assert result.returncode != 0, f"Found API keys:\n{result.stdout}"
+    try:
+        result = subprocess.run(
+            ["grep", "-rE", "sk-[a-zA-Z0-9]{32,}", "scripts/", "--include=*.py"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=True
+        )
+        stdout = result.stdout
+    except subprocess.CalledProcessError as e:
+        # grep returns 1 if no matches found
+        if e.returncode == 1:
+            stdout = ""
+        else:
+            raise
+    
+    assert not stdout, f"Found API keys:\n{stdout}"
 
 def test_scripts_have_type_hints():
     """All .py files in scripts/ should have type hints on functions"""

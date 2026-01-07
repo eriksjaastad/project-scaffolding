@@ -21,7 +21,7 @@
 
 ## ⚠️ Critical Constraints
 - NEVER hard-code API keys, secrets, or credentials in script files. Use `.env` and `os.getenv()`.
-- NEVER use absolute paths (e.g., `/Users/...`). ALWAYS use relative paths or `PROJECT_ROOT` env var.
+- NEVER use absolute paths (e.g., machine-specific paths). ALWAYS use relative paths or `PROJECT_ROOT` env var.
 - {constraint_1}
 - {constraint_2}
 

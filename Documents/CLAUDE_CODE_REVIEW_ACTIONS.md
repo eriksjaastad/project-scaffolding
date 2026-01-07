@@ -89,7 +89,7 @@
 
 - [ ] Replace with minimal 50-line version
 - [ ] Or: just keep the steering templates, delete the rest
-- [ ] Remove hardcoded `/Users/eriksjaastad/` paths
+- [ ] Remove hardcoded `~/` paths
 
 **Files:**
 - `templates/CLAUDE.md.template` - simplify or delete

@@ -35,9 +35,10 @@ class TestKiroCLI:
         result = subprocess.run(
             [kiro_cli, "--version"],
             capture_output=True,
-            text=True
+            text=True,
+            timeout=10,
+            check=True
         )
-        assert result.returncode == 0, "Kiro CLI version command failed"
         assert "kiro-cli" in result.stdout.lower()
     
     def test_kiro_cli_whoami(self, kiro_cli):
@@ -45,9 +46,10 @@ class TestKiroCLI:
         result = subprocess.run(
             [kiro_cli, "whoami"],
             capture_output=True,
-            text=True
+            text=True,
+            timeout=10,
+            check=True
         )
-        assert result.returncode == 0, "Kiro whoami command failed"
         assert "not logged in" not in result.stdout.lower(), "User not logged into Kiro"
     
     def test_kiro_cli_chat_simple(self, kiro_cli):
@@ -56,9 +58,9 @@ class TestKiroCLI:
             [kiro_cli, "chat", "--no-interactive", "Say hello"],
             capture_output=True,
             text=True,
-            timeout=30
+            timeout=30,
+            check=True
         )
-        assert result.returncode == 0, f"Kiro chat failed: {result.stderr}"
         assert len(result.stdout) > 0, "Kiro returned empty response"
     
     def test_kiro_agent_list(self, kiro_cli):
@@ -66,9 +68,10 @@ class TestKiroCLI:
         result = subprocess.run(
             [kiro_cli, "agent", "list"],
             capture_output=True,
-            text=True
+            text=True,
+            timeout=10,
+            check=True
         )
-        assert result.returncode == 0, "Kiro agent list failed"
         # Kiro outputs to stderr, not stdout
         output = result.stdout + result.stderr
         assert "kiro_default" in output or "kiro_planner" in output
@@ -240,10 +243,10 @@ class TestKiroIntegrationWorkflow:
              f"Review the design in {design_path} for major flaws"],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=60,
+            check=True
         )
         
-        assert result.returncode == 0, f"Kiro review failed: {result.stderr}"
         assert len(result.stdout) > 100, "Kiro review response too short"
 
 

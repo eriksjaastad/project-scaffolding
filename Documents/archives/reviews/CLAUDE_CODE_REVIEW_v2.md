@@ -57,7 +57,7 @@ templates/.cursorrules-template:62: - **Project Philosophy:** `$PROJECTS_ROOT/Tr
 
 **File:** `_obsidian/WARDEN_LOG.yaml:29`
 ```yaml
-- Created global environment template at /Users/eriksjaastad/projects/.env.project-template.
+- Created global environment template at PROJECTS_ROOT/.env.project-template.
 ```
 
 **Impact:** The security audit log that documents "45+ hardcoded paths purged" contains a hardcoded path **in the same file**. This is logged as official governance evidence.
@@ -66,7 +66,7 @@ templates/.cursorrules-template:62: - **Project Philosophy:** `$PROJECTS_ROOT/Tr
 
 ### CRIT-4: `$PROJECTS_ROOT` is Not Portability
 
-Throughout the codebase, absolute paths like `/Users/eriksjaastad/` were replaced with `$PROJECTS_ROOT`. But `$PROJECTS_ROOT` still assumes:
+Throughout the codebase, absolute paths like `~/` were replaced with `$PROJECTS_ROOT`. But `$PROJECTS_ROOT` still assumes:
 - A specific directory structure (`Trading Projects/`, `AI-journal/`, `agent-skills-library/`)
 - These sibling directories exist on any machine using this scaffolding
 
@@ -142,8 +142,8 @@ Per the anti-patterns database, `send2trash` can prompt for interactive confirma
 
 | File | Line | Content |
 |------|------|---------|
-| `EXTERNAL_RESOURCES.md:21` | `Template: /Users/.../projects/.env.project-template` |
-| `docs/PROJECT_KICKOFF_GUIDE.md:14-15` | Placeholder `/Users/.../projects/` |
+| `EXTERNAL_RESOURCES.md:21` | `Template: PROJECTS_ROOT/projects/.env.project-template` |
+| `docs/PROJECT_KICKOFF_GUIDE.md:14-15` | Placeholder `PROJECTS_ROOT/projects/` |
 | `docs/KIRO_DEEP_DIVE.md:294-295` | Hardcoded `/Applications/Kiro CLI.app/...` |
 
 ---
@@ -175,7 +175,7 @@ kiro_path = shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/Mac
 
 | ID | Category | Check | Evidence | Status |
 |----|----------|-------|----------|--------|
-| **M1** | Robot | No hardcoded `/Users/` paths | `WARDEN_LOG.yaml:29` has `/Users/eriksjaastad/` | FAIL |
+| **M1** | Robot | No hardcoded `/Users/` paths | `WARDEN_LOG.yaml:29` has `~/` | FAIL |
 | **M2** | Robot | No silent `except: pass` | `reindex_projects.py:74-75` | FAIL |
 | **M3** | Robot | No API keys in code | Clean | PASS |
 | **P1** | DNA | Templates portable | `$PROJECTS_ROOT` refs in templates | FAIL |

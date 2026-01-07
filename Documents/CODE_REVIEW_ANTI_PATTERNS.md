@@ -6,7 +6,7 @@ This database tracks recurring defects found in the project-scaffolding ecosyste
 
 ### Anti-Pattern #1: Hardcoded Absolute Paths
 
-**What:** `/Users/eriksjaastad/...` or similar machine-specific paths.
+**What:** `~/...` or similar machine-specific paths.
 
 **Where to Look:**
 - `templates/*.template` files

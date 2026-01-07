@@ -18,11 +18,13 @@ This script:
 
 import sys
 import os
+import tempfile
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple
 from collections import Counter
 import subprocess
+import logging
 
 # Configuration
 SCAFFOLDING_ROOT = Path(__file__).parent.parent
@@ -30,6 +32,10 @@ PROJECTS_ROOT = Path(os.getenv("PROJECTS_ROOT", Path.home() / "projects"))
 TEMPLATE_PATH = SCAFFOLDING_ROOT / "templates" / "00_Index_Template.md"
 SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
 ARCHIVE_THRESHOLD_DAYS = 180  # 6 months
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
 # Technology detection
 TECH_EXTENSIONS = {
@@ -66,13 +72,22 @@ def get_last_modified(project_path: Path) -> datetime:
             cwd=project_path,
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
+            check=True
         )
-        if result.returncode == 0 and result.stdout.strip():
+        if result.stdout.strip():
             timestamp = int(result.stdout.strip())
             return datetime.fromtimestamp(timestamp)
-    except (subprocess.TimeoutExpired, FileNotFoundError, ValueError):
-        pass
+    except FileNotFoundError:
+        logger.debug(f"Git not found or not a repo: {project_path}")
+    except subprocess.CalledProcessError as e:
+        logger.warning(f"Git log failed for {project_path}: {e}")
+    except subprocess.TimeoutExpired:
+        logger.warning(f"Git log timed out for {project_path}")
+    except ValueError as e:
+        logger.error(f"Invalid git timestamp for {project_path}: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error in get_last_modified: {e}")
     
     # Fallback: scan filesystem
     latest = datetime.fromtimestamp(0)
@@ -196,25 +211,36 @@ def create_index(project_path: Path, force: bool = False) -> bool:
     
     # Load template
     if not TEMPLATE_PATH.exists():
-        print(f"  ❌ Template not found: {TEMPLATE_PATH}")
+        logger.error(f"Template not found: {TEMPLATE_PATH}")
         return False
     
-    template_content = TEMPLATE_PATH.read_text()
-    
-    # Generate content
     try:
+        template_content = TEMPLATE_PATH.read_text()
         content = generate_index_content(project_path, template_content)
     except Exception as e:
-        print(f"  ❌ Failed to generate index: {e}")
+        logger.error(f"Failed to generate index content for {project_name}: {e}")
         return False
     
-    # Write file
+    # Atomic write
+    temp_file = None
     try:
-        index_path.write_text(content)
+        # Create temp file in same directory as target
+        fd, temp_path = tempfile.mkstemp(dir=project_path, suffix=".tmp")
+        temp_file = Path(temp_path)
+        with os.fdopen(fd, 'w') as f:
+            f.write(content)
+        
+        # Atomic rename
+        os.replace(temp_path, index_path)
         print(f"  ✅ Created: {index_path.name}")
         return True
     except Exception as e:
-        print(f"  ❌ Failed to write index: {e}")
+        logger.error(f"Failed to write index atomically for {project_name}: {e}")
+        if temp_file and temp_file.exists():
+            try:
+                temp_file.unlink()
+            except Exception:
+                pass
         return False
 
 

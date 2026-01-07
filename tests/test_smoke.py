@@ -63,7 +63,7 @@ class TestProjectStructure:
     
     def test_documentation_exists(self, project_root):
         """Test that key documentation exists"""
-        docs = project_root / "docs"
+        docs = project_root / "Documents"
         assert docs.exists()
         
         assert (docs / "KIRO_DEEP_DIVE.md").exists()

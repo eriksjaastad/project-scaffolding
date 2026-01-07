@@ -18,7 +18,7 @@
 
 **Standard:** `{project-name}-{service}` → `{project}/.env`
 **Master Registry:** `project-scaffolding/.env` (Centralized Record)
-**Template:** `/Users/.../projects/.env.project-template`
+**Template:** `../.env.project-template`
 
 **Examples:**
 - `SCAFFOLDING_DEEPSEEK_API_KEY` → `project-scaffolding/.env`
@@ -143,11 +143,11 @@ Ask yourself:
 1. **Check this file** - Is the service listed?
 2. **Search all projects** - grep for service name:
    ```bash
-   grep -ri "service-name" ~/projects/
+   grep -ri "service-name" ./
    ```
 3. **Check .env files** - Look for project-prefixed keys:
    ```bash
-   grep -r "_API_KEY" ~/projects/*/.env
+   grep -r "_API_KEY" ./*/.env
    ```
 
 ---

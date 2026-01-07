@@ -45,7 +45,7 @@
 
 ### Phase 0: Industrial Hardening (Gate 0)
 - [ ] **Dependency Pinning:** Replace `>=` with `~=` or `==` in `requirements.txt`.
-- [ ] **DNA Check:** Verify zero `/Users/` paths remain in codebase (absolute paths (e.g., check)).
+- [ ] **DNA Check:** Verify zero machine-specific absolute paths remain in codebase.
 - [ ] **Error Audit:** Replace `except: pass` with explicit logging.
 - [ ] **Subprocess Audit:** Ensure all CLI calls have `check=True` and `timeout`.
 
@@ -224,5 +224,5 @@ Meta-Philosophy:
 
 *Template Version: 1.0*  
 *Last Modified: December 30, 2025*  
-*Source: $PROJECTS_ROOT/project-scaffolding/templates/TODO.md.template*
+*Source: ./templates/TODO.md.template*
 

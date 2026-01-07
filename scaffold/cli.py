@@ -22,7 +22,7 @@ console = Console()
 
 @click.group()
 @click.version_option(version="0.1.0")
-def cli():
+def cli() -> None:
     """Project Scaffolding - Automated Multi-AI Review & Build System"""
     pass
 
@@ -85,7 +85,7 @@ def review(
     anthropic_key: Optional[str],
     google_key: Optional[str],
     deepseek_key: Optional[str]
-):
+) -> None:
     """
     Run multi-AI review on document or code
     
