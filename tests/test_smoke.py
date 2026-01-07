@@ -20,13 +20,6 @@ class TestProjectStructure:
         templates = project_root / "templates"
         assert templates.exists()
         
-        # Kiro templates
-        assert (templates / ".kiro" / "steering" / "product.md").exists()
-        assert (templates / ".kiro" / "steering" / "tech.md").exists()
-        assert (templates / ".kiro" / "steering" / "structure.md").exists()
-        assert (templates / ".kiro" / "specs" / "FEATURE_NAME" / "requirements.md").exists()
-        assert (templates / ".kiro" / "README.md").exists()
-        
         # Other templates
         assert (templates / "CLAUDE.md.template").exists()
         assert (templates / ".cursorrules.template").exists()
@@ -37,12 +30,7 @@ class TestProjectStructure:
         assert scripts.exists()
         
         # Check scripts exist
-        assert (scripts / "generate_kiro_specs.py").exists()
         assert (scripts / "test_deepseek.py").exists()
-        
-        # Check executable
-        import os
-        assert os.access(scripts / "generate_kiro_specs.py", os.X_OK)
     
     def test_scaffold_package_exists(self, project_root):
         """Test that scaffold package is importable"""
@@ -66,7 +54,6 @@ class TestProjectStructure:
         docs = project_root / "Documents"
         assert docs.exists()
         
-        assert (docs / "KIRO_DEEP_DIVE.md").exists()
         assert (docs / "DEEPSEEK_SETUP.md").exists()
         assert (docs / "PROJECT_KICKOFF_GUIDE.md").exists()
 
@@ -93,24 +80,15 @@ class TestImports:
         except ImportError as e:
             pytest.fail(f"Failed to import scaffold.review: {e}")
     
-    def test_import_scaffold_cli(self):
-        """Test importing CLI module"""
-        try:
-            from scaffold.cli import cli
-            assert cli is not None
-        except ImportError as e:
-            pytest.fail(f"Failed to import scaffold.cli: {e}")
-    
-    def test_import_kiro_generator(self):
-        """Test importing Kiro generator"""
-        try:
-            import sys
-            from pathlib import Path
-            sys.path.insert(0, str(Path(__file__).parent.parent))
-            from scripts.generate_kiro_specs import KiroSpecGenerator
-            assert KiroSpecGenerator is not None
-        except ImportError as e:
-            pytest.fail(f"Failed to import KiroSpecGenerator: {e}")
+    def test_scaffold_cli_flags(self):
+        """Test that scaffold CLI has the expected flags"""
+        from scaffold.cli import cli
+        from click.testing import CliRunner
+        runner = CliRunner()
+        result = runner.invoke(cli, ["review", "--help"])
+        assert result.exit_code == 0
+        assert "--ollama-model" in result.output
+        assert "SCAFFOLDING_DEEPSEEK_KEY" in result.output
 
 
 class TestDependencies:

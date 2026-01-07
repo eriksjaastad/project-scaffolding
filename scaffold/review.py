@@ -10,7 +10,6 @@ import json
 import logging
 import os
 import re
-import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass
@@ -39,12 +38,28 @@ logging.basicConfig(level=logging.INFO)
 console = Console()
 
 
-def safe_slug(text: str) -> str:
-    """Sanitizes string for use in filenames"""
+def safe_slug(text: str, base_path: Optional[Path] = None) -> str:
+    """Sanitizes string for use in filenames and prevents path traversal.
+
+    If base_path is provided, the resolved target path must stay within that base.
+    """
     # Lowercase and replace non-alphanumeric with underscores
     slug = text.lower()
     slug = re.sub(r'[^a-z0-9]+', '_', slug)
-    return slug.strip('_')
+    slug = slug.strip('_')
+    
+    # Industrial Hardening: Prevent directory traversal attempts
+    if ".." in slug or slug.startswith("/") or slug.startswith("~"):
+        logger.warning(f"Potential path traversal attempt in slug: {text}")
+        slug = slug.replace("..", "").replace("/", "").replace("~", "")
+
+    if base_path:
+        base_path = base_path.resolve()
+        target_path = (base_path / slug).resolve()
+        if not target_path.is_relative_to(base_path):
+            raise ValueError("Security Alert: Path Traversal detected.")
+
+    return slug
 
 
 def save_atomic(path: Path, content: str) -> None:
@@ -72,7 +87,7 @@ def save_atomic(path: Path, content: str) -> None:
 class ReviewConfig:
     """Configuration for a single reviewer"""
     name: str
-    api: str  # "openai", "anthropic", "google", "deepseek", "kiro"
+    api: str  # "openai", "anthropic", "google", "deepseek", "ollama"
     model: str
     prompt_path: Path
     
@@ -225,7 +240,7 @@ class ReviewOrchestrator:
         for result in review_results:
             if not result.error:
                 # Standardize filename: CODE_REVIEW_{safe_slug}.md
-                slug_name = safe_slug(result.reviewer_name)
+                slug_name = safe_slug(result.reviewer_name, base_path=round_dir)
                 output_file = (round_dir / f"CODE_REVIEW_{slug_name.upper()}.md").resolve()
                 
                 # Security: Ensure path stays within round_dir (H4)
@@ -277,8 +292,8 @@ class ReviewOrchestrator:
             result = await self._call_google(config.model, full_prompt)
         elif config.api == "deepseek":
             result = await self._call_deepseek(config.model, full_prompt)
-        elif config.api == "kiro":
-            result = await self._call_kiro(config.model, full_prompt)
+        elif config.api == "ollama":
+            result = await self._call_ollama(config.model, full_prompt)
         else:
             raise ValueError(f"Unknown API: {config.api}")
         
@@ -410,116 +425,31 @@ class ReviewOrchestrator:
             "tokens": total_tokens
         }
     
-    async def _call_kiro(self, model: str, prompt: str) -> Dict[str, Any]:
-        """Call Kiro CLI with defensive parsing"""
-        import subprocess
-        import tempfile
-        import os
-        
+    async def _call_ollama(self, model: str, prompt: str) -> Dict[str, Any]:
+        """Call Ollama CLI for local review"""
         try:
-            # Write prompt to a temp file (Kiro prompts are often too long for command line args)
-            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
-                f.write(prompt)
-                prompt_file = f.name
-            
-            # Call Kiro CLI in non-interactive mode with prompt from file
-            # Primary lookup: check environment variable then PATH
-            kiro_path = os.getenv("KIRO_CLI_PATH") or shutil.which("kiro-cli")
-            
-            # If still not found, raise an error with helpful message
-            if kiro_path is None:
-                raise FileNotFoundError(
-                    "Kiro CLI was not found. Please install Kiro CLI or set the KIRO_CLI_PATH "
-                    "environment variable if it is installed in a non-standard location."
-                )
-
+            # Industrial Hardening: subprocess with timeout and check
             result = subprocess.run(
-                [kiro_path, "chat", "--no-interactive"],
+                ["ollama", "run", model],
                 input=prompt,
                 capture_output=True,
                 text=True,
-                timeout=120,  # 2 minute timeout
+                timeout=300,  # Local models can be slow
                 check=True
             )
             
-            # Clean up temp file
-            try:
-                os.unlink(prompt_file)
-            except Exception as e:
-                logger.warning(f"Failed to cleanup temp prompt file {prompt_file}: {e}")
-            
-            # Parse output (Kiro includes ANSI codes, need to strip them)
-            import re
-            output = result.stdout
-            
-            # Check for expected markers BEFORE parsing
-            if not output or len(output.strip()) == 0:
-                return {
-                    "content": "ERROR: Kiro returned empty output",
-                    "cost": 0.0,
-                    "tokens": 0,
-                    "error": "Empty Kiro response - CLI may have changed behavior"
-                }
-            
-            # Remove ANSI escape codes
-            ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-            cleaned_output = ansi_escape.sub('', output)
-            
-            # DEFENSIVE: Check for credits marker
-            if '▸ Credits:' not in output and 'Credits:' not in output:
-                logger.warning(f"Kiro output format may have changed - no Credits marker found")
-                # Log raw output for debugging
-                logger.debug(f"Raw Kiro output: {output[:500]}")
-                return {
-                    "content": cleaned_output.strip(),
-                    "cost": 0.0,
-                    "tokens": 0,
-                    "error": "Kiro output format changed - cannot parse credits"
-                }
-            
-            # Extract content before the credits line
-            parts = cleaned_output.split('▸ Credits:')
-            if len(parts) == 0:
-                parts = cleaned_output.split('Credits:')
-            
-            if len(parts) > 0:
-                content = parts[0].strip()
-                # Remove any ASCII art banner and prompts at the start
-                lines = content.split('\n')
-                # Skip banner (usually starts with spaces and special chars)
-                start_idx = 0
-                for i, line in enumerate(lines):
-                    if line.strip() and not line.startswith('⠀') and not line.startswith('╭') and not line.startswith('│'):
-                        start_idx = i
-                        break
-                content = '\n'.join(lines[start_idx:]).strip()
-            else:
-                content = cleaned_output.strip()
-            
-            # Extract cost from "▸ Credits: X" or "Credits: X" line
-            credits_match = re.search(r'Credits:\s*([\d.]+)', output)
-            credits_used = 0.0
-            if credits_match:
-                credits_used = float(credits_match.group(1))
-                # Convert Kiro credits to cost ($19/mo for 1000 credits = $0.019 per credit)
-                cost = credits_used * 0.019
-            else:
-                logger.warning("Could not parse Kiro credits from output")
-                cost = 0.0
-            
-            # Estimate tokens (rough: 1 credit ≈ 1000 tokens)
-            tokens = int(credits_used * 1000)
-            
             return {
-                "content": content if content else "Error: No response from Kiro",
-                "cost": cost,
-                "tokens": tokens
+                "content": result.stdout.strip(),
+                "cost": 0.0,  # Local usage is free
+                "tokens": 0   # Hard to estimate tokens without extra dependencies
             }
         except subprocess.TimeoutExpired:
-            raise TimeoutError(f"Kiro CLI timed out after 120 seconds")
+            raise TimeoutError(f"Ollama timed out after 300 seconds for model {model}")
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Ollama execution failed: {e.stderr}")
         except Exception as e:
-            raise RuntimeError(f"Error calling Kiro CLI: {e}")
-    
+            raise RuntimeError(f"Unexpected error calling Ollama: {e}")
+
     def _display_summary(self, summary: ReviewSummary, output_dir: Path) -> None:
         """Display review summary in terminal"""
         console.print("\n[bold green]Review Complete![/bold green]\n")

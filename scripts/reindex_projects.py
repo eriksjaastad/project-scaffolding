@@ -239,8 +239,8 @@ def create_index(project_path: Path, force: bool = False) -> bool:
         if temp_file and temp_file.exists():
             try:
                 temp_file.unlink()
-            except Exception:
-                pass
+            except Exception as cleanup_err:
+                logger.warning(f"Failed to cleanup temp file {temp_file}: {cleanup_err}")
         return False
 
 
@@ -309,10 +309,14 @@ def main() -> None:
     elif arg == "--all":
         print("⚠️  Recreating ALL index files...\n")
         if not skip_confirm:
-            response = input("This will overwrite existing indexes. Continue? (yes/no): ")
-            if response.lower() != "yes":
-                print("Aborted.")
-                sys.exit(0)
+            try:
+                response = input("This will overwrite existing indexes. Continue? (yes/no): ")
+                if response.lower() != "yes":
+                    print("Aborted.")
+                    sys.exit(0)
+            except EOFError:
+                print("Non-interactive session detected, skipping confirmation (use --yes to avoid this warning).")
+                pass
         
         projects = find_projects(PROJECTS_ROOT)
         

@@ -6,9 +6,14 @@ Ensures cost tracking consistency and prevents typos in YAML keys.
 
 import sys
 import yaml
+import logging
 from pathlib import Path
 from typing import List, Dict, Optional, Union
 from pydantic import BaseModel, Field
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
 class Service(BaseModel):
     name: str
@@ -39,7 +44,7 @@ class ExternalResources(BaseModel):
 def validate_yaml(yaml_path: Path) -> bool:
     """Validates the YAML file against the ExternalResources schema."""
     if not yaml_path.exists():
-        print(f"❌ Error: File not found: {yaml_path}")
+        logger.error(f"File not found: {yaml_path}")
         return False
 
     try:
@@ -48,14 +53,14 @@ def validate_yaml(yaml_path: Path) -> bool:
         
         # Validate using Pydantic
         ExternalResources(**data)
-        print(f"✅ EXTERNAL_RESOURCES.yaml is valid.")
+        logger.info(f"EXTERNAL_RESOURCES.yaml is valid.")
         return True
 
     except yaml.YAMLError as e:
-        print(f"❌ YAML Parsing Error: {e}")
+        logger.error(f"YAML Parsing Error: {e}")
         return False
     except Exception as e:
-        print(f"❌ Validation Error:\n{e}")
+        logger.error(f"Validation Error:\n{e}")
         return False
 
 if __name__ == "__main__":

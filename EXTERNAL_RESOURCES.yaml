@@ -4,7 +4,7 @@
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-01-06"
+  last_updated: "2026-01-07"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # PROJECT SERVICE USAGE
@@ -17,7 +17,7 @@ projects:
       - name: DeepSeek
         purpose: "Logic drafting"
         type: ai
-        env_var: "SCAFFOLDING_DEEPSEEK_API_KEY"
+        env_var: "SCAFFOLDING_DEEPSEEK_KEY"
         cost: 0.27
       - name: Discord
         purpose: "Governance alerts"
@@ -27,12 +27,12 @@ projects:
       - name: OpenAI
         purpose: "Model comparisons"
         type: ai
-        env_var: "SCAFFOLDING_OPENAI_API_KEY"
+        env_var: "SCAFFOLDING_OPENAI_KEY"
         cost: 4
       - name: Anthropic
         purpose: "Architectural reviews"
         type: ai
-        env_var: "SCAFFOLDING_ANTHROPIC_API_KEY"
+        env_var: "SCAFFOLDING_ANTHROPIC_KEY"
         cost: 2
 
   trading-projects:
@@ -214,9 +214,9 @@ api_key_pattern:
   template: "PROJECTS_ROOT/.env.project-template"
   naming_rule: "PREFIX_SERVICE_TYPE"
   examples:
-    - "SCAFFOLDING_DEEPSEEK_API_KEY → project-scaffolding/.env"
-    - "CORTANA_OPENAI_API_KEY → Cortana personal AI/.env"
-    - "TRADING_OPENAI_API_KEY → Trading Projects/.env"
+    - "SCAFFOLDING_DEEPSEEK_KEY → project-scaffolding/.env"
+    - "CORTANA_OPENAI_KEY → Cortana personal AI/.env"
+    - "TRADING_OPENAI_KEY → Trading Projects/.env"
   why:
     - "Cost attribution (which project spent what?)"
     - "Failure isolation (one project's rate limit doesn't affect others)"

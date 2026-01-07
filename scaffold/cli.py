@@ -73,8 +73,14 @@ def cli() -> None:
 )
 @click.option(
     "--deepseek-key",
-    envvar="DEEPSEEK_API_KEY",
-    help="DeepSeek API key (or set DEEPSEEK_API_KEY env var)"
+    envvar="SCAFFOLDING_DEEPSEEK_KEY",
+    help="DeepSeek API key (or set SCAFFOLDING_DEEPSEEK_KEY env var)"
+)
+@click.option(
+    "--ollama-model",
+    envvar="SCAFFOLDING_OLLAMA_MODEL",
+    default="llama3.2",
+    help="Ollama model to use for local reviews (default: llama3.2)"
 )
 def review(
     review_type: str,
@@ -84,7 +90,8 @@ def review(
     openai_key: Optional[str],
     anthropic_key: Optional[str],
     google_key: Optional[str],
-    deepseek_key: Optional[str]
+    deepseek_key: Optional[str],
+    ollama_model: str
 ) -> None:
     """
     Run multi-AI review on document or code
@@ -123,7 +130,7 @@ def review(
         return
     
     # Load review configurations
-    configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key, deepseek_key)
+    configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key, deepseek_key, ollama_model)
     
     if not configs:
         console.print("[red]Error: No review configurations found[/red]")
@@ -175,7 +182,8 @@ def _load_review_configs(
     openai_key: Optional[str],
     anthropic_key: Optional[str],
     google_key: Optional[str],
-    deepseek_key: Optional[str]
+    deepseek_key: Optional[str],
+    ollama_model: str
 ) -> List[ReviewConfig]:
     """Load review configurations from prompt directory"""
     configs = []
@@ -185,7 +193,7 @@ def _load_review_configs(
     default_mapping = {
         "security": ("deepseek", "deepseek-chat", "Security Reviewer"),
         "performance": ("deepseek", "deepseek-chat", "Performance Reviewer"),
-        "architecture": ("kiro", "claude-sonnet-4", "Architecture Reviewer"),  # Tier 1: Kiro
+        "architecture": ("ollama", ollama_model, "Architecture Reviewer"),  # Local via Ollama
         "quality": ("deepseek", "deepseek-chat", "Code Quality Reviewer"),
     }
     
@@ -206,24 +214,17 @@ def _load_review_configs(
         
         # Check if we have the API key (fail loud!)
         if api == "openai" and not openai_key:
-            console.print(f"[red]✗ {display_name} requires OpenAI API key (OPENAI_API_KEY)[/red]")
+            console.print(f"[red]✗ {display_name} requires OpenAI API key (SCAFFOLDING_OPENAI_KEY)[/red]")
             continue
         if api == "anthropic" and not anthropic_key:
-            console.print(f"[red]✗ {display_name} requires Anthropic API key (ANTHROPIC_API_KEY)[/red]")
+            console.print(f"[red]✗ {display_name} requires Anthropic API key (SCAFFOLDING_ANTHROPIC_KEY)[/red]")
             continue
         if api == "google" and not google_key:
-            console.print(f"[red]✗ {display_name} requires Google API key (GOOGLE_API_KEY)[/red]")
+            console.print(f"[red]✗ {display_name} requires Google API key (SCAFFOLDING_GOOGLE_KEY)[/red]")
             continue
         if api == "deepseek" and not deepseek_key:
-            console.print(f"[red]✗ {display_name} requires DeepSeek API key (DEEPSEEK_API_KEY)[/red]")
+            console.print(f"[red]✗ {display_name} requires DeepSeek API key (SCAFFOLDING_DEEPSEEK_KEY)[/red]")
             continue
-        if api == "kiro":
-            # Check if Kiro CLI is available
-            import shutil
-            kiro_path = os.getenv("KIRO_CLI_PATH") or shutil.which("kiro-cli")
-            if not kiro_path:
-                console.print(f"[red]✗ {display_name} requires Kiro CLI installed (not found in PATH or KIRO_CLI_PATH)[/red]")
-                continue
         
         configs.append(ReviewConfig(
             name=display_name,
