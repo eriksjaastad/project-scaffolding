@@ -58,9 +58,13 @@ def save_atomic(path: Path, content: str) -> None:
     
     try:
         os.replace(temp_name, path)
-    except Exception:
+    except Exception as e:
+        logger.error(f"Atomic write failed for {path}: {e}")
         if os.path.exists(temp_name):
-            os.unlink(temp_name)
+            try:
+                os.unlink(temp_name)
+            except Exception as cleanup_err:
+                logger.warning(f"Failed to cleanup temp file {temp_name}: {cleanup_err}")
         raise
 
 
@@ -156,7 +160,14 @@ class ReviewOrchestrator:
         Returns:
             ReviewSummary with all results and costs
         """
-        # Read document
+        # Read document with size limit (Industrial Hardening H4/S2)
+        MAX_FILE_SIZE = 500 * 1024  # 500KB
+        if document_path.stat().st_size > MAX_FILE_SIZE:
+            raise ValueError(
+                f"Document {document_path.name} is too large ({document_path.stat().st_size / 1024:.1f}KB). "
+                f"Max size allowed is {MAX_FILE_SIZE / 1024:.1f}KB to protect context window limits."
+            )
+        
         document_content = document_path.read_text()
         
         # Create output directory
@@ -215,7 +226,13 @@ class ReviewOrchestrator:
             if not result.error:
                 # Standardize filename: CODE_REVIEW_{safe_slug}.md
                 slug_name = safe_slug(result.reviewer_name)
-                output_file = round_dir / f"CODE_REVIEW_{slug_name.upper()}.md"
+                output_file = (round_dir / f"CODE_REVIEW_{slug_name.upper()}.md").resolve()
+                
+                # Security: Ensure path stays within round_dir (H4)
+                if not output_file.is_relative_to(round_dir.resolve()):
+                    logger.error(f"Security Alert: Path traversal detected in reviewer name: {result.reviewer_name}")
+                    continue
+                    
                 save_atomic(output_file, result.content)
         
         # Create summary
@@ -406,31 +423,14 @@ class ReviewOrchestrator:
                 prompt_file = f.name
             
             # Call Kiro CLI in non-interactive mode with prompt from file
-            # First try to find via PATH environment variable
-            kiro_path = shutil.which("kiro-cli")
-            
-            # If not found in PATH, check common locations
-            common_paths = [
-                "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli",
-                os.path.expanduser("~/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli")
-            ]
-            
-            # Check additional common locations if not found in PATH
-            if kiro_path is None:
-                for path in common_paths:
-                    if os.path.exists(path):
-                        kiro_path = path
-                        break
+            # Primary lookup: check environment variable then PATH
+            kiro_path = os.getenv("KIRO_CLI_PATH") or shutil.which("kiro-cli")
             
             # If still not found, raise an error with helpful message
             if kiro_path is None:
                 raise FileNotFoundError(
-                    "Kiro CLI was not found. Please install Kiro CLI by running:\n"
-                    "\tbrew install kiro-cli\n"
-                    "or download from the official website and place the Kiro CLI.app in either:\n"
-                    "\t- /Applications/Kiro CLI.app\n"
-                    "\t- ~/Applications/Kiro CLI.app\n"
-                    "Once installed, make sure to set your PATH correctly."
+                    "Kiro CLI was not found. Please install Kiro CLI or set the KIRO_CLI_PATH "
+                    "environment variable if it is installed in a non-standard location."
                 )
 
             result = subprocess.run(

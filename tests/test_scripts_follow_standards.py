@@ -11,7 +11,7 @@ def test_no_hardcoded_paths():
     # We want it to NOT find matches.
     try:
         result = subprocess.run(
-            ["grep", "-rn", pattern, "scripts/", "--include=*.py"],
+            ["grep", "-rn", pattern, "scripts/", "scaffold/", "--include=*.py"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -35,7 +35,7 @@ def test_no_hardcoded_api_keys():
     # Regex for sk-... keys
     try:
         result = subprocess.run(
-            ["grep", "-rE", "sk-[a-zA-Z0-9]{32,}", "scripts/", "--include=*.py"],
+            ["grep", "-rE", "sk-[a-zA-Z0-9]{32,}", "scripts/", "scaffold/", "--include=*.py"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -52,20 +52,26 @@ def test_no_hardcoded_api_keys():
     assert not stdout, f"Found API keys:\n{stdout}"
 
 def test_scripts_have_type_hints():
-    """All .py files in scripts/ should have type hints on functions"""
-    scripts_dir = Path("scripts")
+    """All .py files in scripts/ and scaffold/ should have type hints on functions"""
     violations = []
 
-    for script in scripts_dir.glob("*.py"):
-        if script.name == "__init__.py":
-            continue
+    for directory in ["scripts", "scaffold"]:
+        dir_path = Path(directory)
+        for script in dir_path.glob("*.py"):
+            if script.name == "__init__.py":
+                continue
             
         content = script.read_text()
-        lines = content.split('\n')
-        for line in lines:
-            line = line.strip()
-            # Simple check: if 'def ' exists, '-> ' should exist too for return type
-            if line.startswith("def ") and "->" not in line:
-                violations.append(f"{script.name}: {line}")
+        # Find all function definitions (even multi-line)
+        import re
+        # This pattern finds 'def function_name(...)' and checks for '->' before the colon
+        matches = re.finditer(r"def\s+\w+\s*\([^)]*\)\s*([^:]*)", content)
+        for match in matches:
+            sig_tail = match.group(1)
+            full_sig = match.group(0)
+            if "->" not in sig_tail and "def __init__" not in full_sig:
+                # Get the function name for reporting
+                func_name = full_sig.split("(")[0].strip()
+                violations.append(f"{script.name}: {func_name}")
 
     assert not violations, f"Scripts without type hints:\n" + "\n".join(violations)

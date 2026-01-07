@@ -220,8 +220,9 @@ def _load_review_configs(
         if api == "kiro":
             # Check if Kiro CLI is available
             import shutil
-            if not shutil.which("kiro-cli") and not os.path.exists("/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"):
-                console.print(f"[red]✗ {display_name} requires Kiro CLI installed[/red]")
+            kiro_path = os.getenv("KIRO_CLI_PATH") or shutil.which("kiro-cli")
+            if not kiro_path:
+                console.print(f"[red]✗ {display_name} requires Kiro CLI installed (not found in PATH or KIRO_CLI_PATH)[/red]")
                 continue
         
         configs.append(ReviewConfig(

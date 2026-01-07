@@ -10,6 +10,8 @@ Usage:
 """
 
 import argparse
+import os
+import shutil
 import subprocess
 import re
 from pathlib import Path
@@ -19,7 +21,7 @@ from typing import Optional
 class KiroSpecGenerator:
     """Generate Kiro specifications programmatically"""
     
-    KIRO_CLI = "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
+    KIRO_CLI = os.getenv("KIRO_CLI_PATH") or shutil.which("kiro-cli")
     
     def __init__(self, project_root: str) -> None:
         self.project_root = Path(project_root)
@@ -225,6 +227,11 @@ Be specific, actionable, and include time estimates.
     
     def _call_kiro(self, prompt: str) -> str:
         """Call Kiro CLI with a prompt"""
+        if not self.KIRO_CLI:
+            raise FileNotFoundError(
+                "Kiro CLI not found. Please install kiro-cli or set the KIRO_CLI_PATH environment variable."
+            )
+            
         result = subprocess.run(
             [self.KIRO_CLI, "chat", "--no-interactive", "--trust-all-tools"],
             input=prompt,
