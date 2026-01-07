@@ -68,6 +68,12 @@
 - Transitioned `EXTERNAL_RESOURCES.yaml` as the source of truth
 
 ### ⏭️ NEXT: Chunk 4 (Dogfood & Validate)
+- [ ] **Review Migration:** Confirm `archive_reviews.py` handles project-root detection correctly (using `00_Index` files).
+- [ ] **Safety Audit:** Ensure all scripts use `send2trash` instead of `os.remove`.
+- [ ] Build **The Warden**: Start implementation of `scripts/warden_audit.py` to enforce Tiered Scaffolding rules.
+  - [ ] Tier 1 (Code): requirements.txt, tests/, review history.
+  - [ ] Tier 2 (Writing): Exempt from tech audits, must have Indexes.
+- [ ] **Global Rules Injection:** Draft script to push "Trash, Don't Delete" and "No Silent Failures" to all 30+ project `.cursorrules`.
 - [ ] Test on real project
 - [ ] Validate cost tracking
 - [ ] Fix issues found during use
@@ -111,6 +117,7 @@
 - [ ] Test Kiro spec generator on real feature
 
 ### Medium Priority
+- [ ] **Ecosystem Resilience:** Integrate disaster recovery templates, project lifecycle scripts, and the backup system into the scaffolding as default components.
 - [ ] Prompt versioning system
 - [ ] AWS Activate research (Q2 2026)
 - [ ] Google Cloud credits (Q2 2026)

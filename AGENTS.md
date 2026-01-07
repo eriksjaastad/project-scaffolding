@@ -27,6 +27,8 @@ The "heart and brain" of the ecosystem. Extracts patterns from experiments to bu
 
 ## ⚠️ Critical Constraints
 - NEVER modify `.env` or `venv/`.
+- NEVER hard-code API keys, secrets, or credentials in script files. Use `.env` and `os.getenv()`.
+- NEVER use absolute paths (e.g., `/Users/...`). ALWAYS use relative paths or `PROJECT_ROOT` env var.
 - ALWAYS update `EXTERNAL_RESOURCES.yaml` when adding services.
 - ALWAYS use retry logic and cost tracking for API callers.
 

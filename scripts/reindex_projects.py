@@ -17,6 +17,7 @@ This script:
 """
 
 import sys
+import os
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple
@@ -24,8 +25,9 @@ from collections import Counter
 import subprocess
 
 # Configuration
-PROJECTS_ROOT = Path("/Users/eriksjaastad/projects")
-TEMPLATE_PATH = Path("/Users/eriksjaastad/projects/project-scaffolding/templates/00_Index_Template.md")
+SCAFFOLDING_ROOT = Path(__file__).parent.parent
+PROJECTS_ROOT = Path(os.getenv("PROJECTS_ROOT", Path.home() / "projects"))
+TEMPLATE_PATH = SCAFFOLDING_ROOT / "templates" / "00_Index_Template.md"
 SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
 ARCHIVE_THRESHOLD_DAYS = 180  # 6 months
 
@@ -216,16 +218,16 @@ def create_index(project_path: Path, force: bool = False) -> bool:
         return False
 
 
-def main():
+def main() -> None:
     """Main re-indexing logic."""
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1] in ["--help", "-h"]:
         print("Re-index Projects")
         print("\nUsage:")
         print("  ./scripts/reindex_projects.py --missing      # Create missing indexes")
         print("  ./scripts/reindex_projects.py --stale        # Update stale indexes")
         print("  ./scripts/reindex_projects.py --all          # Recreate all")
         print("  ./scripts/reindex_projects.py [project]      # Specific project")
-        sys.exit(1)
+        sys.exit(0 if len(sys.argv) > 1 else 1)
     
     arg = sys.argv[1]
     

@@ -17,7 +17,7 @@ from anthropic import Anthropic
 TEST_PROMPT = """
 Refactor this messy Python function into clean, production-ready code:
 
-def process(data):
+def process(data: list) -> list:
     result = []
     for item in data:
         if item['status'] == 'active':
@@ -37,7 +37,7 @@ Requirements:
 - Make it more readable
 """
 
-def test_deepseek(api_key: str):
+def test_deepseek(api_key: str) -> dict:
     """Test with DeepSeek V3"""
     client = OpenAI(
         api_key=api_key,
@@ -63,7 +63,7 @@ def test_deepseek(api_key: str):
         "duration": duration
     }
 
-def test_claude_opus(api_key: str):
+def test_claude_opus(api_key: str) -> dict:
     """Test with Claude Opus 4"""
     client = Anthropic(api_key=api_key)
     
@@ -88,7 +88,7 @@ def test_claude_opus(api_key: str):
         "duration": duration
     }
 
-def test_gpt4o(api_key: str):
+def test_gpt4o(api_key: str) -> dict:
     """Test with GPT-4o"""
     client = OpenAI(api_key=api_key)
     
@@ -111,7 +111,7 @@ def test_gpt4o(api_key: str):
         "duration": duration
     }
 
-def compare_results(results: list):
+def compare_results(results: list) -> None:
     """Print comparison table"""
     print("\n" + "="*100)
     print("MODEL COMPARISON - Tier 2 Refactoring Task")
@@ -145,9 +145,18 @@ def compare_results(results: list):
 
 if __name__ == "__main__":
     import os
+    import sys
+    
+    if "--help" in sys.argv or "-h" in sys.argv:
+        print("Usage: python3 scripts/compare_models.py")
+        print("Requires DEEPSEEK_API_KEY environment variable.")
+        sys.exit(0)
     
     # Get API keys
-    deepseek_key = os.getenv("DEEPSEEK_API_KEY") or "sk-ad40fd4d89ce45d2b184c2073a6a8c4a"
+    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
+    if not deepseek_key:
+        raise ValueError("DEEPSEEK_API_KEY environment variable is not set")
+    
     anthropic_key = os.getenv("SCAFFOLDING_ANTHROPIC_KEY")
     openai_key = os.getenv("SCAFFOLDING_OPENAI_KEY")
     

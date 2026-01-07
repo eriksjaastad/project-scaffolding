@@ -11,8 +11,8 @@
 
 ```bash
 # In your new project directory
-NEW_PROJECT="/Users/eriksjaastad/projects/my-new-project"
-SCAFFOLDING="/Users/eriksjaastad/projects/project-scaffolding"
+NEW_PROJECT="/Users/.../projects/my-new-project"
+SCAFFOLDING="/Users/.../projects/project-scaffolding"
 
 cd "$NEW_PROJECT"
 
@@ -128,9 +128,9 @@ I've already copied the templates:
 - Documents/ structure
 
 Context:
-- Project scaffolding: /Users/eriksjaastad/projects/project-scaffolding
-- Tiered sprint planning: /Users/eriksjaastad/projects/project-scaffolding/patterns/tiered-ai-sprint-planning.md
-- My philosophy: /Users/eriksjaastad/projects/project-scaffolding/PROJECT_PHILOSOPHY.md
+- Project scaffolding: /Users/.../projects/project-scaffolding
+- Tiered sprint planning: /Users/.../projects/project-scaffolding/patterns/tiered-ai-sprint-planning.md
+- My philosophy: /Users/.../projects/project-scaffolding/PROJECT_PHILOSOPHY.md
 
 Please:
 1. Read CLAUDE.md to understand this project
