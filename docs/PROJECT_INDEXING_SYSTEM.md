@@ -82,12 +82,12 @@ created: YYYY-MM-DD
 
 1. **Review project folder**
    ```bash
-   ls -lt /Users/eriksjaastad/projects/[ProjectName]/
+   ls -lt $PROJECTS_ROOT/[ProjectName]/
    ```
 
 2. **Check last modification**
    ```bash
-   find /Users/eriksjaastad/projects/[ProjectName]/ \
+   find $PROJECTS_ROOT/[ProjectName]/ \
      -type f -not -path "*/\.*" -exec stat -f "%m %N" {} \; | \
      sort -rn | head -1
    ```
@@ -117,7 +117,7 @@ import os
 import datetime
 from pathlib import Path
 
-PROJECT_ROOT = Path("/Users/eriksjaastad/projects")
+PROJECT_ROOT = Path("$PROJECTS_ROOT")
 ARCHIVE_THRESHOLD_DAYS = 180  # 6 months
 
 def get_last_modified(project_path: Path) -> datetime.datetime:
@@ -219,7 +219,7 @@ After initial project setup, create the index file:
 3. **Place in project root**
    ```bash
    mv "00_Index_[ProjectName].md" \
-      /Users/eriksjaastad/projects/[ProjectName]/
+      $PROJECTS_ROOT/[ProjectName]/
    ```
 
 4. **Commit to Git**
@@ -319,7 +319,7 @@ WHERE contains(status, "production")
 
 ```bash
 # Find projects with indexes older than 6 months
-find /Users/eriksjaastad/projects -name "00_Index_*.md" \
+find $PROJECTS_ROOT -name "00_Index_*.md" \
   -type f -mtime +180
 ```
 

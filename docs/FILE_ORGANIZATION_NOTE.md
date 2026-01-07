@@ -17,8 +17,8 @@ However, that file contains **zero trading-specific content**. It's pure meta-pr
 ### Resolution
 
 **Moved to canonical location:**
-- **From:** `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
-- **To:** `/Users/eriksjaastad/projects/project-scaffolding/PROJECT_PHILOSOPHY.md`
+- **From:** `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`
+- **To:** `$PROJECTS_ROOT/project-scaffolding/PROJECT_PHILOSOPHY.md`
 
 **Created redirect:** Left a redirect file in Trading Projects pointing to the canonical version.
 

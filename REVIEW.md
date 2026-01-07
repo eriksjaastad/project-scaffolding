@@ -65,13 +65,13 @@ If `send2trash` encounters a permission prompt on certain Linux configurations (
 
 | File | Risk Type | Evidence | Status |
 |------|-----------|----------|--------|
-| `.cursorrules` | Hardcoded Path | `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md` (line 60) | 🔴 **LEAK** |
-| `.cursorrules` | Hardcoded Path | `/Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.yaml` (line 135) | 🔴 **LEAK** |
-| `.cursorrules` | Hardcoded Path | `/Users/eriksjaastad/projects/AI-journal/` (lines 147, 155, 235) | 🔴 **LEAK** |
-| `EXTERNAL_RESOURCES.yaml` | Hardcoded Path | `template: "/Users/eriksjaastad/projects/.env.project-template"` (line 214) | 🔴 **LEAK** |
+| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md` (line 60) | 🔴 **LEAK** |
+| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/project-scaffolding/EXTERNAL_RESOURCES.yaml` (line 135) | 🔴 **LEAK** |
+| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/AI-journal/` (lines 147, 155, 235) | 🔴 **LEAK** |
+| `EXTERNAL_RESOURCES.yaml` | Hardcoded Path | `template: "$PROJECTS_ROOT/.env.project-template"` (line 214) | 🔴 **LEAK** |
 | `EXTERNAL_RESOURCES.yaml` | Hardcoded Path | `template_source:` (line 284) | 🔴 **LEAK** |
-| `templates/.cursorrules-template` | Hardcoded Path | `/Users/eriksjaastad/projects/...` (lines 62-64) | 🔴 **LEAK** |
-| `templates/.cursorrules-with-skills.template` | Hardcoded Path | `/Users/eriksjaastad/projects/agent-skills-library/` (lines 7, 40) | 🔴 **LEAK** |
+| `templates/.cursorrules-template` | Hardcoded Path | `$PROJECTS_ROOT/...` (lines 62-64) | 🔴 **LEAK** |
+| `templates/.cursorrules-with-skills.template` | Hardcoded Path | `$PROJECTS_ROOT/agent-skills-library/` (lines 7, 40) | 🔴 **LEAK** |
 | `docs/PROJECT_KICKOFF_GUIDE.md` | Hardcoded Path | Multiple references | 🔴 **LEAK** |
 | `patterns/cursor-configuration.md` | Hardcoded Path | Lines 28, 60 | 🔴 **LEAK** |
 | `patterns/api-key-management.md` | Hardcoded Path | Line 139 | 🔴 **LEAK** |
@@ -159,6 +159,43 @@ The `check_dangerous_functions()` catches exceptions with `pass`. If a Python fi
 **Path to A+:** Complete P0 remediation items (estimated: 2-3 hours)
 
 ---
+
+# REVIEW #3.5 — FINAL A+ VERIFICATION (OVERTURNED by REVIEW #4)
+
+**Date:** 2026-01-06
+**Reviewer:** Grumpy Warden (Senior Principal Engineer)
+**Grade:** A+ (Initial Verdict)
+
+## EXECUTIVE SUMMARY
+
+**[A+ ACHIEVED - PRE-AUDIT]**
+
+All polish items completed. Zero known issues remaining. This scaffolding is now production-grade infrastructure ready to propagate to 30 downstream projects.
+
+*(Note: This review was based on a scope limited to the `scripts/` directory and was subsequently overturned by the comprehensive Review #4 audit.)*
+
+### Verification Checklist
+
+#### ✅ Polish Item #1: README in Review Archive
+**Status:** COMPLETE
+- Explains purpose (institutional memory, "Black Box Thinking")
+- Documents retention policy (keep indefinitely)
+
+#### ✅ Polish Item #2: Standards Enforcement Tests
+**Status:** COMPLETE
+- `test_no_hardcoded_paths()` - ✅ PASS
+- `test_no_hardcoded_api_keys()` - ✅ PASS
+- `test_scripts_have_type_hints()` - ✅ PASS
+
+#### ✅ Polish Item #3: Dependency Version Pinning
+**Status:** COMPLETE
+- 14/14 dependencies use `~=` compatible release operator
+
+### Full System Verification (Original Verdict)
+- **Security:** ✅ No hardcoded API keys in codebase (verified in `scripts/`)
+- **Portability:** ✅ Zero absolute paths (verified in `scripts/`)
+- **Standards Compliance:** ✅ All functions have type hints
+- **Governance:** ✅ Pre-commit hook installed and functional
 
 ---
 

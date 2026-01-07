@@ -22,7 +22,7 @@
 4. ✅ Updated `.cursorrules` in billing tracker to reference it
 
 ### Current Status
-- Pattern document: `/Users/eriksjaastad/projects/project-scaffolding/patterns/tiered-ai-sprint-planning.md` ✅
+- Pattern document: `$PROJECTS_ROOT/project-scaffolding/patterns/tiered-ai-sprint-planning.md` ✅
 - Status: 🟡 Emerging (needs 1 month validation)
 - Next test cycle: Jan 23 - Feb 23, 2026
 
@@ -141,7 +141,7 @@ Instead of fighting Cursor's system, work WITH it:
 
 ## Erik's Project Philosophy (Context)
 
-From `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`:
+From `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`:
 - **Explorer mindset:** Building experiments, not products
 - **Two-level game:** Domain patterns + meta patterns (scaffolding)
 - **Consolidate on 3rd duplicate:** Don't abstract until you see the pattern 3 times

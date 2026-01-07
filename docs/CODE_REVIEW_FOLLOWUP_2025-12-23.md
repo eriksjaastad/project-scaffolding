@@ -131,7 +131,7 @@ if api == "deepseek" and not deepseek_key:
 
 ### 6. Hardcoded Paths Removed ✅
 
-**Original Issue:** `.cursorrules.template` contained `/Users/eriksjaastad/projects/project-scaffolding/`
+**Original Issue:** `.cursorrules.template` contained `$PROJECTS_ROOT/project-scaffolding/`
 
 **Fix Applied:** Template now uses relative references:
 ```markdown

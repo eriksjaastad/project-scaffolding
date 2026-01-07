@@ -211,7 +211,7 @@ services_by_function:
 api_key_pattern:
   rule: "Each project manages its own API keys - NEVER share across projects"
   format: "{project-name}-{service} → {project}/.env"
-  template: "/Users/eriksjaastad/projects/.env.project-template"
+  template: "$PROJECTS_ROOT/.env.project-template"
   naming_rule: "PREFIX_SERVICE_TYPE"
   examples:
     - "SCAFFOLDING_DEEPSEEK_API_KEY → project-scaffolding/.env"
@@ -281,7 +281,7 @@ before_adding_service:
 # SECURITY NOTES
 security:
   policy: "Decentralized Project-Specific Keys"
-  template_source: "/Users/eriksjaastad/projects/.env.project-template"
+  template_source: "$PROJECTS_ROOT/.env.project-template"
   credential_locations:
     - "Each project: .env file (git-ignored)"
   

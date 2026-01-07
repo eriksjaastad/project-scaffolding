@@ -67,8 +67,10 @@ def check_dangerous_functions(project_root: str) -> list:
                         for pattern in dangerous_patterns:
                             if pattern in content:
                                 found_issues.append((file_path, pattern))
-                except Exception:
-                    pass
+                except Exception as e:
+                    logging.warning(f"Could not read file {file_path}: {e}")
+                    # Add to found issues so it surfaces to the summary
+                    found_issues.append((file_path, f"READ_ERROR: {e}"))
     return found_issues
 
 def run_audit(root_dir: str) -> bool:

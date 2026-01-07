@@ -40,7 +40,7 @@
 **Command:**
 ```bash
 python scripts/generate_kiro_specs.py \
-    --project-root /Users/eriksjaastad/projects/project-tracker \
+    --project-root $PROJECTS_ROOT/project-tracker \
     --feature-name cli-status \
     --description "CLI command to show project status dashboard"
 ```
@@ -55,7 +55,7 @@ python scripts/generate_kiro_specs.py \
 ```bash
 python scaffold_cli.py review \
     --type document \
-    --input /Users/eriksjaastad/projects/project-tracker/.kiro/specs/cli-status/design.md \
+    --input $PROJECTS_ROOT/project-tracker/.kiro/specs/cli-status/design.md \
     --round 1
 ```
 

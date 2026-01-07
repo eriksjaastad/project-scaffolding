@@ -4,7 +4,7 @@
 
 This project can use skills from the agent-skills-library.
 
-**Library location:** `/Users/eriksjaastad/projects/agent-skills-library/`
+**Library location:** `$PROJECTS_ROOT/agent-skills-library/`
 
 ---
 
@@ -37,7 +37,7 @@ Simply reference the playbook path when asking for help:
 ## Adding More Skills
 
 See the full library at:
-`/Users/eriksjaastad/projects/agent-skills-library/`
+`$PROJECTS_ROOT/agent-skills-library/`
 
 Browse `playbooks/` to see all available skills.
 

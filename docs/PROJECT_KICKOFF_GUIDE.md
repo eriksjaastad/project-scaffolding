@@ -180,7 +180,7 @@ Once you have a solid plan, use the **Tiered Sprint Planner**.
 We've finished Phase 1 planning. Now I want to tier the execution work.
 
 Please read:
-- Tiered Sprint Planner: /Users/eriksjaastad/projects/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md
+- Tiered Sprint Planner: $PROJECTS_ROOT/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md
 - Our project docs: [ROADMAP.md, ARCHITECTURE.md, etc.]
 
 Task:
@@ -307,8 +307,8 @@ Please:
 
 This project uses tiered AI planning to manage costs.
 
-**Pattern:** /Users/eriksjaastad/projects/project-scaffolding/patterns/tiered-ai-sprint-planning.md
-**Sprint Planner:** /Users/eriksjaastad/projects/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md
+**Pattern:** $PROJECTS_ROOT/project-scaffolding/patterns/tiered-ai-sprint-planning.md
+**Sprint Planner:** $PROJECTS_ROOT/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md
 
 Before starting work:
 1. Check docs/SPRINT_PLAN.md for task tier
@@ -322,7 +322,7 @@ Before starting work:
 
 When adding ANY external service (API, cloud platform, database, etc):
 
-**MUST update:** /Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.md
+**MUST update:** $PROJECTS_ROOT/project-scaffolding/EXTERNAL_RESOURCES.md
 
 Document:
 - Service name
@@ -578,7 +578,7 @@ Don't wait to initialize git "until the project is real."
 ## Scaffolding Reference
 
 This project uses patterns from:
-/Users/eriksjaastad/projects/project-scaffolding/
+$PROJECTS_ROOT/project-scaffolding/
 
 Key references:
 - Patterns: patterns/
@@ -592,7 +592,7 @@ Key references:
 ## Future Enhancement: Agent Skills Library
 
 > **Status:** In development (December 2025)  
-> **Location:** `/Users/eriksjaastad/projects/agent-skills-library/`
+> **Location:** `$PROJECTS_ROOT/agent-skills-library/`
 
 ### What Is It?
 
@@ -652,9 +652,9 @@ A centralized library of reusable AI agent instructions (playbooks) that work ac
 
 ### Where to Learn More
 
-- **Library README:** `/Users/eriksjaastad/projects/agent-skills-library/README.md`
-- **Integration Guide:** `/Users/eriksjaastad/projects/agent-skills-library/INTEGRATION_GUIDE.md`
-- **Playbook Creation:** `/Users/eriksjaastad/projects/agent-skills-library/playbooks/README.md`
+- **Library README:** `$PROJECTS_ROOT/agent-skills-library/README.md`
+- **Integration Guide:** `$PROJECTS_ROOT/agent-skills-library/INTEGRATION_GUIDE.md`
+- **Playbook Creation:** `$PROJECTS_ROOT/agent-skills-library/playbooks/README.md`
 
 ---
 
