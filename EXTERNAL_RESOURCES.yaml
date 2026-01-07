@@ -1,53 +1,88 @@
 # External Resources & Services
 # Purpose: Track which external services, APIs, and resources are used across all projects
-# Last Updated: 2025-12-31
+# Last Updated: 2026-01-06
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2025-12-31"
+  last_updated: "2026-01-06"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # PROJECT SERVICE USAGE
 # This is the main data structure - parsed by project-tracker dashboard
 projects:
+  project-scaffolding:
+    monthly_cost: 5
+    credential_file: ".env"
+    services:
+      - name: DeepSeek
+        purpose: "Logic drafting"
+        type: ai
+        env_var: "SCAFFOLDING_DEEPSEEK_API_KEY"
+        cost: 0.27
+      - name: Discord
+        purpose: "Governance alerts"
+        type: notifications
+        env_var: "SCAFFOLDING_DISCORD_WEBHOOK_URL"
+        cost: 0
+      - name: OpenAI
+        purpose: "Model comparisons"
+        type: ai
+        env_var: "SCAFFOLDING_OPENAI_API_KEY"
+        cost: 4
+      - name: Anthropic
+        purpose: "Architectural reviews"
+        type: ai
+        env_var: "SCAFFOLDING_ANTHROPIC_API_KEY"
+        cost: 2
+
   trading-projects:
     monthly_cost: 12
+    credential_file: ".env"
     services:
       - name: Railway
         purpose: "hosting + Postgres"
         type: hosting
+        env_var: "TRADING_RAILWAY_API_KEY"
         cost: 5
       - name: OpenAI
         purpose: "GPT-4o, 4o-mini, o1"
         type: ai
+        env_var: "TRADING_OPENAI_API_KEY"
         cost: 4
       - name: Anthropic
         purpose: "Claude Opus 4, Sonnet 4, Haiku 3.5"
         type: ai
+        env_var: "TRADING_ANTHROPIC_API_KEY"
         cost: 2
       - name: Google AI
         purpose: "Gemini 2.0/2.5 Flash"
         type: ai
+        env_var: "TRADING_GOOGLE_AI_KEY"
         cost: 1
       - name: xAI
         purpose: "Grok-3"
         type: ai
+        env_var: "TRADING_XAI_KEY"
         cost: 0.50
       - name: Discord
         purpose: "Webhooks for daily briefings"
         type: notifications
+        env_var: "TRADING_DISCORD_WEBHOOK_URL"
         cost: 0
       - name: Healthchecks.io
         purpose: "Cron job monitoring"
         type: monitoring
+        env_var: "TRADING_HEALTHCHECKS_KEY"
         cost: 0
 
   cortana-personal-ai:
     monthly_cost: 0.60
+    credential_file: ".env"
     services:
       - name: OpenAI
         purpose: "gpt-4o-mini"
         type: ai
+        env_var: "CORTANA_OPENAI_API_KEY"
         cost: 0.60
       - name: SuperWhisper
         purpose: "Voice-to-text (one-time purchase)"
@@ -59,15 +94,18 @@ projects:
         cost: 0
 
   image-workflow:
-    monthly_cost: 10  # Variable $5-20
+    monthly_cost: 10
+    credential_file: ".env"
     services:
       - name: OpenAI
         purpose: "Batch processing, quality filtering"
         type: ai
-        cost: 10  # Variable
+        env_var: "IMAGE_WORKFLOW_OPENAI_API_KEY"
+        cost: 10
       - name: Google Drive
         purpose: "Offsite backups via rclone"
         type: storage
+        env_var: "IMAGE_WORKFLOW_RCLONE_CONFIG"
         cost: 0
       - name: rclone
         purpose: "Backup tool"
@@ -75,12 +113,14 @@ projects:
         cost: 0
 
   3d-pose-factory:
-    monthly_cost: 7  # $3-10 for R2
+    monthly_cost: 7
+    credential_file: ".env"
     aliases: ["Image Generation", "Fat AI", "3D Renders", "Mission Control"]
     services:
       - name: Cloudflare R2
         purpose: "S3-compatible storage for pose outputs"
         type: storage
+        env_var: "POSE_FACTORY_CLOUDFLARE_R2_KEY"
         cost: 7
       - name: rclone
         purpose: "Sync tool for R2"
@@ -89,10 +129,12 @@ projects:
       - name: RunPod
         purpose: "GPU Hosting for high-volume image generation"
         type: hosting
+        env_var: "POSE_FACTORY_RUNPOD_API_KEY"
         cost: "Pay-per-use"
 
   agent_os:
     monthly_cost: 0
+    credential_file: ".env"
     services:
       - name: SQLite
         purpose: "Local data storage"
@@ -113,11 +155,32 @@ projects:
         cost: 0
     notes: "100% local, no external services"
 
+  muffinpanrecipes:
+    monthly_cost: 12
+    credential_file: ".env"
+    services:
+      - name: Vercel
+        purpose: "Site hosting"
+        type: hosting
+        env_var: "MUFFIN_VERCEL_TOKEN"
+        cost: 0
+      - name: Stability AI
+        purpose: "High-end photography generation"
+        type: ai
+        env_var: "MUFFIN_STABILITY_API_KEY"
+        cost: "Pay-per-use + $12/mo sub"
+      - name: RunPod
+        purpose: "GPU processing"
+        type: hosting
+        env_var: "MUFFIN_RUNPOD_API_KEY"
+        cost: "Pay-per-use"
+
 # SERVICES BY FUNCTION
 # Purpose: Prevent signing up for duplicate services
 services_by_function:
   ai_apis:
     - OpenAI (GPT-4o, 4o-mini, o1)
+    - Stability AI (SDXL, SD 1.6)
     - Anthropic (Claude Opus 4, Sonnet 4, Haiku 3.5)
     - Google AI (Gemini 2.0/2.5 Flash)
     - xAI (Grok-3)
@@ -148,10 +211,12 @@ services_by_function:
 api_key_pattern:
   rule: "Each project manages its own API keys - NEVER share across projects"
   format: "{project-name}-{service} → {project}/.env"
+  template: "/Users/eriksjaastad/projects/.env.project-template"
+  naming_rule: "PREFIX_SERVICE_TYPE"
   examples:
-    - "cortana-openai → Cortana personal AI/.env"
-    - "trading-openai → Trading Projects/.env"
-    - "trading-anthropic → Trading Projects/.env"
+    - "SCAFFOLDING_DEEPSEEK_API_KEY → project-scaffolding/.env"
+    - "CORTANA_OPENAI_API_KEY → Cortana personal AI/.env"
+    - "TRADING_OPENAI_API_KEY → Trading Projects/.env"
   why:
     - "Cost attribution (which project spent what?)"
     - "Failure isolation (one project's rate limit doesn't affect others)"
@@ -168,34 +233,19 @@ cost_summary:
 # REJECTED/UNUSED SERVICES
 # Purpose: Don't re-sign up for things we already tried
 rejected_services: []
-  # Add entries when evaluating alternatives
-  # Format:
-  #   - name: "Service X"
-  #     date_tried: "2025-XX-XX"
-  #     why_tried: "Reason"
-  #     why_rejected: "Reason"
-  #     alternative_used: "Service Y"
 
 cancelled_accounts: []
-  # Add entries when cancelling
-  # Format:
-  #   - name: "Service X"
-  #     date_cancelled: "2025-XX-XX"
-  #     reason: "Reason"
-  #     data_migrated_to: "Location"
 
 # ACTION ITEMS
 action_items:
   immediate:
-    - "✅ Find where Cloudflare is used - FOUND: 3D Pose Factory (R2 storage)"
-    - "✅ Find where rclone is used - FOUND: 3D Pose Factory & image-workflow"
+    - "✅ Decentralize .env files using global template"
     - "Audit for orphaned accounts (check email, credit card, password manager)"
   
   this_week:
+    - "Migrate individual project keys to their respective .env files"
     - "Audit 3D Pose Factory resources"
     - "Audit Hypocrisy Now resources"
-    - "Audit Hologram resources"
-    - "Audit agent_os plugin resource usage"
   
   ongoing:
     - "Update this file when adding new services"
@@ -222,7 +272,7 @@ before_adding_service:
   steps_to_add:
     - "Check services_by_function - avoid duplicates"
     - "Check rejected_services - don't retry failures"
-    - "Add to projects section above"
+    - "Add to projects section above with env_var name"
     - "Add to services_by_function category"
     - "Update cost_summary"
     - "Document credential location"
@@ -230,24 +280,20 @@ before_adding_service:
 
 # SECURITY NOTES
 security:
+  policy: "Decentralized Project-Specific Keys"
+  template_source: "/Users/eriksjaastad/projects/.env.project-template"
   credential_locations:
-    - "Trading Projects: .env file (not committed)"
-    - "Cortana: Uses ../agent_os/.env"
-    - "image-workflow: Local .env file"
-    - "agent_os: Master .env file (shared pattern being phased out)"
+    - "Each project: .env file (git-ignored)"
   
   good_practices:
     - "✅ All .env files in .gitignore"
     - "✅ Never committed to git"
-    - "⚠️ Consider password manager for backup"
+    - "⚠️ Use global template for naming consistency"
     - "⚠️ Consider key rotation policy (every 6-12 months)"
 
 # RECENT DISCOVERIES
 recent_changes:
+  - date: "2026-01-06"
+    change: "Implemented decentralized environment variable system with global template"
   - date: "2025-12-31"
     change: "Converted to YAML format for better parsing"
-  - date: "2025-12-21"
-    change: "Found Cloudflare R2 usage in 3D Pose Factory"
-  - date: "2025-12-21"
-    change: "Found rclone usage in 3D Pose Factory (R2) and image-workflow (Drive)"
-

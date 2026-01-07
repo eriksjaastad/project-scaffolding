@@ -15,12 +15,13 @@ This script enforces:
 """
 
 import sys
+import os
 from pathlib import Path
 from typing import List, Tuple
 import re
 
 # Configuration
-PROJECTS_ROOT = Path("/Users/eriksjaastad/projects")
+PROJECTS_ROOT = Path(os.getenv("PROJECTS_ROOT", Path.home() / "projects"))
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
 SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
 
@@ -154,14 +155,14 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     return True
 
 
-def main():
+def main() -> None:
     """Main validation logic."""
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1] in ["--help", "-h"]:
         print("Usage:")
         print("  ./scripts/validate_project.py [project_name]  # Check specific project")
         print("  ./scripts/validate_project.py --all           # Check all projects")
         print("  ./scripts/validate_project.py --missing       # List missing indexes")
-        sys.exit(1)
+        sys.exit(0 if len(sys.argv) > 1 else 1)
     
     arg = sys.argv[1]
     

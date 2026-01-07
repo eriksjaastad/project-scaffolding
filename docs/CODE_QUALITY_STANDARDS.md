@@ -489,7 +489,7 @@ def read_project_file(filename: str) -> str:
 ### Examples
 
 ```python
-def scan_projects(base_dir: Path = Path("/Users/eriksjaastad/projects")):
+def scan_projects(base_dir: Path = Path.home() / "projects"):
     """
     Scan for projects under base_dir.
     
@@ -503,6 +503,36 @@ def scan_projects(base_dir: Path = Path("/Users/eriksjaastad/projects")):
     """
     pass
 ```
+
+---
+
+## 🏗️ Tiered Scaffolding & Governance
+
+This section defines the tiers for project governance, ensuring that the \"Warden\" audit agent applies the correct standards based on the project's complexity and purpose.
+
+### Tier 1 (Full Stack/Code)
+- **Objective**: Enforce strict technical quality, security, and test coverage.
+- **Mandatory Folders/Files**:
+  - `requirements.txt` (or equivalent dependency manifest)
+  - `tests/` directory with comprehensive test coverage
+  - `00_Index.md` (Project Index)
+  - `Documents/archives/reviews/` (Review History Retention)
+- **Audit Requirement**: Full technical audits required.
+
+### Tier 2 (Research/Writing)
+- **Objective**: Focus on documentation, process, and knowledge capture.
+- **Mandatory Folders/Files**:
+  - `00_Index.md` (Project Index)
+  - `README.md` (Project Overview)
+  - `TODO.md` (Task Tracking)
+- **Exemptions**: Exempt from technical audits (tests, dependency checks).
+
+### Exclusion Rules for \"Warden\" Agent
+The Warden agent automatically determines the project tier based on the following hierarchy:
+1. **Explicit Override**: Presence of `TIER_1` or `TIER_2` tag in `00_Index.md`.
+2. **Technical Signals**: If `requirements.txt` or `tests/` exist → **Tier 1**.
+3. **Research Signals**: If `README.md` or `TODO.md` exist WITHOUT `requirements.txt` → **Tier 2**.
+4. **Keyword Detection**: Presence of \"research\", \"writing\", or \"meta\" in `00_Index.md` tags → **Tier 2**.
 
 ---
 

@@ -241,6 +241,11 @@ project-name/
 └── README.md               # Project overview
 ```
 
+**⚠️ Portability Rule:**
+- **NEVER** use absolute paths (e.g., `/Users/...`) in scripts or configs.
+- **ALWAYS** use relative paths or environment variables like `PROJECT_ROOT` to ensure the project is portable across different machines and environments (RunPod, CI/CD).
+- **Rule of Thumb:** If the path starts with `/Users/`, it's a bug.
+
 ---
 
 ## Templates
@@ -403,10 +408,15 @@ python scripts/your_script.py
 
 **Every project I touch MUST meet these requirements to be considered "scaffolded".**
 
+### Project Types & Exclusions
+- **Coding Projects (Python/Node/Go):** Full scaffolding mandatory (Indexes, Agents, Tests, Requirements).
+- **Non-Coding Projects (Writing/Research/Builds):** Light scaffolding mandatory (Indexes, README, TODO). Excluded from `requirements.txt` and `tests/` audits.
+
 ### Mandatory Files (Root Level)
 - [ ] **`00_Index_[ProjectName].md`** - Obsidian index with YAML frontmatter and status tags.
 - [ ] **`AGENTS.md`** - Universal source of truth for AI agents (DoD, Tech Stack, Constraints).
 - [ ] **`CLAUDE.md`** - Project-specific AI instructions and validation commands.
+- [ ] **`requirements.txt`** (for Python) or **`package.json`** (for Node) - Mandatory for all coding projects.
 - [ ] **`.cursorrules`** - Behavioral configuration for Cursor AI.
 - [ ] **`.cursorignore`** - Context window filtering (ignore node_modules, logs, etc.).
 - [ ] **`TODO.md`** - Task tracking following the [standard format](TODO_FORMAT_STANDARD.md).
@@ -417,6 +427,8 @@ python scripts/your_script.py
 - [ ] **`Documents/`** directory - Centralized documentation following the [Documents/ pattern](PROJECT_STRUCTURE_STANDARDS.md#documentation-structure).
   - `Documents/README.md` (Index)
   - `Documents/core/` (Architecture/Operations)
+- [ ] **Review History Retention** - `Documents/archives/reviews/`
+  - **Why Mandatory**: Facilitates "Black Box Thinking" by analyzing past successes and failures. It ensures institutional memory is preserved so we can learn from patterns rather than repeating mistakes.
 - [ ] **`scripts/`** directory - All executable scripts isolated from source code.
 - [ ] **`venv/`** or **`node_modules/`** - Virtual environment/dependencies in the project root.
 

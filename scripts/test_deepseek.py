@@ -2,19 +2,21 @@
 """
 Test DeepSeek quality vs Claude Sonnet
 
-TESTING KEY ONLY: sk-ad40fd4d89ce45d2b184c2073a6a8c4a
-This key is for testing purposes only.
 Each project will get its own DeepSeek API key.
 """
 
 from openai import OpenAI
 import sys
+import os
 
 # Testing API key
-DEEPSEEK_KEY = "sk-ad40fd4d89ce45d2b184c2073a6a8c4a"  # TESTING ONLY
+DEEPSEEK_KEY = os.getenv("DEEPSEEK_API_KEY")
 
-def test_deepseek():
+def test_deepseek() -> bool:
     """Test DeepSeek with a real coding task"""
+    if not DEEPSEEK_KEY:
+        print("\n❌ Error: DEEPSEEK_API_KEY environment variable is not set")
+        return False
     
     client = OpenAI(
         api_key=DEEPSEEK_KEY,
@@ -77,6 +79,10 @@ Make it production-ready.
         return False
 
 if __name__ == "__main__":
+    if "--help" in sys.argv or "-h" in sys.argv:
+        print("Usage: python3 scripts/test_deepseek.py")
+        print("Requires DEEPSEEK_API_KEY environment variable.")
+        sys.exit(0)
     success = test_deepseek()
     sys.exit(0 if success else 1)
 

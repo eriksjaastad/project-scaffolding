@@ -21,17 +21,17 @@ class KiroSpecGenerator:
     
     KIRO_CLI = "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
     
-    def __init__(self, project_root: str):
+    def __init__(self, project_root: str) -> None:
         self.project_root = Path(project_root)
         self.kiro_dir = self.project_root / ".kiro"
         
-    def ensure_kiro_structure(self):
+    def ensure_kiro_structure(self) -> None:
         """Create .kiro directory structure if it doesn't exist"""
         (self.kiro_dir / "specs").mkdir(parents=True, exist_ok=True)
         (self.kiro_dir / "steering").mkdir(parents=True, exist_ok=True)
         print(f"✅ Created .kiro structure in {self.project_root}")
     
-    def copy_steering_templates(self, template_dir: Optional[str] = None):
+    def copy_steering_templates(self, template_dir: Optional[str] = None) -> None:
         """Copy steering templates if they don't exist"""
         if template_dir is None:
             # Default to scaffolding templates
@@ -193,7 +193,7 @@ Be specific, actionable, and include time estimates.
         result = self._call_kiro(prompt)
         return self._clean_kiro_output(result)
     
-    def generate_full_spec(self, feature_name: str, description: str):
+    def generate_full_spec(self, feature_name: str, description: str) -> None:
         """Generate complete spec (requirements + design + tasks)"""
         # Create spec directory
         spec_dir = self.kiro_dir / "specs" / feature_name
@@ -201,14 +201,14 @@ Be specific, actionable, and include time estimates.
         
         # Generate requirements
         requirements = self.generate_requirements(feature_name, description)
-        requirements_path = spec_dir / "requirements.md"
-        requirements_path.write_text(requirements)
+        requirements_path = str(spec_dir / "requirements.md")
+        Path(requirements_path).write_text(requirements)
         print(f"✅ Created {requirements_path}")
         
         # Generate design
         design = self.generate_design(feature_name, requirements_path)
-        design_path = spec_dir / "design.md"
-        design_path.write_text(design)
+        design_path = str(spec_dir / "design.md")
+        Path(design_path).write_text(design)
         print(f"✅ Created {design_path}")
         
         # Generate tasks
@@ -261,7 +261,7 @@ Be specific, actionable, and include time estimates.
         return cleaned.strip()
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Generate Kiro specs programmatically")
     parser.add_argument("--project-root", required=True, help="Path to project root")
     parser.add_argument("--feature-name", required=True, help="Feature name (e.g., user-auth)")

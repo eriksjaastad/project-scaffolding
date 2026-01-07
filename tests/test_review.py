@@ -51,7 +51,10 @@ Uses JWT tokens for authentication.
     @pytest.fixture
     def deepseek_key(self):
         """Get DeepSeek API key from environment"""
-        return os.getenv("DEEPSEEK_API_KEY", "sk-ad40fd4d89ce45d2b184c2073a6a8c4a")
+        key = os.getenv("DEEPSEEK_API_KEY")
+        if not key:
+            pytest.skip("DEEPSEEK_API_KEY not set")
+        return key
     
     def test_orchestrator_creation(self):
         """Test creating orchestrator"""
@@ -228,7 +231,7 @@ class TestReviewCLI:
             capture_output=True,
             text=True,
             timeout=120,
-            env={**os.environ, "DEEPSEEK_API_KEY": os.getenv("DEEPSEEK_API_KEY", "sk-ad40fd4d89ce45d2b184c2073a6a8c4a")}
+            env={**os.environ}
         )
         
         # Check command ran (might skip reviewers if no keys)
