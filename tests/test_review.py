@@ -9,12 +9,41 @@ import asyncio
 from pathlib import Path
 import tempfile
 import os
+import shutil
+from dotenv import load_dotenv, dotenv_values
 
 # Add parent directory to path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from scaffold.review import ReviewOrchestrator, ReviewConfig, create_orchestrator
+
+DOTENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=DOTENV_PATH, override=False)
+DOTENV_VALUES = dotenv_values(DOTENV_PATH)
+
+
+def ensure_ollama_on_path() -> bool:
+    """Ensure Ollama CLI is discoverable; return True if found."""
+    candidates = []
+    env_candidate = os.getenv("OLLAMA_PATH") or os.getenv("SCAFFOLDING_OLLAMA_PATH")
+    if env_candidate:
+        candidates.append(Path(env_candidate))
+    candidates.extend([
+        Path("/usr/local/bin/ollama"),
+        Path("/opt/homebrew/bin/ollama"),
+    ])
+    
+    for cand in candidates:
+        if cand and cand.exists():
+            path_dir = cand.parent
+            current_path = os.environ.get("PATH", "")
+            if str(path_dir) not in current_path.split(os.pathsep):
+                os.environ["PATH"] = f"{str(path_dir)}{os.pathsep}{current_path}"
+            if shutil.which("ollama"):
+                return True
+    
+    return shutil.which("ollama") is not None
 
 
 class TestReviewOrchestrator:
@@ -55,7 +84,12 @@ Uses JWT tokens for authentication.
     @pytest.fixture
     def deepseek_key(self):
         """Get DeepSeek API key from environment"""
-        key = os.getenv("SCAFFOLDING_DEEPSEEK_KEY")
+        key = (
+            os.getenv("SCAFFOLDING_DEEPSEEK_KEY")
+            or os.getenv("DEEPSEEK_API_KEY")
+            or DOTENV_VALUES.get("SCAFFOLDING_DEEPSEEK_KEY")
+            or DOTENV_VALUES.get("DEEPSEEK_API_KEY")
+        )
         if not key:
             pytest.skip("SCAFFOLDING_DEEPSEEK_KEY not set")
         return key
@@ -114,10 +148,9 @@ Uses JWT tokens for authentication.
     @pytest.mark.asyncio
     async def test_ollama_review(self, sample_document, temp_dir):
         """Test Ollama local review (slow - calls Ollama)"""
-        # Check if Ollama is running
-        import shutil
-        if not shutil.which("ollama"):
-            pytest.skip("Ollama CLI not found")
+        # Ensure Ollama CLI is discoverable
+        if not ensure_ollama_on_path():
+            pytest.skip("Ollama CLI not found (PATH and common locations checked)")
             
         orchestrator = create_orchestrator()
         

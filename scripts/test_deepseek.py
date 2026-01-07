@@ -7,20 +7,30 @@ Each project will get its own DeepSeek API key.
 
 import os
 import sys
+from pathlib import Path
 import pytest
+from dotenv import load_dotenv, dotenv_values
 from openai import OpenAI
 
-DEEPSEEK_KEY = os.getenv("SCAFFOLDING_DEEPSEEK_KEY") or os.getenv("DEEPSEEK_API_KEY")
+DOTENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=DOTENV_PATH, override=False)
+DOTENV_VALUES = dotenv_values(DOTENV_PATH)
 
 @pytest.mark.slow
 @pytest.mark.integration
 def test_deepseek() -> None:
     """Test DeepSeek with a real coding task (integration; costs tokens)."""
-    if not DEEPSEEK_KEY:
+    deepseek_key = (
+        os.getenv("SCAFFOLDING_DEEPSEEK_KEY")
+        or os.getenv("DEEPSEEK_API_KEY")
+        or DOTENV_VALUES.get("SCAFFOLDING_DEEPSEEK_KEY")
+        or DOTENV_VALUES.get("DEEPSEEK_API_KEY")
+    )
+    if not deepseek_key:
         pytest.skip("SCAFFOLDING_DEEPSEEK_KEY not set")
     
     client = OpenAI(
-        api_key=DEEPSEEK_KEY,
+        api_key=deepseek_key,
         base_url="https://api.deepseek.com/v1"
     )
     
