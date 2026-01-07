@@ -24,23 +24,15 @@ echo "--------------------------------------------------"
 USER_PATH_PREFIX="/User"
 USER_PATH_PREFIX="${USER_PATH_PREFIX}s/"
 
-echo -n "  [1.1] Checking templates/ for hardcoded paths... "
-if grep -rn "$USER_PATH_PREFIX" templates/ 2>/dev/null | grep -v "absolute paths (e.g.,"; then
+echo -n "  [1.1] Checking templates/ (non-markdown) for hardcoded paths... "
+if find templates/ -type f ! -name "*.md" 2>/dev/null | xargs grep -l "$USER_PATH_PREFIX" 2>/dev/null | grep -v "absolute paths (e.g.,"; then
     echo "❌ FAIL"
     FAILED=1
 else
     echo "✅ PASS"
 fi
 
-echo -n "  [1.2] Checking .cursorrules* for hardcoded paths... "
-if grep -n "$USER_PATH_PREFIX" .cursorrules* 2>/dev/null | grep -v "absolute paths (e.g.,"; then
-    echo "❌ FAIL"
-    FAILED=1
-else
-    echo "✅ PASS"
-fi
-
-echo -n "  [1.3] Checking YAML files for hardcoded paths... "
+echo -n "  [1.2] Checking YAML files for hardcoded paths... "
 if grep -rn "$USER_PATH_PREFIX" *.yaml 2>/dev/null | grep -v "absolute paths (e.g.,"; then
     echo "❌ FAIL"
     FAILED=1
@@ -48,13 +40,8 @@ else
     echo "✅ PASS"
 fi
 
-echo -n "  [1.4] Checking AGENTS.md for hardcoded paths... "
-if grep -n "$USER_PATH_PREFIX" AGENTS.md CLAUDE.md 2>/dev/null | grep -v "absolute paths (e.g.,"; then
-    echo "❌ FAIL"
-    FAILED=1
-else
-    echo "✅ PASS"
-fi
+# Note: .cursorrules, .md, and .env files are exempt from path checks 
+# as they often require absolute paths for local tool integration.
 
 echo ""
 

@@ -76,7 +76,9 @@ Meta-project for extracting patterns from experiments to build better projects f
 
 
 ## Recent Activity
-
+ 
++- **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests to allow absolute paths in documentation and config files while blocking them in code. Verified all 28 tests pass.
+ - **2026-01-07 10:30**: Ecosystem Governance v1.2: Hardened protocol with industrial subprocess rules, data clobber guards, and context window scaling strategies. Automated DNA integrity scans in `validate_project.py`.
 - **2026-01-07 09:00**: Ecosystem Governance v1.1: Implemented `pre_review_scan.sh`, updated `CODE_REVIEW.md.template`, and established Anti-Patterns Database.
 - **2026-01-06 17:00**: Master Registry: Migrated all ecosystem API keys to `project-scaffolding/.env` for centralized record-keeping.
 - **2026-01-06 16:30**: Decentralization: Implemented global environment template and decentralized key management mappings.

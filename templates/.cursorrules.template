@@ -5,19 +5,17 @@
 - Use **nested tags** for taxonomy: #type/project, #tech/python, #status/active.
 - Follow the **Documents/ pattern** for documentation (see `Documents/README.md`).
 
-## 🚫 Context Window Management
-- **NEVER waste context on:**
-  - `node_modules/`, `venv/`, `__pycache__/`, `.git/`
-  - Large log files or binary assets.
-- Use **targeted reads** with line ranges for large source files.
-- Prefer `codebase_search` for exploring unfamiliar logic.
+## 🚫 DNA Integrity & Portability
+- **ZERO Absolute Paths:** NEVER suggest or use absolute paths (e.g., /Users/eriksjaastad/ - absolute paths (e.g., for example purposes)).
+- Use **relative paths** (e.g., `../sibling-project/`) or **environment variables** (e.g., `PROJECTS_ROOT`).
+- If an absolute path is required for a local tool, it MUST be wrapped in a `.env` variable.
 
-## 🛠 Project-Specific Patterns
-- [Add patterns specific to this project]
-
-## 🎯 Task Prioritization
-- Refer to `TODO.md` for current priorities (🔴 🟡 🔵 🟢).
-- Update `TODO.md` after every session or major milestone.
+## 📋 Definition of Done (DoD)
+- [ ] Code follows `project-scaffolding/docs/CODE_QUALITY_STANDARDS.md`.
+- [ ] **Inverse Test Analysis:** Tests explicitly document what they are NOT checking.
+- [ ] No `except: pass` or unlogged exceptions.
+- [ ] `subprocess.run` calls include `check=True` and `timeout`.
+- [ ] All production functions have type hints.
 
 ## 🛡️ Safety & File Operations
 - **Trash, Don't Delete:** NEVER use `rm` or permanent deletion.

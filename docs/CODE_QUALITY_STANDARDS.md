@@ -125,19 +125,99 @@ This is **not optional**. If a project doesn't have an index:
 
 ---
 
-## 🚨 Critical Rule #1: NO SILENT FAILURES
+## 🚨 Critical Rule #1: NO SILENT FAILURES (Error Laundering Ban)
 
 ### The Rule
 
 **NEVER use `except: pass` or `except Exception: pass` without logging.**
 
 ### Why This Exists (The Scar)
-
 **Silent failures are UNTRUSTWORTHY failures.** We've had multiple projects where:
 - Parsing silently failed → wrong data in database → bad decisions
 - File operations silently failed → data loss not discovered until weeks later  
 - API calls silently failed → features appeared to work but didn't
 - Integration issues silently failed → wasted hours debugging "phantom" problems
+
+### The "Error Laundering" Ban
+Any code that catches an exception and continues without either (a) fixing the issue, (b) logging the error with context, or (c) raising a more specific exception is considered **Toxic**.
+
+---
+
+## 🚨 Critical Rule #2: INDUSTRIAL SUBPROCESS INTEGRITY
+
+### The Rule
+All `subprocess.run()` calls must include `check=True` and a reasonable `timeout`.
+
+### Why This Exists (The "Hanging" Scar)
+We have had scripts hang indefinitely in CI or background loops because a subprocess (like `yt-dlp` or `ollama`) became unresponsive. Unbounded subprocesses are resource leaks.
+
+---
+
+## 🚨 Critical Rule #4: INPUT SANITIZATION & PATH SAFETY
+
+### The Rule
+**ALL user-provided strings used in file paths (titles, slugs, categories) MUST be sanitized using a `safe_slug()` function to prevent Path Traversal and shell injection.**
+
+### Why This Exists (The "Clobber" Scar)
+In the `bridge.py` review of Jan 2026, it was discovered that an attacker (or a malicious transcript) could provide a skill name like `../../Documents/Secrets` which would cause the script to write files outside the project root.
+
+### What to Do
+#### ❌ BAD: Direct Slug Construction
+```python
+slug = title.lower().replace(" ", "-") # ❌ Malicious '../' strings will bypass this
+target_path = GLOBAL_LIBRARY_PATH / slug
+```
+
+#### ✅ GOOD: Sanitized Path Safety
+```python
+import re
+import unicodedata
+
+def safe_slug(text: str) -> str:
+    """Sanitize string for safe file path usage."""
+    text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
+    text = re.sub(r'[^\w\s-]', '', text).strip().lower()
+    return re.sub(r'[-\s]+', '-', text)
+
+# Usage:
+slug = safe_slug(title)
+target_path = (GLOBAL_LIBRARY_PATH / slug).resolve()
+if not target_path.is_relative_to(GLOBAL_LIBRARY_PATH.resolve()):
+    raise ValueError("Security Alert: Path Traversal detected.")
+```
+
+---
+
+## 🚨 Critical Rule #5: PORTABLE CONFIGURATION (.env.example)
+
+### The Rule
+Every project MUST include a `.env.example` file. This file must be the "Documentation by Example" for the project.
+
+### Why This Exists (The "Machine-Lock" Scar)
+If a project is cloned from GitHub without a `.env.example`, the developer has to guess which environment variables are needed. If the project uses absolute paths for things like `SKILLS_LIBRARY_PATH`, the project is "locked" to a specific machine.
+
+### What to Do
+1. Create a `.env.example` with relative path defaults (e.g., `SKILLS_LIBRARY_PATH=../agent-skills-library`).
+2. Include a `check_environment()` function in your `config.py` that verifies the presence of required variables and provides a "Human-Actionable" error message if they are missing.
+
+### What to Do
+#### ❌ BAD: Dangerous Subprocess
+```python
+subprocess.run(["yt-dlp", url]) # ❌ No check, no timeout
+```
+
+#### ✅ GOOD: Hardened Subprocess
+```python
+subprocess.run(
+    ["yt-dlp", url], 
+    check=True, 
+    timeout=300, 
+    capture_output=True, 
+    text=True
+)
+```
+
+---
 
 **The pain:**
 - Hours of debugging to find where data went wrong
