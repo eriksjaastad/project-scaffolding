@@ -1,43 +1,117 @@
-# CODE_REVIEW: [TITLE]
+# Code Review Checklist - Project Scaffolding
 
-**Date:** [DATE]
-**Status:** [DRAFT | FINAL]
-**Author:** [NAME]
-
----
-
-## 🎯 Definition of Done (DoD)
-
-- [ ] [Requirement 1]
-- [ ] [Requirement 2]
-- [ ] [Requirement 3]
+**Date:** YYYY-MM-DD
+**Reviewer:** [Name/Model]
+**Pre-Review Scan:** ✅ PASSED / ❌ FAILED
 
 ---
 
-## 🔍 Context
+## TIER 1: PROPAGATION SOURCES (Must Check First)
 
-[Brief explanation of what is being reviewed and why.]
+### Templates (Highest Blast Radius)
+- [ ] `templates/.cursorrules.template` - No hardcoded paths
+- [ ] `templates/CLAUDE.md.template` - No hardcoded paths
+- [ ] `templates/AGENTS.md.template` - No hardcoded paths
+- [ ] `templates/TODO.md.template` - No hardcoded paths
+- [ ] `templates/*.template` - All other templates checked
+
+### Root Configs (Referenced by Projects)
+- [ ] `AGENTS.md` - No hardcoded paths, accurate constraints
+- [ ] `.cursorrules` - No hardcoded paths
+- [ ] `.cursorignore` - Appropriate exclusions
+
+### Data Files (Used by Scripts)
+- [ ] `EXTERNAL_RESOURCES.yaml` - No hardcoded paths
+- [ ] Schema validation script works
+- [ ] Data structure is sound
+
+**Tier 1 Grade:** ✅ PASS / ❌ FAIL
+**If FAIL, stop here and fix before continuing**
 
 ---
 
-## 🛠️ Implementation Details
+## TIER 2: EXECUTION CRITICAL
 
-[Link to code, design docs, or specific commits.]
+### Scripts (scripts/)
+- [ ] All functions have type hints
+- [ ] No `except: pass` or silent failures
+- [ ] Error handling returns status codes
+- [ ] No hardcoded paths (verified by scan)
+- [ ] No hardcoded secrets (verified by scan)
+
+### Modules (scaffold/)
+- [ ] Same standards as scripts
+- [ ] Async error handling correct (if applicable)
+- [ ] Retry logic present for external calls
+
+### Governance
+- [ ] `.git/hooks/pre-commit` is executable
+- [ ] Test suite covers expected scope
+- [ ] Tests actually pass (not just claimed)
+
+**Tier 2 Grade:** ✅ PASS / ❌ FAIL
 
 ---
 
-## 📋 Feedback Summary
+## TIER 3: DOCUMENTATION
 
-[Models' consensus on the implementation.]
+### Core Docs
+- [ ] README.md is accurate
+- [ ] Standards docs are current
+- [ ] Pattern docs have scar stories
+
+### Consistency
+- [ ] Docs don't contradict code
+- [ ] Examples are runnable
+- [ ] Links aren't broken
+
+**Tier 3 Grade:** ✅ PASS / ❌ FAIL
 
 ---
 
-## 🎯 Remediation Plan
+## INVERSE TEST ANALYSIS
 
-- [ ] [Action 1]
-- [ ] [Action 2]
+For each passing test, document what it DOESN'T check:
+
+**Test:** `test_no_hardcoded_paths()`
+- **Checks:** `scripts/` only
+- **Doesn't Check:** `templates/`, configs, YAML files
+- **Action Taken:** [Manual verification / Expanded test / Accepted risk]
+
+**Test:** `test_scripts_have_type_hints()`
+- **Checks:** `scripts/` only
+- **Doesn't Check:** `scaffold/` modules
+- **Action Taken:** [...]
 
 ---
 
-*This review follows the project-scaffolding standardization.*
+## META-REVIEW
 
+- [ ] Checked ALL files in templates/
+- [ ] Verified test scope matches claims
+- [ ] Scanned for deprecated APIs
+- [ ] Verified dependency safety
+- [ ] Checked exception handling
+- [ ] No assumptions without verification
+
+---
+
+## FINAL GRADE & BLOCKERS
+
+**Overall Grade:** [A+ / A / A- / B / C / D / F]
+
+**Ship Blockers (Must Fix):**
+1. [Issue and location]
+
+**Recommended Fixes (Nice to Have):**
+1. [Issue and location]
+
+**Confidence Level:** [High / Medium / Low]
+- High = Checked everything systematically
+- Medium = Some assumptions made
+- Low = Possible blind spots remain
+
+**Ready to Propagate:** ✅ YES / ❌ NO
+
+---
+*This review follows the v1.1 Ecosystem Governance & Review Protocol.*

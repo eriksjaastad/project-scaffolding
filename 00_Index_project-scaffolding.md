@@ -37,6 +37,7 @@ Meta-project for extracting patterns from experiments to build better projects f
   - `review.py` - Code review orchestrator
   - `cli.py` - CLI tools
 - `scripts/` - Maintenance & Governance utilities
+  - `pre_review_scan.sh` - Mandatory v1.1 Gate 0 scan
   - `archive_reviews.py` - Automated review history retention
   - `warden_audit.py` - Infrastructure audit agent (Phase 1)
   - Multi-model coordination
@@ -48,6 +49,8 @@ Meta-project for extracting patterns from experiments to build better projects f
   - `USAGE_GUIDE.md` - How to use scaffolding
   - `PROJECT_KICKOFF_GUIDE.md` - Starting new projects
   - `CODE_QUALITY_STANDARDS.md` - Mandatory rules
+  - `CODE_REVIEW_ANTI_PATTERNS.md` - Database of recurring defects
+  - `REVIEW_SYSTEM_DESIGN.md` - Process-based review philosophy
 
 ### Resource Tracking
 - `EXTERNAL_RESOURCES.yaml` - Service registry
@@ -74,6 +77,7 @@ Meta-project for extracting patterns from experiments to build better projects f
 
 ## Recent Activity
 
+- **2026-01-07 09:00**: Ecosystem Governance v1.1: Implemented `pre_review_scan.sh`, updated `CODE_REVIEW.md.template`, and established Anti-Patterns Database.
 - **2026-01-06 17:00**: Master Registry: Migrated all ecosystem API keys to `project-scaffolding/.env` for centralized record-keeping.
 - **2026-01-06 16:30**: Decentralization: Implemented global environment template and decentralized key management mappings.
 - **2026-01-06 16:00**: Official Graduation: Marked project as #status/production and #status/hardened following completion of all Mission Orders.
