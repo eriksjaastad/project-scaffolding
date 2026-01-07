@@ -147,7 +147,7 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
                     
             except Exception as e:
                 # We log but don't fail the whole scan for one unreadable file
-                pass
+                errors.append(f"Scan Defect: Could not read file {file_path.relative_to(project_path)}: {e}")
                 
     return errors
 

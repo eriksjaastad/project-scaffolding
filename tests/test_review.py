@@ -45,6 +45,10 @@ Target: < 200ms response time.
 
 ## Security
 Uses JWT tokens for authentication.
+
+## Definition of Done
+- [ ] Code has type hints
+- [ ] Tests pass
 """)
         return doc_path
     
@@ -210,7 +214,7 @@ class TestReviewCLI:
     def sample_document(self, temp_dir):
         """Create sample document"""
         doc_path = Path(temp_dir) / "test.md"
-        doc_path.write_text("# Test\n\nThis is a test document.")
+        doc_path.write_text("# Test\n\nThis is a test document.\n\n## Definition of Done\n- [ ] Done.")
         return doc_path
     
     @pytest.mark.slow

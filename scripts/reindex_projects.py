@@ -253,9 +253,16 @@ def main() -> None:
         print("  ./scripts/reindex_projects.py --stale        # Update stale indexes")
         print("  ./scripts/reindex_projects.py --all          # Recreate all")
         print("  ./scripts/reindex_projects.py [project]      # Specific project")
+        print("\nFlags:")
+        print("  --yes, -y                                    # Skip confirmation prompt")
         sys.exit(0 if len(sys.argv) > 1 else 1)
     
-    arg = sys.argv[1]
+    # Parse flags and arguments
+    args = sys.argv[1:]
+    skip_confirm = "--yes" in args or "-y" in args
+    # Filter out flags to find the main argument
+    remaining = [a for a in args if not a.startswith("-")]
+    arg = remaining[0] if remaining else [a for a in args if a.startswith("--")][0]
     
     if arg == "--missing":
         print("Creating missing index files...\n")
@@ -301,10 +308,11 @@ def main() -> None:
     
     elif arg == "--all":
         print("⚠️  Recreating ALL index files...\n")
-        response = input("This will overwrite existing indexes. Continue? (yes/no): ")
-        if response.lower() != "yes":
-            print("Aborted.")
-            sys.exit(0)
+        if not skip_confirm:
+            response = input("This will overwrite existing indexes. Continue? (yes/no): ")
+            if response.lower() != "yes":
+                print("Aborted.")
+                sys.exit(0)
         
         projects = find_projects(PROJECTS_ROOT)
         

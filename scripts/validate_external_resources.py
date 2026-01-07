@@ -8,7 +8,7 @@ import sys
 import yaml
 from pathlib import Path
 from typing import List, Dict, Optional, Union
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 
 class Service(BaseModel):
     name: str
