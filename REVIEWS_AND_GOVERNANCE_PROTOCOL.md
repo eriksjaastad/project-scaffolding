@@ -100,6 +100,8 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 | **H2** | **Hardening**| Dry-run flag implemented for global writes | Verify `--dry-run` logic exists |
 | **H3** | **Hardening**| Atomic writes used for critical file updates | Verify temp-and-rename pattern |
 | **H4** | **Hardening**| Path Safety (safe_slug + traversal check) | Verify all user-input paths are sanitized |
+| **R1** | **Reviews** | **Active Review Location** | Must be in project root: `CODE_REVIEW_{MODEL}_{VERSION}.md` |
+| **R2** | **Reviews** | **Review Archival** | Previous versions MUST be moved to `Documents/archives/reviews/` |
 | **S1** | **Scaling** | Context ceiling strategy (Map-Reduce/RAG) | Document the architectural ceiling |
 | **S2** | **Scaling** | Memory/OOM guards for unbounded processing | Verify size-aware batching logic |
 

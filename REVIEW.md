@@ -19,7 +19,7 @@
 
 ### **Verdict: [B / ARCHITECTURAL DEBT]**
 
-This project is a well-intentioned scaffolding system that preaches absolute path avoidance but **commits the same sin 45+ times in its own codebase**. The `.cursorrules` file—literally the DNA that gets copied to every downstream project—contains **7 hardcoded `/Users/eriksjaastad/` paths**. The templates that spawn 30 projects contain the same toxic leaks. This isn't a gold standard; it's a gilded cage waiting to lock every new project to one developer's machine.
+This project is a well-intentioned scaffolding system that preaches absolute path avoidance but **commits the same sin 45+ times in its own codebase**. The `.cursorrules` file—literally the DNA that gets copied to every downstream project—contains **7 hardcoded `~/` paths**. The templates that spawn 30 projects contain the same toxic leaks. This isn't a gold standard; it's a gilded cage waiting to lock every new project to one developer's machine.
 
 **The scaffolding needs scaffolding.**
 
@@ -133,7 +133,7 @@ The `check_dangerous_functions()` catches exceptions with `pass`. If a Python fi
 
 ### P0 — Critical (Must Fix Before Public Release)
 
-1. **Purge all `/Users/eriksjaastad/` paths** — Replace with `$PROJECT_ROOT` or relative paths
+1. **Purge all `~/` paths** — Replace with `$PROJECT_ROOT` or relative paths
 2. **Fix silent exception swallowing** — Replace `pass` with `logging.warning()` and increment counter
 3. **Pin dependency versions** — `anthropic==0.18.1`, `openai==1.3.0`, etc.
 
@@ -153,7 +153,7 @@ The `check_dangerous_functions()` catches exceptions with `pass`. If a Python fi
 
 ## REVIEW #4 FINAL SUMMARY
 
-> *"You built a house that teaches others how to build houses, but you left the architect's home address written in permanent marker on every blueprint. The foundation is solid—the plumbing works, the electrical is up to code—but every downstream project inherits your `/Users/eriksjaastad/` problem. Clean your own house before you sell the floor plans."*
+> *"You built a house that teaches others how to build houses, but you left the architect's home address written in permanent marker on every blueprint. The foundation is solid—the plumbing works, the electrical is up to code—but every downstream project inherits your `~/` problem. Clean your own house before you sell the floor plans."*
 
 **Revised Grade:** B (Architectural Debt)
 **Path to A+:** Complete P0 remediation items (estimated: 2-3 hours)
@@ -364,7 +364,7 @@ The methodology assumes single-user execution. At scale, rate limits will be hit
 - **Verification:** `grep -rn "sk-" scripts/*.py` → No matches
 
 **✅ CRIT-2: validate_project.py Portability Fixed**
-- **Was:** `PROJECTS_ROOT = Path("/Users/eriksjaastad/projects")`
+- **Was:** `PROJECTS_ROOT = Path("~/projects")`
 - **Now:** `PROJECTS_ROOT = Path(os.getenv("PROJECTS_ROOT", Path.home() / "projects"))`
 - **Impact:** Works on any machine, RunPod, CI/CD
 

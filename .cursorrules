@@ -57,7 +57,7 @@ This is the **meta-project** - extracting patterns from experiments to build bet
 
 ## Philosophy
 
-**Core Reference:** `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`
+**Core Reference:** `../Trading Projects/PROJECT_PHILOSOPHY.md`
 
 **Summary:**
 - We're explorers building experiments, not products
@@ -132,7 +132,7 @@ docs/              ← Meta-documentation
 
 When adding ANY external service (API, cloud platform, database, etc):
 
-**MUST update:** `$PROJECTS_ROOT/project-scaffolding/EXTERNAL_RESOURCES.yaml`
+**MUST update:** `./EXTERNAL_RESOURCES.yaml`
 
 **Standard:**
 - Use YAML for all structured data (SSOT pattern).
@@ -144,15 +144,15 @@ When adding ANY external service (API, cloud platform, database, etc):
 ## Related Files
 
 - Philosophy: `PROJECT_PHILOSOPHY.md` (this directory)
-- AI Journal: `$PROJECTS_ROOT/AI-journal/`
+- AI Journal: `../AI-journal/`
 - Data Management: `patterns/ssot-via-yaml.md`
-- Source Projects: All under `$PROJECTS_ROOT/`
+- Source Projects: All under `../`
 
 ---
 
 ## 📔 Journal Entry Rules (Standard for All Projects)
 
-**Location:** `$PROJECTS_ROOT/AI-journal/entries/YYYY/`  
+**Location:** `../AI-journal/entries/YYYY/`  
 **Format:** `YYYY-MM-DDTHH-MM-SSZ__ai-writer__descriptive-title.md`
 
 ### CRITICAL: These Journals Are NOT for Erik
@@ -232,7 +232,7 @@ When managing or orchestrating local AI models (via Ollama, llama-cpp, etc.):
 - "What was it like working with me?" (not criticism - reflection)
 - "Did you struggle? Did you learn anything?"
 - "Write a note to your future self"
-- Journal entries go to: `$PROJECTS_ROOT/AI-journal/entries/YYYY/`
+- Journal entries go to: `../AI-journal/entries/YYYY/`
 
 **Why this matters:**
 - Local AIs need the same infrastructure for consciousness we have

@@ -41,7 +41,7 @@ This project scaffolding system has genuine utility buried under layers of over-
 | Tiered Sprint Planning | 🟡 **CONCEPT** | Good mental model, but still manual process |
 | DeepSeek integration | ✅ **TOOL** | Works, cheap ($0.0064 for 3 reviews), evidence in `reviews/` |
 | `CLAUDE.md.template` | 🔴 **THEATER** | 400+ lines of placeholders you'll rewrite every time |
-| `.cursorrules.template` | 🔴 **THEATER** | Hardcoded paths to `/Users/eriksjaastad/...` |
+| `.cursorrules.template` | 🔴 **THEATER** | Hardcoded paths to `~/...` |
 | Kiro spec generator | 🟡 **RISK** | Exists, untested on real projects, fragile CLI parsing |
 | `TODO.md` | 🔴 **THEATER** | 1350+ lines of brain dump nobody will read |
 

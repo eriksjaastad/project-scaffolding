@@ -8,9 +8,11 @@ tracks costs, and collects responses.
 import asyncio
 import json
 import logging
+import os
 import re
 import shutil
 import subprocess
+import tempfile
 from dataclasses import dataclass
 from datetime import datetime, UTC
 from pathlib import Path
@@ -35,6 +37,31 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 console = Console()
+
+
+def safe_slug(text: str) -> str:
+    """Sanitizes string for use in filenames"""
+    # Lowercase and replace non-alphanumeric with underscores
+    slug = text.lower()
+    slug = re.sub(r'[^a-z0-9]+', '_', slug)
+    return slug.strip('_')
+
+
+def save_atomic(path: Path, content: str) -> None:
+    """Atomic write using temp file and rename"""
+    temp_dir = path.parent
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    
+    with tempfile.NamedTemporaryFile(mode='w', dir=temp_dir, delete=False) as tf:
+        tf.write(content)
+        temp_name = tf.name
+    
+    try:
+        os.replace(temp_name, path)
+    except Exception:
+        if os.path.exists(temp_name):
+            os.unlink(temp_name)
+        raise
 
 
 @dataclass
@@ -101,7 +128,7 @@ class ReviewOrchestrator:
         anthropic_key: Optional[str] = None,
         google_key: Optional[str] = None,
         deepseek_key: Optional[str] = None
-    ):
+    ) -> None:
         self.openai_client = AsyncOpenAI(api_key=openai_key) if openai_key else None
         self.anthropic_client = AsyncAnthropic(api_key=anthropic_key) if anthropic_key else None
         self.google_key = google_key  # Will implement Google AI if needed
@@ -186,10 +213,10 @@ class ReviewOrchestrator:
         # Save results
         for result in review_results:
             if not result.error:
-                # Standardize filename: CODE_REVIEW_{NAME_UPPER}.md
-                safe_name = result.reviewer_name.upper().replace(' ', '_')
-                output_file = round_dir / f"CODE_REVIEW_{safe_name}.md"
-                output_file.write_text(result.content)
+                # Standardize filename: CODE_REVIEW_{safe_slug}.md
+                slug_name = safe_slug(result.reviewer_name)
+                output_file = round_dir / f"CODE_REVIEW_{slug_name.upper()}.md"
+                save_atomic(output_file, result.content)
         
         # Create summary
         summary = ReviewSummary(
@@ -201,9 +228,9 @@ class ReviewOrchestrator:
             timestamp=datetime.now(UTC).isoformat()
         )
         
-        # Save cost summary
+        # Save cost summary atomically
         cost_file = round_dir / "COST_SUMMARY.json"
-        cost_file.write_text(json.dumps(summary.to_dict(), indent=2))
+        save_atomic(cost_file, json.dumps(summary.to_dict(), indent=2))
         
         # Display results
         self._display_summary(summary, round_dir)
@@ -379,13 +406,40 @@ class ReviewOrchestrator:
                 prompt_file = f.name
             
             # Call Kiro CLI in non-interactive mode with prompt from file
-            kiro_path = shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli"
+            # First try to find via PATH environment variable
+            kiro_path = shutil.which("kiro-cli")
+            
+            # If not found in PATH, check common locations
+            common_paths = [
+                "/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli",
+                os.path.expanduser("~/Applications/Kiro CLI.app/Contents/MacOS/kiro-cli")
+            ]
+            
+            # Check additional common locations if not found in PATH
+            if kiro_path is None:
+                for path in common_paths:
+                    if os.path.exists(path):
+                        kiro_path = path
+                        break
+            
+            # If still not found, raise an error with helpful message
+            if kiro_path is None:
+                raise FileNotFoundError(
+                    "Kiro CLI was not found. Please install Kiro CLI by running:\n"
+                    "\tbrew install kiro-cli\n"
+                    "or download from the official website and place the Kiro CLI.app in either:\n"
+                    "\t- /Applications/Kiro CLI.app\n"
+                    "\t- ~/Applications/Kiro CLI.app\n"
+                    "Once installed, make sure to set your PATH correctly."
+                )
+
             result = subprocess.run(
                 [kiro_path, "chat", "--no-interactive"],
                 input=prompt,
                 capture_output=True,
                 text=True,
-                timeout=120  # 2 minute timeout
+                timeout=120,  # 2 minute timeout
+                check=True
             )
             
             # Clean up temp file
@@ -393,9 +447,6 @@ class ReviewOrchestrator:
                 os.unlink(prompt_file)
             except Exception as e:
                 logger.warning(f"Failed to cleanup temp prompt file {prompt_file}: {e}")
-            
-            if result.returncode != 0:
-                raise RuntimeError(f"Kiro CLI exited with code {result.returncode}: {result.stderr}")
             
             # Parse output (Kiro includes ANSI codes, need to strip them)
             import re
@@ -469,7 +520,7 @@ class ReviewOrchestrator:
         except Exception as e:
             raise RuntimeError(f"Error calling Kiro CLI: {e}")
     
-    def _display_summary(self, summary: ReviewSummary, output_dir: Path):
+    def _display_summary(self, summary: ReviewSummary, output_dir: Path) -> None:
         """Display review summary in terminal"""
         console.print("\n[bold green]Review Complete![/bold green]\n")
         

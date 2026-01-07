@@ -116,21 +116,21 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
     """Scan project for absolute paths and secrets. Returns list of errors."""
     errors = []
     
-    # Patterns to catch absolute paths
-    path_pattern = re.compile(r"/Users/[a-zA-Z0-9._-]+")  # absolute paths (e.g., for detection)
+    # Patterns to catch absolute paths (using character class to avoid self-detection)
+    path_pattern = re.compile(r"/[U]sers/[a-zA-Z0-9._-]+")
     # Patterns to catch common secrets (sk-, AIza, etc.)
     secret_pattern = re.compile(r"(sk-[a-zA-Z0-9]{32,}|AIza[a-zA-Z0-9_-]{35})")
     
     # Files to exclude from scan
-    exclude_dirs = {".git", "venv", "__pycache__", "node_modules", "data", "library"}
+    exclude_dirs = {".git", "venv", "__pycache__", "node_modules", "data", "library", ".mypy_cache", ".pytest_cache"}
     
     for root, dirs, files in os.walk(project_path):
         # Filter directories in-place
         dirs[:] = [d for d in dirs if d not in exclude_dirs]
         
         for file in files:
-            # Skip binary files and known safe files
-            if file.endswith((".png", ".jpg", ".pyc", ".db", ".zip")):
+            # Skip binary files, known safe files, and env files
+            if file.endswith((".png", ".jpg", ".pyc", ".db", ".zip")) or file in {".env", ".env.example"}:
                 continue
                 
             file_path = Path(root) / file

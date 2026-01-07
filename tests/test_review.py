@@ -231,7 +231,8 @@ class TestReviewCLI:
             capture_output=True,
             text=True,
             timeout=120,
-            env={**os.environ}
+            env={**os.environ},
+            check=True
         )
         
         # Check command ran (might skip reviewers if no keys)

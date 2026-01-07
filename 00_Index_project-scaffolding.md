@@ -44,7 +44,7 @@ Meta-project for extracting patterns from experiments to build better projects f
   - YAML processing
 
 ### Documentation
-- `docs/` - Meta-documentation
+- `Documents/` - Meta-documentation (formerly `docs/`)
   - `PATTERN_ANALYSIS.md` - Pattern extraction
   - `USAGE_GUIDE.md` - How to use scaffolding
   - `PROJECT_KICKOFF_GUIDE.md` - Starting new projects
@@ -77,7 +77,8 @@ Meta-project for extracting patterns from experiments to build better projects f
 
 ## Recent Activity
  
-+- **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests to allow absolute paths in documentation and config files while blocking them in code. Verified all 28 tests pass.
+- **2026-01-07 14:30**: Industrial Hardening & Portability: Refactored all subprocess calls for safety, enforced atomic writes, and achieved 100% template portability by scrubbing absolute paths.
+- **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests to allow absolute paths in documentation and config files while blocking them in code. Verified all 28 tests pass.
  - **2026-01-07 10:30**: Ecosystem Governance v1.2: Hardened protocol with industrial subprocess rules, data clobber guards, and context window scaling strategies. Automated DNA integrity scans in `validate_project.py`.
 - **2026-01-07 09:00**: Ecosystem Governance v1.1: Implemented `pre_review_scan.sh`, updated `CODE_REVIEW.md.template`, and established Anti-Patterns Database.
 - **2026-01-06 17:00**: Master Registry: Migrated all ecosystem API keys to `project-scaffolding/.env` for centralized record-keeping.

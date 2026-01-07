@@ -20,12 +20,11 @@ echo ""
 echo "📋 TIER 1: BLAST RADIUS (Templates & Configs)"
 echo "--------------------------------------------------"
 
-# Use a variable to bypass pre-commit hook path check
-USER_PATH_PREFIX="/User"
-USER_PATH_PREFIX="${USER_PATH_PREFIX}s/"
+# Hardcoded path detection (using character class to avoid self-detection)
+USER_PATH_PREFIX="/[U]sers/"
 
-echo -n "  [1.1] Checking templates/ (non-markdown) for hardcoded paths... "
-if find templates/ -type f ! -name "*.md" 2>/dev/null | xargs grep -l "$USER_PATH_PREFIX" 2>/dev/null | grep -v "absolute paths (e.g.,"; then
+echo -n "  [1.1] Checking templates/ for hardcoded paths... "
+if find templates/ -type f 2>/dev/null | xargs grep -l "$USER_PATH_PREFIX" 2>/dev/null; then
     echo "❌ FAIL"
     FAILED=1
 else
@@ -33,15 +32,14 @@ else
 fi
 
 echo -n "  [1.2] Checking YAML files for hardcoded paths... "
-if grep -rn "$USER_PATH_PREFIX" *.yaml 2>/dev/null | grep -v "absolute paths (e.g.,"; then
+if grep -rn "$USER_PATH_PREFIX" *.yaml 2>/dev/null; then
     echo "❌ FAIL"
     FAILED=1
 else
     echo "✅ PASS"
 fi
 
-# Note: .cursorrules, .md, and .env files are exempt from path checks 
-# as they often require absolute paths for local tool integration.
+# Note: All files are now subject to path checks to ensure DNA portability.
 
 echo ""
 
@@ -111,12 +109,35 @@ echo "✨ TIER 4: CODE QUALITY"
 echo "--------------------------------------------------"
 
 echo -n "  [4.1] Checking for functions without type hints... "
-# Simple check: functions with 'def ' but no '->'
-# Improved to actually find python files correctly
-UNTYPED=$(find scripts/ scaffold/ -name "*.py" 2>/dev/null | xargs grep "^def " 2>/dev/null | grep -v " -> " | wc -l || echo 0)
-if [ "$UNTYPED" -gt 0 ]; then
-    echo "⚠️  WARN ($UNTYPED functions without return type)"
-    # Don't fail, just warn
+# Use python for more robust multi-line check
+MISSING_TYPES=$(python3 -c '
+import sys
+import os
+import re
+
+missing = 0
+for dir_path in ["scripts", "scaffold"]:
+    if not os.path.exists(dir_path): continue
+    for root, _, files in os.walk(dir_path):
+        for file in files:
+            if file.endswith(".py"):
+                path = os.path.join(root, file)
+                with open(path, "r") as f:
+                    content = f.read()
+                # Find all def statements
+                for match in re.finditer(r"^def\s+\w+", content, re.MULTILINE):
+                    start = match.start()
+                    # Find the colon that ends this definition
+                    colon_pos = content.find(":", start)
+                    if colon_pos != -1:
+                        def_sig = content[start:colon_pos]
+                        if "->" not in def_sig:
+                            missing += 1
+sys.exit(missing)
+' 2>&1 || echo $?)
+
+if [ "$MISSING_TYPES" -gt 0 ]; then
+    echo "⚠️  WARN ($MISSING_TYPES functions without return type)"
 else
     echo "✅ PASS"
 fi

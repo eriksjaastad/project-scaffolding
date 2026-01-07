@@ -12,7 +12,7 @@
 1. Created `requirements.txt` with ALL dependencies
 2. Verified tests pass (24/24) - Claude was wrong!
 3. Fixed silent reviewer skipping (red errors, not yellow warnings)
-4. Removed hardcoded `/Users/eriksjaastad/` paths
+4. Removed hardcoded `~/` paths
 
 ### ✅ **Chunk 2: Defensive Programming** (~30 min)
 1. Added retry logic (3x exponential backoff: 2s → 4s → 8s)

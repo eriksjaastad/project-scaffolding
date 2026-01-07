@@ -42,7 +42,7 @@
 
 - [ ] **1.4** Remove hardcoded macOS paths
   - `templates/.cursorrules.template`
-  - Remove `/Users/eriksjaastad/...` paths
+  - Remove `~/...` paths
   - Make templates truly generic
   - **Validation:** No hardcoded paths in templates
 

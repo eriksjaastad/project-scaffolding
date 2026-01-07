@@ -230,11 +230,9 @@ Be specific, actionable, and include time estimates.
             input=prompt,
             capture_output=True,
             text=True,
-            timeout=120
+            timeout=120,
+            check=True
         )
-        
-        if result.returncode != 0:
-            raise RuntimeError(f"Kiro CLI failed: {result.stderr}")
         
         return result.stdout
     

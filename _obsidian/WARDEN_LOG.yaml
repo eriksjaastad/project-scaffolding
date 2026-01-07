@@ -1,3 +1,13 @@
+- timestamp: "2026-01-07T14:30:00Z"
+  action: "Mission Orders #2 & #3: Industrial Hardening & Portability"
+  changes:
+    - Hardened `subprocess.run` calls project-wide with `check=True` and `timeout`.
+    - Eradicated silent error laundering; replaced with explicit `logging`.
+    - Implemented Atomic Writes (temp-file + rename) for project index updates.
+    - Purged remaining hardcoded `/Users/` paths from documentation and templates.
+    - Hardened Kiro CLI path lookup with `shutil.which` and graceful failure.
+    - Standardized `validate_project.py` to ignore caches and environment files.
+  warden_agent: "Industrial-grade subprocess safety and 100% path portability verified."
 - timestamp: "2026-01-07T11:30:00Z"
   action: "Ecosystem Governance v1.2: Scan & Test Refinement"
   changes:
@@ -26,7 +36,7 @@
 - timestamp: "2026-01-06T16:30:00Z"
   action: "Implementation of Decentralized Env System"
   changes:
-    - Created global environment template at /Users/eriksjaastad/projects/.env.project-template.
+    - Created global environment template at ../.env.project-template.
     - Updated EXTERNAL_RESOURCES.yaml with specific env_var mappings for all project services.
     - Standardized decentralized key management policy using project-specific prefixes.
   warden_agent: "Decentralized credential management active"
@@ -66,7 +76,7 @@
 - timestamp: "2026-01-06T13:30:00Z"
   action: "Automated Governance (Pre-commit & YAML Schema)"
   changes:
-    - Installed .git/hooks/pre-commit to block secrets (sk-...) and absolute paths (/Users/...).
+    - Installed .git/hooks/pre-commit to block secrets (sk-...) and absolute paths (/USER_HOME/...).
     - Created scripts/validate_external_resources.py with Pydantic schema for EXTERNAL_RESOURCES.yaml.
     - Verified hook blocks non-compliant "toy code" commits.
     - Verified YAML schema guard passes for current EXTERNAL_RESOURCES.yaml.
