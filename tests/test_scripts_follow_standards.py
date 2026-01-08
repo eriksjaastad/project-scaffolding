@@ -1,5 +1,4 @@
 """Test that scripts follow CODE_QUALITY_STANDARDS.md"""
-import pytest
 from pathlib import Path
 import subprocess
 
@@ -28,7 +27,7 @@ def test_no_hardcoded_paths():
     # Filter out legitimate uses (like regex patterns for detection)
     lines = [line for line in stdout.splitlines() if "re.compile" not in line and "absolute paths (e.g.," not in line]
     
-    assert not lines, f"Found hardcoded paths:\n" + "\n".join(lines)
+    assert not lines, "Found hardcoded paths:\n" + "\n".join(lines)
 
 def test_no_hardcoded_api_keys():
     """Scripts must not contain API keys"""
@@ -74,4 +73,4 @@ def test_scripts_have_type_hints():
                 func_name = full_sig.split("(")[0].strip()
                 violations.append(f"{script.name}: {func_name}")
 
-    assert not violations, f"Scripts without type hints:\n" + "\n".join(violations)
+    assert not violations, "Scripts without type hints:\n" + "\n".join(violations)

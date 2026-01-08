@@ -17,7 +17,6 @@ from datetime import datetime, UTC
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import aiohttp
 from anthropic import AsyncAnthropic
 from openai import AsyncOpenAI, APIError, APIConnectionError, RateLimitError
 from rich.console import Console

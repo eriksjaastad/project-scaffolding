@@ -3,14 +3,12 @@ CLI for Project Scaffolding automation system
 """
 
 import asyncio
-import os
 from pathlib import Path
 from typing import List, Optional
 
 import click
 from dotenv import load_dotenv
 from rich.console import Console
-from rich.prompt import Confirm
 
 from scaffold.review import ReviewConfig, create_orchestrator
 
@@ -161,14 +159,14 @@ def review(
             next_round = round_number + 1
             estimated_cost = summary.total_cost * 1.05  # Assume similar cost
             
-            console.print(f"\n[bold]Next Steps:[/bold]")
+            console.print("\n[bold]Next Steps:[/bold]")
             console.print(f"  1. Review feedback in: {output_dir / f'round_{round_number}'}")
-            console.print(f"  2. Revise document based on feedback")
+            console.print("  2. Revise document based on feedback")
             console.print(f"  3. Run Round {next_round}:")
             console.print(f"     [cyan]scaffold review --type {review_type} --input {input_path} --round {next_round}[/cyan]")
             console.print(f"     Estimated cost: [green]${estimated_cost:.2f}[/green]\n")
         else:
-            console.print(f"\n[bold green]Review process complete![/bold green]")
+            console.print("\n[bold green]Review process complete![/bold green]")
             console.print(f"  Total rounds: {round_number}")
             console.print(f"  Reviews saved to: {output_dir}\n")
         

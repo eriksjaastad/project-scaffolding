@@ -69,16 +69,16 @@ Make it production-ready.
         print("=" * 80)
         print(content)
         print("=" * 80)
-        print(f"\n📊 Stats:")
+        print("\n📊 Stats:")
         print(f"   Tokens: {tokens:,}")
         print(f"   Cost: ${cost:.6f}")
-        print(f"   Model: deepseek-chat")
+        print("   Model: deepseek-chat")
         
         # Calculate what this would cost with Claude Sonnet
         claude_cost = tokens * 0.000003  # Rough avg of input/output
         savings = ((claude_cost - cost) / claude_cost) * 100
         
-        print(f"\n💰 Comparison:")
+        print("\n💰 Comparison:")
         print(f"   DeepSeek cost: ${cost:.6f}")
         print(f"   Claude Sonnet (est): ${claude_cost:.6f}")
         print(f"   Savings: {savings:.1f}%")

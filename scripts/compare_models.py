@@ -164,7 +164,7 @@ def compare_results(results: list) -> None:
     print(f"⚡ Fastest: {fastest['model']} ({fastest['duration']:.2f}s)")
     
     # Cost comparison
-    print(f"\n💸 Cost Comparison:")
+    print("\n💸 Cost Comparison:")
     baseline = results[0]['cost']
     for result in results:
         savings = ((baseline - result['cost']) / baseline * 100) if result['cost'] < baseline else 0

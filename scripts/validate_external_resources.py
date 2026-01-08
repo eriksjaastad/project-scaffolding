@@ -53,7 +53,7 @@ def validate_yaml(yaml_path: Path) -> bool:
         
         # Validate using Pydantic
         ExternalResources(**data)
-        logger.info(f"EXTERNAL_RESOURCES.yaml is valid.")
+        logger.info("EXTERNAL_RESOURCES.yaml is valid.")
         return True
 
     except yaml.YAMLError as e:

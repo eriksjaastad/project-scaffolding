@@ -5,7 +5,6 @@ Run with: pytest tests/test_review.py -v
 """
 
 import pytest
-import asyncio
 from pathlib import Path
 import tempfile
 import os
@@ -16,7 +15,7 @@ from dotenv import load_dotenv, dotenv_values
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from scaffold.review import ReviewOrchestrator, ReviewConfig, create_orchestrator
+from scaffold.review import ReviewConfig, create_orchestrator
 
 DOTENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=DOTENV_PATH, override=False)
