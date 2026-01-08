@@ -25,7 +25,7 @@ DOTENV_VALUES = dotenv_values(DOTENV_PATH)
 def ensure_ollama_on_path() -> bool:
     """Ensure Ollama CLI is discoverable; return True if found."""
     candidates = []
-    env_candidate = os.getenv("OLLAMA_PATH") or os.getenv("SCAFFOLDING_OLLAMA_PATH")
+    env_candidate = os.getenv("SCAFFOLDING_OLLAMA_PATH") or os.getenv("OLLAMA_PATH")
     if env_candidate:
         candidates.append(Path(env_candidate))
     candidates.extend([
@@ -85,9 +85,7 @@ Uses JWT tokens for authentication.
         """Get DeepSeek API key from environment"""
         key = (
             os.getenv("SCAFFOLDING_DEEPSEEK_KEY")
-            or os.getenv("DEEPSEEK_API_KEY")
             or DOTENV_VALUES.get("SCAFFOLDING_DEEPSEEK_KEY")
-            or DOTENV_VALUES.get("DEEPSEEK_API_KEY")
         )
         if not key:
             pytest.skip("SCAFFOLDING_DEEPSEEK_KEY not set")

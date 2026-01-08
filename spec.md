@@ -570,7 +570,7 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool
 | `SCAFFOLDING_GOOGLE_KEY` | Google AI authentication (unused) | None |
 | `SCAFFOLDING_DEEPSEEK_KEY` | DeepSeek API authentication | None |
 | `SCAFFOLDING_OLLAMA_MODEL` | Ollama model for local reviews | `llama3.2` |
-| `PROJECTS_ROOT` | Ecosystem root directory | `~/projects` |
+| `PROJECTS_ROOT` | Ecosystem root directory | REQUIRED (Must be configured in environment) |
 | `OLLAMA_PATH` / `SCAFFOLDING_OLLAMA_PATH` | Override Ollama binary location | Auto-detect |
 
 ---

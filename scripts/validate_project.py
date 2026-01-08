@@ -21,7 +21,11 @@ from typing import List, Tuple
 import re
 
 # Configuration
-PROJECTS_ROOT = Path(os.getenv("PROJECTS_ROOT", Path.home() / "projects"))
+PROJECTS_ROOT_ENV = os.getenv("PROJECTS_ROOT")
+if not PROJECTS_ROOT_ENV:
+    raise EnvironmentError("PROJECTS_ROOT environment variable is not set.")
+PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
+
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
 SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
 
@@ -48,6 +52,20 @@ REQUIRED_SECTIONS = ["# ", "## Key Components", "## Status"]
 class ValidationError(Exception):
     """Raised when project fails validation."""
     pass
+
+
+def safe_slug(text: str) -> str:
+    """Sanitizes string for use in filenames and prevents path traversal."""
+    # Lowercase and replace non-alphanumeric with underscores
+    slug = text.lower()
+    slug = re.sub(r'[^a-z0-9]+', '_', slug)
+    slug = slug.strip('_')
+    
+    # Industrial Hardening: Prevent directory traversal attempts
+    if ".." in slug or slug.startswith("/") or slug.startswith("~"):
+        slug = slug.replace("..", "").replace("/", "").replace("~", "")
+        
+    return slug
 
 
 def find_projects(root: Path) -> List[Path]:
@@ -264,9 +282,14 @@ def main() -> None:
     
     else:
         # Validate specific project
-        project_name = arg
-        project_path = PROJECTS_ROOT / project_name
+        project_name = safe_slug(arg)
+        project_path = (PROJECTS_ROOT / project_name).resolve()
         
+        # Security: Ensure path stays within PROJECTS_ROOT
+        if not project_path.is_relative_to(PROJECTS_ROOT):
+            print(f"❌ Security Alert: Path traversal detected for {arg}")
+            sys.exit(1)
+            
         if not project_path.exists():
             print(f"❌ Project not found: {project_name}")
             print(f"   Expected: {project_path}")
