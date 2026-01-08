@@ -7,7 +7,7 @@
 
 ## 🚫 DNA Integrity & Portability
 - **ZERO Absolute Paths:** NEVER suggest or use absolute paths (e.g., machine-specific paths).
-- Use **relative paths** (e.g., `../sibling-project/`) or **environment variables** (e.g., `PROJECTS_ROOT`).
+- Use **relative paths** (e.g., `{PROJECTS_ROOT}/sibling-project/`) or **environment variables** (e.g., `PROJECTS_ROOT`).
 - If an absolute path is required for a local tool, it MUST be wrapped in a `.env` variable.
 
 ## 📋 Definition of Done (DoD)

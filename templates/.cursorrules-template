@@ -59,7 +59,7 @@
 
 ## 🔗 Related Resources
 
-- **Project Philosophy:** `../Trading Projects/PROJECT_PHILOSOPHY.md`
-- **Project Scaffolding:** `../project-scaffolding/`
-- **Code Quality Standards:** `../project-scaffolding/docs/CODE_QUALITY_STANDARDS.md`
+- **Project Philosophy:** `{PROJECTS_ROOT}/Trading Projects/PROJECT_PHILOSOPHY.md`
+- **Project Scaffolding:** `{PROJECTS_ROOT}/project-scaffolding/`
+- **Code Quality Standards:** `{PROJECTS_ROOT}/project-scaffolding/Documents/CODE_QUALITY_STANDARDS.md`
 

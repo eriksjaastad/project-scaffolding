@@ -145,7 +145,8 @@ class ReviewOrchestrator:
         openai_key: Optional[str] = None,
         anthropic_key: Optional[str] = None,
         google_key: Optional[str] = None,
-        deepseek_key: Optional[str] = None
+        deepseek_key: Optional[str] = None,
+        ollama_host: Optional[str] = None
     ) -> None:
         self.openai_client = AsyncOpenAI(api_key=openai_key) if openai_key else None
         self.anthropic_client = AsyncAnthropic(api_key=anthropic_key) if anthropic_key else None
@@ -154,6 +155,7 @@ class ReviewOrchestrator:
             api_key=deepseek_key,
             base_url="https://api.deepseek.com/v1"
         ) if deepseek_key else None
+        self.ollama_host = ollama_host
         
     async def run_review(
         self,
@@ -427,6 +429,10 @@ class ReviewOrchestrator:
     async def _call_ollama(self, model: str, prompt: str) -> Dict[str, Any]:
         """Call Ollama CLI for local review"""
         try:
+            env = os.environ.copy()
+            if self.ollama_host:
+                env["OLLAMA_HOST"] = self.ollama_host
+                
             # Industrial Hardening: subprocess with timeout and check
             result = subprocess.run(
                 ["ollama", "run", model],
@@ -434,7 +440,8 @@ class ReviewOrchestrator:
                 capture_output=True,
                 text=True,
                 timeout=300,  # Local models can be slow
-                check=True
+                check=True,
+                env=env
             )
             
             return {
@@ -497,13 +504,15 @@ def create_orchestrator(
     openai_key: Optional[str] = None,
     anthropic_key: Optional[str] = None,
     google_key: Optional[str] = None,
-    deepseek_key: Optional[str] = None
+    deepseek_key: Optional[str] = None,
+    ollama_host: Optional[str] = None
 ) -> ReviewOrchestrator:
     """Factory function to create a review orchestrator"""
     return ReviewOrchestrator(
         openai_key=openai_key,
         anthropic_key=anthropic_key,
         google_key=google_key,
-        deepseek_key=deepseek_key
+        deepseek_key=deepseek_key,
+        ollama_host=ollama_host
     )
 

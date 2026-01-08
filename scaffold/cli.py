@@ -80,6 +80,12 @@ def cli() -> None:
     default="llama3.2",
     help="Ollama model to use for local reviews (default: llama3.2)"
 )
+@click.option(
+    "--ollama-host",
+    envvar="SCAFFOLDING_OLLAMA_HOST",
+    default="http://localhost:11434",
+    help="Ollama host URL (default: http://localhost:11434)"
+)
 def review(
     review_type: str,
     input_path: Path,
@@ -89,7 +95,8 @@ def review(
     anthropic_key: Optional[str],
     google_key: Optional[str],
     deepseek_key: Optional[str],
-    ollama_model: str
+    ollama_model: str,
+    ollama_host: str
 ) -> None:
     """
     Run multi-AI review on document or code
@@ -140,7 +147,8 @@ def review(
         openai_key=openai_key,
         anthropic_key=anthropic_key,
         google_key=google_key,
-        deepseek_key=deepseek_key
+        deepseek_key=deepseek_key,
+        ollama_host=ollama_host
     )
     
     # Run review

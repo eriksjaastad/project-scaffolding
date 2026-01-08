@@ -22,9 +22,7 @@ def test_deepseek() -> None:
     """Test DeepSeek with a real coding task (integration; costs tokens)."""
     deepseek_key = (
         os.getenv("SCAFFOLDING_DEEPSEEK_KEY")
-        or os.getenv("DEEPSEEK_API_KEY")
         or DOTENV_VALUES.get("SCAFFOLDING_DEEPSEEK_KEY")
-        or DOTENV_VALUES.get("DEEPSEEK_API_KEY")
     )
     if not deepseek_key:
         pytest.skip("SCAFFOLDING_DEEPSEEK_KEY not set")
@@ -93,7 +91,7 @@ Make it production-ready.
 if __name__ == "__main__":
     if "--help" in sys.argv or "-h" in sys.argv:
         print("Usage: python3 scripts/test_deepseek.py")
-        print("Requires DEEPSEEK_API_KEY environment variable.")
+        print("Requires SCAFFOLDING_DEEPSEEK_KEY environment variable.")
         sys.exit(0)
     success = test_deepseek()
     sys.exit(0 if success else 1)
