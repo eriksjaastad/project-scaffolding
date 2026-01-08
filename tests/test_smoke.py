@@ -96,16 +96,20 @@ class TestDependencies:
     
     def test_critical_imports(self):
         """Test that critical packages are available"""
-        try:
-            import openai
-            import anthropic
-            import aiohttp
-            import rich
-            import pydantic
-            import click
-            import yaml
-        except ImportError as e:
-            pytest.fail(f"Missing critical dependency: {e}")
+        import importlib.util
+        critical_packages = [
+            "openai",
+            "anthropic",
+            "aiohttp",
+            "rich",
+            "pydantic",
+            "click",
+            "yaml",
+        ]
+        for package in critical_packages:
+            spec = importlib.util.find_spec(package)
+            if spec is None:
+                pytest.fail(f"Missing critical dependency: {package}")
     
     def test_python_version(self):
         """Test that Python version is >= 3.11"""

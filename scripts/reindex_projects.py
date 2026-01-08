@@ -20,8 +20,8 @@ import sys
 import os
 import tempfile
 from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple
+from datetime import datetime
+from typing import List, Tuple
 from collections import Counter
 import subprocess
 import logging

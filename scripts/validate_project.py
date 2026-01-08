@@ -165,7 +165,7 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     # 1. Check for index file
     has_index, index_path = has_index_file(project_path)
     if not has_index:
-        errors.append(f"Missing index file (00_Index_*.md)")
+        errors.append("Missing index file (00_Index_*.md)")
     else:
         # Validate index content
         index_errors = validate_index_content(index_path)
