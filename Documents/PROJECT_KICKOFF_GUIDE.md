@@ -90,7 +90,7 @@ pipeline ready for production.
 - `status/active` (always start as active)
 - `tech/[tech]` (python, typescript, etc.)
 
-**See:** `project-scaffolding/docs/PROJECT_INDEXING_SYSTEM.md` for complete guide
+**See:** `project-scaffolding/Documents/PROJECT_INDEXING_SYSTEM.md` for complete guide
 
 ### Step 4: Initialize Git
 
@@ -159,10 +159,10 @@ Ready to explore this idea?
 
 **Outputs:**
 - `ROADMAP.md` - Long-term vision
-- `ARCHITECTURE.md` or `docs/architecture/` - System design
+- `ARCHITECTURE.md` or `Documents/architecture/` - System design
 - `Documents/core/` - Core documentation
-- Maybe `docs/vision/` - Design vision
-- Maybe `docs/reviews/` - AI feedback sessions
+- Maybe `Documents/vision/` - Design vision
+- Maybe `Documents/reviews/` - AI feedback sessions
 
 **Duration:** Few hours of back-and-forth
 
@@ -189,10 +189,10 @@ Task:
 3. Organize into Tier 1, 2, 3
 4. Suggest execution order
 
-Create a tiered sprint document in: docs/SPRINT_PLAN.md
+Create a tiered sprint document in: Documents/SPRINT_PLAN.md
 ```
 
-**Output:** `docs/SPRINT_PLAN.md` with tiered task list
+**Output:** `Documents/SPRINT_PLAN.md` with tiered task list
 
 **Duration:** 30-60 minutes
 
@@ -231,7 +231,7 @@ Please generate the .gitignore file.
 ```
 You are a Tier 2 Mid-Weight AI (GPT-4o).
 
-Task: Implement [Feature X] following architecture defined in docs/architecture/
+Task: Implement [Feature X] following architecture defined in Documents/architecture/
 
 Context: [Link to relevant docs]
 
@@ -311,7 +311,7 @@ This project uses tiered AI planning to manage costs.
 **Sprint Planner:** PROJECTS_ROOT/project-scaffolding/templates/TIERED_SPRINT_PLANNER.md
 
 Before starting work:
-1. Check docs/SPRINT_PLAN.md for task tier
+1. Check Documents/SPRINT_PLAN.md for task tier
 2. Use appropriate model for the tier
 3. Default to Tier 3, escalate only when stuck
 ```
@@ -368,7 +368,7 @@ my-new-project/
 │   ├── safety/                # Safety systems
 │   └── archives/              # Historical docs
 │
-├── docs/                      # Additional docs (optional)
+├── Documents/                      # Additional docs (optional)
 │   ├── SPRINT_PLAN.md         # Tiered task list
 │   ├── architecture/          # Detailed architecture
 │   ├── reviews/               # AI feedback sessions
@@ -405,7 +405,7 @@ my-new-project/
 - [ ] Score each task (complexity + ambiguity + risk)
 - [ ] Organize into Tier 1, 2, 3
 - [ ] Set execution order
-- [ ] Document in `docs/SPRINT_PLAN.md`
+- [ ] Document in `Documents/SPRINT_PLAN.md`
 - [ ] Set tier budgets (20% / 50% / 30%)
 
 ### Phase 3 Execution (Ongoing - Mixed tiers)
@@ -459,7 +459,7 @@ Spike 1: Performance Testing
 - Build minimal prototype
 - Measure FPS, CPU, memory
 - Pass/fail against targets
-- Document in docs/spikes/
+- Document in Documents/spikes/
 ```
 
 **Use Tier 2** for spikes (implementation with measurement)
@@ -471,7 +471,7 @@ Spike 1: Performance Testing
 Capture visual progress (especially for UI projects):
 
 ```
-docs/milestones/
+Documents/milestones/
 ├── 2025-12-19_phase-0-complete.png
 ├── 2025-12-20_first-animation.png
 └── MILESTONES.md (describe each)

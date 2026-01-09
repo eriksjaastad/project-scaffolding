@@ -190,7 +190,7 @@ Result:
   - Ambiguity: 2 (standard README structure)
   - Risk: 1 (docs only)
   - Score: 2.0 → Tier 3 ✅
-  - **Instructions:** "README sections: 1. Project name/description, 2. Installation (link to docs/), 3. Quick start (3 commands), 4. License"
+  - **Instructions:** "README sections: 1. Project name/description, 2. Installation (link to Documents/), 3. Quick start (3 commands), 4. License"
 
 - [ ] Set up Electron app structure
   - Complexity: 3 (boilerplate with examples)
@@ -512,7 +512,7 @@ SHOULD HAVE: Escalated at 11:15 PM, finished by 11:30 PM with Tier 2 ($3)
 
 **Pattern from Hologram project:**
 
-The Hologram project used multi-model review for Phase 1 planning documents (see `hologram/docs/reviews/`):
+The Hologram project used multi-model review for Phase 1 planning documents (see `hologram/Documents/reviews/`):
 1. Take initial ROADMAP.md or architecture doc
 2. Send to multiple AI models (Claude Opus, GPT-4, Gemini, Grok, etc.)
 3. Each model reviews independently
@@ -542,7 +542,7 @@ During Phase 1 (planning), automate the multi-model review:
 **Implementation:**
 - Script that calls Claude API, OpenAI API, Google AI API, etc.
 - Structured prompt: "Review this doc for: missing pieces, risks, over-engineering"
-- Collect all responses in `docs/reviews/` directory
+- Collect all responses in `Documents/reviews/` directory
 - Human reads, identifies patterns, revises
 
 **Note:** This is for Phase 1 (planning docs), not for tiering execution tasks.

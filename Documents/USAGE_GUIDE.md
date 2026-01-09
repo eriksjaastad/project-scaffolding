@@ -21,7 +21,7 @@ This scaffolding provides:
 3. **Examples** (`examples/`)
    - Real implementations from source projects
 
-4. **Analysis** (`docs/`)
+4. **Analysis** (`Documents/`)
    - Pattern analysis and extraction notes
 
 ---

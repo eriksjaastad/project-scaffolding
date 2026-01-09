@@ -1,17 +1,20 @@
 # Pattern Analysis - Extracted from Source Projects
 
-> **Status:** Living document  
-> **Last Updated:** December 21, 2025  
+> **Status:** Living document
+> **Last Updated:** January 9, 2026
 > **Purpose:** Identify repeating patterns across projects for extraction into scaffolding
+> **Maintenance:** Updated quarterly (see `PATTERN_MANAGEMENT.md`)
 
 ---
 
 ## How to Read This Document
 
 Patterns are marked by **confidence level**:
-- 🟢 **PROVEN** - Appears in 3+ projects, battle-tested
-- 🟡 **EMERGING** - Appears in 2 projects, promising
-- 🔵 **CANDIDATE** - Appears in 1 project, watch for repetition
+- 🟢 **PROVEN** - Appears in 3+ projects, battle-tested → **EXTRACTED to `patterns/`**
+- 🟡 **EMERGING** - Appears in 2 projects, promising → **EXTRACTED to `patterns/` or watch for 3rd**
+- 🔵 **CANDIDATE** - Appears in 1 project, watch for repetition → **NOT YET EXTRACTED**
+
+**Note:** This document identifies patterns. The **Pattern Registry** in `PATTERN_MANAGEMENT.md` is the single source of truth for what's been extracted.
 
 ---
 
@@ -40,8 +43,8 @@ Documents/
 
 **Evidence:**
 - **image-workflow:** Full implementation, 2.5 months battle-tested
-- **Cortana:** Has `docs/` with similar structure (core, guides, reference, archives)
-- **Trading Projects:** Has `docs/` directory with guides and reference material
+- **Cortana:** Has `Documents/` with similar structure (core, guides, reference, archives)
+- **Trading Projects:** Has `Documents/` directory with guides and reference material
 
 **Benefits:**
 - Prevents root-level documentation sprawl
@@ -533,77 +536,76 @@ def call_with_cost_tracking(prompt: str) -> tuple[str, float]:
 
 ---
 
-## Next Steps
+## Pattern Extraction Status (January 2026)
 
-### Immediate Extractions (Ready Now)
+### ✅ EXTRACTED to `patterns/`
 
-1. **Documentation Structure Template**
-   - Create `templates/Documents/` structure
-   - Include retention policies
-   - Add README template
+**🟢 Proven (8 patterns):**
+1. ✅ `api-key-management.md`
+2. ✅ `code-review-standard.md`
+3. ✅ `cursor-configuration.md`
+4. ✅ `development-philosophy.md` (⚠️ LONG - 800+ lines, needs review)
+5. ✅ `discord-webhooks-per-project.md`
+6. ✅ `foundation-documents-first.md` (NEW - Jan 2026)
+7. ✅ `safety-systems.md`
+8. ✅ `ssot-via-yaml.md`
 
-2. **CLAUDE.md Template**
-   - Standard sections
-   - Common Python patterns
-   - Safety rules section
+**🟡 Emerging (2 patterns):**
+1. ✅ `local-ai-integration.md` (needs 3rd project)
+2. ✅ `tiered-ai-sprint-planning.md` (needs 3rd project)
 
-3. **Safety System Patterns Document**
-   - "Every safety system was a scar" philosophy
-   - Append-only archives pattern
-   - Read-only source data pattern
-   - Atomic writes code snippet
+### 🔵 CANDIDATES (Not Yet Extracted)
 
-4. **Development Philosophy Document**
-   - Layer-by-layer development
-   - Data before decisions (30-60 days)
-   - Consolidate on 3rd duplicate
-   - Testing philosophy
+**Watch for 2nd/3rd evidence:**
+- Cron Dispatcher Pattern (1 project: Trading)
+- Privacy-First Architecture (1 project: Cortana)
+- Multi-Model Comparison (1 project: Trading)
+- Dual-Format Storage (2 projects: needs 3rd)
+- Daily Automation (2 projects: needs 3rd)
+- Date-Based File Organization (2 projects: needs 3rd)
 
-### Watch For (Need More Evidence)
-
-1. **Cron Dispatcher Pattern** - Seen in 1 project, wait for 2nd
-2. **Privacy-First Architecture** - Seen in 1 project (domain-specific?)
-3. **Linter Config Pattern** - Seen in 2 projects, different approaches
-4. **Multi-Model Comparison** - Seen in 1 project (Trading), interesting
-
-### Revisit Later
-
-- Deployment patterns (Railway vs local automation) - both valid, not converged yet
-- Database patterns (SQLite vs Postgres vs none) - varies by project needs
-- API architecture patterns - only Trading Projects has this
+**Not converging yet:**
+- Deployment patterns (Railway vs launchd) - both valid for different use cases
+- Database patterns (SQLite vs Postgres vs none) - project-dependent
+- API architecture - only 1 project needs this
 
 ---
 
-## Pattern Extraction Priority
+## Action Items
 
-**Priority 1 (Extract This Week):**
-- 🟢 Documents/ structure template
-- 🟢 CLAUDE.md template
-- 🟢 Safety systems documentation
-- 🟢 Development philosophy doc
+**This Month (January 2026):**
+- [ ] Review `development-philosophy.md` for fluff (it's 800+ lines)
+- [ ] Apply `tiered-ai-sprint-planning.md` to 3rd project → promote to 🟢
+- [ ] Apply `local-ai-integration.md` to 3rd project → promote to 🟢
 
-**Priority 2 (Extract When Proven):**
-- 🟡 Dual-format storage pattern (2/3 projects)
-- 🟡 Daily automation patterns (2/3 projects)
-- 🟡 Modern Python typing (2/3 projects enforced)
+**Next Quarter (April 2026):**
+- [ ] Check if Dual-Format Storage appears in 3rd project → extract
+- [ ] Check if Daily Automation appears in 3rd project → extract
+- [ ] Update this document with new evidence
 
-**Priority 3 (Watch For 3rd Instance):**
-- 🔵 Cron dispatcher (1/3)
-- 🔵 Privacy-first architecture (1/3)
-- 🔵 Multi-model comparison (1/3)
+---
+
+## Maintenance Schedule
+
+**See `PATTERN_MANAGEMENT.md` for:**
+- Monthly registry review process
+- Quarterly pattern audit checklist
+- Pattern quality standards (keep them lean!)
+- Fluff detection guidelines
 
 ---
 
 *This document grows as patterns emerge. Don't force extraction too early.*
 
-**Last updated:** December 21, 2025  
-**Projects analyzed:** image-workflow, Trading Projects, Cortana Personal AI  
-**Patterns identified:** 20+ candidates, 5 proven, 11 emerging, 4 candidates
+**Last updated:** January 9, 2026
+**Projects analyzed:** image-workflow, Trading Projects, Cortana Personal AI, project-scaffolding
+**Patterns extracted:** 10 total (8 proven, 2 emerging)
 
 ---
 
 ## Related Files
 
+- **PATTERN_MANAGEMENT.md** - Pattern registry and maintenance system (SSOT)
 - **PROJECT_PHILOSOPHY.md** - Core philosophy that drives these patterns
 - **USAGE_GUIDE.md** - How to apply patterns in new projects
 - **patterns/** - Detailed pattern documentation

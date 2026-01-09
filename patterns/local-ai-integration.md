@@ -416,7 +416,7 @@ See: /project-scaffolding/patterns/local-ai-integration.md
 
 - **Local AI:** Ollama with qwen3:4b (cost optimization)
 - **Cloud AI:** OpenAI/Claude (quality-critical tasks only)
-- **Setup:** See docs/LOCAL_AI_SETUP.md
+- **Setup:** See Documents/LOCAL_AI_SETUP.md
 ```
 
 ---

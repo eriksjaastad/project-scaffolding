@@ -72,7 +72,7 @@ If `send2trash` encounters a permission prompt on certain Linux configurations (
 | `EXTERNAL_RESOURCES.yaml` | Hardcoded Path | `template_source:` (line 284) | 🔴 **LEAK** |
 | `templates/.cursorrules-template` | Hardcoded Path | `$PROJECTS_ROOT/...` (lines 62-64) | 🔴 **LEAK** |
 | `templates/.cursorrules-with-skills.template` | Hardcoded Path | `$PROJECTS_ROOT/agent-skills-library/` (lines 7, 40) | 🔴 **LEAK** |
-| `docs/PROJECT_KICKOFF_GUIDE.md` | Hardcoded Path | Multiple references | 🔴 **LEAK** |
+| `Documents/PROJECT_KICKOFF_GUIDE.md` | Hardcoded Path | Multiple references | 🔴 **LEAK** |
 | `patterns/cursor-configuration.md` | Hardcoded Path | Lines 28, 60 | 🔴 **LEAK** |
 | `patterns/api-key-management.md` | Hardcoded Path | Line 139 | 🔴 **LEAK** |
 | All Python scripts | Secrets | Properly use env vars | ✅ **CLEAN** |
@@ -121,7 +121,7 @@ The `check_dangerous_functions()` catches exceptions with `pass`. If a Python fi
 
 | Path | Reason |
 |------|--------|
-| `docs/archives/` | Historical context that clutters search results |
+| `Documents/archives/` | Historical context that clutters search results |
 | `reviews/round_1/` through `round_3/` | Only round_4 matters. Archive to git history |
 | `templates/TIERED_SPRINT_PLANNER.md` | 20KB rarely-used template |
 | `.cursorrules` lines 144-326 | Philosophy, not cursor rules. Move to separate file |

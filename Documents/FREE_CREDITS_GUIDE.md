@@ -8,7 +8,7 @@ Free cloud credits from Amazon Web Services for startups/builders.
 ### What You Get
 - **$1,000 in AWS credits**
 - Valid for 2 years
-- Can be used for ANY AWS service (including Kiro!)
+- Can be used for ANY AWS service (including Amazon Q Developer!)
 
 ### Requirements
 **Very easy to qualify:**
@@ -18,8 +18,8 @@ Free cloud credits from Amazon Web Services for startups/builders.
 4. Apply online (takes ~5 minutes)
 
 ### Why It Matters for You
-- Kiro is an AWS service ($19/month normally)
-- $1,000 / $19 = **~52 months of free Kiro**
+- Amazon Q Developer is an AWS service ($19/month normally)
+- $1,000 / $19 = **~52 months of free Amazon Q Developer**
 - That's over 4 years!
 
 ### How to Apply
@@ -109,8 +109,8 @@ Free cloud credits from Google for AI startups.
 ## Strategy
 
 1. **Apply for AWS Activate** (easy, $1,000)
-   - Use for Kiro (Tier 1 tasks)
-   - Effectively makes Kiro free for 4 years
+   - Use for Amazon Q Developer (Tier 1 tasks)
+   - Effectively makes Amazon Q Developer free for 4 years
 
 2. **Apply for Google Cloud** ($2,000)
    - Use for Gemini Flash (Tier 3 tasks)
@@ -136,7 +136,7 @@ Free cloud credits from Google for AI startups.
 
 **Week 2:**
 - [ ] Receive credits
-- [ ] Test Kiro with AWS credits
+- [ ] Test Amazon Q Developer with AWS credits
 - [ ] Test Gemini with Google credits
 - [ ] Compare quality to DeepSeek
 

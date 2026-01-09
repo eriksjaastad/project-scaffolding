@@ -256,7 +256,7 @@ Result:
 | Action | Tier Used | Should Use | Savings |
 |--------|-----------|------------|---------|
 | Restore deleted files | 1 ✅ | 1 | $0 (correct - crisis!) |
-| Organize docs/ folder | 1 ❌ | 3 | $3 |
+| Organize Documents/ folder | 1 ❌ | 3 | $3 |
 | Write TODO.md | 1 ❌ | 3 | $2 |
 | Write cleanup doc | 1 ❌ | 3 | $1 |
 | Strategic planning | 1 ✅ | 1 | $0 (correct - architecture) |

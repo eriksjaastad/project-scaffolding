@@ -95,7 +95,7 @@ async def run_reviews(document, prompts):
 
 **Output:**
 ```
-docs/sprint_reviews/round_1/
+Documents/sprint_reviews/round_1/
 ├── security_review_openai.md
 ├── performance_review_anthropic.md
 ├── architecture_review_google.md
@@ -208,14 +208,14 @@ Review this: [document]
 
 **Command:**
 ```bash
-scaffold review --type document --input docs/VISION.md --round 1
+scaffold review --type document --input Documents/VISION.md --round 1
 ```
 
 **What it does:**
 1. Reads document
 2. Loads prompts from `prompts/active/document_review_*.md`
 3. Dispatches to 3 APIs in parallel
-4. Saves reviews to `docs/sprint_reviews/round_1/`
+4. Saves reviews to `Documents/sprint_reviews/round_1/`
 5. Saves cost summary
 6. Prints cost breakdown
 7. Asks: Continue to Round 2?
@@ -692,25 +692,25 @@ PROMPT EFFECTIVENESS
 scaffold new cortana-extension
 
 # 2. Create vision document (manual with AI)
-# → docs/VISION.md
+# → Documents/VISION.md
 
 # 3. Create initial sprint plan (manual with AI)
-# → docs/TIERED_SPRINT_PLANNER.md
+# → Documents/TIERED_SPRINT_PLANNER.md
 
 # 4. Run document reviews (automated)
-scaffold review --type document --input docs/TIERED_SPRINT_PLANNER.md --round 1
+scaffold review --type document --input Documents/TIERED_SPRINT_PLANNER.md --round 1
 # Cost: $2.45
 # Continue to Round 2? [y]
 
-scaffold review --type document --input docs/TIERED_SPRINT_PLANNER.md --round 2
+scaffold review --type document --input Documents/TIERED_SPRINT_PLANNER.md --round 2
 # Cost: $2.60
 # Total so far: $5.05
 
 # 5. Revise sprint plan based on reviews (manual with AI)
-# → docs/TIERED_SPRINT_PLANNER.md (updated)
+# → Documents/TIERED_SPRINT_PLANNER.md (updated)
 
 # 6. Generate build/review prompts (automated)
-scaffold prompts generate --input docs/TIERED_SPRINT_PLANNER.md
+scaffold prompts generate --input Documents/TIERED_SPRINT_PLANNER.md
 # → Adds prompts to each task in sprint plan
 
 # 7. Execute build (hybrid: Cursor for code, APIs for decisions)
@@ -738,7 +738,7 @@ scaffold review --type code --tasks completed --recheck
 
 # 11. Analyze (automated)
 scaffold analyze --project cortana-extension
-# → docs/analytics/cortana-extension_analysis.md
+# → Documents/analytics/cortana-extension_analysis.md
 # → Updates patterns based on learnings
 ```
 
@@ -972,7 +972,7 @@ A: Cost explosion. Mitigation: dry-run mode, cost gates, budget limits, comparis
    - File save
 
 5. **Test with real document**
-   - Use existing `docs/VISION.md`
+   - Use existing `Documents/VISION.md`
    - Run 3 reviews
    - Verify cost tracking
    - Iterate

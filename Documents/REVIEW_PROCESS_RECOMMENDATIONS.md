@@ -330,7 +330,7 @@ Important but lowest blast radius.
 
 **Check last:**
 - [ ] README.md
-- [ ] docs/ directory
+- [ ] Documents/ directory
 - [ ] patterns/ directory
 - [ ] Any .md files
 

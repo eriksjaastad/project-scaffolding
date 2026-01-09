@@ -18,7 +18,7 @@ Prompts are subjective and mood-dependent; checklists are versioned, auditable s
 Audit files in order of their potential to infect the ecosystem:
 1.  **Tier 1: Propagation Sources (Highest Impact):** `templates/`, `.cursorrules`, `AGENTS.md`. If these fail, every downstream project inherits the defect.
 2.  **Tier 2: Execution Critical:** `scripts/`, `scaffold/`. These run the automation but don't propagate DNA.
-3.  **Tier 3: Documentation:** `docs/`, `patterns/`. Important for humans, zero impact on code execution.
+3.  **Tier 3: Documentation:** `Documents/`, `patterns/`. Important for humans, zero impact on code execution.
 
 ---
 

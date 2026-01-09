@@ -26,7 +26,7 @@ In your Continue config, you set:
 
 * `apiBase: http://localhost:1234/v1`
 * `apiKey`: can be anything if LM Studio isn’t enforcing one (some setups use a dummy like `lm-studio`)
-* `model`: **use the exact model id LM Studio shows you** in its server UI/docs/examples ([LM Studio][1])
+* `model`: **use the exact model id LM Studio shows you** in its server UI/Documents/examples ([LM Studio][1])
 
 That’s it — now VS Code chats/edits route to LM Studio locally.
 
@@ -52,8 +52,8 @@ That’s it — now VS Code chats/edits route to LM Studio locally.
 
 If you paste (1) the model name LM Studio shows when the server is running, and (2) whether you’re using Continue already, I can write the exact Continue `config.yaml` block for your setup (still LM Studio only).
 
-[1]: https://lmstudio.ai/docs/developer/openai-compat?utm_source=chatgpt.com "OpenAI Compatibility Endpoints | LM Studio Docs"
-[2]: https://lmstudio.ai/docs/developer?utm_source=chatgpt.com "LM Studio Developer Docs"
+[1]: https://lmstudio.ai/Documents/developer/openai-compat?utm_source=chatgpt.com "OpenAI Compatibility Endpoints | LM Studio Docs"
+[2]: https://lmstudio.ai/Documents/developer?utm_source=chatgpt.com "LM Studio Developer Docs"
 [3]: https://docs.continue.dev/customize/model-providers/top-level/openai?utm_source=chatgpt.com "How to Configure OpenAI Models with Continue"
 [4]: https://forum.cursor.com/t/using-local-llms-with-cursor-is-it-possible/15494?page=2&utm_source=chatgpt.com "Using Local LLMs with Cursor: Is it Possible? - Page 2"
 [5]: https://forum.cursor.com/t/cannot-override-openai-base-url/144198?utm_source=chatgpt.com "Cannot override OpenAI Base URL - Bug Reports"

@@ -143,8 +143,8 @@ Per the anti-patterns database, `send2trash` can prompt for interactive confirma
 | File | Line | Content |
 |------|------|---------|
 | `EXTERNAL_RESOURCES.md:21` | `Template: PROJECTS_ROOT/projects/.env.project-template` |
-| `docs/PROJECT_KICKOFF_GUIDE.md:14-15` | Placeholder `PROJECTS_ROOT/projects/` |
-| `docs/KIRO_DEEP_DIVE.md:294-295` | Hardcoded `/Applications/Kiro CLI.app/...` |
+| `Documents/PROJECT_KICKOFF_GUIDE.md:14-15` | Placeholder `PROJECTS_ROOT/projects/` |
+| `Documents/KIRO_DEEP_DIVE.md:294-295` | Hardcoded `/Applications/Kiro CLI.app/...` |
 
 ---
 
@@ -244,4 +244,4 @@ kiro_path = shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/Mac
 
 **Review Conducted By:** Claude (Opus 4.5)
 **Methodology:** Applied project's own `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` v1.2 checklist
-**Files Examined:** 25+ across scripts/, scaffold/, templates/, tests/, docs/
+**Files Examined:** 25+ across scripts/, scaffold/, templates/, tests/, Documents/

@@ -15,7 +15,7 @@
 - Cursor: Claude Opus "High Thinking"
 - Cost: ~$680/month
 
-### Kiro (Recommended)
+### Ollama (Recommended)
 - Model: Claude Sonnet 4/4.5
 - Cost: **$19/month** (1,000 interactions)
 - Savings: **~$660/month**
@@ -23,7 +23,7 @@
 ### Alternatives
 - **Direct Claude Opus API:** $15 input / $75 output per 1M tokens
 - **Direct Claude Sonnet API:** $3 input / $15 output per 1M tokens
-- **Verdict:** Kiro is cheaper than direct APIs for heavy architecture use
+- **Verdict:** Ollama is cheaper than direct APIs for heavy architecture use
 
 ---
 
@@ -98,7 +98,7 @@
 
 ## Recommended Architecture
 
-### Tier 1: Kiro ($19/mo)
+### Tier 1: Ollama ($19/mo)
 - **Tasks:** Project scaffolding, architecture design, complex algorithms
 - **Model:** Claude Sonnet 4/4.5 (included)
 - **Integration:** CLI via subprocess
@@ -132,22 +132,22 @@
 - Overage: $549
 - **Total: $749/month**
 
-### With Kiro Only
+### With Ollama Only
 - Cursor: $249 ($200 + $49 overage)
-- Kiro: $19
+- Ollama: $19
 - **Total: $268/month**
 - **Savings: $481/month**
 
-### With Kiro + DeepSeek (Full Stack)
-- Kiro (Tier 1): $19
+### With Ollama + DeepSeek (Full Stack)
+- Ollama (Tier 1): $19
 - DeepSeek (Tier 2/3): $45
 - Reviews: $15
 - Cursor (minimal use): $200 (just the sub, no overage)
 - **Total: $279/month**
 - **Savings: $470/month = $5,640/year**
 
-### With Kiro + DeepSeek (Cancel Cursor)
-- Kiro (Tier 1): $19
+### With Ollama + DeepSeek (Cancel Cursor)
+- Ollama (Tier 1): $19
 - DeepSeek (Tier 2/3): $45
 - Reviews: $15
 - Cline (IDE): Free (VS Code extension)
@@ -158,9 +158,9 @@
 
 ## Free Credits & Startup Programs
 
-### AWS Activate (for Kiro)
+### AWS Activate (for Ollama)
 - **Credits:** $1,000
-- **Duration:** Kiro would be free for ~4 years
+- **Duration:** Ollama would be free for ~4 years
 - **Requirements:** Website + LinkedIn profile
 - **Apply:** https://aws.amazon.com/activate/
 
@@ -179,22 +179,22 @@
 ## Action Items
 
 ### Immediate (This Week)
-1. [ ] Sign up for Kiro (free preview)
+1. [ ] Sign up for Ollama (free preview)
 2. [ ] Get DeepSeek API key
 3. [ ] Install Cline CLI (`npm install -g cline`)
 4. [ ] Test DeepSeek quality vs Claude Sonnet
-5. [ ] Test Kiro quality vs Cursor
+5. [ ] Test Ollama quality vs Cursor
 
 ### Week 1 (2026)
 1. [ ] Apply for AWS Activate credits
 2. [ ] Apply for Google Cloud credits
-3. [ ] Build Kiro integration
+3. [ ] Build Ollama integration
 4. [ ] Build DeepSeek/Cline integration
 5. [ ] Route tasks to appropriate tiers
 
 ### Decision Point
 - **Keep Cursor?** Only if you need it for complex manual work
-- **Cancel Cursor?** If Kiro + Cline + VS Code is enough
+- **Cancel Cursor?** If Ollama + Cline + VS Code is enough
 - **Target:** Get under $300/month total
 
 ---
@@ -209,7 +209,7 @@
    - Test with simple tasks
    - Verify it doesn't break things
 
-3. **Kiro rigidity:** Is the spec-driven workflow too rigid?
+3. **Ollama rigidity:** Is the spec-driven workflow too rigid?
    - Test with real Tier 1 task
    - See if it's helpful or annoying
 

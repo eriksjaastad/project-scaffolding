@@ -44,7 +44,7 @@ Meta-project for extracting patterns from experiments to build better projects f
   - YAML processing
 
 ### Documentation
-- `Documents/` - Meta-documentation (formerly `docs/`)
+- `Documents/` - Meta-documentation (formerly `Documents/`)
   - `PATTERN_ANALYSIS.md` - Pattern extraction
   - `USAGE_GUIDE.md` - How to use scaffolding
   - `PROJECT_KICKOFF_GUIDE.md` - Starting new projects

@@ -55,7 +55,7 @@
    - Reads review prompts
    - Dispatches to 3 APIs in parallel (OpenAI, Anthropic, maybe Google)
    - Collects responses
-   - Saves to `docs/reviews/` or `docs/code_reviews/`
+   - Saves to `Documents/reviews/` or `Documents/code_reviews/`
    - **Tracks cost per review in real-time**
 
 2. **Cost Monitor**
@@ -624,7 +624,7 @@ project/
 │   │   └── grok-review.md
 │   └── 2025-12-26_refactor-y-reviews/
 │
-└── docs/
+└── Documents/
     ├── ROADMAP.md (final version)
     └── SPRINT_PLAN.md (tiered)
 ```
@@ -965,7 +965,7 @@ vs. if they're one system, integration is easier but system is more complex.
 - JWT tokens (15min expiry)
 - Session storage in Redis
 - Rate limiting (5 attempts/min)
-Follow pattern in docs/architecture/AUTH.md"
+Follow pattern in Documents/architecture/AUTH.md"
 
 **Code review prompt:**
 "Review auth implementation for:
@@ -1320,7 +1320,7 @@ Need to figure out what Tier 3 is actually good at. Fast doesn't matter if code 
 **project-tracker (SEPARATE PROJECT):**
 - **Purpose:** Implement the monitoring/visualization that scaffolding defines
 - **Relationship:** Scaffolding says "measure this," Tracker builds the tool
-- Integration documented in `project-tracker/docs/INTEGRATION_WITH_SCAFFOLDING.md`
+- Integration documented in `project-tracker/Documents/INTEGRATION_WITH_SCAFFOLDING.md`
 - Tracker reads EXTERNAL_RESOURCES.md
 - Tracker shows which projects use scaffolding templates
 - Tracker implements the analytics layer scaffolding designed

@@ -29,16 +29,16 @@ Your job: Find what is **fragile, over-engineered, actually harmful, or solving 
 ## What This System Claims to Do
 
 **Primary Goal:** Make new projects faster to start, safer to build, and cheaper to maintain by:
-1. Providing reusable templates (Kiro specs, CLAUDE.md, .cursorrules)
-2. Automating multi-AI code reviews (DeepSeek + Kiro)
+1. Providing reusable templates (Ollama specs, CLAUDE.md, .cursorrules)
+2. Automating multi-AI code reviews (DeepSeek + Ollama)
 3. Implementing tiered AI workflows (Tier 1: Architecture, Tier 2: Implementation, Tier 3: Simple tasks)
 4. Tracking external resources across projects
 5. Documenting proven patterns from real projects
 
 **Current State:**
 - 4+ months of patterns extracted from real projects (image-workflow, Cortana, Trading Co-Pilot)
-- Templates for Kiro specs, documentation structure, AI collaboration
-- Python-based review orchestrator (DeepSeek + Kiro CLI integration)
+- Templates for Ollama specs, documentation structure, AI collaboration
+- Python-based review orchestrator (DeepSeek + Ollama CLI integration)
 - Cost tracking and optimization strategies
 - Test suite (24 fast tests passing)
 
@@ -100,7 +100,7 @@ List 10 specific ways this scaffolding will **fail me when I need it most**:
 - **Prompt complexity:** Trying to make AIs "perfect" instead of "good enough"
 
 **Integration Fragility:**
-- **Kiro CLI:** Parsing stdout/stderr with regex - what breaks this?
+- **Ollama CLI:** Parsing stdout/stderr with regex - what breaks this?
 - **DeepSeek API:** Using test key in production, no fallback if rate-limited
 - **Multi-AI reviews:** If one model is down, does the whole system stall?
 
@@ -111,7 +111,7 @@ List 10 specific ways this scaffolding will **fail me when I need it most**:
 
 **Silent Failures:**
 - Where will this system **fail without telling me**?
-- What happens if Kiro CLI hangs? If a prompt is too long? If output parsing fails?
+- What happens if Ollama CLI hangs? If a prompt is too long? If output parsing fails?
 
 **Cost Reality:**
 - Is this system **actually cheaper** than just using Cursor for everything?
@@ -127,7 +127,7 @@ List 10 specific ways this scaffolding will **fail me when I need it most**:
 - Concrete examples of fragility
 
 Example:
-> "BAD: `scripts/generate_kiro_specs.py:L89` - Parsing Kiro output with regex `r'^(.*?)\n\s*▸ Credits:'`. This will break if Kiro changes output format. No fallback."
+> "BAD: `scripts/generate_ollama_specs.py:L89` - Parsing Ollama output with regex `r'^(.*?)\n\s*▸ Credits:'`. This will break if Ollama changes output format. No fallback."
 
 ### 5) **The "Actually Useful" Core**
 
@@ -173,16 +173,16 @@ Example:
 **Core System:**
 - `scaffold/review.py` - Multi-AI review orchestrator
 - `scaffold/cli.py` - CLI interface
-- `scripts/generate_kiro_specs.py` - Kiro spec automation
+- `scripts/generate_ollama_specs.py` - Ollama spec automation
 
 **Templates:**
-- `templates/.kiro/` - Kiro steering and spec templates
+- `templates/.ollama/` - Ollama steering and spec templates
 - `templates/CLAUDE.md.template` - AI collaboration instructions
 - `templates/.cursorrules.template` - Cursor AI rules
 
 **Documentation:**
-- `docs/KIRO_DEEP_DIVE.md` - Kiro integration guide
-- `docs/PROJECT_KICKOFF_GUIDE.md` - How to start new projects
+- `Documents/KIRO_DEEP_DIVE.md` - Ollama integration guide
+- `Documents/PROJECT_KICKOFF_GUIDE.md` - How to start new projects
 - `templates/TIERED_SPRINT_PLANNER.md` - Sprint planning template
 
 **Patterns:**
@@ -191,7 +191,7 @@ Example:
 
 **Tests:**
 - `tests/test_smoke.py` - Smoke tests
-- `tests/test_kiro.py` - Kiro integration tests
+- `tests/test_ollama.py` - Ollama integration tests
 - `tests/test_review.py` - Review orchestrator tests
 
 **Project Context:**
