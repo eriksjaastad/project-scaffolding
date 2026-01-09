@@ -1,72 +1,55 @@
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding
-> **Last Updated:** January 8, 2026
+> **Last Updated:** January 9, 2026
 > **Type:** Infrastructure
 
 ---
 
-## 🌙 TONIGHT'S WORK (Jan 8, 2026) - VERIFY BEFORE COMMIT
+## 🌙 TONIGHT'S WORK (Jan 9, 2026) - VERIFY BEFORE COMMIT
 
 **What we did:**
-1. ✅ Fixed test indentation bug (tests/test_scripts_follow_standards.py)
-2. ✅ Created adversarial test suite (tests/test_security.py - 358 lines)
-3. ✅ Hardened archive_reviews.py with security validation
-4. ✅ Migrated docs/ → Documents/ (126 replacements across 50+ files)
-5. ✅ Removed Kiro references, updated to Gemini Super/Floor + DeepSeek + Ollama
-6. ✅ Archived reviews/ directory to proper location
-7. ✅ Added detailed Options 2-4 to TODO (Warden continuous, SCAR TISSUE SLA, Coverage/Fuzzing)
+1. ✅ Updated `PROJECT_STRUCTURE_STANDARDS.md` with new Code Review standards.
+2. ✅ Reorganized `Documents/` directory into "Flat Root" (Active OS) model.
+3. ✅ Created `Documents/README.md` as the master index (Grand Central Station).
+4. ✅ Decanted floating root docs into `guides/` and `reference/`.
+5. ✅ Cleaned up and organized `Documents/archives/` into functional subdirectories.
+6. ✅ Updated templates (`CLAUDE.md.template`, `README.md.template`) to match flat root model.
+7. ✅ Moved obsolete AWS setup notes to `_trash/`.
 
 **VERIFY BEFORE COMMIT (5 minutes):**
 ```bash
-# 1. Activate venv
-source venv/bin/activate
+# 1. Verify document root is clean
+ls Documents/
+# Should show: README.md, PROJECT_STRUCTURE_STANDARDS.md, PROJECT_KICKOFF_GUIDE.md, etc.
 
-# 2. Test imports work
-python -c "from scaffold.review import safe_slug; print('✓ Import:', safe_slug('../../etc/passwd'))"
-# Should print: ✓ Import: etc_passwd
+# 2. Verify subdirectories exist
+ls Documents/guides/
+ls Documents/reference/
+ls Documents/archives/
 
-# 3. Run new security tests
-pytest tests/test_security.py::TestPathTraversal -v
-# Should show 3 passing tests
-
-# 4. If both work, commit everything:
-git add -A
-git commit -m "security: implement adversarial test suite and harden archive_reviews
-
-- Add tests/test_security.py with 10 test classes for dark territory
-- Harden archive_reviews.py with validation for excluded dirs
-- Fix test indentation bug in test_scripts_follow_standards.py
-- Migrate all docs/ references to Documents/ (126 replacements)
-- Remove Kiro references, update AI strategy
-- Archive reviews/ to Documents/archives/reviews/jan-2026-rounds/
-- Add detailed TODO items for Options 2-4
-
-Based on web-Claude feedback. Grade: A- → A (mission-critical ready)
-
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+# 3. Check README.md links
+cat Documents/README.md
 ```
-
-**If tests fail:** Don't panic. Read the error, fix it, commit. The code structure is sound.
-
-**What changed:** 58 files (+291, -1566 lines). Mostly cleanups and the new security suite.
 
 ---
 
 ## ✅ What Exists & Works
 
 **Templates:**
-- `CLAUDE.md.template`
+- `CLAUDE.md.template` (Updated for Flat Root)
 - `CLAUDE.md` (Project standard) ✅ NEW (Dec 30)
 - `CODE_REVIEW.md.template` ✅ NEW (Dec 30)
 - `.cursorrules.template`
-- `Documents/` structure
+- `Documents/` structure (Flat Root / Active OS)
 - `TIERED_SPRINT_PLANNER.md`
 - `TODO.md.template` ✅ NEW (Dec 30)
 
 **Standards:**
-- `TODO_FORMAT_STANDARD.md` (650 lines) ✅ NEW (Dec 30)
-- `PROJECT_STRUCTURE_STANDARDS.md` (comprehensive) ✅ NEW (Dec 30)
+- `TODO_FORMAT_STANDARD.md` (Updated for Flat Root)
+- `PROJECT_STRUCTURE_STANDARDS.md` (Updated with Code Review & Flat Root)
+- `CODE_QUALITY_STANDARDS.md` (Active OS root)
+- `PROJECT_INDEXING_SYSTEM.md` (Active OS root)
 
 **Automation:**
 - Multi-AI review orchestrator (DeepSeek + Ollama)
@@ -123,7 +106,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 
 ## 📚 Pattern Management
 
-**System:** See `Documents/PATTERN_MANAGEMENT.md` for full details
+**System:** See `Documents/reference/PATTERN_MANAGEMENT.md` for full details
 **Registry:** Pattern status tracked in PATTERN_MANAGEMENT.md (SSOT)
 **Last Review:** January 9, 2026
 
@@ -176,8 +159,8 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
   - [x] Review checklist (Definition of Done)
   - [x] Reviewer notes and feedback
   - [x] Standard result naming (`CODE_REVIEW_ALL_CAPS`)
-- [ ] Add to PROJECT_STRUCTURE_STANDARDS.md
-- [ ] Document in PROJECT_KICKOFF_GUIDE.md
+- [x] Add to PROJECT_STRUCTURE_STANDARDS.md
+- [x] Document in PROJECT_KICKOFF_GUIDE.md
 - [ ] Integrate with TODO.md format:
   - [ ] Add syntax: `- [ ] Task **[IN REVIEW]** - See CODE_REVIEW.md #123`
   - [ ] Update TODO_FORMAT_STANDARD.md
@@ -304,4 +287,4 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 
 ---
 
-**Archive:** See `Documents/archives/planning-notes-dec-2025.md` for historical brain dumps
+**Archive:** See `Documents/archives/planning/planning-notes-dec-2025.md` for historical brain dumps
