@@ -8,18 +8,18 @@
 ## Test Plan
 
 ### 1. Copy Templates
-- [ ] Copy `.kiro/steering/` templates
+- [ ] Copy `.specs/steering/` templates
 - [ ] Copy `.cursorrules.template`
 - [ ] Customize for project-tracker
 
-### 2. Generate Kiro Specs
-- [ ] Use `scripts/generate_kiro_specs.py` to create specs for "CLI status command"
+### 2. Generate Specs
+- [ ] Create specs for "CLI status command"
 - [ ] Review generated requirements, design, tasks
 - [ ] Measure: time to generate, quality of output
 
 ### 3. Run Multi-AI Review
 - [ ] Review the generated design doc
-- [ ] Use DeepSeek + Kiro
+- [ ] Use DeepSeek + Ollama
 - [ ] Measure: cost, time, quality
 
 ### 4. Track Actual Costs
@@ -36,13 +36,11 @@
 **Issues found:** 
 **Customization needed:** 
 
-### Kiro Spec Generation
+### Spec Generation
 **Command:**
 ```bash
-python scripts/generate_kiro_specs.py \
-    --project-root $PROJECTS_ROOT/project-tracker \
-    --feature-name cli-status \
-    --description "CLI command to show project status dashboard"
+# Manual spec creation or use AI to generate
+# Create specs in Documents/specs/cli-status/
 ```
 
 **Time to generate:** 
@@ -55,7 +53,7 @@ python scripts/generate_kiro_specs.py \
 ```bash
 python scaffold_cli.py review \
     --type document \
-    --input $PROJECTS_ROOT/project-tracker/.kiro/specs/cli-status/design.md \
+    --input $PROJECTS_ROOT/project-tracker/.specs/specs/cli-status/design.md \
     --round 1
 ```
 

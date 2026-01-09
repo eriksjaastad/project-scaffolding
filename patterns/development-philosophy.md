@@ -753,22 +753,24 @@ Don't force it. Let patterns emerge from experience.
 ### What
 Orchestrate complex project launches by separating AI agents into specialized roles based on their "altitude" of thinking.
 
-1. **The Conductor (User):** Defines the "Vision" and "Vibe." Sets the constraints and high-level mission orders.
-2. **The Strategic Advisor (Root AI):** Operates at the meta-level (scaffolding). Ensures compliance with global standards, identifies cross-project dependencies, and guards the "Permanent Memory."
-3. **The Floor Manager (Project AI):** Operates inside the project directory. Executes the code, handles the logic, and manages the day-to-day task list.
+1. **The Conductor (Erik):** Defines the "Vision" and "Vibe." Sets the constraints and high-level mission orders. The only human in the loop.
+2. **The Super Manager (Erik with context of all projects):** Operates at the meta-level (scaffolding). Writes prompts based on to-do lists. Has strategic view across all projects. **DOES NOT WRITE CODE. DOES NOT USE TOOLS.** Only drafts prompts for Workers.
+3. **The Floor Manager (Claude Code/Cursor - AI with project context):** **THE MESSENGER** - receives prompts from Super Manager and passes them to Workers via Ollama MCP. **DOES NOT WRITE CODE. DOES NOT GENERATE LOGIC.** Only facilitates communication.
+4. **The Workers (Local Ollama Models via MCP):** DeepSeek-R1, Qwen3, etc. **THE BRAIN AND THE HANDS** - do ALL actual work. Read prompts, read files, write code, modify files - EVERYTHING.
 
 ### Why It Works
-- **Prevents Context Drowning:** The Floor Manager doesn't need to know every detail of the billing history; the Strategic Advisor handles the "EXTERNAL_RESOURCES."
-- **Enforces Standards:** The Strategic Advisor checks the Floor Manager's work against the "Gold Standard" templates.
-- **High-Speed Execution:** By delegating routine tasks to the "Project AI" while the "Root AI" watches the perimeter, the Conductor can move 10x faster.
+- **Prevents Context Drowning:** The Floor Manager doesn't need to know every detail of the billing history; the Super Manager handles cross-project concerns like "EXTERNAL_RESOURCES."
+- **Enforces Standards:** The Super Manager writes prompts that reference "Gold Standard" templates and ensures Workers follow them.
+- **High-Speed Execution:** By having Workers do ALL the actual work while the Floor Manager simply relays prompts, the system moves 10x faster with lower costs (local models are free).
 
 ### Implementation
-- **Project Indexing:** Every project must have a `00_Index_[ProjectName].md` so the Strategic Advisor can orient itself instantly.
-- **Handoff Protocols:** Use structured "Mission Orders" to move between phases.
-- **Governance Logs:** Maintain a central `EXTERNAL_RESOURCES.md` that all agents reference to find aliases and nicknames.
+- **Project Indexing:** Every project must have a `00_Index_[ProjectName].md` so the Super Manager can orient itself instantly.
+- **Handoff Protocols:** Super Manager writes structured "Mission Orders" (prompts) that Floor Manager passes to Workers.
+- **Governance Logs:** Maintain a central `EXTERNAL_RESOURCES.md` at the Super Manager level to find aliases and nicknames across all projects.
 
 ### Evidence from Projects
 **Muffin Pan Recipes Kickoff:**
-- Conductor provided the "Oven-less" vision.
-- Strategic Advisor identified the "Mission Control" alias in the 3D Pose Factory project.
-- Floor Manager executed the Phase 0-2 build in a single 8-hour marathon.
+- Conductor (Erik) provided the "Oven-less" vision.
+- Super Manager identified the "Mission Control" alias in the 3D Pose Factory project and wrote prompts.
+- Floor Manager relayed prompts to Workers via Ollama MCP.
+- Workers (Local Ollama models) executed the Phase 0-2 build in a single 8-hour marathon.

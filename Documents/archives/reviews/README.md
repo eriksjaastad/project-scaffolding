@@ -15,5 +15,5 @@ Institutional memory. Analyzing past reviews reveals patterns:
 
 ## Related Patterns
 - See `patterns/code-review-standard.md` for review format standards
-- See `docs/CODE_QUALITY_STANDARDS.md` for what reviews check
+- See `Documents/CODE_QUALITY_STANDARDS.md` for what reviews check
 

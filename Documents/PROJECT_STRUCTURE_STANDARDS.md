@@ -23,7 +23,7 @@ project-name/
 │   ├── script2.py
 │   └── utils/                # Script utilities
 ├── data/                      # Data files, databases
-├── docs/                      # Documentation
+├── Documents/                      # Documentation
 ├── templates/                 # Templates (if applicable)
 ├── tests/                     # Test files
 ├── requirements.txt           # Python dependencies
@@ -36,7 +36,7 @@ project-name/
 - ✅ **Virtual environment in root:** `venv/` at top level
 - ✅ **Scripts in scripts/:** All executable code in `scripts/`
 - ✅ **Data isolated:** `data/` for all data files
-- ✅ **Documentation clear:** `docs/` for detailed docs
+- ✅ **Documentation clear:** `Documents/` for detailed docs
 
 ### Web Projects (React/Next.js)
 
@@ -49,7 +49,7 @@ project-name/
 │   └── utils/
 ├── public/                   # Static assets
 ├── scripts/                  # Build scripts, utilities
-├── docs/                     # Documentation
+├── Documents/                     # Documentation
 ├── package.json              # Node dependencies
 ├── README.md
 ├── TODO.md
@@ -59,7 +59,7 @@ project-name/
 **Key rules:**
 - ✅ **Standard React structure:** Follow Create React App / Next.js conventions
 - ✅ **Scripts separate:** Build scripts in `scripts/`, source in `src/`
-- ✅ **Documentation clear:** `docs/` for detailed docs
+- ✅ **Documentation clear:** `Documents/` for detailed docs
 
 ### Hybrid Projects (Python Backend + React Frontend)
 
@@ -76,7 +76,7 @@ project-name/
 │   └── package.json
 ├── scripts/                  # Deployment, utilities
 ├── data/                     # Databases, local data
-├── docs/                     # Documentation
+├── Documents/                     # Documentation
 ├── requirements.txt          # Python dependencies
 ├── README.md
 ├── TODO.md
@@ -155,7 +155,7 @@ project-name/
 **What doesn't belong in scripts/:**
 - ❌ Virtual environment (goes in root)
 - ❌ Data files (goes in `data/`)
-- ❌ Documentation (goes in `docs/`)
+- ❌ Documentation (goes in `Documents/`)
 - ❌ Configuration (goes in root or dedicated config dir)
 
 **Example:**
@@ -176,7 +176,7 @@ scripts/
 **Standard docs layout:**
 
 ```
-docs/
+Documents/
 ├── README.md               # Docs index
 ├── core/                   # Core documentation
 │   ├── ARCHITECTURE.md
@@ -219,7 +219,7 @@ data/
 
 **Important:**
 - Always gitignore `data/` unless explicitly needed in repo
-- Document data structure in `docs/core/DATA_MODEL.md`
+- Document data structure in `Documents/core/DATA_MODEL.md`
 - Provide sample data in `data/samples/` if needed
 
 ---

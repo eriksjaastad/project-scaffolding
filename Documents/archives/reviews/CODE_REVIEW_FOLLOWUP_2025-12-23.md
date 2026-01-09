@@ -111,12 +111,12 @@ if api == "deepseek" and not deepseek_key:
 **Original Issue:** 1353 lines of brain dump, unreadable and unactionable.
 
 **Fix Applied:**
-- Archived to `docs/archives/planning-notes-dec-2025.md` (1353 lines)
+- Archived to `Documents/archives/planning-notes-dec-2025.md` (1353 lines)
 - New TODO.md is 103 lines of actionable items only
 
 **Verification:**
 ```
-1353 docs/archives/planning-notes-dec-2025.md  (archived brain dump)
+1353 Documents/archives/planning-notes-dec-2025.md  (archived brain dump)
  103 TODO.md                                   (actionable items)
 ```
 
@@ -147,7 +147,7 @@ See project-scaffolding repo: `patterns/tiered-ai-sprint-planning.md`
 
 **Original Issue:** Root directory cluttered with historical planning docs.
 
-**Fix Applied:** Created `docs/archives/` with:
+**Fix Applied:** Created `Documents/archives/` with:
 - `planning-notes-dec-2025.md` (original TODO brain dump)
 - `OPTION_C_BUILD_PLAN.md`
 - `SYSTEM_WALKTHROUGH.md`
@@ -155,7 +155,7 @@ See project-scaffolding repo: `patterns/tiered-ai-sprint-planning.md`
 - `GEMINI_RESEARCH_PROMPT.md`
 - Various Kiro research notes
 
-**Verification:** `docs/archives/README.md` exists explaining archive purpose.
+**Verification:** `Documents/archives/README.md` exists explaining archive purpose.
 
 ---
 
@@ -291,7 +291,7 @@ The three remaining issues are minor and can be fixed during active use. The sys
 | Silent reviewer skipping | ✅ Fixed | Red error messages |
 | 1350-line TODO | ✅ Fixed | 103 lines now, rest archived |
 | Hardcoded paths | ✅ Fixed | Relative references in templates |
-| Brain dump docs | ✅ Fixed | Moved to docs/archives/ |
+| Brain dump docs | ✅ Fixed | Moved to Documents/archives/ |
 
 **New Issues Found:** 3 minor (documented above)
 

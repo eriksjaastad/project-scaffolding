@@ -180,7 +180,7 @@ created: YYYY-MM-DD
   - Business logic
 
 ### Documentation
-- `docs/` - Project documentation
+- `Documents/` - Project documentation
   - Architecture
   - Usage guides
 
@@ -197,7 +197,7 @@ created: YYYY-MM-DD
 
 ### 2. Project Kickoff Checklist
 
-**Add to:** `docs/PROJECT_KICKOFF_GUIDE.md`
+**Add to:** `Documents/PROJECT_KICKOFF_GUIDE.md`
 
 ```markdown
 ## Step 5: Create Project Index (NEW!)
@@ -413,10 +413,10 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 ## Files to Create/Update
 
 ### In project-scaffolding/
-- [x] `docs/PROJECT_INDEXING_SYSTEM.md` (this file)
+- [x] `Documents/PROJECT_INDEXING_SYSTEM.md` (this file)
 - [ ] `templates/00_Index_Template.md`
 - [ ] `scripts/reindex_projects.py`
-- [ ] Update `docs/PROJECT_KICKOFF_GUIDE.md`
+- [ ] Update `Documents/PROJECT_KICKOFF_GUIDE.md`
 - [ ] Update `patterns/maintenance-checklist.md`
 
 ### In each project/

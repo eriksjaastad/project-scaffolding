@@ -168,8 +168,8 @@ This solves a real problem: "which project uses Cloudflare?" It's 560 lines but 
 |--------------|--------|
 | `TODO.md` lines 250-1000 | Brain dump about unbuilt systems |
 | `templates/CLAUDE.md.template` | 400 lines of placeholders you'll rewrite |
-| `docs/OPTION_C_BUILD_PLAN.md` | Historical planning doc |
-| `docs/CONTEXT_HANDOFF_*.md` | Session notes (archive instead) |
+| `Documents/OPTION_C_BUILD_PLAN.md` | Historical planning doc |
+| `Documents/CONTEXT_HANDOFF_*.md` | Session notes (archive instead) |
 | All "Coming soon" sections | Adds complexity without value |
 
 ### The 80/20
@@ -229,7 +229,7 @@ async def _call_with_retry(self, api_func, *args, **kwargs):
 **Success Criteria:** TODO.md is < 200 lines of current actionable items
 
 **Actions:**
-1. Create `docs/archives/planning-notes-dec-2025.md`
+1. Create `Documents/archives/planning-notes-dec-2025.md`
 2. Move all hypothetical system designs there
 3. Keep only: "What exists" + "Immediate next steps"
 4. Delete all "Coming soon" and "Future consideration" sections
@@ -280,4 +280,4 @@ Delete the brain dumps, fix the tests, and actually use this on a real project b
 ---
 
 *Review conducted: December 23, 2025*
-*Methodology: Full codebase analysis including scaffold/, scripts/, templates/, tests/, docs/, patterns/*
+*Methodology: Full codebase analysis including scaffold/, scripts/, templates/, tests/, Documents/, patterns/*

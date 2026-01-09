@@ -35,13 +35,13 @@ export SCAFFOLDING_ANTHROPIC_KEY="sk-ant-..."
 # Round 1
 python scaffold_cli.py review \
   --type document \
-  --input docs/VISION.md \
+  --input Documents/VISION.md \
   --round 1
 
 # After revising based on feedback, run Round 2
 python scaffold_cli.py review \
   --type document \
-  --input docs/VISION.md \
+  --input Documents/VISION.md \
   --round 2
 ```
 
@@ -49,7 +49,7 @@ python scaffold_cli.py review \
 
 Reviews will be saved to:
 ```
-docs/sprint_reviews/
+Documents/sprint_reviews/
 ├── round_1/
 │   ├── security_reviewer.md
 │   ├── performance_reviewer.md
@@ -71,7 +71,7 @@ docs/sprint_reviews/
 
 ```
 Running Review Round 1
-Document: docs/VISION.md
+Document: Documents/VISION.md
 Reviewers: 3
 
 ⠋ Security Reviewer (gpt-4o)
@@ -92,12 +92,12 @@ Review Complete!
 │ TOTAL                            │ $0.6368 │
 └──────────────────────────────────┴─────────┘
 
-Reviews saved to: docs/sprint_reviews/round_1
+Reviews saved to: Documents/sprint_reviews/round_1
 ```
 
 ## What's Next
 
-1. **Read the reviews** in `docs/sprint_reviews/round_1/`
+1. **Read the reviews** in `Documents/sprint_reviews/round_1/`
 2. **Revise your document** based on feedback
 3. **Run Round 2** to verify fixes
 4. **Generate prompts** (coming soon)

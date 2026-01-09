@@ -37,7 +37,7 @@ Erik has an idea and starts a conversation with a Tier 1 AI (Claude Sonnet/Opus)
 
 ### Handoff to Next Stage
 **Input:** Rough vision/idea document  
-**Output:** `docs/VISION.md` (doesn't need to be polished)
+**Output:** `Documents/VISION.md` (doesn't need to be polished)
 
 ---
 
@@ -56,7 +56,7 @@ This is where the tiered sprint planner gets created.
 
 **Tool:** Cursor/Claude Code (manual, conversational)
 
-**Output:** `docs/TIERED_SPRINT_PLANNER.md` (first draft)
+**Output:** `Documents/TIERED_SPRINT_PLANNER.md` (first draft)
 
 **Reality check:** This is just Erik talking with an AI. No automation needed.
 
@@ -76,8 +76,8 @@ This is where the tiered sprint planner gets created.
 - Reviewer C: Architecture purist
 
 **What they review:**
-- `docs/VISION.md`
-- `docs/TIERED_SPRINT_PLANNER.md` (draft)
+- `Documents/VISION.md`
+- `Documents/TIERED_SPRINT_PLANNER.md` (draft)
 
 **Prompts for reviewers:**
 ```markdown
@@ -104,16 +104,16 @@ Review this plan: [paste sprint plan]
 - Erik opens 3 chat windows
 - Pastes prompts
 - Collects reviews
-- Saves to `docs/sprint_reviews/round_1/`
+- Saves to `Documents/sprint_reviews/round_1/`
 
 **Option B (Semi-Automated):**
 - Script generates 3 prompts
 - Erik copy/pastes into chat windows
-- Reviews saved to `docs/sprint_reviews/round_1/`
+- Reviews saved to `Documents/sprint_reviews/round_1/`
 
 **Option C (Fully Automated):**
 - Script calls 3 APIs (OpenAI/Anthropic) with different prompts
-- Reviews auto-saved to `docs/sprint_reviews/round_1/`
+- Reviews auto-saved to `Documents/sprint_reviews/round_1/`
 - Erik reviews the reviews
 
 **Reality check:** Which option makes sense?
@@ -133,7 +133,7 @@ Review this plan: [paste sprint plan]
 **What:** Review the 3 critiques, discuss, revise sprint plan  
 **Tool:** Cursor (manual conversation)
 
-**Output:** `docs/TIERED_SPRINT_PLANNER.md` (v2)
+**Output:** `Documents/TIERED_SPRINT_PLANNER.md` (v2)
 
 ---
 
@@ -144,7 +144,7 @@ Review this plan: [paste sprint plan]
 - Check if previous concerns addressed
 - Find NEW issues (if any)
 
-**Output:** `docs/sprint_reviews/round_2/` (3 more reviews)
+**Output:** `Documents/sprint_reviews/round_2/` (3 more reviews)
 
 **Reality check:** Is 2 rounds enough or do we need 3?
 - **Erik's experience:** 3 reviewers seems like the sweet spot
@@ -159,7 +159,7 @@ Review this plan: [paste sprint plan]
 **Who:** Erik + Tier 1 AI  
 **What:** Final revisions based on Round 2 feedback
 
-**Output:** `docs/TIERED_SPRINT_PLANNER.md` (FINAL)
+**Output:** `Documents/TIERED_SPRINT_PLANNER.md` (FINAL)
 
 ---
 
@@ -190,7 +190,7 @@ Requirements:
 - JWT tokens (15min expiry, refresh tokens 7 days)
 - Session storage in Redis
 - Rate limiting (5 attempts/min per IP)
-Follow pattern in docs/architecture/AUTH.md
+Follow pattern in Documents/architecture/AUTH.md
 
 If you encounter ANY ambiguity or high-risk decisions, escalate to Tier 1 immediately:
 "🚨 ESCALATE TO TIER 1: [reason]"
@@ -222,7 +222,7 @@ Required output:
 ```
 ```
 
-**Output:** `docs/TIERED_SPRINT_PLANNER.md` (FINAL with prompts embedded)
+**Output:** `Documents/TIERED_SPRINT_PLANNER.md` (FINAL with prompts embedded)
 
 **Reality check:** This is just adding text to the sprint plan document. No automation needed.
 
@@ -646,7 +646,7 @@ Required output:
 
 **Reality check:** This is very similar to sprint plan reviews. Same trade-offs apply.
 
-**Output:** `docs/code_reviews/task_auth_implementation/` (3 reviews)
+**Output:** `Documents/code_reviews/task_auth_implementation/` (3 reviews)
 
 ---
 
@@ -834,7 +834,7 @@ Lessons Learned:
 
 **Output:**
 - Terminal summary (above)
-- `docs/analytics/cortana-extension_analysis_2025-12-22.md` (saved)
+- `Documents/analytics/cortana-extension_analysis_2025-12-22.md` (saved)
 - Updates to `patterns/tiered-ai-sprint-planning.md` (cost models, lessons)
 
 **What needs building:**
@@ -904,10 +904,10 @@ Lessons Learned:
 
 ```
 1. IDEA (Erik + Tier 1)
-   → docs/VISION.md
+   → Documents/VISION.md
    
 2. SPRINT PLANNING (Multi-AI Review)
-   → docs/TIERED_SPRINT_PLANNER.md (with prompts + estimates)
+   → Documents/TIERED_SPRINT_PLANNER.md (with prompts + estimates)
    
 3. BUILD (Task Dispatch)
    → Code written by Tier 1/2/3

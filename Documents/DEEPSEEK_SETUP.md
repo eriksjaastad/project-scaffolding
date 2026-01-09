@@ -132,8 +132,8 @@ XAI_API_KEY=xai-...
 # In scaffold/dispatch.py
 
 if task.tier == 1:
-    # Use Kiro CLI
-    result = kiro.execute(task)
+    # Use Ollama CLI
+    result = deepseek.execute(task)
 
 elif task.tier == 2:
     # Use DeepSeek (cheap, quality)

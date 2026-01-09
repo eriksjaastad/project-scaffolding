@@ -602,7 +602,7 @@ See: `project-scaffolding/TODO.md` for focused sprint format
 ## Related Documentation
 
 - **Template:** `project-scaffolding/templates/TODO.md.template`
-- **Project Kickoff Guide:** `project-scaffolding/docs/PROJECT_KICKOFF_GUIDE.md`
+- **Project Kickoff Guide:** `project-scaffolding/Documents/PROJECT_KICKOFF_GUIDE.md`
 - **Dashboard README:** `project-tracker/README.md`
 - **Dashboard TODO:** `project-tracker/TODO.md` (uses this format!)
 

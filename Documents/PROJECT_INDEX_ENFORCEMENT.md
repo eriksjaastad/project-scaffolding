@@ -19,7 +19,7 @@ created: 2025-12-31
 
 **NO PROJECT GOES FORWARD WITHOUT AN INDEX FILE.**
 
-This is **Critical Rule #0** in `docs/CODE_QUALITY_STANDARDS.md` - it comes before even "no silent failures."
+This is **Critical Rule #0** in `Documents/CODE_QUALITY_STANDARDS.md` - it comes before even "no silent failures."
 
 ---
 
@@ -57,9 +57,9 @@ This single file provides:
 ### 1. Documentation (✅ Complete)
 
 **Updated Files:**
-- `docs/CODE_QUALITY_STANDARDS.md` - Made indexing Critical Rule #0
-- `docs/PROJECT_KICKOFF_GUIDE.md` - Added as mandatory Step 3
-- `docs/PROJECT_INDEXING_SYSTEM.md` - Complete indexing guide
+- `Documents/CODE_QUALITY_STANDARDS.md` - Made indexing Critical Rule #0
+- `Documents/PROJECT_KICKOFF_GUIDE.md` - Added as mandatory Step 3
+- `Documents/PROJECT_INDEXING_SYSTEM.md` - Complete indexing guide
 - `templates/00_Index_Template.md` - Template for new projects
 
 ### 2. Validation Scripts (✅ Complete)

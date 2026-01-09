@@ -44,7 +44,7 @@ Example:
 - **Test:** `test_no_hardcoded_paths()`
 - **Checks:** `scripts/` directory only.
 - **Inverse Question:** What directories are ignored?
-- **Answer:** `templates/`, `patterns/`, `docs/`.
+- **Answer:** `templates/`, `patterns/`, `Documents/`.
 - **Action:** Manually verify or expand the test.
 
 ---

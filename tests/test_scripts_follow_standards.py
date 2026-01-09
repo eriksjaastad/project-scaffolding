@@ -59,18 +59,18 @@ def test_scripts_have_type_hints():
         for script in dir_path.glob("*.py"):
             if script.name == "__init__.py":
                 continue
-            
-        content = script.read_text()
-        # Find all function definitions (even multi-line)
-        import re
-        # This pattern finds 'def function_name(...)' and checks for '->' before the colon
-        matches = re.finditer(r"def\s+\w+\s*\([^)]*\)\s*([^:]*)", content)
-        for match in matches:
-            sig_tail = match.group(1)
-            full_sig = match.group(0)
-            if "->" not in sig_tail and "def __init__" not in full_sig:
-                # Get the function name for reporting
-                func_name = full_sig.split("(")[0].strip()
-                violations.append(f"{script.name}: {func_name}")
+
+            content = script.read_text()
+            # Find all function definitions (even multi-line)
+            import re
+            # This pattern finds 'def function_name(...)' and checks for '->' before the colon
+            matches = re.finditer(r"def\s+\w+\s*\([^)]*\)\s*([^:]*)", content)
+            for match in matches:
+                sig_tail = match.group(1)
+                full_sig = match.group(0)
+                if "->" not in sig_tail and "def __init__" not in full_sig:
+                    # Get the function name for reporting
+                    func_name = full_sig.split("(")[0].strip()
+                    violations.append(f"{script.name}: {func_name}")
 
     assert not violations, "Scripts without type hints:\n" + "\n".join(violations)

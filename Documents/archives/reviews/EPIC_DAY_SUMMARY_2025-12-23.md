@@ -23,7 +23,7 @@
 1. Archived TODO.md brain dump (1353 → 103 lines, 92% reduction!)
 2. Archived 7 historical planning docs
 3. Cleaned up root directory
-4. Created `docs/archives/` with README
+4. Created `Documents/archives/` with README
 
 ### 🚧 **Chunk 4: Dogfood & Validate** (~15 min)
 1. Created dogfooding test document

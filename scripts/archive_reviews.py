@@ -15,24 +15,53 @@ def find_project_root(file_path: pathlib.Path, max_depth: int = 10) -> Optional[
     """
     Finds the nearest parent directory containing '00_Index_*.md'.
     This ensures Project Autonomy by defining clear boundaries.
+
+    Security: Validates found index is legitimate (not in templates/archives).
+    Prevents path traversal and malicious index filenames.
     """
+    excluded_dirs = {'templates', 'archives', 'venv', '.git', 'node_modules'}
+
     current_path = file_path.resolve()
     if current_path.is_file():
         current_path = current_path.parent
-    
+
     for _ in range(max_depth):
         # Search for '00_Index_*.md' in the current directory
         index_files = list(current_path.glob('00_Index_*.md'))
+
         if index_files:
+            # Security: Validate index is not in excluded directories
+            index_path = index_files[0]
+
+            # Check if current path contains any excluded directory
+            if any(excluded in current_path.parts for excluded in excluded_dirs):
+                logger.debug(f"Skipping index in excluded dir: {current_path}")
+                # Continue searching upward instead of returning
+                parent_path = current_path.parent
+                if parent_path == current_path:
+                    break
+                current_path = parent_path
+                continue
+
+            # Security: Validate index filename doesn't contain path traversal
+            if '..' in index_path.name or '/' in index_path.name or '\\' in index_path.name:
+                logger.error(f"Security: Suspicious index filename: {index_path.name}")
+                return None
+
+            # Security: Warn if multiple indexes found (ambiguous)
+            if len(index_files) > 1:
+                logger.warning(f"Multiple index files in {current_path}: {[f.name for f in index_files]}")
+                logger.warning(f"Using first match: {index_files[0].name}")
+
             return current_path
-        
+
         # Move up to the parent directory
         parent_path = current_path.parent
         if parent_path == current_path:
             break  # Reached root
-        
+
         current_path = parent_path
-        
+
     return None
 
 def find_review_files(root_dir: pathlib.Path) -> List[pathlib.Path]:

@@ -1,7 +1,7 @@
 # Claude Code Review - Action Items
 
 **Date:** December 23, 2025  
-**Source:** `docs/CODE_REVIEW_2025-12-23.md`  
+**Source:** `Documents/CODE_REVIEW_2025-12-23.md`  
 **Verdict:** Needs Major Refactor (but there's value here!)
 
 ---
@@ -73,13 +73,13 @@
 ### Archive the Brain Dump (2 hours)
 **Issue:** TODO.md is 1350 lines - part brain dump, part planning, part docs
 
-- [ ] Create `docs/archives/planning-notes-dec-2025.md`
+- [ ] Create `Documents/archives/planning-notes-dec-2025.md`
 - [ ] Move all "pie in the sky" ideas there
 - [ ] Keep TODO.md < 200 lines (what exists + immediate next steps)
 - [ ] Delete all "Coming soon" sections
 
 **Files:**
-- Move: `TODO.md` (lines 250-1000) → `docs/archives/planning-notes-dec-2025.md`
+- Move: `TODO.md` (lines 250-1000) → `Documents/archives/planning-notes-dec-2025.md`
 - Keep: Current state + next 3-5 actionable tasks
 
 ---
@@ -100,13 +100,13 @@
 ### Archive Planning Docs (30 min)
 **Issue:** Historical docs like `OPTION_C_BUILD_PLAN.md` clutter the repo
 
-- [ ] Move to `docs/archives/`
-- [ ] Keep only current, actionable docs in `docs/`
+- [ ] Move to `Documents/archives/`
+- [ ] Keep only current, actionable docs in `Documents/`
 
 **Files to archive:**
-- `docs/OPTION_C_BUILD_PLAN.md`
-- `docs/CONTEXT_HANDOFF_*.md`
-- `docs/SYSTEM_WALKTHROUGH.md`
+- `Documents/OPTION_C_BUILD_PLAN.md`
+- `Documents/CONTEXT_HANDOFF_*.md`
+- `Documents/SYSTEM_WALKTHROUGH.md`
 
 ---
 

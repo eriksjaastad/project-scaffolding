@@ -130,11 +130,11 @@ Instead of fighting Cursor's system, work WITH it:
 
 ### In `project-scaffolding`:
 - ✅ Created: `patterns/tiered-ai-sprint-planning.md` (full pattern doc)
-- ✅ **Creating now:** `docs/CONTEXT_HANDOFF_2025-12-22_tiered-ai-planning.md` (this file)
+- ✅ **Creating now:** `Documents/CONTEXT_HANDOFF_2025-12-22_tiered-ai-planning.md` (this file)
 
 ### In `AI usage-billing tracker`:
 - ✅ Updated: `.cursorrules` (added reference to tiered planning)
-- ✅ Organized: Moved docs to `docs/`, billing_app to `integrations/`
+- ✅ Organized: Moved docs to `Documents/`, billing_app to `integrations/`
 - ✅ Recovered: Restored entire codebase after ChatGPT deletion (Dec 14)
 
 ---

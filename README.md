@@ -27,9 +27,9 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ### Starting a New Project
 
-1. **Read** `docs/PROJECT_KICKOFF_GUIDE.md` - Complete walkthrough for new projects
-2. **Follow** `docs/PROJECT_STRUCTURE_STANDARDS.md` - Standard directory layout (venv in root!)
-3. **Follow** `docs/CODE_QUALITY_STANDARDS.md` - **MANDATORY** rules (NO silent failures!)
+1. **Read** `Documents/PROJECT_KICKOFF_GUIDE.md` - Complete walkthrough for new projects
+2. **Follow** `Documents/PROJECT_STRUCTURE_STANDARDS.md` - Standard directory layout (venv in root!)
+3. **Follow** `Documents/CODE_QUALITY_STANDARDS.md` - **MANDATORY** rules (NO silent failures!)
 4. **Copy** templates to your new project - Documentation, .cursorrules, CLAUDE.md
 5. **Plan** using Tiered AI Sprint Planning - Break work into cost-effective tiers
 6. **Execute** with appropriate models - Tier 1 for architecture, Tier 3 for boilerplate
@@ -37,7 +37,7 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ### Understanding This Scaffolding
 
-1. **Pattern Analysis** (`docs/PATTERN_ANALYSIS.md`)
+1. **Pattern Analysis** (`Documents/PATTERN_ANALYSIS.md`)
    - See all identified patterns with confidence levels
    - Understand which are proven (🟢), emerging (🟡), or candidates (🔵)
 
@@ -181,7 +181,7 @@ project-scaffolding/
 ├── examples/                    ← Real examples from source projects
 │   └── (Coming soon - extracted from battle-tested projects)
 │
-└── docs/                        ← Meta-documentation
+└── Documents/                        ← Meta-documentation
     ├── PATTERN_ANALYSIS.md      ← Pattern extraction analysis ✅
     ├── USAGE_GUIDE.md           ← How to use this scaffolding ✅
     └── PROJECT_KICKOFF_GUIDE.md ← Starting new projects guide ✅

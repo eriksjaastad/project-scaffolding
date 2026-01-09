@@ -1,6 +1,6 @@
 # Claude Code Review - Chunked Action Plan
 
-**Source:** `docs/CODE_REVIEW_2025-12-23.md`  
+**Source:** `Documents/CODE_REVIEW_2025-12-23.md`  
 **Strategy:** Fix in logical chunks, validate between each
 
 ---
@@ -105,7 +105,7 @@
 ### Tasks:
 
 - [ ] **3.1** Archive the TODO.md brain dump
-  - Create: `docs/archives/planning-notes-dec-2025.md`
+  - Create: `Documents/archives/planning-notes-dec-2025.md`
   - Move: `TODO.md` lines 250-1000 → archive
   - Keep in TODO.md:
     - Current state (what exists)
@@ -120,12 +120,12 @@
   - **Validation:** Can fill out template in < 5 min
 
 - [ ] **3.3** Archive historical planning docs
-  - Move to `docs/archives/`:
+  - Move to `Documents/archives/`:
     - `OPTION_C_BUILD_PLAN.md`
     - `CONTEXT_HANDOFF_*.md`
     - `SYSTEM_WALKTHROUGH.md`
-  - Keep only current, actionable docs in `docs/`
-  - **Validation:** `docs/` is clear and focused
+  - Keep only current, actionable docs in `Documents/`
+  - **Validation:** `Documents/` is clear and focused
 
 - [ ] **3.4** Clean up root directory
   - Delete or archive:

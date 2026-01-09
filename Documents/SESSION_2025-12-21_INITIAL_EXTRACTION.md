@@ -8,7 +8,7 @@
 
 ## What Was Built
 
-### 1. Pattern Analysis (`docs/PATTERN_ANALYSIS.md`)
+### 1. Pattern Analysis (`Documents/PATTERN_ANALYSIS.md`)
 **20+ patterns identified** across three source projects:
 - 🟢 5 proven patterns (3+ projects)
 - 🟡 11 emerging patterns (2 projects)
@@ -59,7 +59,7 @@
 - When to apply, when NOT to apply
 - Anti-patterns for each principle
 
-### 4. Documentation (`docs/`)
+### 4. Documentation (`Documents/`)
 
 **Usage Guide (`USAGE_GUIDE.md`):**
 - Step-by-step project setup
@@ -144,8 +144,8 @@ Pattern was universal even when not articulated.
 12. `patterns/development-philosophy.md` (580+ lines)
 
 ### Documentation
-13. `docs/PATTERN_ANALYSIS.md` (450+ lines)
-14. `docs/USAGE_GUIDE.md` (comprehensive guide)
+13. `Documents/PATTERN_ANALYSIS.md` (450+ lines)
+14. `Documents/USAGE_GUIDE.md` (comprehensive guide)
 
 ### Updates
 15. Updated `README.md` (added Cortana, quick start, status)
