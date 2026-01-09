@@ -177,11 +177,10 @@ scripts/
 
 ```
 Documents/
-├── README.md               # Docs index
-├── core/                   # Core documentation
-│   ├── ARCHITECTURE.md
-│   ├── OPERATIONS.md
-│   └── DATA_MODEL.md
+├── README.md               # Docs index (Grand Central Station)
+├── ARCHITECTURE.md         # Core Architecture
+├── OPERATIONS.md           # Core Operations
+├── DATA_MODEL.md           # Core Data Model
 ├── guides/                 # How-to guides
 │   ├── SETUP.md
 │   └── DEPLOYMENT.md
@@ -191,6 +190,9 @@ Documents/
 ├── safety/                 # Safety systems
 │   └── DISASTER_RECOVERY.md
 └── archives/               # Historical docs
+    ├── planning/
+    ├── research/
+    ├── reviews/
     └── sessions/
 ```
 
@@ -219,7 +221,7 @@ data/
 
 **Important:**
 - Always gitignore `data/` unless explicitly needed in repo
-- Document data structure in `Documents/core/DATA_MODEL.md`
+- Document data structure in `Documents/DATA_MODEL.md`
 - Provide sample data in `data/samples/` if needed
 
 ---
@@ -404,6 +406,120 @@ python scripts/your_script.py
 
 ---
 
+## Code Review Standards
+
+Code reviews are critical for maintaining quality and consistency across the ecosystem. **All** code reviews **MUST** adhere to the following standards to ensure uniformity, traceability, and compliance.
+
+### The "Now" Rule
+
+**Rule:** Active code reviews **MUST** reside in the project root directory.
+
+**Why:** Visibility and immediate access. The current review should always be at the top level.
+
+**Correct:**
+```
+project-name/
+├── CODE_REVIEW_CLAUDE_v1.md    ✅ Active review in root
+├── Documents/
+└── scripts/
+```
+
+**Incorrect:**
+```
+project-name/
+├── reviews/
+│   └── CODE_REVIEW_CLAUDE_v1.md    ❌ Never bury in subdirectory
+└── Documents/
+    └── CODE_REVIEW_CLAUDE_v1.md    ❌ Never in Documents/
+```
+
+### The "Archive" Rule
+
+**Rule:** All previous versions of code reviews **MUST** be moved to `Documents/archives/reviews/` **BEFORE** starting a new review.
+
+**Why:** Maintains review history without cluttering project root.
+
+**Workflow:**
+1. Receive new code review request
+2. Move current review from root to `Documents/archives/reviews/`
+3. Generate new review in root
+
+**Example:**
+```
+project-name/
+├── CODE_REVIEW_GEMINI_v2.md        ← New active review
+└── Documents/
+    └── archives/
+        └── reviews/
+            ├── CODE_REVIEW_CLAUDE_v1.md    ← Archived
+            └── CODE_REVIEW_GEMINI_v1.md    ← Previous version archived
+```
+
+### Naming Convention
+
+**Rule:** All code review files **MUST** follow the naming convention: `CODE_REVIEW_{REVIEWER_NAME}_{VERSION}.md` (ALL CAPS).
+
+**Format:**
+- `CODE_REVIEW_` - Prefix (ALL CAPS)
+- `{REVIEWER_NAME}` - Reviewer identifier (ALL CAPS)
+- `_{VERSION}` - Version number (e.g., `v1`, `v2`, `v2.1`)
+- `.md` - Markdown extension
+
+**Examples:**
+- ✅ `CODE_REVIEW_CLAUDE_v1.md`
+- ✅ `CODE_REVIEW_GEMINI_v2.1.md`
+- ✅ `CODE_REVIEW_ARCHITECTURE_REVIEWER_v1.md`
+- ❌ `code_review_claude_v1.md` (not all caps)
+- ❌ `CODE_REVIEW_CLAUDE.md` (missing version)
+- ❌ `review_claude_v1.md` (wrong prefix)
+
+### Definition of Done (DoD) Requirement
+
+**Rule:** A Definition of Done (DoD) is **MANDATORY** for every code review request.
+
+**Why:** AI models need clear success criteria to provide meaningful critiques. Without a DoD, reviews become vague.
+
+**Format:**
+```markdown
+## Definition of Done
+
+- [ ] All tests pass
+- [ ] No absolute paths in code
+- [ ] Documentation updated
+- [ ] Security vulnerabilities addressed
+```
+
+**Enforcement:** The review CLI will **reject** any request missing the DoD section.
+
+### Integration with Master Compliance Checklist
+
+Code review standards are enforced via the Master Compliance Checklist (see section below):
+
+- [ ] Active code review exists in project root (if applicable)
+- [ ] Review follows `CODE_REVIEW_{REVIEWER}_{VERSION}.md` naming
+- [ ] Review history directory exists: `Documents/archives/reviews/`
+- [ ] Previous reviews are archived (not in root)
+
+### Review ID & Traceability
+
+Every code review **MUST** include a Review ID in the frontmatter to enable linking to `WARDEN_LOG.yaml`:
+
+```yaml
+---
+review_id: 2026-01-09-001
+reviewer: CLAUDE
+version: v1
+date: 2026-01-09
+---
+```
+
+This enables:
+- Cross-referencing with governance logs
+- Tracking review history
+- Audit trail for compliance
+
+---
+
 ## 📋 Master Compliance Checklist (The One Checklist)
 
 **Every project I touch MUST meet these requirements to be considered "scaffolded".**
@@ -426,9 +542,14 @@ python scripts/your_script.py
 ### Mandatory Structure
 - [ ] **`Documents/`** directory - Centralized documentation following the [Documents/ pattern](PROJECT_STRUCTURE_STANDARDS.md#documentation-structure).
   - `Documents/README.md` (Index)
-  - `Documents/core/` (Architecture/Operations)
+  - `Documents/*.md` (Architecture/Operations in root)
 - [ ] **Review History Retention** - `Documents/archives/reviews/`
   - **Why Mandatory**: Facilitates "Black Box Thinking" by analyzing past successes and failures. It ensures institutional memory is preserved so we can learn from patterns rather than repeating mistakes.
+- [ ] **Code Review Standards** (if reviews exist):
+  - [ ] Active code review in project root (follows `CODE_REVIEW_{REVIEWER}_{VERSION}.md` naming)
+  - [ ] Previous reviews archived in `Documents/archives/reviews/`
+  - [ ] All reviews include Definition of Done (DoD)
+  - [ ] Review IDs present in frontmatter for traceability
 - [ ] **`scripts/`** directory - All executable scripts isolated from source code.
 - [ ] **`venv/`** or **`node_modules/`** - Virtual environment/dependencies in the project root.
 

@@ -160,7 +160,7 @@ Ready to explore this idea?
 **Outputs:**
 - `ROADMAP.md` - Long-term vision
 - `ARCHITECTURE.md` or `Documents/architecture/` - System design
-- `Documents/core/` - Core documentation
+- `Documents/*.md` - Core documentation (in root)
 - Maybe `Documents/vision/` - Design vision
 - Maybe `Documents/reviews/` - AI feedback sessions
 
@@ -361,8 +361,9 @@ my-new-project/
 ├── TODO.md                    # Current work (optional)
 │
 ├── Documents/                 # From scaffolding template
-│   ├── README.md              # Documentation index
-│   ├── core/                  # Architecture, operations
+│   ├── README.md              # Documentation index (Grand Central Station)
+│   ├── ARCHITECTURE.md        # Core Architecture
+│   ├── OPERATIONS.md          # Core Operations
 │   ├── guides/                # How-to documents
 │   ├── reference/             # Standards, knowledge
 │   ├── safety/                # Safety systems
@@ -398,7 +399,7 @@ my-new-project/
 - [ ] Refine and iterate
 - [ ] Get AI feedback (optional: multi-model review)
 - [ ] Document in ROADMAP.md, ARCHITECTURE.md
-- [ ] Create initial Documents/core/ docs
+- [ ] Create initial Core Standards in Documents/ root (Architecture, Operations, etc.)
 
 ### Phase 2 Tiering (30-60 min - Tier 1)
 - [ ] Extract all tasks from planning docs
@@ -567,7 +568,7 @@ Don't wait to initialize git "until the project is real."
 
 ### Q: Do I need all the Documents/ subdirectories?
 
-**A:** No. Start with what you need (probably just `core/` and `guides/`). Add others as needed.
+**A:** No. Start with what you need (probably just Core Standards in root and `guides/`). Add others as needed.
 
 ---
 
