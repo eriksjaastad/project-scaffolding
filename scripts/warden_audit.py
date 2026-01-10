@@ -27,17 +27,25 @@ def is_tier_1_project(index_path: pathlib.Path) -> bool:
     try:
         with index_path.open('r') as f:
             content = f.read()
+            content_lower = content.lower()
             
-        # Check for the specific tag
-        if '#type/code' in content or '#type/project' in content:
+        # 1. Explicit tags
+        if '#type/code' in content_lower or '#type/project' in content_lower:
             return True
             
-        # Check each header line for tech languages
+        if any(f'tech/{lang}' in content_lower for lang in tech_languages):
+            return True
+
+        # 2. Check headers and list items in the first 50 lines
         lines = content.split('\n')
-        for line in lines:
-            if line.strip().startswith('#'):
-                header = line.strip().lower()
-                if any(lang in header for lang in tech_languages):
+        for line in lines[:50]:
+            line_strip = line.strip().lower()
+            if not line_strip:
+                continue
+                
+            # If it's a header or a list item
+            if line_strip.startswith('#') or line_strip.startswith('- ') or line_strip.startswith('* '):
+                if any(lang in line_strip for lang in tech_languages):
                     return True
                     
         return False
