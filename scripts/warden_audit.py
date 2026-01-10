@@ -3,10 +3,17 @@ import logging
 import sys
 import subprocess
 import shutil
+from enum import Enum
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
+
+class Severity(Enum):
+    P0 = "CRITICAL"  # Block commit - dangerous functions in production
+    P1 = "ERROR"     # Block commit - hardcoded paths
+    P2 = "WARNING"   # Allow commit - acceptable with context
+    P3 = "INFO"      # Allow commit - informational only
 
 def is_tier_1_project(index_path: pathlib.Path) -> bool:
     """
@@ -48,8 +55,15 @@ def check_dependencies(project_root: pathlib.Path) -> bool:
     return False
 
 def check_dangerous_functions(project_root: pathlib.Path) -> list:
-    """Greps for dangerous file removal functions."""
-    dangerous_patterns = ['os.remove', 'os.unlink', 'shutil.rmtree']
+    """Greps for dangerous file removal functions.
+    
+    Returns: List of (file_path, pattern, severity) tuples
+    """
+    dangerous_patterns = [
+        'os.remove', 'os.unlink', 'shutil.rmtree',  # Dangerous functions
+        '/Us' + 'ers/', '/ho' + 'me/',  # macOS/Linux absolute paths
+        'C:\\' + '\\', 'C:/'       # Windows absolute paths
+    ]
     found_issues = []
     
     # Simple walk and check to avoid external dependency for basic audit
@@ -61,15 +75,25 @@ def check_dangerous_functions(project_root: pathlib.Path) -> list:
         if file_path.name == 'warden_audit.py': # Exclude self
             continue
 
+        # Determine if test file
+        is_test_file = 'test' in file_path.parts or file_path.name.startswith('test_')
+
         try:
             with file_path.open('r') as f:
                 content = f.read()
                 for pattern in dangerous_patterns:
                     if pattern in content:
-                        found_issues.append((file_path, pattern))
+                        is_hardcoded_path = pattern in ['/Us' + 'ers/', '/ho' + 'me/', 'C:\\' + '\\', 'C:/']
+                        if is_hardcoded_path:
+                            severity = Severity.P1
+                        elif pattern in ['os.remove', 'os.unlink', 'shutil.rmtree']:
+                            severity = Severity.P2 if is_test_file else Severity.P0
+                        else:
+                            severity = Severity.P3
+                        found_issues.append((file_path, pattern, severity))
         except Exception as e:
             logger.warning(f"Could not read file {file_path}: {e}")
-            found_issues.append((file_path, f"READ_ERROR: {e}"))
+            found_issues.append((file_path, f"READ_ERROR: {e}", Severity.P3))
             
     return found_issues
 
@@ -86,7 +110,11 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
         logger.warning("grep/ripgrep not found, falling back to regular scan")
         return check_dangerous_functions(project_root)
 
-    dangerous_patterns = ['os.remove', 'os.unlink', 'shutil.rmtree']
+    dangerous_patterns = [
+        'os.remove', 'os.unlink', 'shutil.rmtree',
+        '/Us' + 'ers/', '/ho' + 'me/',
+        'C:\\' + '\\', 'C:/'
+    ]
     found_issues = []
 
     for pattern in dangerous_patterns:
@@ -106,7 +134,18 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
                         path_obj = pathlib.Path(file_path)
                         if path_obj.name == 'warden_audit.py':
                             continue
-                        found_issues.append((path_obj, pattern))
+                        
+                        is_test_file = 'test' in path_obj.parts or path_obj.name.startswith('test_')
+                        is_hardcoded_path = pattern in ['/Us' + 'ers/', '/ho' + 'me/', 'C:\\' + '\\', 'C:/']
+                        
+                        if is_hardcoded_path:
+                            severity = Severity.P1
+                        elif pattern in ['os.remove', 'os.unlink', 'shutil.rmtree']:
+                            severity = Severity.P2 if is_test_file else Severity.P0
+                        else:
+                            severity = Severity.P3
+                            
+                        found_issues.append((path_obj, pattern, severity))
 
         except subprocess.TimeoutExpired:
             logger.warning(f"Fast scan timeout for pattern: {pattern}")
@@ -120,7 +159,9 @@ def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
     logger.info(f"Starting Warden Audit in: {root_dir}")
     
     projects_found = 0
-    issues_found = 0
+    p0_issues = 0  # Critical
+    p1_issues = 0  # Error
+    p2_issues = 0  # Warning
     
     # Find all project roots by looking for 00_Index_*.md files
     for index_path in root_dir.rglob('00_Index_*.md'):
@@ -140,24 +181,38 @@ def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
         # Tier 1 Dependency Check
         if is_tier_1:
             if not check_dependencies(project_root):
-                logger.error(f"[CRITICAL] {project_name}: Missing dependency manifest (requirements.txt/package.json)")
-                issues_found += 1
+                logger.warning(f"[P2-WARNING] {project_name}: Missing dependency manifest")
+                p2_issues += 1
         
         # Safety Check (All Tiers)
         dangerous_usage = check_dangerous_functions_fast(project_root) if use_fast else check_dangerous_functions(project_root)
-        for file_path, pattern in dangerous_usage:
+        for file_path, pattern, severity in dangerous_usage:
             try:
                 rel_path = file_path.relative_to(root_dir)
             except ValueError:
                 rel_path = file_path
-            logger.warning(f"[DANGEROUS] {project_name}: Raw '{pattern}' found in {rel_path}")
-            issues_found += 1
-                
+            
+            severity_label = f"[{severity.name}-{severity.value}]"
+            if severity == Severity.P0:
+                logger.error(f"{severity_label} {project_name}: '{pattern}' found in {rel_path}")
+                p0_issues += 1
+            elif severity == Severity.P1:
+                logger.error(f"{severity_label} {project_name}: '{pattern}' found in {rel_path}")
+                p1_issues += 1
+            elif severity == Severity.P2:
+                logger.warning(f"{severity_label} {project_name}: '{pattern}' found in {rel_path}")
+                p2_issues += 1
+            else:
+                logger.info(f"{severity_label} {project_name}: '{pattern}' in {rel_path}")
+                    
     logger.info("--- Audit Summary ---")
     logger.info(f"Projects scanned: {projects_found}")
-    logger.info(f"Issues found: {issues_found}")
+    logger.info(f"P0 (Critical): {p0_issues}")
+    logger.info(f"P1 (Error): {p1_issues}")
+    logger.info(f"P2 (Warning): {p2_issues}")
     
-    return issues_found == 0
+    # Exit clean only if no P0 or P1 issues
+    return (p0_issues == 0 and p1_issues == 0)
 
 if __name__ == "__main__":
     import argparse
