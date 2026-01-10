@@ -1,8 +1,10 @@
 # Safety Systems Patterns
 
-> **Philosophy:** "Every safety system was a scar"  
-> **Source:** Extracted from battle-tested projects  
+> **Philosophy:** "Every safety system was a scar"
+> **Source:** Extracted from battle-tested projects
 > **Last Updated:** December 21, 2025
+
+> **Industry Context:** These patterns align with production AI safety practices. See [Documents/reports/trustworthy_ai_report.md](../Documents/reports/trustworthy_ai_report.md) for how Google DeepMind, Anthropic, and Microsoft implement defense-in-depth safety systems.
 
 ---
 

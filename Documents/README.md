@@ -30,6 +30,11 @@ The **core standards used daily** (kept at the root for immediate access):
 - [PATTERN_MANAGEMENT.md](reference/PATTERN_MANAGEMENT.md)
 - [REVIEW_SYSTEM_DESIGN.md](reference/REVIEW_SYSTEM_DESIGN.md)
 
+### Reports
+- [trustworthy_ai_report.md](reports/trustworthy_ai_report.md) - Industry patterns for making AI trustworthy in production (Google DeepMind, Anthropic, OpenAI, Microsoft case studies)
+- [WARDEN_RESEARCH_REPORT.md](reports/WARDEN_RESEARCH_REPORT.md) - Research phase analysis for Warden enhancement (Jan 10, 2026)
+- [WARDEN_PROMPTS_INDEX.md](reports/WARDEN_PROMPTS_INDEX.md) - Worker task prompts for Warden enhancement (4 focused prompts)
+
 ## Archives
 
 *Historical data* (too large to list individually) - only high-level structure descriptions:

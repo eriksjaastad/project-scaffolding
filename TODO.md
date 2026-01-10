@@ -1,12 +1,108 @@
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding
-> **Last Updated:** January 9, 2026
+> **Last Updated:** January 10, 2026
 > **Type:** Infrastructure
 
 ---
 
-## 🌙 TONIGHT'S WORK (Jan 9, 2026) - VERIFY BEFORE COMMIT
+## 🌙 TONIGHT'S SESSION (Jan 10, 2026)
+
+**Cursor Usage:** 46% (Recorded Jan 10, 2026)
+**Strategy:** Option B (Dependency Chain - Bottom-Up)
+
+### Active Work (Complete in Order)
+
+#### 1. Warden Research & Enhancement
+**Goal:** Make warden_audit.py ready for pre-commit hook use
+
+- [x] **Research Phase (30 min)** ✅ COMPLETE
+  - [x] Read warden_audit.py line-by-line and document current capabilities
+  - [x] Compare current features vs. TODO expectations
+  - [x] Map Warden to industry patterns (trustworthy_ai_report.md Patterns 4, 5, 13)
+  - [x] Identify gaps: --fast flag, hardcoded path detection, test coverage, severity levels
+  - [x] Document findings → `Documents/reports/WARDEN_RESEARCH_REPORT.md`
+  - [x] Created Worker task prompts → `Documents/reports/WARDEN_PROMPTS_INDEX.md`
+
+- [ ] **Enhancement Phase (45 min)** 🔄 IN PROGRESS (Floor Manager executing)
+  - [ ] Add --fast flag (grep-only mode, target < 1 second) ← Worker on this now
+  - [ ] Add hardcoded path detection (/Users/, /home/, absolute paths)
+  - [ ] Add severity levels (P0: dangerous functions in production, P1: hardcoded paths, P2: warnings)
+  - [ ] Write tests/test_warden.py (tier detection, dangerous functions, --fast mode, severity classification)
+  - [ ] Test against project-scaffolding itself
+
+**Acceptance Criteria:**
+- Warden runs in < 1 sec with --fast flag
+- Detects os.remove, os.unlink, shutil.rmtree
+- Detects hardcoded /Users/ and /home/ paths
+- Outputs severity levels (P0/P1/P2) for each finding
+- Has passing tests in tests/test_warden.py
+- Pre-commit hook can block P0/P1, warn on P2
+
+**Known Issues to Fix:**
+- scaffold/review.py:79 uses os.unlink (will be fixed in Safety Audit)
+
+---
+
+#### 2. Safety Audit
+**Goal:** Fix known os.unlink usage and validate no other issues exist
+**Unblocked by:** Warden Enhancement (need enhanced warden to validate)
+
+- [ ] **Fix Known Issue (15 min)**
+  - [ ] Replace os.unlink in scaffold/review.py:79 with send2trash
+  - [ ] Verify send2trash is in requirements.txt (already present ✓)
+  - [ ] Test the change (run full test suite)
+
+- [ ] **Validate Ecosystem (10 min)**
+  - [ ] Run enhanced warden_audit.py on project-scaffolding
+  - [ ] Document any additional findings
+  - [ ] Confirm zero dangerous function usage
+
+**Acceptance Criteria:**
+- scaffold/review.py:79 uses send2trash instead of os.unlink
+- All tests pass
+- Warden reports zero dangerous function usage in production code
+
+**Note:** This consolidates duplicate entries previously on lines 15, 95, 244
+
+---
+
+#### 3. Global Rules Injection - Planning Only
+**Goal:** Design the rollout strategy (DO NOT execute tonight)
+
+- [ ] **Design Script (30 min)**
+  - [ ] Draft update_cursorrules.py with --dry-run mode
+  - [ ] Add --projects flag for gradual rollout (Pattern 9: Canary Deployment)
+  - [ ] Include rules: "Trash, Don't Delete" and "No Silent Failures"
+  - [ ] Add safety: backup original .cursorrules before modifying
+  - [ ] Write rollback procedure (restore from backup)
+
+- [ ] **Test Strategy (15 min)**
+  - [ ] Identify 3 test projects (Tier 1 code, Tier 2 writing, mixed) = 10% canary rollout
+  - [ ] Define success criteria (what does "working" look like?)
+  - [ ] Define 24-48 hour monitoring window after test deployment
+  - [ ] Success metrics: projects still build, no developer complaints, Warden reports zero P0/P1
+  - [ ] Document blast radius mitigation (affects 30+ projects)
+
+- [ ] **Get Human Approval** (REQUIRED before execution)
+  - [ ] Present design to Erik
+  - [ ] Do NOT execute across ecosystem without explicit approval
+
+**Acceptance Criteria:**
+- Script exists with --dry-run flag
+- Script supports --projects flag for subset rollout
+- Rollback procedure documented (restore from backups)
+- 3 test projects identified (10% canary)
+- 24-48 hour monitoring plan defined
+- Human approval received before ecosystem-wide execution
+
+**Why This Matters:**
+- Pushes safety rules to all 30+ project .cursorrules files
+- High blast radius - must be carefully tested first
+
+---
+
+## ✅ TONIGHT'S WORK (Jan 9, 2026) - COMPLETED
 
 **What we did:**
 1. ✅ Updated `PROJECT_STRUCTURE_STANDARDS.md` with new Code Review standards.
@@ -16,21 +112,6 @@
 5. ✅ Cleaned up and organized `Documents/archives/` into functional subdirectories.
 6. ✅ Updated templates (`CLAUDE.md.template`, `README.md.template`) to match flat root model.
 7. ✅ Moved obsolete AWS setup notes to `_trash/`.
-
-**VERIFY BEFORE COMMIT (5 minutes):**
-```bash
-# 1. Verify document root is clean
-ls Documents/
-# Should show: README.md, PROJECT_STRUCTURE_STANDARDS.md, PROJECT_KICKOFF_GUIDE.md, etc.
-
-# 2. Verify subdirectories exist
-ls Documents/guides/
-ls Documents/reference/
-ls Documents/archives/
-
-# 3. Check README.md links
-cat Documents/README.md
-```
 
 ---
 
@@ -92,15 +173,162 @@ cat Documents/README.md
 - Established **YAML SSOT Pattern** for data management
 - Transitioned `EXTERNAL_RESOURCES.yaml` as the source of truth
 
-### ⏭️ NEXT: Chunk 4 (Dogfood & Validate)
+### ✅ DONE: Chunk 4 (Dogfood & Validate)
 - [x] **Redemption Audit:** Successfully transitioned from 'NEEDS MAJOR REFACTOR' to 'Grade: A' using the Audit Assembly Line.
-- [ ] **Review Migration:** Confirm `archive_reviews.py` handles project-root detection correctly (using `00_Index` files).
-- [ ] **Safety Audit:** Ensure all scripts use `send2trash` instead of `os.remove`.
-- [ ] Build **The Warden**: Start implementation of `scripts/warden_audit.py` to enforce Tiered Scaffolding rules.
-  - [ ] Tier 1 (Code): requirements.txt, tests/, review history.
-  - [ ] Tier 2 (Writing): Exempt from tech audits, must have Indexes.
-- [ ] **Global Rules Injection:** Draft script to push "Trash, Don't Delete" and "No Silent Failures" to all 30+ project `.cursorrules`.
-- [ ] **Ecosystem Rollout:** Execute the Audit Assembly Line (V1.3) across the Alphabetical Queue.
+
+---
+
+## 📋 BACKLOG - High Priority
+
+### Pre-Commit Hook (Blocked: Requires Warden Enhancement Complete)
+**Goal:** Prevent "over-caffeinated" agents from committing DNA defects
+
+- [ ] Create .git/hooks/pre-commit script
+- [ ] Script runs: `python scripts/warden_audit.py --root . --fast`
+- [ ] Block commit if warden finds issues (exit code 1)
+- [ ] Add --skip-warden flag for emergency manual commits
+- [ ] Test by attempting to commit file with /Users/ path
+
+**Why This Matters:**
+- Catches dangerous functions and hardcoded paths before they reach the repo
+- Web-Claude praised this as "Option 2" in security review
+
+**Time Estimate:** 30 minutes (after warden is ready)
+
+---
+
+### Code Review System Integration (CRITICAL - Not Urgent)
+**Goal:** Standardize code review process across all projects
+
+- [x] Create CODE_REVIEW.md.template
+- [x] Define standard code review format
+- [x] Add to PROJECT_STRUCTURE_STANDARDS.md
+- [ ] Integrate with TODO.md format: `- [ ] Task **[IN REVIEW]** - See CODE_REVIEW.md #123`
+- [ ] Update TODO_FORMAT_STANDARD.md
+- [ ] Update TODO.md.template
+- [ ] Create examples from real code reviews
+- [ ] Test with project-tracker (dogfood it!)
+
+**Why This Matters:**
+- Project-tracker dashboard will display pending code reviews
+- Alerts table will show code review status
+- Need standard format to parse and display
+
+---
+
+### Security & Testing (Jan 2026 - Web-Claude Feedback)
+
+#### ✅ DONE: Quick Wins - Security Test Suite
+- [x] Created `tests/test_security.py` with adversarial tests
+- [x] Hardened `archive_reviews.py` with validation
+- [x] Completed Jan 8, 2026
+
+#### Document SCAR TISSUE SLA
+**Goal:** Formalize the "defect → checklist within 24 hours" pattern
+
+- [ ] **Add to CODE_QUALITY_STANDARDS.md (20 min)**
+  - [ ] Create Critical Rule #7: SCAR TISSUE SLA
+  - [ ] Include: test case + anti-pattern doc + checklist item requirements
+  - [ ] Document accountability guidelines
+  - [ ] Add example: test_scripts_follow_standards.py indentation bug
+
+- [ ] **Create TESTING_PHILOSOPHY.md**
+  - [ ] Document inverse testing approach (test what can go WRONG)
+  - [ ] Explain why this exists (institutional memory in solo workflow)
+
+**Why This Matters:**
+- Web-Claude praised this as distinguishing feature
+- Turns every defect into permanent system improvement
+- Prevents repeated mistakes
+
+**Time Estimate:** 40 minutes total
+
+---
+
+#### Coverage Reporting & Fuzzing
+**Goal:** Visibility into what's NOT tested + adversarial fuzzing
+
+- [ ] **Coverage Setup (30 min)**
+  - [ ] Install pytest-cov
+  - [ ] Add coverage commands to testing workflow
+  - [ ] Target: 80% line coverage minimum
+  - [ ] 100% coverage for security-critical functions (safe_slug, find_project_root, save_atomic)
+  - [ ] Generate HTML reports in .coverage_html/ (add to .gitignore)
+
+- [ ] **CI Integration (15 min)**
+  - [ ] Run coverage on every test suite execution
+  - [ ] Fail if coverage drops below 75%
+
+- [ ] **Fuzzing Lite (45 min)**
+  - [ ] Create tests/test_fuzzing.py
+  - [ ] Random filenames: unicode, emojis, null bytes, max length, path traversal
+  - [ ] Random file sizes: 0B, 1B, 500KB, 501KB, 1GB
+  - [ ] Symlinks: valid, broken, circular, pointing to excluded dirs
+  - [ ] Concurrent operations: 10 threads with save_atomic()
+
+**Success Criteria:**
+- Coverage report shows 80%+
+- Fuzzing finds no crashes
+
+**Time Estimate:** 90 minutes total
+
+---
+
+### Harden Cursor Rules (Original High Priority)
+**Goal:** Add "Trash, Don't Delete" safety rule to all projects
+
+- [ ] Update .cursorrules.template in scaffolding
+- [ ] Retroactively apply to existing 30+ projects (use Global Rules Injection script)
+
+**Note:** This will be executed via the Global Rules Injection script after planning + approval
+
+---
+
+### Cost Tracking
+- [ ] Add cost tracking log (logs/cost-tracking.jsonl)
+- [ ] Validate pricing against real bills (monthly)
+
+---
+
+## 📋 BACKLOG - Medium Priority
+
+### Ecosystem Resilience
+- [ ] Integrate disaster recovery templates
+- [ ] Add project lifecycle scripts
+- [ ] Integrate backup system as default component
+
+### AI Safety & Trustworthiness (For Projects with Embedded AI)
+**Context:** See trustworthy_ai_report.md for full patterns. This scaffolding project focuses on file-level safety (Warden, send2trash), but other projects with active AI agents need model-level defenses.
+
+- [ ] **Model Layer Defense-in-Depth (Not applicable to scaffolding, but critical for AI-heavy projects)**
+  - [ ] Research Constitutional AI approach (Anthropic pattern, report lines 40-43, 604-615)
+  - [ ] Evaluate RLHF with safety principles for agent training
+  - [ ] Implement chain-of-thought for transparency in agent decision-making
+  - [ ] Document which projects need model-level safety (vs. just tool-level)
+  - [ ] Reference: trustworthy_ai_report.md Section 1.2 (Layered Architecture)
+
+**Projects this applies to:**
+- Any project using LangGraph, LangChain, or custom agent orchestration
+- Projects where AI generates code, makes decisions, or interacts with users
+- Multi-agent systems with autonomous decision-making
+
+**Why this matters:**
+- Scaffolding focuses on preventing file system mistakes (Layer 1, 4, 5)
+- AI-heavy projects need all 6 layers, including Model Layer training/alignment
+- This is Medium Priority because it's strategic planning, not immediate implementation
+
+### Infrastructure Research
+- [ ] Prompt versioning system
+- [ ] AWS Activate research (Q2 2026)
+- [ ] Google Cloud credits (Q2 2026)
+
+---
+
+## 📋 BACKLOG - Low Priority
+**Only build if manual process becomes painful**
+
+- [ ] Task dispatch system (only if manual tiering becomes painful)
+- [ ] Multi-AI build automation (only after 3+ projects prove manual works)
 
 ---
 
@@ -147,131 +375,6 @@ cat Documents/README.md
 
 ---
 
-## 📋 Backlog (After Chunk 4)
-
-### 🔴 CRITICAL - Code Review System (NEW - Dec 30)
-
-**Goal:** Standardize code review process across all projects
-
-- [x] Create CODE_REVIEW.md.template
-- [x] Define standard code review format:
-  - [x] Review request info (date, author, purpose)
-  - [x] Review checklist (Definition of Done)
-  - [x] Reviewer notes and feedback
-  - [x] Standard result naming (`CODE_REVIEW_ALL_CAPS`)
-- [x] Add to PROJECT_STRUCTURE_STANDARDS.md
-- [x] Document in PROJECT_KICKOFF_GUIDE.md
-- [ ] Integrate with TODO.md format:
-  - [ ] Add syntax: `- [ ] Task **[IN REVIEW]** - See CODE_REVIEW.md #123`
-  - [ ] Update TODO_FORMAT_STANDARD.md
-  - [ ] Update TODO.md.template
-- [ ] Create examples from real code reviews
-- [ ] Test with project-tracker (dogfood it!)
-
-**Why this matters:**
-- Project-tracker dashboard will display pending code reviews
-- Alerts table will show code review status
-- Need standard format to parse and display
-
----
-
-### High Priority
-
-#### Security & Testing (Jan 2026 - Web-Claude Feedback)
-- [x] **Quick Wins - Security Test Suite:** Created `tests/test_security.py` with adversarial tests for path traversal, file size limits, concurrent operations, and edge cases. Hardened `archive_reviews.py` with validation for excluded dirs and malicious filenames. (Jan 8, 2026)
-
-- [ ] **Make Warden Continuous (Option 2 from review):**
-  **Context:** Prevent "over-caffeinated" agents from committing DNA defects.
-  **Task:** Set up a lightweight git pre-commit hook that runs a fast-scan version of Warden.
-  **Design:** The hook should be grep-based and take < 1 second.
-  **Integration:** Findings should also be surfaced to the `project-tracker` dashboard.
-  **Steps:**
-  1. Create `.git/hooks/pre-commit` script that runs `python scripts/warden_audit.py --root . --fast`
-  2. If Warden finds issues (exit code 1), block the commit and show errors.
-  3. Add `--skip-warden` flag for emergency manual commits.
-  4. Test by having an agent try to commit a file with a `/Users/` path.
-
-- [ ] **Document SCAR TISSUE SLA (Option 3 from review):**
-  **Context:** Web-Claude praised the "scar tissue SLA" - turning every defect into a checklist within 24 hours. Need to formalize this as a documented standard.
-  **Task:** Add "Critical Rule #7: SCAR TISSUE SLA" to CODE_QUALITY_STANDARDS.md
-  **Content to add:**
-  ```markdown
-  ## 🚨 Critical Rule #7: SCAR TISSUE SLA
-
-  ### The Rule
-  Within 24 hours of discovering a defect, add:
-  1. Test case that would have caught it (in tests/)
-  2. Entry in CODE_REVIEW_ANTI_PATTERNS.md with the scar story
-  3. Checklist item in validation script (warden_audit.py or validate_project.py)
-
-  ### Why This Exists
-  Every bug is an opportunity to make the system smarter. Missing this window means the lesson fades and the defect repeats. This is how institutional memory compounds in a solo workflow.
-
-  ### Example (Jan 8, 2026)
-  **Defect:** Test indentation bug in test_scripts_follow_standards.py
-  **SLA Response:**
-  - [x] Fixed bug same day (tests/test_scripts_follow_standards.py:62-63)
-  - [x] Added adversarial test: test_security.py::test_indentation_validation
-  - [ ] Document: Anti-pattern #23 "Loop variable scope confusion"
-  - [ ] Add to pre-commit: AST check for common indentation errors
-
-  ### Accountability
-  If you find yourself skipping this SLA, that's a signal the defect wasn't real or the system is over-constrained. Trust your judgment but document why you skipped it.
-  ```
-  **Also add:** Documents/TESTING_PHILOSOPHY.md explaining inverse testing (test what can go WRONG)
-  **Time estimate:** 20 minutes
-
-- [ ] **Coverage Reporting & Fuzzing (Option 4 extras):**
-  **Context:** Tests exist but no visibility into what's NOT tested. Need coverage metrics and fuzzing.
-  **Tasks:**
-  1. **Coverage setup:**
-     ```bash
-     pip install pytest-cov
-     pytest --cov=scaffold --cov=scripts --cov-report=html --cov-report=term
-     ```
-     Target: 80% line coverage minimum, 100% for security-critical functions (safe_slug, find_project_root, save_atomic)
-  2. **Add to CI:**
-     - Run coverage on every test suite execution
-     - Fail if coverage drops below 75%
-     - Generate HTML report in `.coverage_html/` (add to .gitignore)
-  3. **Fuzzing Lite for file operations:**
-     Create `tests/test_fuzzing.py`:
-     - Random filenames: valid unicode, emojis, null bytes, max length (255 chars), path traversal attempts
-     - Random file sizes: 0 bytes, 1 byte, 500KB (just under limit), 501KB (just over), 1GB
-     - Symlinks: valid, broken, circular, pointing to excluded dirs
-     - Concurrent operations: 10 threads writing same file with save_atomic()
-  **Time estimate:** 90 minutes
-  **Success:** Coverage report shows 80%+, fuzzing finds no crashes
-
-#### Original High Priority Items
-- [ ] **Harden Cursor Rules:** Add "Trash, Don't Delete" safety rule to all project `.cursorrules`.
-  - [ ] Update `.cursorrules.template` in scaffolding.
-  - [ ] Retroactively apply to existing 30+ projects.
-- [ ] Add cost tracking log (`logs/cost-tracking.jsonl`)
-- [ ] Validate pricing against real bills (monthly)
-
-### Medium Priority
-- [ ] **Ecosystem Resilience:** Integrate disaster recovery templates, project lifecycle scripts, and the backup system into the scaffolding as default components.
-- [ ] Prompt versioning system
-- [ ] AWS Activate research (Q2 2026)
-- [ ] Google Cloud credits (Q2 2026)
-
-### Low Priority
-- [ ] Task dispatch system (only if manual tiering becomes painful)
-- [ ] Multi-AI build automation (only after 3+ projects prove manual works)
-
----
-
-## 🗑️ Deleted/Archived
-
-**Archived (Documents/archives/):**
-- Original 1353-line TODO (brain dump)
-- Historical planning docs (Option C build plan, system walkthrough, etc.)
-
-**Reason:** Claude Code review identified "documentation about automation" not "automation"
-
----
-
 ## 🎯 Success Metrics
 
 **This scaffolding is working if:**
@@ -287,4 +390,16 @@ cat Documents/README.md
 
 ---
 
-**Archive:** See `Documents/archives/planning/planning-notes-dec-2025.md` for historical brain dumps
+## 🗑️ Deleted/Archived
+
+**Archived (Documents/archives/):**
+- Original 1353-line TODO (brain dump)
+- Historical planning docs (Option C build plan, system walkthrough, etc.)
+
+**Reason:** Claude Code review identified "documentation about automation" not "automation"
+
+**Archive Reference:** See `Documents/archives/planning/planning-notes-dec-2025.md` for historical brain dumps
+
+---
+
+**END OF TODO**

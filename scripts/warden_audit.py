@@ -1,6 +1,8 @@
 import pathlib
 import logging
 import sys
+import subprocess
+import shutil
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -71,7 +73,49 @@ def check_dangerous_functions(project_root: pathlib.Path) -> list:
             
     return found_issues
 
-def run_audit(root_dir: pathlib.Path) -> bool:
+def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
+    """Fast grep-based scanner for pre-commit hooks.
+
+    Uses ripgrep (rg) or grep for sub-second performance.
+    Falls back to regular scan if grep not available.
+    """
+    # Check if ripgrep or grep available
+    grep_cmd = 'rg' if shutil.which('rg') else 'grep' if shutil.which('grep') else None
+
+    if grep_cmd is None:
+        logger.warning("grep/ripgrep not found, falling back to regular scan")
+        return check_dangerous_functions(project_root)
+
+    dangerous_patterns = ['os.remove', 'os.unlink', 'shutil.rmtree']
+    found_issues = []
+
+    for pattern in dangerous_patterns:
+        try:
+            if grep_cmd == 'rg':
+                # ripgrep: --type py, -l (files with matches)
+                cmd = ['rg', '--type', 'py', '-l', pattern, str(project_root)]
+            else:
+                # grep: -r (recursive), -l (files), --include (Python files)
+                cmd = ['grep', '-r', '-l', '--include=*.py', pattern, str(project_root)]
+
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=2, check=False)
+
+            if result.returncode == 0:  # Matches found
+                for file_path in result.stdout.strip().split('\n'):
+                    if file_path:  # Skip empty lines
+                        path_obj = pathlib.Path(file_path)
+                        if path_obj.name == 'warden_audit.py':
+                            continue
+                        found_issues.append((path_obj, pattern))
+
+        except subprocess.TimeoutExpired:
+            logger.warning(f"Fast scan timeout for pattern: {pattern}")
+        except Exception as e:
+            logger.warning(f"Fast scan error: {e}")
+
+    return found_issues
+
+def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
     """Crawls the ecosystem and performs the audit."""
     logger.info(f"Starting Warden Audit in: {root_dir}")
     
@@ -100,7 +144,7 @@ def run_audit(root_dir: pathlib.Path) -> bool:
                 issues_found += 1
         
         # Safety Check (All Tiers)
-        dangerous_usage = check_dangerous_functions(project_root)
+        dangerous_usage = check_dangerous_functions_fast(project_root) if use_fast else check_dangerous_functions(project_root)
         for file_path, pattern in dangerous_usage:
             try:
                 rel_path = file_path.relative_to(root_dir)
@@ -119,6 +163,8 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Warden Audit Agent - Phase 1")
     parser.add_argument("--root", default=".", help="Root directory to scan (default: .)")
+    parser.add_argument("--fast", action="store_true",
+                       help="Fast scan mode for pre-commit hooks (<1s target)")
     args = parser.parse_args()
     
     # Standardize to pathlib.Path and relative path if possible
@@ -128,5 +174,5 @@ if __name__ == "__main__":
     except ValueError:
         pass # Keep absolute if not under CWD, but preference is relative
         
-    success = run_audit(root_path)
+    success = run_audit(root_path, use_fast=args.fast)
     sys.exit(0 if success else 1)

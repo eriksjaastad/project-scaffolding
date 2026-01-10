@@ -100,6 +100,8 @@ Do not sign off until every [ ] is marked [x]. If any item fails, provide the sp
 - **Trash, Don't Delete:** NEVER use `rm` or permanent deletion.
 - ALWAYS use `send2trash` (Python) or move files to a `.trash/` directory.
 
+> **Industry Context:** These safety rules align with production AI patterns (tool whitelisting, per-step safety assessment). See [Documents/reports/trustworthy_ai_report.md](Documents/reports/trustworthy_ai_report.md) for how major companies implement multi-agent safety systems.
+
 ---
 
 ## 📔 JOURNAL ENTRY PROTOCOL (UNIVERSAL)
