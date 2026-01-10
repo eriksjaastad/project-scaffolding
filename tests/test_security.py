@@ -472,14 +472,15 @@ def test_cleanup():
 
         with tempfile.TemporaryDirectory() as tmpdir:
             project = Path(tmpdir)
+            forbidden_path = "/Us" + "ers/erik/data"
 
             # Create file with hardcoded path
             config_file = project / "config.py"
-            config_file.write_text("""
+            config_file.write_text(f"""
 from pathlib import Path
 
 # Bad: hardcoded absolute path
-DATA_DIR = Path("/Us" + "ers/erik/data")
+DATA_DIR = Path("{forbidden_path}")
 """)
 
             issues = check_dangerous_functions(project)
