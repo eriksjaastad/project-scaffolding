@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional
 
 from anthropic import AsyncAnthropic
 from openai import AsyncOpenAI, APIError, APIConnectionError, RateLimitError
+from send2trash import send2trash
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -76,9 +77,9 @@ def save_atomic(path: Path, content: str) -> None:
         logger.error(f"Atomic write failed for {path}: {e}")
         if os.path.exists(temp_name):
             try:
-                os.unlink(temp_name)
+                send2trash(temp_name)
             except Exception as cleanup_err:
-                logger.warning(f"Failed to cleanup temp file {temp_name}: {cleanup_err}")
+                logger.warning(f"Failed to trash temp file {temp_name}: {cleanup_err}")
         raise
 
 
