@@ -28,7 +28,8 @@
   - [x] Add --fast flag (grep-only mode, target < 1 second) ✅ COMPLETE
   - [x] Add hardcoded path detection (/Users/, /home/, absolute paths) ✅ COMPLETE
   - [x] Add severity levels (P0: dangerous functions in production, P1: hardcoded paths, P2: warnings) ✅ COMPLETE
-  - [ ] Write tests/test_warden.py (tier detection, dangerous functions, --fast mode, severity classification) 🔄 IN PROGRESS
+  - [x] Write tests/test_warden.py (tier detection, dangerous functions, --fast mode, severity classification) ✅ COMPLETE
+  - [ ] Add API Key / Secret detection (regex for common keys) 🔄 NEXT
   - [ ] Test against project-scaffolding itself
 
 **Acceptance Criteria:**
