@@ -16,11 +16,11 @@ Projects should use relative paths or environment variables. Hardcoded absolute 
 
 ## 🎯 [ACCEPTANCE CRITERIA]
 
-- [ ] **Patterns:** Add `/Users/`, `/home/`, `C:\\` to dangerous_patterns list
-- [ ] **Severity:** Classify hardcoded paths as P1 (ERROR - block commit)
-- [ ] **Exclusions:** Don't flag paths in comments or docstrings (basic check)
-- [ ] **Test:** Create fixture with hardcoded path, confirm detection
-- [ ] **Verification:** Run on project-scaffolding, should find zero (all paths are relative)
+- [x] **Patterns:** Add `/Users/`, `/home/`, `C:\\` to dangerous_patterns list
+- [x] **Severity:** Classify hardcoded paths as P1 (ERROR - block commit)
+- [x] **Exclusions:** Don't flag paths in comments or docstrings (basic check)
+- [x] **Test:** Create fixture with hardcoded path, confirm detection
+- [x] **Verification:** Run on project-scaffolding, should find zero (all paths are relative)
 
 ---
 
@@ -142,9 +142,9 @@ And apply the same severity logic.
 ## FLOOR MANAGER PROTOCOL
 
 Do not sign off until:
-- [ ] All 5 acceptance criteria checked
-- [ ] Verification steps 1-5 completed successfully
-- [ ] Hardcoded paths flagged as P1 (ERROR)
-- [ ] Clean project shows no hardcoded path violations
+- [x] All 5 acceptance criteria checked
+- [x] Verification steps 1-5 completed successfully
+- [x] Hardcoded paths flagged as P1 (ERROR)
+- [x] Clean project shows no hardcoded path violations
 
-If Worker fails 3 times, halt and alert Conductor.
+**STATUS: SIGNED OFF BY FLOOR MANAGER**

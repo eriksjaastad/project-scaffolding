@@ -25,10 +25,10 @@
   - [x] Created Worker task prompts → `Documents/reports/WARDEN_PROMPTS_INDEX.md`
 
 - [ ] **Enhancement Phase (45 min)** 🔄 IN PROGRESS (Floor Manager executing)
-  - [ ] Add --fast flag (grep-only mode, target < 1 second) ← Worker on this now
-  - [ ] Add hardcoded path detection (/Users/, /home/, absolute paths)
-  - [ ] Add severity levels (P0: dangerous functions in production, P1: hardcoded paths, P2: warnings)
-  - [ ] Write tests/test_warden.py (tier detection, dangerous functions, --fast mode, severity classification)
+  - [x] Add --fast flag (grep-only mode, target < 1 second) ✅ COMPLETE
+  - [x] Add hardcoded path detection (/Users/, /home/, absolute paths) ✅ COMPLETE
+  - [x] Add severity levels (P0: dangerous functions in production, P1: hardcoded paths, P2: warnings) ✅ COMPLETE
+  - [ ] Write tests/test_warden.py (tier detection, dangerous functions, --fast mode, severity classification) 🔄 IN PROGRESS
   - [ ] Test against project-scaffolding itself
 
 **Acceptance Criteria:**
