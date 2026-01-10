@@ -48,7 +48,7 @@ Hand off these prompts to Workers **in order** (each builds on the previous):
 
 - `scripts/warden_audit.py` (the file being modified)
 - `tests/test_security.py` (existing tests to extend)
-- `Documents/reports/WARDEN_RESEARCH_REPORT.md` (background context)
+- `Documents/archives/planning/warden_evolution/WARDEN_RESEARCH_REPORT.md` (background context)
 
 ---
 
