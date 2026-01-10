@@ -156,6 +156,20 @@ If a project is cloned from GitHub without a `.env.example`, the developer has t
 
 ---
 
-**Version:** 1.2.2  
-**Established:** January 7, 2026  
+## 📚 Industry Alignment
+
+These standards align with production AI safety patterns used by Google DeepMind, Anthropic, OpenAI, and Microsoft. For detailed patterns on:
+- Input validation and guardrails
+- Defense-in-depth architectures
+- Tool execution safety
+- Observability and tracing
+
+See: [Documents/reports/trustworthy_ai_report.md](reports/trustworthy_ai_report.md)
+
+**Key takeaway:** Our "scar tissue" approach (building protections after learning what breaks) is a lightweight version of industry red teaming and incident response patterns.
+
+---
+
+**Version:** 1.2.2
+**Established:** January 7, 2026
 **Trigger:** Scaffolding v2 review found pervasive portability and safety violations.
