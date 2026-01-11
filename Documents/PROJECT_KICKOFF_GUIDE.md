@@ -590,87 +590,79 @@ Key references:
 
 ---
 
-## Agent Skills Library
+## Self-Learning Projects (Skills Management)
 
-> **Status:** Active  
-> **Location:** `$PROJECTS_ROOT/agent-skills-library/`
+This scaffolding promotes projects that improve over time by capturing what works.
 
-### What Is It?
+### The Core Idea
 
-A centralized library of reusable AI agent instructions (playbooks) that work across **all AI tools** - Cursor, Claude, ChatGPT, VS Code, and future tools.
+As you work with AI agents, you'll develop reusable instructions (skills). These learnings should be captured somewhere - the question is where.
 
-**Problem it solves:**  
-- No more copying/pasting the same instructions into every project
-- No more inconsistent instructions across different AI tools
-- One source of truth for AI agent behaviors
+### Three Approaches
 
-### How It Works
+| Approach | Best For | Trade-offs |
+|----------|----------|------------|
+| **Per-project skills** | Project-specific patterns | Simple, self-contained; may duplicate across projects |
+| **Shared skills library** | Cross-project patterns | All projects benefit; requires ecosystem-level thinking |
+| **Both** | Mature ecosystems | Best of both; skills can migrate as they mature |
 
-**Three-layer architecture:**
+### Recommendation
 
-1. **Playbooks** (`/playbooks/`) - Canonical, tool-agnostic instructions
-   - Example: `playbooks/pr-review/README.md`
-   - Written once, referenced everywhere
+**Start with per-project skills.** Keep reusable instructions in your `.cursorrules` or `CLAUDE.md`.
 
-2. **Tool Adapters** - Thin wrappers for specific tools
-   - Cursor: `/cursor-rules/pr-review/RULE.md`
-   - Claude: `/claude-skills/pr-review/SKILL.md`
-   - Adapters just reference the playbook + add tool-specific formatting
+**Extract to a shared library** when you find yourself copying the same instructions across 3+ projects. This follows our "consolidate on 3rd duplicate" philosophy.
 
-3. **Project Integration** - Projects reference the global library
-   - Add to `.cursorrules`: Reference skills library path
-   - Skills are versioned, tested, and upgraded like software
+### Per-Project Skills
 
-### Available Skills
+Keep skills in:
+- `.cursorrules` - Cursor-specific instructions
+- `CLAUDE.md` - Claude-specific instructions
+- `Documents/` - Longer-form playbooks
 
-| Skill | Purpose |
-|-------|---------|
-| `pr-review` | PR review checklist and process |
-| `debugging-routine` | Systematic debugging workflow |
-| `spec-driven-developer` | Build from specifications |
-| `ai-router-delegation` | Route tasks to appropriate AI models |
-| `audit-whisperer` | Code audit process |
+**Good for:**
+- "Never modify production database" (project-specific)
+- "This project uses Next.js 14" (tech stack)
+- Custom debugging workflows for this codebase
 
-### When Should I Use It?
+### Shared Skills Library
 
-**Use for instructions you'll reuse across projects:**
-- ✅ PR review checklists
-- ✅ Debugging routines
-- ✅ Code quality standards
-- ✅ Testing strategies
-- ✅ Architecture review processes
+If you want a centralized library:
 
-**Don't use for project-specific rules:**
-- ❌ "Never modify production database"
-- ❌ "This project uses Next.js 14"
-- ❌ "API key is in .env"
+```bash
+mkdir -p "$PROJECTS_ROOT/agent-skills-library"
+```
+
+**Structure:**
+- `playbooks/` - Tool-agnostic instructions
+- `cursor-rules/` - Cursor adapters
+- `claude-skills/` - Claude adapters
+
+**Good for:**
+- PR review checklists
+- Debugging routines
+- Code quality standards
+- Testing strategies
+
+**Reference:** See `agent-skills-library/INTEGRATION_GUIDE.md` if you have one.
+
+### Skills Can Move
+
+Skills often start project-specific and graduate to shared:
+
+1. You create a debugging workflow in Project A
+2. You copy it to Project B (that's fine)
+3. You need it in Project C → **extract to shared library**
+4. All projects now reference the shared version
 
 ### Integration Checklist
 
-**When scaffolding a project, verify:**
-- [ ] `.cursorrules` references skills library path
-- [ ] `CLAUDE.md` mentions available skills (if using Claude)
-- [ ] Relevant skills are identified for the project
+When scaffolding a project, ask:
 
-### How to Reference in Your Project
+- [ ] Does this project have reusable AI instructions?
+- [ ] Are skills managed per-project, shared, or both?
+- [ ] Is there a learning loop for capturing what works?
 
-**In `.cursorrules`:**
-```markdown
-## Agent Skills Library
-Reference: $PROJECTS_ROOT/agent-skills-library/
-
-Available skills for this project:
-- PR Review: See agent-skills-library/playbooks/pr-review/
-- Debugging: See agent-skills-library/playbooks/debugging-routine/
-```
-
-**See:** `agent-skills-library/INTEGRATION_GUIDE.md` for detailed integration instructions.
-
-### Where to Learn More
-
-- **Library README:** `$PROJECTS_ROOT/agent-skills-library/README.md`
-- **Integration Guide:** `$PROJECTS_ROOT/agent-skills-library/INTEGRATION_GUIDE.md`
-- **Playbook Creation:** `$PROJECTS_ROOT/agent-skills-library/playbooks/README.md`
+See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
 
 ---
 

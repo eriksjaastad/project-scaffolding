@@ -261,10 +261,10 @@ ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
 - Configuration: [How is config handled?]
 - Code organization: [src/ vs flat? modules?]
 
-### Skills Library Integration
-- [ ] Does `.cursorrules` reference `$PROJECTS_ROOT/agent-skills-library/`?
-- [ ] Does `CLAUDE.md` mention available skills?
-- [ ] Which skills would be relevant for this project?
+### Skills & Continuous Learning
+- [ ] Does this project have reusable AI instructions (skills)?
+- [ ] Are skills managed per-project, in a shared library, or both?
+- [ ] Is there a learning loop for capturing what works?
 
 ### What I Don't Understand Yet
 [List things you need clarification on]
@@ -499,17 +499,19 @@ Documents/
 | `api-key-management.md` | Per-project API key strategy |
 | `ssot-via-yaml.md` | Single source of truth patterns |
 
-### Related: Agent Skills Library (`$PROJECTS_ROOT/agent-skills-library/`)
+### Self-Learning Projects (Skills Management)
 
-| Resource | Purpose |
-|----------|---------|
-| `README.md` | Overview of the skills library |
-| `INTEGRATION_GUIDE.md` | **How to reference skills in your project** |
-| `playbooks/` | Canonical, tool-agnostic instructions |
-| `cursor-rules/` | Cursor-specific adapters |
-| `claude-skills/` | Claude-specific adapters |
+This scaffolding promotes projects that improve over time. Skills (reusable AI instructions) can live:
 
-**Every scaffolded project should reference the skills library** in `.cursorrules` or `CLAUDE.md`.
+| Approach | Best For | Location |
+|----------|----------|----------|
+| **Shared library** | Cross-project patterns | `$PROJECTS_ROOT/agent-skills-library/` |
+| **Per-project** | Project-specific patterns | Within `.cursorrules` or `CLAUDE.md` |
+| **Both** | Mature ecosystems | Shared + project-specific |
+
+**Recommendation:** Start with per-project skills. Extract to a shared library when you copy the same instructions across 3+ projects.
+
+See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
 
 ### Key Documents (`Documents/`)
 
