@@ -178,6 +178,28 @@ You're ready! Use the tiered AI planning approach:
 
 ## Existing Project Checklist
 
+### ⚠️ CRITICAL: Audit First, Execute Later
+
+**DO NOT immediately start copying files or moving things around.**
+
+When scaffolding an existing project, follow this workflow:
+
+| Phase | Action | Who Approves |
+|-------|--------|--------------|
+| **1. Audit** | Assess current state, document what exists | — |
+| **2. Report** | List what's missing, what needs changing | — |
+| **3. Propose** | Suggest specific changes, ask questions | **Human approval required** |
+| **4. Execute** | Only after approval, make changes | — |
+
+**Why?** Existing projects have history, conventions, and reasons for their current structure. Don't clobber things that work.
+
+**AI Agents:** Your first response should be an **audit report**, NOT file operations. Ask questions like:
+- "I see you have `docs/` instead of `Documents/` - should I migrate or keep your existing structure?"
+- "You have an existing README.md - should I merge or replace?"
+- "Your project uses X convention - should I adapt the templates to match?"
+
+---
+
 ### Prerequisites
 
 ```bash
@@ -190,30 +212,68 @@ export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 
 ---
 
-### Phase 1: Assess Current State (5 minutes)
+### Phase 1: Audit Current State (5 minutes)
 
-**Check what you already have:**
+**Run these commands and document what exists:**
 
 ```bash
-# Check for existing files
+# Check for existing scaffolding files
 ls -la AGENTS.md CLAUDE.md .cursorrules README.md TODO.md 2>/dev/null
 ls -la 00_Index_*.md 2>/dev/null
-ls -d Documents 2>/dev/null
+ls -d Documents docs documentation 2>/dev/null
 ```
 
-**Checklist - What's Missing?**
-- [ ] `00_Index_[ProjectName].md` - Project index (MANDATORY)
-- [ ] `AGENTS.md` - AI source of truth
-- [ ] `CLAUDE.md` - AI working instructions
-- [ ] `.cursorrules` - Cursor AI rules
-- [ ] `.cursorignore` - Context window filtering
-- [ ] `Documents/` - Documentation structure
-- [ ] `TODO.md` - Task tracking
-- [ ] `.gitignore` - Git ignore rules
+**Create an Audit Report:**
+
+Document what you find:
+- What scaffolding files already exist?
+- What's missing?
+- What existing conventions does this project use?
+- Are there any conflicts with scaffolding patterns?
+
+**Audit Checklist:**
+| File/Directory | Status | Notes |
+|----------------|--------|-------|
+| `00_Index_[ProjectName].md` | ⬜ Missing / ✅ Exists | MANDATORY |
+| `AGENTS.md` | ⬜ / ✅ | |
+| `CLAUDE.md` | ⬜ / ✅ | |
+| `.cursorrules` | ⬜ / ✅ | |
+| `.cursorignore` | ⬜ / ✅ | |
+| `Documents/` | ⬜ / ✅ | Note if using different name (docs/, documentation/) |
+| `TODO.md` | ⬜ / ✅ | |
+| `.gitignore` | ⬜ / ✅ | |
 
 ---
 
-### Phase 2: Add Missing Core Files (10-15 minutes)
+### Phase 2: Propose Changes (Get Approval)
+
+**Before copying or moving ANYTHING, propose your plan:**
+
+Example proposal format:
+```
+## Scaffolding Proposal for [ProjectName]
+
+### Files to Add (new):
+- 00_Index_[ProjectName].md
+- AGENTS.md
+- .cursorrules
+
+### Files to Skip (already exist):
+- README.md (existing is sufficient)
+- .gitignore (already configured)
+
+### Questions:
+1. You have `docs/` - should I rename to `Documents/` or keep as-is?
+2. Your existing README has custom sections - merge or keep separate?
+
+### Awaiting approval before proceeding.
+```
+
+**Only proceed to Phase 3 after human approval.**
+
+---
+
+### Phase 3: Add Missing Core Files (10-15 minutes)
 
 **Copy only what you need:**
 
@@ -250,11 +310,11 @@ ls -d Documents 2>/dev/null
 
 ---
 
-### Phase 3: Customize for Your Project (15-20 minutes)
+### Phase 4: Customize for Your Project (15-20 minutes)
 
 **Priority order - do these first:**
 
-#### 3.1 Project Index (HIGHEST PRIORITY)
+#### 4.1 Project Index (HIGHEST PRIORITY)
 
 **File:** `00_Index_[YourProject].md`
 
@@ -265,7 +325,7 @@ This is MANDATORY. No project is complete without it.
 - [ ] Update tags to match your project
 - [ ] Set correct status tag
 
-#### 3.2 AGENTS.md
+#### 4.2 AGENTS.md
 
 Adapt the template to describe your existing project:
 
@@ -274,7 +334,7 @@ Adapt the template to describe your existing project:
 - [ ] Add any existing constraints or rules you follow
 - [ ] Keep what's working, add what's missing
 
-#### 3.3 CLAUDE.md
+#### 4.3 CLAUDE.md
 
 This tells AI how to work on YOUR project:
 
@@ -284,7 +344,7 @@ This tells AI how to work on YOUR project:
 - [ ] Add your validation commands (tests, linting)
 - [ ] Document any existing patterns/conventions
 
-#### 3.4 .cursorrules
+#### 4.4 .cursorrules
 
 - [ ] Describe what your project actually does
 - [ ] List your actual tech stack
@@ -293,7 +353,7 @@ This tells AI how to work on YOUR project:
 
 ---
 
-### Phase 4: Add Documents Structure (if needed)
+### Phase 5: Add Documents Structure (if needed)
 
 If you don't have a `Documents/` directory:
 
@@ -327,7 +387,7 @@ Documents/
 
 ---
 
-### Phase 5: Verify Structure
+### Phase 6: Verify Structure
 
 Run the project validator:
 
@@ -346,7 +406,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" .
 
 ---
 
-### Phase 6: Commit the Scaffolding
+### Phase 7: Commit the Scaffolding
 
 ```bash
 git add -A
