@@ -93,6 +93,12 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
    - Escalation system to avoid getting stuck with wrong-tier models
    - Multi-model review automation (from image-workflow)
 
+5. **Learning Loop Pattern** (`patterns/learning-loop-pattern.md`)
+   - How to create reinforcement learning cycles in any project
+   - 4 universal components: Trigger, Documentation, Analysis, Reinforcement
+   - Guidance for model, workflow, and safety learnings
+   - Prevents "write-only documentation" - closes the gap between learning and applying
+
 ### Managing Your Projects
 
 **NEW:** `EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
@@ -200,7 +206,8 @@ project-scaffolding/
 ├── patterns/                    ← Documented patterns (proven & emerging)
 │   ├── safety-systems.md        ← Data protection patterns ✅
 │   ├── development-philosophy.md ← Development principles ✅
-│   └── tiered-ai-sprint-planning.md ← Cost-effective AI usage ✅
+│   ├── tiered-ai-sprint-planning.md ← Cost-effective AI usage ✅
+│   └── learning-loop-pattern.md ← Reinforcement learning cycles ✅
 │
 ├── templates/                   ← Reusable starting points
 │   ├── Documents/               ← Documentation structure template ✅

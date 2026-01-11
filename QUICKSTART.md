@@ -489,6 +489,7 @@ Documents/
 | `safety-systems.md` | Data protection patterns (append-only, atomic writes) |
 | `development-philosophy.md` | Layer-by-layer, data before decisions |
 | `tiered-ai-sprint-planning.md` | Cost-effective AI usage (Tier 1/2/3) |
+| `learning-loop-pattern.md` | **How to create reinforcement learning cycles** |
 | `code-review-standard.md` | Multi-AI review process |
 | `api-key-management.md` | Per-project API key strategy |
 | `ssot-via-yaml.md` | Single source of truth patterns |
