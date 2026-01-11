@@ -261,6 +261,11 @@ ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
 - Configuration: [How is config handled?]
 - Code organization: [src/ vs flat? modules?]
 
+### Skills Library Integration
+- [ ] Does `.cursorrules` reference `$PROJECTS_ROOT/agent-skills-library/`?
+- [ ] Does `CLAUDE.md` mention available skills?
+- [ ] Which skills would be relevant for this project?
+
 ### What I Don't Understand Yet
 [List things you need clarification on]
 ```
@@ -493,6 +498,18 @@ Documents/
 | `code-review-standard.md` | Multi-AI review process |
 | `api-key-management.md` | Per-project API key strategy |
 | `ssot-via-yaml.md` | Single source of truth patterns |
+
+### Related: Agent Skills Library (`$PROJECTS_ROOT/agent-skills-library/`)
+
+| Resource | Purpose |
+|----------|---------|
+| `README.md` | Overview of the skills library |
+| `INTEGRATION_GUIDE.md` | **How to reference skills in your project** |
+| `playbooks/` | Canonical, tool-agnostic instructions |
+| `cursor-rules/` | Cursor-specific adapters |
+| `claude-skills/` | Claude-specific adapters |
+
+**Every scaffolded project should reference the skills library** in `.cursorrules` or `CLAUDE.md`.
 
 ### Key Documents (`Documents/`)
 

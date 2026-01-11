@@ -590,10 +590,10 @@ Key references:
 
 ---
 
-## Future Enhancement: Agent Skills Library
+## Agent Skills Library
 
-> **Status:** In development (December 2025)  
-> **Location:** `PROJECTS_ROOT/agent-skills-library/`
+> **Status:** Active  
+> **Location:** `$PROJECTS_ROOT/agent-skills-library/`
 
 ### What Is It?
 
@@ -621,6 +621,16 @@ A centralized library of reusable AI agent instructions (playbooks) that work ac
    - Add to `.cursorrules`: Reference skills library path
    - Skills are versioned, tested, and upgraded like software
 
+### Available Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `pr-review` | PR review checklist and process |
+| `debugging-routine` | Systematic debugging workflow |
+| `spec-driven-developer` | Build from specifications |
+| `ai-router-delegation` | Route tasks to appropriate AI models |
+| `audit-whisperer` | Code audit process |
+
 ### When Should I Use It?
 
 **Use for instructions you'll reuse across projects:**
@@ -635,27 +645,32 @@ A centralized library of reusable AI agent instructions (playbooks) that work ac
 - ❌ "This project uses Next.js 14"
 - ❌ "API key is in .env"
 
-### Integration Status
+### Integration Checklist
 
-**Currently being developed:**
-- [ ] Initial playbooks created
-- [ ] Cursor adapter pattern established
-- [ ] Claude adapter pattern established
-- [ ] Integration guide completed
-- [ ] Testing methodology defined
-- [ ] Versioning strategy implemented
-- [ ] Template updates with skills library references
+**When scaffolding a project, verify:**
+- [ ] `.cursorrules` references skills library path
+- [ ] `CLAUDE.md` mentions available skills (if using Claude)
+- [ ] Relevant skills are identified for the project
 
-**When it's ready:**
-- New projects will automatically reference the skills library
-- Templates will include skills library integration
-- Documentation will guide skill creation and usage
+### How to Reference in Your Project
+
+**In `.cursorrules`:**
+```markdown
+## Agent Skills Library
+Reference: $PROJECTS_ROOT/agent-skills-library/
+
+Available skills for this project:
+- PR Review: See agent-skills-library/playbooks/pr-review/
+- Debugging: See agent-skills-library/playbooks/debugging-routine/
+```
+
+**See:** `agent-skills-library/INTEGRATION_GUIDE.md` for detailed integration instructions.
 
 ### Where to Learn More
 
-- **Library README:** `PROJECTS_ROOT/agent-skills-library/README.md`
-- **Integration Guide:** `PROJECTS_ROOT/agent-skills-library/INTEGRATION_GUIDE.md`
-- **Playbook Creation:** `PROJECTS_ROOT/agent-skills-library/playbooks/README.md`
+- **Library README:** `$PROJECTS_ROOT/agent-skills-library/README.md`
+- **Integration Guide:** `$PROJECTS_ROOT/agent-skills-library/INTEGRATION_GUIDE.md`
+- **Playbook Creation:** `$PROJECTS_ROOT/agent-skills-library/playbooks/README.md`
 
 ---
 

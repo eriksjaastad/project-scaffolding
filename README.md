@@ -99,6 +99,12 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
    - Guidance for model, workflow, and safety learnings
    - Prevents "write-only documentation" - closes the gap between learning and applying
 
+6. **Agent Skills Library** (`$PROJECTS_ROOT/agent-skills-library/`)
+   - Centralized library of reusable AI agent instructions
+   - Works across Cursor, Claude, ChatGPT, and future tools
+   - Three-layer architecture: Playbooks → Tool Adapters → Project Integration
+   - See `agent-skills-library/INTEGRATION_GUIDE.md` for how to reference in projects
+
 ### Managing Your Projects
 
 **NEW:** `EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
