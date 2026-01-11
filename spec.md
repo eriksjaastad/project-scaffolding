@@ -207,7 +207,7 @@ scaffold review --type [document|code] --input PATH --round N [--output DIR]
 - `TODO.md`, `README.md`, `.gitignore`
 
 **Mandatory Directories:**
-- `Documents/`, `Documents/core/`
+- `Documents/` (core docs at root level, NOT in a `core/` subdirectory)
 
 **Validation Checks:**
 1. Index file exists (`00_Index_*.md`)
