@@ -6,6 +6,32 @@
 
 ---
 
+## 🚨 TOP PRIORITY: Canary Monitoring (Jan 10-12, 2026)
+
+**Status:** LIVE - 48-hour monitoring window active
+**Deployed:** January 10, 2026 ~evening
+**Ends:** January 12, 2026 ~evening
+
+### FOCUS: Work in these projects daily for next 2 days
+
+| Project | Has Work? | Notes |
+|---------|-----------|-------|
+| **project-tracker** | ✅ Loads | New bells and whistles not integrated yet |
+| **Tax Processing** | ✅ Lots | Active project with pending work |
+| **analyze-youtube-videos** | ❓ Check | May or may not be active |
+
+### What to watch for:
+- [ ] Safety rules appear in each project's .cursorrules
+- [ ] No errors or complaints when working in projects
+- [ ] Warden still passes in each project
+- [ ] Nothing breaks unexpectedly
+
+### After 48 hours (Jan 12):
+- If clean: Full rollout to all 15+ projects
+- If issues: Rollback via `.cursorrules.backup` files
+
+---
+
 ## 🌙 TONIGHT'S SESSION (Jan 10, 2026)
 
 **Cursor Usage:** 46% (Recorded Jan 10, 2026)
@@ -68,8 +94,8 @@
 
 ---
 
-#### 3. Global Rules Injection - Planning Only
-**Goal:** Design the rollout strategy (DO NOT execute tonight)
+#### 3. Global Rules Injection
+**Goal:** Design and implement rollout strategy for pushing safety rules to all projects
 **Design Doc:** `Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md` ✅ CREATED
 
 - [x] **Design Script (30 min)** ✅ COMPLETE
@@ -92,23 +118,89 @@
   - [x] 48-hour monitoring approved
   - [x] Add --create flag for projects without .cursorrules
 
-- [ ] **Implementation** (Next session)
-  - [ ] Write update_cursorrules.py script
-  - [ ] Run dry-run to verify
-  - [ ] Execute canary deployment on 3 projects
-  - [ ] Wait 48 hours, then full rollout
+---
+
+##### Implementation Attempt #1 (Jan 10, 2026)
+
+**What we tried:**
+- Super Manager (Claude) drafted Worker prompts with micro-task decomposition
+- Prompts created: `Documents/planning/global_rules_injection/GLOBAL_RULES_PROMPT_1a-1d.md`
+- Floor Manager dispatched to Workers (DeepSeek-R1, Qwen 2.5)
+
+**What happened:**
+- Tasks 1a-1b (skeleton, scanner) succeeded with DeepSeek-R1
+- Tasks 1c-1d (detection, integration) timed out at 180s on both models
+- Floor Manager completed the work manually - **PROTOCOL VIOLATION** (AGENTS.md prohibits Floor Manager from writing code)
+
+**Outcome:**
+- [x] Script exists and works (`scripts/update_cursorrules.py`)
+- [x] 13 tests passing (`tests/test_update_cursorrules.py`)
+- [x] Dry-run verified (0.28s execution, found 15 projects needing update)
+- ⚠️ Workers did NOT build this - Floor Manager did
+- ⚠️ Process failed even though artifact exists
+
+**What we discovered:**
+1. Micro-tasks helped (1a, 1b succeeded) but integration tasks still too heavy
+2. File rewriting is expensive - should use StrReplace/diffs instead of full writes
+3. Floor Manager needs explicit "HALT and escalate" instructions, not implicit
+4. 120-180s timeout insufficient for file-heavy tasks (need 300s+)
+
+**New patterns documented:** See `Documents/reference/LOCAL_MODEL_LEARNINGS.md`
+- 3-Strike Escalation Rule
+- Incremental Diff Style
+- Updated Model Profiles with timeout guidance
+
+---
+
+##### Blocked: Questions Before Re-Implementation
+
+Before attempting again with Workers doing the work properly, we need answers to:
+
+1. **Knowledge Cycle:** How do learnings get applied to future prompts?
+   - ✅ **PROPOSED SOLUTION:** Learning Loop Pattern (`patterns/learning-loop-pattern.md`)
+   - Key mechanisms: Downstream Harm Estimate, Learning Debt Tracker, Preventable Failure Flag
+   - AGENTS.md prompt template updated with new required sections
+   - **Status:** Ready to test on next task
+
+2. **Task Granularity:** What's the smallest atomic unit Workers can reliably complete?
+   - 5-min tasks still too big for integration work
+   - Need to test: diff-only output vs. full file writes
+   - **Status:** Open - needs experimentation
+
+3. **Escalation Protocol:** How do we enforce "stop and alert" vs. "Floor Manager takes over"?
+   - ✅ **DOCUMENTED:** 3-Strike Escalation Rule in LOCAL_MODEL_LEARNINGS.md
+   - ⚠️ **NOT YET STRUCTURAL:** Still relies on Floor Manager following instructions
+   - ✅ **PROPOSED SOLUTION:** MCP-level enforcement via ollama-mcp enhancement
+   - **Spec:** `Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md`
+   - **Status:** Spec drafted, ready for implementation
+
+**Decision:** Canary deployment is ON HOLD until we test the Learning Loop Pattern on a real task. The script works, but we want to prove:
+1. The new prompt template structure works
+2. Workers can complete tasks with the improved prompts
+3. The Worker → Floor Manager → Conductor workflow holds
+
+---
+
+##### Canary Deployment (BLOCKED)
+
+- [ ] Resolve knowledge cycle questions (see above)
+- [ ] Re-attempt implementation with Workers using improved prompts
+- [ ] Execute canary deployment on 3 projects
+- [ ] Wait 48 hours, then full rollout
 
 **Acceptance Criteria:**
-- Script exists with --dry-run flag
-- Script supports --projects flag for subset rollout
-- Rollback procedure documented (restore from backups)
-- 3 test projects identified (10% canary)
-- 24-48 hour monitoring plan defined
-- Human approval received before ecosystem-wide execution
+- Script exists with --dry-run flag ✅
+- Script supports --projects flag for subset rollout ✅
+- Rollback procedure documented (restore from backups) ✅
+- 3 test projects identified (10% canary) ✅
+- 24-48 hour monitoring plan defined ✅
+- Human approval received before ecosystem-wide execution ✅
+- **NEW:** Workers successfully build the implementation (not Floor Manager)
 
 **Why This Matters:**
 - Pushes safety rules to all 30+ project .cursorrules files
 - High blast radius - must be carefully tested first
+- **Process matters:** We're building a repeatable system, not just shipping one script
 
 ---
 
@@ -190,20 +282,72 @@
 
 ## 📋 BACKLOG - High Priority
 
-### Pre-Commit Hook (Blocked: Requires Warden Enhancement Complete)
-**Goal:** Prevent "over-caffeinated" agents from committing DNA defects
+### Cortana Investigation & Monitoring
+**Goal:** Investigate why Cortana broke and set up monitoring to prevent future silent failures
+**Context:** Cortana was broken from Dec 18, 2025 to Jan 10, 2026 (22 days) - undetected until manual check
 
-- [ ] Create .git/hooks/pre-commit script
-- [ ] Script runs: `python scripts/warden_audit.py --root . --fast`
-- [ ] Block commit if warden finds issues (exit code 1)
-- [ ] Add --skip-warden flag for emergency manual commits
-- [ ] Test by attempting to commit file with /Users/ path
+- [ ] **Investigation:**
+  - [ ] Determine root cause of agent_os dependency breaking Cortana
+  - [ ] Review why 130 historical dates were missing (backfilled Aug 2025 - Jan 2026)
+  - [ ] Document findings in Cortana project
+
+- [ ] **Monitoring System:**
+  - [ ] Set up health check for Cortana LaunchAgent (daily cron? heartbeat file?)
+  - [ ] Alert if daily update hasn't run in 24+ hours
+  - [ ] Consider: log rotation, disk space monitoring, API key expiry warnings
+
+- [ ] **Prevent Recurrence:**
+  - [ ] Ensure Cortana remains self-sufficient (no external venv dependencies)
+  - [ ] Add Cortana to project-tracker dashboard for visibility
 
 **Why This Matters:**
-- Catches dangerous functions and hardcoded paths before they reach the repo
-- Web-Claude praised this as "Option 2" in security review
+- 22 days of silent failure is unacceptable
+- Personal AI should be the most reliable system in the ecosystem
 
-**Time Estimate:** 30 minutes (after warden is ready)
+**Fixes Applied (Jan 10, 2026):**
+- Created Cortana's own venv and .env (no agent_os dependency)
+- Fixed Wispr Flow timestamp parsing (trailing space issue)
+- Backfilled all 130 missing dates
+
+---
+
+### Ollama MCP Enhancement: Smart Local Routing ✅ COMPLETE (Jan 10, 2026)
+**Goal:** Intelligent task routing + structural escalation enforcement
+**Project:** ollama-mcp (TypeScript)
+**Related:** Ported best features from AI Router (`_tools/ai_router`)
+
+- [x] **Phase 1: Basic Smart Routing**
+  - [x] Add `task_type` parameter (classification, extraction, code, reasoning, file_mod)
+  - [x] Implement default fallback chains per task type (config/routing.yaml)
+  - [x] Add `models_tried` to response metadata
+  - [x] Add `escalate: true` when all local models fail
+
+- [x] **Phase 2: Response Quality Detection**
+  - [x] Port `isGoodResponse()` from AI Router
+  - [x] Auto-retry on poor response (too short, refusal)
+
+- [x] **Phase 3: Telemetry Trigger + Learned Routing**
+  - [x] Telemetry review trigger (30 days + 50 runs = auto-reminder)
+  - [x] Analysis script for success rate tracking
+  - [x] Route adjustment based on historical performance (manual review)
+
+**Verified via:** `ollama-mcp/Documents/planning/SMART_ROUTING_PROMPTS_INDEX.md` (6 prompts)
+
+**Next:** AI Router can be archived - its features are now in Ollama MCP
+
+---
+
+### Pre-Commit Hook ✅ COMPLETE (Jan 10, 2026)
+**Goal:** Prevent "over-caffeinated" agents from committing DNA defects
+
+- [x] Create .git/hooks/pre-commit script
+- [x] Script runs: `python scripts/warden_audit.py --root . --fast`
+- [x] Block commit if warden finds issues (exit code 1)
+- [x] --no-verify flag works for emergency commits (built into git)
+- [x] Tested: blocks commits with P0 violations
+
+**Implemented by:** Worker (qwen3:14b) via Floor Manager
+**Learning Loop Pattern Test:** ✅ SUCCESS - First task using new prompt template structure
 
 ---
 
@@ -375,6 +519,18 @@
 - [ ] Prompt versioning system
 - [ ] AWS Activate research (Q2 2026)
 - [ ] Google Cloud credits (Q2 2026)
+
+### EXTERNAL_RESOURCES Crawler (Future)
+**Goal:** Auto-discover projects/tools across ecosystem to keep registry current
+**Trigger:** When manual updates become painful (projected: 12 months at current pace)
+
+- [ ] Crawler scans projects directory weekly/monthly
+- [ ] Detects new projects, MCPs, tools, external services
+- [ ] Updates EXTERNAL_RESOURCES.yaml automatically
+- [ ] Reports what's new since last scan
+
+**Why:** Two months spent on image workflow alone. At this pace, will lose track of what exists.
+**Current state:** Manual additions to EXTERNAL_RESOURCES.yaml (good enough for now)
 
 ---
 

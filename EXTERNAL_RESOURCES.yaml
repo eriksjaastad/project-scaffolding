@@ -84,6 +84,13 @@ projects:
         type: ai
         env_var: "CORTANA_OPENAI_API_KEY"
         cost: 0.60
+      - name: Discord
+        purpose: "Daily update notifications"
+        type: notifications
+        env_var: "DISCORD_WEBHOOK_URL"
+        cost: 0
+        added: "2026-01-10"
+        notes: "Added after 22-day silent failure incident"
       - name: SuperWhisper
         purpose: "Voice-to-text (one-time purchase)"
         type: local

@@ -1,0 +1,27 @@
+# Tax Processing: Project Cursor Rules
+
+## 📝 Markdown & Documentation Standards
+- **ALWAYS preserve YAML frontmatter** when editing `.md` files.
+- Use **nested tags** for hierarchy: #p/tax-processing, #status/active, #type/platform.
+- Ensure `00_Index_TaxProcessing.md` stays synchronized with project progress.
+
+## 🐍 Python & Logic Standards
+- **Currency Precision:** ALWAYS use `Decimal` for currency values. NEVER use `float` for money.
+- **Dynamic Constants:** Prefer loading rates from `data/tax_constants.yaml` via `src/utils/tax_constants.py`.
+- **Validation:** Use Pydantic models with field validators for business logic (e.g., percentages, amounts).
+- **Logging:** Use the structured logging infrastructure in `src/utils/logging.py`.
+
+## 🚫 Context Window Management
+- **NEVER waste context on:**
+  - `venv/`, `node_modules/`, `__pycache__/`, `.git/`, `.pytest_cache/`
+  - Large data exports in `data/exports/`
+- Use targeted reads with line ranges for large modules.
+- Prefer `codebase_search` for exploring dependencies.
+
+## 🏛️ Architecture Patterns
+- **Monarch Feedback Loop:** Maintain the separation between source Monarch data and internal overrides.
+- **Audit Defense:** Every classification must have a corresponding entry in the `IRS_AUDIT_DEFENSE_MAP` or `IRS_PUBLICATION_MAPPING.md`.
+
+---
+*Standard Project Rules - Applied at the project root.*
+

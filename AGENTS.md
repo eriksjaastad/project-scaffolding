@@ -72,6 +72,17 @@ When the Super Manager generates a prompt for a Worker, it MUST follow this stru
 **Worker Model:** [DeepSeek-R1 / Qwen-2.5-Coder / etc.]
 **Objective:** [Brief 1-sentence goal]
 
+### ⚠️ DOWNSTREAM HARM ESTIMATE
+- **If this fails:** [What breaks? Who pays? How long to recover?]
+- **Known pitfalls:** [What patterns from LOCAL_MODEL_LEARNINGS.md apply?]
+- **Timeout:** [Default 120s | File-heavy: 300s]
+
+### 📚 LEARNINGS APPLIED
+- [ ] Consulted LOCAL_MODEL_LEARNINGS.md (date: ____)
+- [ ] Task decomposed to micro-level (5-10 min chunks) if using DeepSeek-R1
+- [ ] Using StrReplace/diff style (not full file rewrites) if modifying existing files
+- [ ] Explicit "DO NOT" constraints included if scope creep is a risk
+
 ### 🎯 [ACCEPTANCE CRITERIA] (MANDATORY CHECKLIST)
 - [ ] **Functional:** [e.g., Code correctly implements the new logic in file X]
 - [ ] **Syntax:** [e.g., File passes linting without errors]
@@ -79,7 +90,9 @@ When the Super Manager generates a prompt for a Worker, it MUST follow this stru
 - [ ] **Verification:** [e.g., Run `pytest tests/test_feature.py` and confirm all pass]
 
 **FLOOR MANAGER PROTOCOL:**
-Do not sign off until every [ ] is marked [x]. If any item fails, provide the specific error log to the Worker and demand a retry (Max 3 attempts).
+1. Do not sign off until every [ ] is marked [x]. 
+2. If any item fails, provide the specific error log to the Worker and demand a retry (Max 3 attempts).
+3. **After any failure:** Ask "Was this preventable?" If a documented learning was ignored, log it in LOCAL_MODEL_LEARNINGS.md under "Learning Debt Tracker" → increment Preventable Failures count.
 
 
 *Intelligence belongs in the checklist, not the prompt.*
