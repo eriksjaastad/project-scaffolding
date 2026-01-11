@@ -82,7 +82,7 @@ project-scaffolding/
 
 ## ⚠️ Project-Specific Constraints
 
-- NEVER use `rm`, use `send2trash` or move to `_trash/`
+- NEVER use `rm`. ALWAYS use `send2trash` to move files to the system Trash.
 - ALWAYS verify `venv` is active before running tests
 - MANDATE "Local-First" prompting for worker tasks
 

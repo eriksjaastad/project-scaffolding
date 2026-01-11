@@ -16,7 +16,7 @@ SAFETY_RULES_SECTION = '''
 
 ### File Operations
 - **Trash, Don't Delete:** NEVER use `rm`, `os.` + `remove`, `os.` + `unlink`, or `shutil.` + `rmtree` for permanent deletion.
-- ALWAYS use `send2trash` (Python) or move files to a `_trash/` directory.
+- ALWAYS use `send2trash` (Python) to move files to the system Trash.
 
 ### Error Handling
 - **No Silent Failures:** NEVER swallow exceptions without logging.
