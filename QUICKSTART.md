@@ -178,197 +178,275 @@ You're ready! Use the tiered AI planning approach:
 
 ## Existing Project Checklist
 
-### ⚠️ CRITICAL: Audit First, Execute Later
+### ⚠️ CRITICAL: This is a Multi-Turn, Interactive Process
 
 **DO NOT immediately start copying files or moving things around.**
 
-When scaffolding an existing project, follow this workflow:
+Scaffolding an existing project requires **deep understanding first**. This is NOT a one-shot execution - it's a dialogue with multiple Q&A sessions before any changes are made.
 
-| Phase | Action | Who Approves |
-|-------|--------|--------------|
-| **1. Audit** | Assess current state, document what exists | — |
-| **2. Report** | List what's missing, what needs changing | — |
-| **3. Propose** | Suggest specific changes, ask questions | **Human approval required** |
-| **4. Execute** | Only after approval, make changes | — |
-
-**Why?** Existing projects have history, conventions, and reasons for their current structure. Don't clobber things that work.
-
-**AI Agents:** Your first response should be an **audit report**, NOT file operations. Ask questions like:
-- "I see you have `docs/` instead of `Documents/` - should I migrate or keep your existing structure?"
-- "You have an existing README.md - should I merge or replace?"
-- "Your project uses X convention - should I adapt the templates to match?"
+**The Goal:** Thoughtfully enhance an existing project with scaffolding patterns. **NEVER break what's already working.**
 
 ---
 
-### Prerequisites
+### Workflow Overview
+
+| Phase | Action | Output | Approval |
+|-------|--------|--------|----------|
+| **1. Deep Research** | Explore and understand the existing project | Research Report | — |
+| **2. Q&A Session** | Present findings, ask clarifying questions | Answers from human | **Interactive** |
+| **3. Scaffolding Analysis** | Compare project to scaffolding patterns | Fit Analysis | — |
+| **4. Proposal** | Recommend changes with reasoning and risks | Proposal Document | **Human approval required** |
+| **5. Execute** | Make changes incrementally with safety checks | Modified files | — |
+| **6. Verify** | Confirm nothing broke | Verification report | — |
+
+---
+
+### 🚨 Red Flags - STOP If You See These
+
+During ANY phase, **stop and ask** if you encounter:
+
+- ❌ **Absolute paths** in your proposed changes (e.g., `/Users/...`) - This violates scaffolding principles
+- ❌ **Overwriting files** that have significant custom content
+- ❌ **Moving files** without understanding why they're where they are
+- ❌ **Breaking imports** or file references
+- ❌ **Conflicting conventions** you don't understand
+- ❌ **Missing context** about why something exists
+
+**When in doubt, ASK. Don't assume.**
+
+---
+
+### Phase 1: Deep Project Research
+
+**Do NOT rely on README alone** - many projects won't have one, or it may be outdated.
+
+**Explore the actual project:**
 
 ```bash
-# Navigate to your project
-cd /path/to/your/existing-project
+# 1. Understand the structure
+ls -la
+tree -L 2 -d  # or: find . -type d -maxdepth 2
 
-# Set scaffolding path
-export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
+# 2. Identify the tech stack
+ls *.py *.js *.ts *.go 2>/dev/null  # What language?
+cat requirements.txt package.json go.mod 2>/dev/null | head -20  # Dependencies?
+
+# 3. Look for existing patterns
+ls -la *.md  # What docs exist?
+ls -la .* 2>/dev/null  # Hidden config files?
+head -50 README.md 2>/dev/null  # If README exists
+
+# 4. Check for existing AI collaboration files
+ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
+```
+
+**Create a Research Report:**
+
+```markdown
+## Project Research Report: [ProjectName]
+
+### What This Project Does
+[Your understanding based on exploration - code, config, structure]
+
+### Tech Stack
+- Language: [Python/Node/Go/etc.]
+- Framework: [If identifiable]
+- Dependencies: [Key ones]
+
+### Current Structure
+[Describe the directory layout and what each part does]
+
+### Existing Conventions
+- Documentation: [Where do they keep docs? What format?]
+- Configuration: [How is config handled?]
+- Code organization: [src/ vs flat? modules?]
+
+### What I Don't Understand Yet
+[List things you need clarification on]
+```
+
+**STOP HERE.** Present this report and wait for feedback before proceeding.
+
+---
+
+### Phase 2: Q&A Session
+
+**This is interactive.** Present your research and ask questions:
+
+**Questions to ask:**
+- "I see [X pattern] - is this intentional? Should I preserve it?"
+- "The project uses [convention] which differs from scaffolding - should I adapt?"
+- "I don't understand why [thing] is structured this way - can you explain?"
+- "What are the goals for this project? What problems are you trying to solve?"
+- "Are there any parts of the project that are fragile or shouldn't be touched?"
+
+**Wait for answers.** Do not proceed until you have the context you need.
+
+---
+
+### Phase 3: Scaffolding Analysis
+
+**Now** compare the project to scaffolding patterns:
+
+```markdown
+## Scaffolding Fit Analysis: [ProjectName]
+
+### Patterns That Apply Directly
+| Pattern | Why It Fits | How to Apply |
+|---------|-------------|--------------|
+| [Pattern] | [Reason] | [Specific approach] |
+
+### Patterns That Need Adaptation
+| Pattern | Conflict | Proposed Adaptation |
+|---------|----------|---------------------|
+| [Pattern] | [What conflicts] | [How to adapt] |
+
+### Patterns to Skip
+| Pattern | Why Skip |
+|---------|----------|
+| [Pattern] | [Reason - doesn't apply, already handled, etc.] |
+
+### Potential Pitfalls
+- ⚠️ [Risk 1 and how to mitigate]
+- ⚠️ [Risk 2 and how to mitigate]
+
+### Files That Will Be Affected
+- New: [files to create]
+- Modified: [files to change - explain what changes]
+- Moved: [files to relocate - explain why]
+- Unchanged: [files to leave alone]
 ```
 
 ---
 
-### Phase 1: Audit Current State (5 minutes)
+### Phase 4: Proposal (Get Approval)
 
-**Run these commands and document what exists:**
+**Create a specific, reasoned proposal:**
 
-```bash
-# Check for existing scaffolding files
-ls -la AGENTS.md CLAUDE.md .cursorrules README.md TODO.md 2>/dev/null
-ls -la 00_Index_*.md 2>/dev/null
-ls -d Documents docs documentation 2>/dev/null
-```
-
-**Create an Audit Report:**
-
-Document what you find:
-- What scaffolding files already exist?
-- What's missing?
-- What existing conventions does this project use?
-- Are there any conflicts with scaffolding patterns?
-
-**Audit Checklist:**
-| File/Directory | Status | Notes |
-|----------------|--------|-------|
-| `00_Index_[ProjectName].md` | ⬜ Missing / ✅ Exists | MANDATORY |
-| `AGENTS.md` | ⬜ / ✅ | |
-| `CLAUDE.md` | ⬜ / ✅ | |
-| `.cursorrules` | ⬜ / ✅ | |
-| `.cursorignore` | ⬜ / ✅ | |
-| `Documents/` | ⬜ / ✅ | Note if using different name (docs/, documentation/) |
-| `TODO.md` | ⬜ / ✅ | |
-| `.gitignore` | ⬜ / ✅ | |
-
----
-
-### Phase 2: Propose Changes (Get Approval)
-
-**Before copying or moving ANYTHING, propose your plan:**
-
-Example proposal format:
-```
+```markdown
 ## Scaffolding Proposal for [ProjectName]
 
-### Files to Add (new):
-- 00_Index_[ProjectName].md
-- AGENTS.md
-- .cursorrules
+### Recommended Changes
 
-### Files to Skip (already exist):
-- README.md (existing is sufficient)
-- .gitignore (already configured)
+#### 1. [Change Category]
+**What:** [Specific change]
+**Why:** [Reasoning]
+**Risk:** [Low/Medium/High] - [Explanation]
 
-### Questions:
-1. You have `docs/` - should I rename to `Documents/` or keep as-is?
-2. Your existing README has custom sections - merge or keep separate?
+#### 2. [Next Change]
+...
 
-### Awaiting approval before proceeding.
+### Questions Requiring Your Decision
+1. [Question needing human judgment]
+2. [Another question]
+
+### Safety Checklist (I Have Verified)
+- [ ] No absolute paths in any proposed files
+- [ ] No overwriting of files with significant custom content
+- [ ] All file moves have clear reasoning
+- [ ] Import paths / references will not break
+- [ ] Proposed changes align with project's existing conventions where possible
+
+### Awaiting your approval before proceeding.
 ```
 
-**Only proceed to Phase 3 after human approval.**
+**Only proceed after explicit approval.**
 
 ---
 
-### Phase 3: Add Missing Core Files (10-15 minutes)
+### Phase 5: Execute (Incrementally)
 
-**Copy only what you need:**
+**Only after approval. Make changes one category at a time.**
+
+**Step 5.1: Add missing scaffolding files**
 
 ```bash
+# Set scaffolding path
+export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
+
 # Project Index (MANDATORY if missing)
 [[ ! -f 00_Index_*.md ]] && \
   cp "$SCAFFOLDING/templates/00_Index_Template.md" \
   "./00_Index_$(basename $(pwd)).md"
 
-# AGENTS.md (if missing)
-[[ ! -f AGENTS.md ]] && \
-  cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+# AI collaboration files (if missing)
+[[ ! -f AGENTS.md ]] && cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+[[ ! -f CLAUDE.md ]] && cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
+[[ ! -f .cursorrules ]] && cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
+[[ ! -f .cursorignore ]] && cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
 
-# CLAUDE.md (if missing)
-[[ ! -f CLAUDE.md ]] && \
-  cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
+# Documentation structure (if missing AND approved)
+[[ ! -d Documents ]] && cp -r "$SCAFFOLDING/templates/Documents" ./Documents
 
-# .cursorrules (if missing)
-[[ ! -f .cursorrules ]] && \
-  cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
-
-# .cursorignore (if missing)
-[[ ! -f .cursorignore ]] && \
-  cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
-
-# Documents structure (if missing)
-[[ ! -d Documents ]] && \
-  cp -r "$SCAFFOLDING/templates/Documents" ./Documents
-
-# TODO.md (if missing)
-[[ ! -f TODO.md ]] && \
-  cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
+# Task tracking (if missing)
+[[ ! -f TODO.md ]] && cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
 ```
+
+**Step 5.2: Customize each file for the project**
+
+| File | Customization Required |
+|------|------------------------|
+| `00_Index_*.md` | 3-sentence summary, key components, tags |
+| `AGENTS.md` | Tech stack, run/test commands, constraints |
+| `CLAUDE.md` | Project structure, safety rules (🔴🟡✅), validation commands |
+| `.cursorrules` | Project description, tech stack, constraints |
+
+**Step 5.3: After EACH change, verify**
+- Does the project still work?
+- Did we introduce any absolute paths?
+- Are imports/references still valid?
 
 ---
 
-### Phase 4: Customize for Your Project (15-20 minutes)
+### Phase 6: Verify Nothing Broke
 
-**Priority order - do these first:**
+**Run project tests (if they exist):**
+```bash
+# Python
+pytest tests/ 2>/dev/null || python -m pytest 2>/dev/null
 
-#### 4.1 Project Index (HIGHEST PRIORITY)
+# Node
+npm test 2>/dev/null
 
-**File:** `00_Index_[YourProject].md`
+# Or whatever the project uses
+```
 
-This is MANDATORY. No project is complete without it.
+**Check for scaffolding violations in YOUR changes:**
+```bash
+# Did we accidentally add absolute paths?
+grep -r "/Users/" . --include="*.md" --include="*.py" --include="*.json" 2>/dev/null
 
-- [ ] Write 3-sentence summary of your existing project
-- [ ] List your actual key components/directories
-- [ ] Update tags to match your project
-- [ ] Set correct status tag
+# Did we add any API keys?
+grep -rE "(sk-|AIza|AKIA)" . --include="*.md" --include="*.py" 2>/dev/null
+```
 
-#### 4.2 AGENTS.md
-
-Adapt the template to describe your existing project:
-
-- [ ] Replace placeholders with your actual tech stack
-- [ ] Update run/test commands for your project
-- [ ] Add any existing constraints or rules you follow
-- [ ] Keep what's working, add what's missing
-
-#### 4.3 CLAUDE.md
-
-This tells AI how to work on YOUR project:
-
-- [ ] Document your existing project structure
-- [ ] List files that should NEVER be modified
-- [ ] List files that need careful handling
-- [ ] Add your validation commands (tests, linting)
+**Verify checklist:**
+- [ ] Project runs/builds as before
+- [ ] No absolute paths introduced
+- [ ] No secrets exposed
+- [ ] Existing functionality preserved
 - [ ] Document any existing patterns/conventions
 
-#### 4.4 .cursorrules
+---
 
-- [ ] Describe what your project actually does
-- [ ] List your actual tech stack
-- [ ] Add project-specific constraints
-- [ ] Reference your existing documentation
+### Phase 7: Commit the Scaffolding
+
+```bash
+git add -A
+git commit -m "Add project scaffolding structure
+
+- Added project index (00_Index_*.md)
+- Added AI collaboration files (AGENTS.md, CLAUDE.md, .cursorrules)
+- Standardized documentation structure
+- Project enhanced with scaffolding patterns"
+```
 
 ---
 
-### Phase 5: Add Documents Structure (if needed)
+## Documents/ Structure Reference
 
-If you don't have a `Documents/` directory:
+When adding `Documents/` to a project:
 
-```bash
-# The template was already copied in Phase 2
-# Now organize your existing docs
-
-# Move existing documentation to Documents/
-# Example:
-# mv architecture.md Documents/ARCHITECTURE.md
-# mv operations.md Documents/OPERATIONS.md
-# mv SETUP.md Documents/guides/
-```
-
-**Standard Documents/ structure:**
 ```
 Documents/
 ├── README.md              # Docs index (Grand Central Station)
@@ -384,39 +462,6 @@ Documents/
 ```
 
 **IMPORTANT:** Core documents (Architecture, Operations, Standards) go **at the Documents/ root level**, NOT in a `core/` subdirectory. This makes them immediately visible and discoverable.
-
----
-
-### Phase 6: Verify Structure
-
-Run the project validator:
-
-```bash
-python "$SCAFFOLDING/scripts/validate_project.py" .
-```
-
-**Or manually verify:**
-- [ ] `00_Index_*.md` exists and has YAML frontmatter
-- [ ] `AGENTS.md` exists with project-specific content
-- [ ] `CLAUDE.md` exists with safety rules defined
-- [ ] `.cursorrules` exists and is customized
-- [ ] `Documents/` directory exists
-- [ ] No hardcoded absolute paths in files
-- [ ] No API keys in committed files
-
----
-
-### Phase 7: Commit the Scaffolding
-
-```bash
-git add -A
-git commit -m "Add project scaffolding structure
-
-- Added project index (00_Index_*.md)
-- Added AI collaboration files (AGENTS.md, CLAUDE.md, .cursorrules)
-- Added Documents/ structure for documentation
-- Standardized project structure for AI collaboration"
-```
 
 ---
 
