@@ -303,23 +303,27 @@ If you don't have a `Documents/` directory:
 
 # Move existing documentation to Documents/
 # Example:
-# mv docs/* Documents/core/
-# mv architecture.md Documents/core/
+# mv architecture.md Documents/ARCHITECTURE.md
+# mv operations.md Documents/OPERATIONS.md
 # mv SETUP.md Documents/guides/
 ```
 
 **Standard Documents/ structure:**
 ```
 Documents/
-├── README.md              # Docs index
-├── core/                  # Architecture, operations
+├── README.md              # Docs index (Grand Central Station)
+├── ARCHITECTURE.md        # Core: System design (at root for visibility!)
+├── OPERATIONS.md          # Core: How to run/deploy (at root!)
+├── CODE_QUALITY_STANDARDS.md  # Core: Coding rules (at root!)
 ├── guides/                # How-to documents  
-├── reference/             # Standards, knowledge
+├── reference/             # Standards, knowledge base
 ├── safety/                # Safety systems
 └── archives/              # Historical docs
     ├── reviews/           # Code review history
     └── sessions/          # Session notes
 ```
+
+**IMPORTANT:** Core documents (Architecture, Operations, Standards) go **at the Documents/ root level**, NOT in a `core/` subdirectory. This makes them immediately visible and discoverable.
 
 ---
 
