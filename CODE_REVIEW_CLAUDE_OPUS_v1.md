@@ -23,13 +23,11 @@ The system has solid architectural concepts and excellent security hardening in 
 |-----------|------------------|----------|
 | `scaffold/review.py` | **Tool** | Well-structured async orchestrator with retry logic, cost tracking, atomic writes |
 | `templates/*.template` | **Theater** | `.cursorrules` and `.cursorrules-template` are identical - copy-paste without customization |
-| `scripts/reindex_projects.py` | **Broken** | Uses `re.sub()` without importing `re` - will crash on first run |
+| `scripts/reindex_projects.py` | **Partially Broken** | Uses `re.sub()` without importing `re` - crashes when passing project name arg |
 | `scripts/validate_project.py` | **Tool** | Solid validation logic with path traversal protection |
 | Test suite | **Broken** | Cannot run - `ModuleNotFoundError: No module named 'dotenv'` |
 
 ### False Efficiency
-
-**Documentation bloat:** The `repomix-output.xml` file at 24k+ lines is in the repo. This appears to be a generated export that shouldn't be tracked.
 
 **Duplicate safe_slug implementations:** The same function is copy-pasted across 3 files:
 - `scaffold/review.py:40-61`
@@ -47,7 +45,7 @@ This violates DRY and means security fixes need to be applied 3x.
 
 ### 10 Failure Modes
 
-1. **`scripts/reindex_projects.py:63`** - `NameError: name 're' is not defined` on first run
+1. **`scripts/reindex_projects.py:63`** - `NameError: name 're' is not defined` when passing project name argument
 2. **Test suite broken** - `python-dotenv` not installed in test environment
 3. **DeepSeek API pricing outdated** - `scaffold/review.py:419-421` uses $0.27/1M tokens, actual pricing has changed
 4. **Anthropic pricing outdated** - `scaffold/review.py:377-384` lists old Opus/Sonnet/Haiku prices
@@ -66,7 +64,7 @@ This violates DRY and means security fixes need to be applied 3x.
 
 | Check | Result | Evidence |
 |-------|--------|----------|
-| **M1** No hardcoded `/Users/` paths in production code | **PASS** | `grep` found matches only in docs/archives/repomix-output.xml |
+| **M1** No hardcoded `/Users/` paths in production code | **PASS** | `grep` found matches only in docs/archives (historical reviews) |
 | **M2** No silent `except: pass` | **PASS** | `grep` clean in `scripts/*.py` and `scaffold/*.py` |
 | **M3** Dependencies pinned | **PASS** | `requirements.txt` uses `==` for all 14 dependencies |
 | **M4** No leaked API keys | **PASS** | All `sk-` patterns are in documentation examples only |
@@ -104,7 +102,7 @@ Has `input()` for confirmation, but includes `--yes` flag workaround.
 
 ## 4) Evidence-Based Critique
 
-### Critical: Script Will Crash
+### Critical: Script Crashes on Project Name Argument
 
 **Location:** `scripts/reindex_projects.py:63`
 
@@ -112,7 +110,12 @@ Has `input()` for confirmation, but includes `--yes` flag workaround.
 slug = re.sub(r'[^a-z0-9]+', '_', slug)  # NameError: 're' is not defined
 ```
 
-The `import re` statement is missing. This script has never been executed successfully.
+The `import re` statement is missing. The `--missing` and `--stale` flags work because they don't call `safe_slug()`, but passing a project name crashes:
+
+```
+$ PROJECTS_ROOT=/tmp python scripts/reindex_projects.py "test project"
+NameError: name 're' is not defined
+```
 
 ### Critical: Test Suite Broken
 
@@ -154,11 +157,11 @@ if "opus" in model:
 
 Claude Opus 4.5 pricing is different. This will produce inaccurate cost tracking.
 
-### Low: Large Generated File in Repo
+### Resolved: Large Generated File Removed
 
-**Location:** `repomix-output.xml` (24,000+ lines)
+**Location:** `repomix-output.xml` (was 24,000+ lines)
 
-This appears to be a generated codebase export. It's 24k+ lines of XML containing the entire codebase, including the file itself. This bloats the repo and contains duplicated content.
+~~This appears to be a generated codebase export.~~ **FIXED:** File has been removed and added to `.gitignore`.
 
 ---
 
@@ -178,7 +181,7 @@ This is the 20% that provides 80% of the value.
 
 ### Delete Candidates
 
-1. **`repomix-output.xml`** - Generated artifact, doesn't belong in version control
+1. ~~**`repomix-output.xml`**~~ - **DONE:** Removed and added to `.gitignore`
 2. **Duplicate `safe_slug()` implementations** - Extract to shared module
 3. **`_call_google()` stub** - Either implement or remove from options
 
@@ -206,8 +209,8 @@ This is the 20% that provides 80% of the value.
 ### Step 1: Fix the Broken Script (P0)
 
 **File:** `scripts/reindex_projects.py`
-**Action:** Add `import re` after line 24
-**Test:** `python scripts/reindex_projects.py --help` should not crash
+**Action:** Add `import re` after line 26 (with other imports)
+**Test:** `PROJECTS_ROOT=/tmp python scripts/reindex_projects.py "test project"` should not crash
 **Success Criteria:** Script executes without `NameError`
 
 ### Step 2: Fix Test Environment (P0)
@@ -231,10 +234,10 @@ This is the 20% that provides 80% of the value.
 **Action:** Replace placeholder text in `.cursorrules` with actual project values
 **Success Criteria:** No `[placeholder]` text remains; file differs from template
 
-### Step 5: Remove Generated Artifacts (P2)
+### ~~Step 5: Remove Generated Artifacts (P2)~~ DONE
 
 **Action:** `git rm repomix-output.xml && echo "repomix-output.xml" >> .gitignore`
-**Success Criteria:** `ls repomix-output.xml` returns "No such file"
+**Status:** Completed - commit `e8deab0`
 
 ---
 
@@ -259,8 +262,11 @@ This is the 20% that provides 80% of the value.
 **Status:** ❌ NOT APPROVED
 
 **Blocking Issues:**
-1. `scripts/reindex_projects.py` will crash on execution (missing import)
-2. Test suite cannot run (missing module)
+1. `scripts/reindex_projects.py` crashes when passing project name arg (missing `import re`)
+2. Test suite cannot run (pytest environment missing `python-dotenv`)
+
+**Progress:**
+- ✅ `repomix-output.xml` removed and added to `.gitignore`
 
 **Recommendation:** Fix P0 issues, re-run this review, then merge.
 
