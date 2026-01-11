@@ -181,7 +181,6 @@ Example:
 - `templates/.cursorrules.template` - Cursor AI rules
 
 **Documentation:**
-- `Documents/KIRO_DEEP_DIVE.md` - Ollama integration guide
 - `Documents/PROJECT_KICKOFF_GUIDE.md` - How to start new projects
 - `templates/TIERED_SPRINT_PLANNER.md` - Sprint planning template
 
