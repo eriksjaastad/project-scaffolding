@@ -1,12 +1,38 @@
 # Learning Loop Pattern
 
-> **Purpose:** Close the gap between documenting knowledge and applying it
-> **Status:** Draft - evolved from late-night society/governance conversation
+> **Purpose:** Guide for creating reinforcement learning cycles in any project
+> **Status:** Active
 > **Created:** January 10, 2026
+> **Updated:** January 11, 2026
 
 ---
 
-## The Problem We're Solving
+## What This Pattern Is
+
+This is a **meta-pattern** - guidance on how to create learning loops in any project, not a rigid structure. Every project will have different learnings, but the mechanism for capturing and reinforcing them is universal.
+
+**Project-scaffolding does NOT store other projects' learnings.** It teaches how to create your own.
+
+---
+
+## When a Learning Loop Begins
+
+A learning loop is triggered when:
+
+1. **Instructions were given** (to a human, AI, or system)
+2. **Instructions were followed or ignored** (outcome observed)
+3. **The moment is documented** (what happened, why)
+4. **Reinforcement is applied** (prevent recurrence or encourage repetition)
+
+**Examples of learning loop triggers:**
+- AI model timed out on a task → Model-specific learning
+- Floor Manager did work instead of delegating → Workflow/governance learning
+- Security vulnerability discovered → Safety learning
+- A pattern worked exceptionally well → Success pattern
+
+---
+
+## The Problem Learning Loops Solve
 
 **Knowledge externalization:** When we document a learning but don't apply it, the cost is deferred to a future session. The person who documents isn't the one who pays when it fails to get applied.
 
@@ -223,23 +249,139 @@ From Erik's GPT conversation, these principles apply:
 
 ---
 
-## Next Steps
+## Creating a Learning Loop in Your Project
 
-- [ ] Add "Downstream Harm Estimate" section to prompt template in AGENTS.md
-- [ ] Add "Learnings Applied" acknowledgment section to prompt template
-- [ ] Create Learning Debt Tracker section in LOCAL_MODEL_LEARNINGS.md
-- [ ] Test on next Worker task
-- [ ] After 2 weeks: Review preventable failure rate
+This section provides guidance for implementing learning loops in any project. Adapt to your needs.
+
+### Universal Components (All Learning Loops Have These)
+
+Every learning loop, regardless of project type, has four core components:
+
+| Component | Purpose | Questions to Answer |
+|-----------|---------|---------------------|
+| **1. Trigger** | Detects when learning is needed | What event signals "something happened worth learning from"? |
+| **2. Documentation** | Captures what happened | Where do learnings get recorded? What format? |
+| **3. Analysis** | Understands why it happened | Was this preventable? What caused it? |
+| **4. Reinforcement** | Prevents recurrence (or encourages repetition) | How do we update instructions/processes? |
+
+### Types of Learning Loops
+
+Your project may have multiple learning loops for different domains:
+
+| Learning Type | Trigger Examples | Where to Document |
+|---------------|------------------|-------------------|
+| **Model/Tool Behavior** | Timeout, unexpected output, hallucination | `Documents/reference/MODEL_LEARNINGS.md` |
+| **Workflow/Governance** | Role bypass, skipped approval, wrong escalation | `Documents/reference/WORKFLOW_LEARNINGS.md` or incident report |
+| **Safety/Security** | Vulnerability found, data at risk, near-miss | `Documents/safety/` or incident report |
+| **Success Patterns** | Something worked exceptionally well | Pattern library or success report |
+
+### Minimum Viable Learning Loop
+
+For simple projects, a single file may suffice:
+
+```markdown
+# Project Learnings
+
+## Active Learnings (Apply These)
+| Learning | Date | Applied To |
+|----------|------|------------|
+| Always use --dry-run first | 2026-01-10 | AGENTS.md constraints |
+
+## Learning Log
+| Date | What Happened | Why | Reinforcement |
+|------|---------------|-----|---------------|
+| 2026-01-10 | Script deleted files | No dry-run | Added constraint |
+```
+
+### Full Learning Loop (Complex Projects)
+
+For projects with significant AI collaboration or automation:
+
+**1. Learnings Document** (`Documents/reference/LEARNINGS.md`)
+- Categorized by type (model, workflow, safety)
+- Includes failure log with root cause
+- Learning Debt Tracker (documented but not yet compiled)
+
+**2. Prompt Template Integration**
+- "Downstream Harm Estimate" section in prompts
+- "Learnings Applied" acknowledgment
+- Reference to learnings document
+
+**3. Incident Reports** (`Documents/reports/`)
+- Detailed analysis of significant failures
+- Lessons learned
+- Changes made as a result
+
+**4. Preventable Failure Tracking**
+- After each failure: "Was this covered by an existing learning?"
+- If yes, flag as preventable and increment debt
+
+### Starting a Learning Loop
+
+When something happens worth learning from:
+
+```markdown
+## Learning Loop Initiated: [Brief Description]
+
+**Date:** YYYY-MM-DD
+**Trigger:** [What happened that prompted this]
+
+### 1. What Was Expected
+[Instructions given, expected behavior]
+
+### 2. What Actually Happened
+[Observed behavior, outcome]
+
+### 3. Why (Root Cause)
+[Analysis of why this happened]
+
+### 4. Reinforcement (Action Taken)
+- [ ] Document added to learnings file
+- [ ] Instructions/constraints updated
+- [ ] Relevant templates modified
+- [ ] Team/AI informed of change
+
+### 5. Verification
+How will we know this learning is being applied?
+```
+
+### The Reinforcement Question
+
+The key question that makes a learning loop effective:
+
+> **"Was this failure preventable based on existing knowledge?"**
+
+If yes → The learning loop has a gap. Fix it.
+If no → New learning discovered. Document and reinforce.
+
+### Flexibility Principle
+
+**These are guidelines, not rigid rules.** Every project's learning loop will look different:
+
+- A solo script might just have a comment at the top listing gotchas
+- A multi-AI system might have elaborate tracking with debt counters
+- A data pipeline might focus on data quality learnings
+
+**The mechanism is universal. The implementation is yours.**
+
+---
+
+## Applying This to Your Project
+
+1. **Start simple** - A single learnings file is enough initially
+2. **Document triggers** - Define what events should start the loop
+3. **Choose your reinforcement** - How will learnings get applied?
+4. **Review periodically** - Are learnings actually being used?
+5. **Evolve as needed** - Add complexity only when simple isn't working
 
 ---
 
 ## Related Documents
 
-- `KNOWLEDGE_CYCLE_DISCUSSION.md` - The original stuck-point discussion
-- `LOCAL_MODEL_LEARNINGS.md` - Where learnings are documented
-- `AGENTS.md` - Where prompt templates live
-- The late-night society conversation (January 9, 2026) - Source of governance parallels
+- `Documents/reference/LOCAL_MODEL_LEARNINGS.md` - Example implementation for local AI models
+- `AGENTS.md` - Prompt template with learning integration
+- `Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md` - Original design discussion
 
 ---
 
-*This pattern evolved from a connection Erik noticed between AI governance and societal governance. The insight: externalized costs in both systems lead to write-only documentation and deferred accountability.*
+*This pattern provides guidance, not prescription. Adapt it to your project's needs. The goal is closing the gap between "we learned something" and "we apply what we learned."*
