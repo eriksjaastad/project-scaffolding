@@ -211,6 +211,37 @@ GOOD (atomic):
 
 ---
 
+### Pattern: Raw Output Limitation
+
+**What:** Local models (qwen3, deepseek-r1) cannot reliably output "raw code only" even when explicitly instructed. They include `<Thinking>`, reasoning blocks, or conversational text in their `stdout` JSON output, corrupting files if written directly.
+
+**Why it matters:** When a prompt says "OUTPUT ONLY RAW CODE - no thinking, no conversation," cloud models comply. Local models don't - their reasoning process appears in the actual `ollama_run` result, not just console streaming.
+
+**Example (verbatim from B1b worker output):**
+```json
+{
+  "stdout": "Thinking...\nWe are given three functions...\n(300+ lines of deliberation)...\n...done thinking.\n\ndef _parse_rclone_config():\n..."
+}
+```
+
+**Corruption patterns observed:**
+- `Thinking...` / `...done thinking.` blocks (deepseek-r1)
+- Markdown code fences (` ```python `) despite instructions
+- Conversational preambles ("Sure, here's the code...")
+
+**Transcription Paradox:** Models struggle MORE with "copy this exactly" than "write a function that does X" - they feel compelled to explain their transcription process.
+
+**Workarounds:**
+1. **FM Direct (after Strike 1 for transcription):** For pure transcription tasks where exact code is in the prompt, Floor Manager may bypass workers after first failure. Don't burn 3 strikes on copy-paste tasks.
+2. **FM Cleaned:** Extract valid code from dirty output, strip thinking blocks, write with `cat <<EOF`
+3. **Output Parsing (future):** Build automated cleaning in MCP to strip `<Thinking>...</thinking>` before returning
+
+**Protocol update:** For transcription/stub tasks, FM Direct authorized after Strike 1 (not Strike 3).
+
+**First observed:** Backup Audit B1a-B2 (Jan 11, 2026) - confirmed in stdout JSON, not just console. Floor Manager provided verbatim evidence.
+
+---
+
 ### Pattern: Context Bridge Size Limit
 
 **What:** Keep code examples in Context Bridge sections under 30 lines. For larger examples, split into multiple micro-tasks or provide as separate reference files.
@@ -248,6 +279,7 @@ Track specific failures to identify patterns.
 | Jan 10, 2026 | Qwen 3 (14b) | Pre-Commit Hook | Success | First test of Learning Loop Pattern. Succeeded in 1 retry (python vs python3). |
 | Jan 11, 2026 | qwen3:4b | Agent Dispatcher A1 | Timeout - analysis loop on Context Bridge | Strike 1, escalated to Strike 2 |
 | Jan 11, 2026 | deepseek-r1:14b | Agent Dispatcher A1 | Timeout at line 115 - reasoning overhead | Strike 2, escalated to Strike 3 (HALT). Split into A1a/A1b/A1c |
+| Jan 11, 2026 | qwen3:4b, deepseek-r1:14b | Backup Audit B1a | Output corruption - reasoning tags in code output | Strike 3, FM Direct execution. New limitation discovered. |
 
 ---
 
@@ -308,6 +340,7 @@ Track specific failures to identify patterns.
 | Explicit DO NOT constraints | ✅ Jan 10 | ❌ Not in templates | 1 |
 | 3-Strike Escalation Rule | ✅ Jan 10 | ❌ Not in templates | 0 |
 | Context Bridge <30 lines | ✅ Jan 11 | ❌ Not in templates | 2 (A1 double timeout) |
+| Raw output corruption | ✅ Jan 11 | ❌ Not in templates | 3 (B1a triple failure) |
 
 **Compilation trigger:** Any learning with 2+ preventable failures must be added to the prompt template structure.
 
