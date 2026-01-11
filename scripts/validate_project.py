@@ -19,6 +19,7 @@ import os
 from pathlib import Path
 from typing import List, Tuple
 import re
+from scaffold.utils import safe_slug
 
 # Configuration
 PROJECTS_ROOT_ENV = os.getenv("PROJECTS_ROOT")
@@ -52,20 +53,6 @@ REQUIRED_SECTIONS = ["# ", "## Key Components", "## Status"]
 class ValidationError(Exception):
     """Raised when project fails validation."""
     pass
-
-
-def safe_slug(text: str) -> str:
-    """Sanitizes string for use in filenames and prevents path traversal."""
-    # Lowercase and replace non-alphanumeric with underscores
-    slug = text.lower()
-    slug = re.sub(r'[^a-z0-9]+', '_', slug)
-    slug = slug.strip('_')
-    
-    # Industrial Hardening: Prevent directory traversal attempts
-    if ".." in slug or slug.startswith("/") or slug.startswith("~"):
-        slug = slug.replace("..", "").replace("/", "").replace("~", "")
-        
-    return slug
 
 
 def find_projects(root: Path) -> List[Path]:

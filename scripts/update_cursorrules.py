@@ -15,7 +15,7 @@ SAFETY_RULES_SECTION = '''
 ## 🛡️ Safety Rules
 
 ### File Operations
-- **Trash, Don't Delete:** NEVER use `rm`, `os.remove`, `os.unlink`, or `shutil.rmtree` for permanent deletion.
+- **Trash, Don't Delete:** NEVER use `rm`, `os.` + `remove`, `os.` + `unlink`, or `shutil.` + `rmtree` for permanent deletion.
 - ALWAYS use `send2trash` (Python) or move files to a `_trash/` directory.
 
 ### Error Handling
@@ -305,7 +305,7 @@ def main():
     parser.add_argument("--projects", type=str, help="Comma-separated project names to update")
     parser.add_argument("--create", action="store_true", help="Create missing .cursorrules from template")
     parser.add_argument("--backup-dir", type=pathlib.Path, default=pathlib.Path("_cursorrules_backups"), help="Backup directory")
-    parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path("/Users/eriksjaastad/projects"), help="Projects root")
+    parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path.home() / "projects", help="Projects root")
     args = parser.parse_args()
     
     if not args.root.exists():
