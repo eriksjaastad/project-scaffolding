@@ -211,6 +211,28 @@ GOOD (atomic):
 
 ---
 
+### Pattern: Context Bridge Size Limit
+
+**What:** Keep code examples in Context Bridge sections under 30 lines. For larger examples, split into multiple micro-tasks or provide as separate reference files.
+
+**Why it works:** Both qwen3:4b and deepseek-r1:14b entered extended "Thinking..." analysis loops when presented with ~80 lines of example code. The models spent their reasoning budget parsing the example instead of executing the task. deepseek-r1:14b got further (started output at line 115) but still timed out at 120s.
+
+**Decomposition strategy:**
+```
+BAD (too large):
+- Context Bridge: 80 lines of complete file example
+- Task: "Create this file"
+
+GOOD (atomic):
+- A1a: Imports + dataclasses only (~25 lines)
+- A1b: Add definitions (~30 lines, StrReplace)
+- A1c: Add functions (~20 lines, StrReplace)
+```
+
+**First observed:** Agent Dispatcher A1 prompt (Jan 11, 2026) - 2 strikes, both timeouts.
+
+---
+
 ### Pattern: (Add more as discovered)
 
 ---
@@ -224,6 +246,8 @@ Track specific failures to identify patterns.
 | Jan 10, 2026 | DeepSeek-R1 | Warden enhancement | Timeout on complex tasks | Floor Manager took over (Avoid this!) |
 | Jan 10, 2026 | DeepSeek-R1/Qwen | Global Rules Injection | Multiple timeouts on integration | Floor Manager manual merge (Protocol Violation) |
 | Jan 10, 2026 | Qwen 3 (14b) | Pre-Commit Hook | Success | First test of Learning Loop Pattern. Succeeded in 1 retry (python vs python3). |
+| Jan 11, 2026 | qwen3:4b | Agent Dispatcher A1 | Timeout - analysis loop on Context Bridge | Strike 1, escalated to Strike 2 |
+| Jan 11, 2026 | deepseek-r1:14b | Agent Dispatcher A1 | Timeout at line 115 - reasoning overhead | Strike 2, escalated to Strike 3 (HALT). Split into A1a/A1b/A1c |
 
 ---
 
@@ -283,6 +307,7 @@ Track specific failures to identify patterns.
 | Micro-task decomposition | ✅ Jan 10 | ❌ Not in templates | 1 |
 | Explicit DO NOT constraints | ✅ Jan 10 | ❌ Not in templates | 1 |
 | 3-Strike Escalation Rule | ✅ Jan 10 | ❌ Not in templates | 0 |
+| Context Bridge <30 lines | ✅ Jan 11 | ❌ Not in templates | 2 (A1 double timeout) |
 
 **Compilation trigger:** Any learning with 2+ preventable failures must be added to the prompt template structure.
 
