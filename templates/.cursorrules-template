@@ -28,6 +28,7 @@
 - [ ] Changes logged to `[relevant log file if applicable]`
 - [ ] Documentation updated (if user-facing changes)
 - [ ] Tests pass: `[specific test command]`
+- [ ] **Index updated** (if new patterns, components, or major structure changes)
 
 ---
 

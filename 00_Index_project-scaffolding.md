@@ -18,10 +18,11 @@ Meta-project for extracting patterns from experiments to build better projects f
 ## Key Components
 
 ### Patterns
-- `patterns/` - Documented patterns (64 MD files)
+- `patterns/` - Documented patterns
   - `safety-systems.md` - 6 proven patterns
   - `development-philosophy.md` - 7 core principles
   - `tiered-ai-sprint-planning.md` - Cost-effective AI usage
+  - `learning-loop-pattern.md` - **Reinforcement learning cycles**
   - `code-review-standard.md` - Review orchestration
   - `ssot-via-yaml.md` - Data management
 
@@ -70,13 +71,13 @@ Meta-project for extracting patterns from experiments to build better projects f
 **Tags:** #map/project #p/project-scaffolding  
 **Status:** #status/production #status/hardened  
 **Audit Evidence:** [[REVIEW.md]] (Comprehensive Hardening Audit)  
-**Last Major Update:** December 2025 (actively maintained)  
+**Last Major Update:** January 2026 (actively maintained)  
 **Priority:** #mission-critical (multiplier effect on all projects)
 
-
-
 ## Recent Activity
- 
+
+- **2026-01-11**: Self-Learning Projects: Reframed skills library as flexible pattern (per-project, shared, or both). Added `learning-loop-pattern.md`. Created `staged-prompt-engineering` skill. Live-tested learning loop capture from project-tracker.
+- **2026-01-09**: Skills library integration and QUICKSTART.md workflow improvements.
 - **2026-01-07 14:30**: Industrial Hardening & Portability: Refactored all subprocess calls for safety, enforced atomic writes, and achieved 100% template portability by scrubbing absolute paths.
 - **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests to allow absolute paths in documentation and config files while blocking them in code. Verified all 28 tests pass.
  - **2026-01-07 10:30**: Ecosystem Governance v1.2: Hardened protocol with industrial subprocess rules, data clobber guards, and context window scaling strategies. Automated DNA integrity scans in `validate_project.py`.

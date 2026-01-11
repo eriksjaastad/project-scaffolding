@@ -28,6 +28,7 @@ Meta-project for standardizing ecosystem structures, AI-agent role definitions, 
 - [x] Changes logged to `WARDEN_LOG.yaml`
 - [x] Documentation updated (if user-facing changes)
 - [x] Tests pass: `pytest tests/`
+- [x] **Index updated** (if new patterns, templates, or major components added)
 
 ---
 
