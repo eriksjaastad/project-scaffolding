@@ -97,6 +97,15 @@ When the Super Manager generates a prompt for a Worker, it MUST follow this stru
 
 *Intelligence belongs in the checklist, not the prompt.*
 
+### 📚 For Complex Multi-Step Work
+
+When a feature requires 3+ prompts, use **Staged Prompt Engineering**:
+- Create an **Index** document with overall Done Criteria and execution order
+- Break work into **Individual Prompts** (5-10 min each) with built-in verification
+- End with a **Verification Prompt** that tests all components together
+
+See: `agent-skills-library/playbooks/staged-prompt-engineering/` for templates.
+
 ---
 
 ## ⚠️ UNIVERSAL CONSTRAINTS
