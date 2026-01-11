@@ -27,7 +27,7 @@ We need to ensure all projects have consistent safety rules in their `.cursorrul
 
 ### File Operations
 - **Trash, Don't Delete:** NEVER use `rm`, `os.remove`, `os.unlink`, or `shutil.rmtree` for permanent deletion.
-- ALWAYS use `send2trash` (Python) or move files to a `_trash/` directory.
+- ALWAYS use `send2trash` (Python) to move files to the system Trash.
 - For critical data, verify existence and permissions before modifying.
 ```
 
