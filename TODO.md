@@ -1,5 +1,8 @@
 # Project Scaffolding - TODO
 
+## 🚨 Cleanup Required
+- [ ] **Remove Kiro:** Remove all Kiro references and `.kiro` directories from ecosystem. Kiro integration was abandoned.
+
 > **Purpose:** Current actionable tasks for project-scaffolding
 > **Last Updated:** January 10, 2026
 > **Type:** Infrastructure
