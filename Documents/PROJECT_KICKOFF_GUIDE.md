@@ -665,6 +665,7 @@ A centralized library of reusable AI agent instructions (playbooks) that work ac
 - **Tiered AI Pattern:** `patterns/tiered-ai-sprint-planning.md`
 - **Development Philosophy:** `patterns/development-philosophy.md`
 - **Safety Systems:** `patterns/safety-systems.md`
+- **Learning Loop Pattern:** `patterns/learning-loop-pattern.md` - How to create reinforcement learning cycles
 - **External Resources:** `EXTERNAL_RESOURCES.md`
 - **Project Philosophy:** `PROJECT_PHILOSOPHY.md`
 
