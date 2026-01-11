@@ -28,9 +28,9 @@ Local models are a black box. When they fail or succeed, the knowledge evaporate
 - Code generation (with caveats)
 
 **Known limitations:**
-- Timeout issues on long tasks (observed Jan 10, 2026)
-- Can be slow (87s average response)
-- Sometimes over-explains when brevity needed
+- Timeout issues on long tasks (observed Jan 10, 2026). Requires 300s+ for large file writes.
+- Reasoning overhead: Can spend 60-120s "thinking" before generating, consuming timeout budget.
+- Connection management: Sometimes fails to close streams properly, leading to false-positive timeouts.
 
 **Prompt tips that work:**
 - Be explicit about output format
@@ -46,11 +46,12 @@ Local models are a black box. When they fail or succeed, the knowledge evaporate
 
 **Best for:**
 - General-purpose tasks
-- Shows reasoning (helpful for debugging)
-- Good balance of speed/quality
+- Fast code generation (significantly less reasoning overhead than R1)
+- Repetitive boilerplate and integration tasks
 
 **Known limitations:**
-- (Add as discovered)
+- Lacks the deep "safety awareness" and self-correction of DeepSeek-R1.
+- May hallucinate imports or skip constraints if not explicitly repeated.
 
 **Prompt tips that work:**
 - (Add as discovered)
@@ -124,6 +125,92 @@ except Exception as e:
 
 ---
 
+### Pattern: Micro-Task Decomposition
+
+**What:** Break tasks into the smallest possible atomic units (5-10 min each) rather than larger cohesive tasks (20-30 min).
+
+**Why it works:** Reasoning models like DeepSeek-R1 spend significant time in their "thinking" phase before generating output. A 30-minute task might timeout before the model finishes reasoning. Smaller tasks let the model complete both reasoning AND generation within the timeout window.
+
+**Signs you need to decompose further:**
+- Model times out partway through code generation
+- Model starts implementing features not in the current task scope
+- Model deviates from provided patterns (inventing its own approach)
+
+**Decomposition strategy:**
+```
+BAD (too large):
+- Task 1: Create script with scanning, detection, and output (30 min)
+
+GOOD (atomic):
+- Task 1a: Create file skeleton with imports and argparse (5 min)
+- Task 1b: Add scanner function (5 min)
+- Task 1c: Add detection function (5 min)
+- Task 1d: Wire up main() and output (5 min)
+```
+
+**Additional safeguards:**
+- Add explicit "DO NOT" constraints to prevent scope creep
+- Provide exact code patterns to copy (reduce invention)
+- Specify what's OUT of scope for this micro-task
+
+**First observed:** Global Rules Injection Task 1 timeout (Jan 10, 2026)
+**Models affected:** DeepSeek-R1 (14b) - reasoning overhead consumes timeout
+**Models less affected:** Qwen 2.5 Coder - faster code generation, less reasoning overhead
+
+---
+
+### Pattern: Explicit DO NOT Constraints
+
+**What:** Add a prominent "CONSTRAINTS" section listing what the model should NOT do.
+
+**Why it works:** Local models sometimes get creative and add features, use different approaches, or implement future task scope. Explicit prohibitions prevent scope creep.
+
+**Example:**
+```markdown
+## CONSTRAINTS (READ FIRST)
+- DO NOT implement execute/update logic - this task is DRY-RUN ONLY
+- DO NOT use os.walk - use pathlib.iterdir() as shown in the template
+- DO NOT add features beyond what's listed in acceptance criteria
+- COPY the code patterns provided verbatim - do not reinvent
+```
+
+**First observed:** Global Rules Injection Task 1 (Jan 10, 2026) - Worker used os.walk instead of iterdir, started implementing execute logic
+**Models tested:** DeepSeek-R1
+
+---
+
+### Pattern: 3-Strike Escalation Rule
+
+**What:** A strict protocol for handling Worker timeouts or failures.
+
+**Why it works:** Prevents "Session Momentum" from overriding architectural guardrails. Ensures that if models struggle, the process is paused and analyzed rather than patched.
+
+**Protocol:**
+1. **Strike 1:** Retry with the same model (check if it was a transient connection issue).
+2. **Strike 2:** Switch model (e.g., DeepSeek-R1 → Qwen 2.5 Coder).
+3. **Strike 3:** **HALT** and alert the Conductor. Do NOT manually integrate logic.
+
+**First observed:** Global Rules Injection implementation (Jan 10, 2026)
+
+---
+
+### Pattern: Incremental Diff Style
+
+**What:** Asking models to provide only the code delta (using `Edit` or `StrReplace` parameters) rather than rewriting the entire file.
+
+**Why it works:** File writing is the most time-consuming part of the worker's task. Rewriting a 100-line file to add 5 lines is inefficient and prone to timeout.
+
+**Example:**
+```markdown
+## TASK
+- Add `new_function` to `script.py`.
+- Output ONLY the `old_string` and `new_string` for a `StrReplace` call.
+```
+
+**First observed:** Global Rules Injection implementation (Jan 10, 2026)
+
+---
+
 ### Pattern: (Add more as discovered)
 
 ---
@@ -134,8 +221,9 @@ Track specific failures to identify patterns.
 
 | Date | Model | Task | Failure Mode | Resolution |
 |------|-------|------|--------------|------------|
-| Jan 10, 2026 | DeepSeek-R1 | Warden enhancement | Timeout on complex tasks | Floor Manager took over |
-| | | | | |
+| Jan 10, 2026 | DeepSeek-R1 | Warden enhancement | Timeout on complex tasks | Floor Manager took over (Avoid this!) |
+| Jan 10, 2026 | DeepSeek-R1/Qwen | Global Rules Injection | Multiple timeouts on integration | Floor Manager manual merge (Protocol Violation) |
+| Jan 10, 2026 | Qwen 3 (14b) | Pre-Commit Hook | Success | First test of Learning Loop Pattern. Succeeded in 1 retry (python vs python3). |
 
 ---
 
@@ -160,15 +248,56 @@ Track specific failures to identify patterns.
 
 ---
 
+### Jan 10, 2026 (Night) - Global Rules Injection Sprint
+
+**Models used:** DeepSeek-R1, Qwen 2.5 (via Floor Manager)
+
+**What happened:**
+- Micro-tasks 1a-1b (Skeleton/Scanner) succeeded with DeepSeek-R1.
+- Micro-tasks 1c-1d (Detection/Output) timed out (180s) on both DeepSeek and Qwen.
+- The Floor Manager (Gemini) manually integrated the code to "keep momentum," violating `AGENTS.md`.
+
+**Root cause analysis:**
+- **Integration overhead:** Asking models to rewrite the whole file + new logic is too heavy.
+- **Role confusion:** Floor Manager prioritized "completion" over "protocol."
+
+**Learnings:**
+- **Timeout Increase:** Set `timeout: 300000` (5 min) for file-heavy tasks.
+- **Tool Selection:** Prefer `StrReplace` over `Write` for incremental updates.
+- **Escalation Protocol:** Established the "3-Strike Rule" to prevent manual takeover.
+
+**Key insight:** The Floor Manager must resist the urge to "just finish it." If the Worker can't do it, the task is either too big or the model is wrong for the job. Stop and rethink.
+
+---
+
+## Learning Debt Tracker
+
+> **Purpose:** Track documented learnings that haven't been "compiled" into templates yet.
+> **Rule:** When a learning causes 2+ preventable failures, it MUST be compiled. No more deferral.
+
+| Learning | Documented | Compiled Into | Preventable Failures |
+|----------|------------|---------------|---------------------|
+| 300s timeout for file-heavy | ✅ Jan 10 | ❌ Not in templates | 2 (Jan 10 session) |
+| Use python3 on macOS | ✅ Jan 10 | ❌ Not in templates | 1 |
+| StrReplace over full rewrites | ✅ Jan 10 | ❌ Not in templates | 1 |
+| Micro-task decomposition | ✅ Jan 10 | ❌ Not in templates | 1 |
+| Explicit DO NOT constraints | ✅ Jan 10 | ❌ Not in templates | 1 |
+| 3-Strike Escalation Rule | ✅ Jan 10 | ❌ Not in templates | 0 |
+
+**Compilation trigger:** Any learning with 2+ preventable failures must be added to the prompt template structure.
+
+---
+
 ## Improvement Backlog
 
 Things to try or investigate:
 
-- [ ] Test if breaking tasks into smaller chunks helps DeepSeek timeout issues
+- [x] Test if breaking tasks into smaller chunks helps DeepSeek timeout issues → YES, testing now (Jan 10, 2026)
 - [ ] Compare same prompt across DeepSeek vs Qwen for quality
 - [ ] Create prompt templates optimized for each model tier
 - [ ] Add timing benchmarks to session observations
 - [ ] Track success rate by task type + model combination
+- [ ] Implement "Downstream Harm Estimate" in prompts (see patterns/learning-loop-pattern.md)
 
 ---
 
