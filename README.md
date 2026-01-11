@@ -99,11 +99,16 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
    - Guidance for model, workflow, and safety learnings
    - Prevents "write-only documentation" - closes the gap between learning and applying
 
-6. **Agent Skills Library** (`$PROJECTS_ROOT/agent-skills-library/`)
-   - Centralized library of reusable AI agent instructions
-   - Works across Cursor, Claude, ChatGPT, and future tools
-   - Three-layer architecture: Playbooks → Tool Adapters → Project Integration
-   - See `agent-skills-library/INTEGRATION_GUIDE.md` for how to reference in projects
+6. **Self-Learning Projects** (Skills Management)
+   
+   This scaffolding supports projects that improve over time by capturing what works. Skills (reusable AI instructions) can live:
+   - In a **shared library** across projects (`$PROJECTS_ROOT/agent-skills-library/`)
+   - **Within individual projects** (project-specific patterns)
+   - Or **both** - shared patterns + project-specific skills
+   
+   Skills can move between locations as they mature. Start wherever makes sense; extract to a shared library when you find yourself copying across 3+ projects.
+   
+   See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
 
 ### Managing Your Projects
 

@@ -97,6 +97,35 @@ source venv/bin/activate
 
 ---
 
+## 🧠 Skills & Continuous Learning (Optional)
+
+<!-- Uncomment and customize the approach that fits your setup -->
+
+<!-- OPTION A: Per-project skills (keep learnings here)
+### Project-Specific Skills
+- [Skill 1]: [Description of reusable instruction]
+- [Skill 2]: [Description]
+-->
+
+<!-- OPTION B: Shared skills library reference
+### Skills Library
+Reference: $PROJECTS_ROOT/agent-skills-library/
+
+Available skills for this project:
+- [Skill name]: See agent-skills-library/playbooks/[skill]/
+-->
+
+<!-- OPTION C: Both (shared + project-specific)
+### Shared Skills
+Reference: $PROJECTS_ROOT/agent-skills-library/
+- [Shared skill]: agent-skills-library/playbooks/[skill]/
+
+### Project-Specific Skills
+- [Local skill]: [Description]
+-->
+
+---
+
 ## 📚 Source Context (Optional)
 
 If this project builds on patterns from other projects, document them here:
