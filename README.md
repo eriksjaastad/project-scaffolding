@@ -25,15 +25,51 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ## Quick Start
 
-### Starting a New Project
+**See `QUICKSTART.md` for step-by-step checklists with copy-paste commands.**
 
-1. **Read** `Documents/PROJECT_KICKOFF_GUIDE.md` - Complete walkthrough for new projects
-2. **Follow** `Documents/PROJECT_STRUCTURE_STANDARDS.md` - Standard directory layout (venv in root!)
-3. **Follow** `Documents/CODE_QUALITY_STANDARDS.md` - **MANDATORY** rules (NO silent failures!)
-4. **Copy** templates to your new project - Documentation, .cursorrules, CLAUDE.md
-5. **Plan** using Tiered AI Sprint Planning - Break work into cost-effective tiers
-6. **Execute** with appropriate models - Tier 1 for architecture, Tier 3 for boilerplate
-7. **Track** external resources - Update EXTERNAL_RESOURCES.md when adding services
+### Starting a New Project (5-minute version)
+
+```bash
+# Set your paths
+export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
+NEW_PROJECT="$PROJECTS_ROOT/my-new-project"
+
+# Create project and copy templates
+mkdir -p "$NEW_PROJECT" && cd "$NEW_PROJECT"
+cp -r "$SCAFFOLDING/templates/Documents" ./Documents
+cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
+cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
+cp "$SCAFFOLDING/templates/00_Index_Template.md" "./00_Index_$(basename $NEW_PROJECT).md"
+git init
+```
+
+Then customize the templates (especially the `00_Index_*.md` - it's MANDATORY).
+
+### Adding Scaffolding to an Existing Project
+
+```bash
+cd /path/to/existing-project
+export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
+
+# Copy only what's missing
+[[ ! -f 00_Index_*.md ]] && cp "$SCAFFOLDING/templates/00_Index_Template.md" "./00_Index_$(basename $(pwd)).md"
+[[ ! -f AGENTS.md ]] && cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+[[ ! -f CLAUDE.md ]] && cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
+[[ ! -f .cursorrules ]] && cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
+[[ ! -d Documents ]] && cp -r "$SCAFFOLDING/templates/Documents" ./Documents
+```
+
+Then customize for your project. See `QUICKSTART.md` for the full checklist.
+
+### Essential Reading
+
+| Document | Purpose |
+|----------|---------|
+| `QUICKSTART.md` | Step-by-step checklists (new + existing projects) |
+| `Documents/PROJECT_KICKOFF_GUIDE.md` | Detailed planning workflow |
+| `Documents/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
+| `Documents/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
 
 ### Understanding This Scaffolding
 
