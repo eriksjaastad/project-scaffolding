@@ -25,6 +25,7 @@
 ## 📋 Definition of Done (Project-Specific)
 
 - [ ] Code follows project coding standards (see below)
+- [ ] Code validated (no hardcoded paths, no secrets exposed)
 - [ ] Changes logged to `[relevant log file if applicable]`
 - [ ] Documentation updated (if user-facing changes)
 - [ ] Tests pass: `[specific test command]`
@@ -37,6 +38,9 @@
 ```bash
 # Environment
 source venv/bin/activate
+
+# Validate project (before commits)
+python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 
 # Run tests
 [your test command]
@@ -92,7 +96,8 @@ source venv/bin/activate
 ## 🔗 Related Files
 
 - **Ecosystem Constitution:** `AGENTS.md`
-- **Review Protocol:** `REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- **Review Protocol:** `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- **Code Review Pattern:** `$SCAFFOLDING/patterns/code-review-standard.md`
 - **Project Index:** `[[00_Index_[project-name]]]`
 - [Add project-specific references]
 
