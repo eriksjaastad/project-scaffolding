@@ -24,7 +24,8 @@ echo "--------------------------------------------------"
 USER_PATH_PREFIX="/[U]sers/"
 
 echo -n "  [1.1] Checking templates/ for hardcoded paths... "
-if find templates/ -type f 2>/dev/null | xargs grep -l "$USER_PATH_PREFIX" 2>/dev/null; then
+# Exclude documentation examples (lines with backticks or "example")
+if find templates/ -type f 2>/dev/null | xargs grep -n "$USER_PATH_PREFIX" 2>/dev/null | grep -v '`' | grep -vi 'example'; then
     echo "❌ FAIL"
     FAILED=1
 else
