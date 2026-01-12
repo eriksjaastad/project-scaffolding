@@ -36,19 +36,18 @@
 
 ## 🎯 [ACCEPTANCE CRITERIA]
 
-- [ ] **File Created:** `.git/hooks/pre-commit` exists
-- [ ] **Executable:** File has executable permissions (chmod +x)
+- [ ] **Code Provided:** Worker provides complete bash script for pre-commit hook
 - [ ] **Shebang:** Starts with `#!/usr/bin/env bash`
-- [ ] **Calls Warden:** Runs `python scripts/warden_audit.py --root . --fast`
-- [ ] **Exit Code:** Passes through Warden's exit code (0 = success, 1 = failure)
-- [ ] **Skip Flag:** Respects `--no-verify` git flag (built into git, no code needed)
+- [ ] **Calls Warden:** Script runs `python scripts/warden_audit.py --root . --fast`
+- [ ] **Exit Code Logic:** Passes through Warden's exit code (0 = success, 1 = failure)
+- [ ] **Skip Flag:** Mentions `--no-verify` git flag in comments
 - [ ] **Output:** Shows what Warden found before blocking/allowing
 
 ---
 
-## Exact Code to Write
+## Exact Code to Provide
 
-Create this file at `.git/hooks/pre-commit`:
+Provide this code for the Floor Manager to write to `.git/hooks/pre-commit`:
 
 ```bash
 #!/usr/bin/env bash
@@ -82,39 +81,13 @@ echo "Warden audit passed. Proceeding with commit."
 exit 0
 ```
 
-Then make it executable:
-```bash
-chmod +x .git/hooks/pre-commit
-```
-
 ---
 
-## Verification Steps
+## Verification Steps (For Floor Manager)
 
-1. **File exists and is executable:**
-   ```bash
-   ls -la .git/hooks/pre-commit
-   # Should show: -rwxr-xr-x
-   ```
-
-2. **Hook runs on clean repo:**
-   ```bash
-   .git/hooks/pre-commit
-   # Should exit 0, show "Warden audit passed"
-   ```
-
-3. **Hook blocks bad commits:**
-   ```bash
-   # Create a file with violation
-   echo "import os; os.remove('test')" > temp_bad.py
-   git add temp_bad.py
-   git commit -m "test"
-   # Should be BLOCKED by warden
-
-   # Cleanup
-   git reset HEAD temp_bad.py
-   rm temp_bad.py
-   ```
+1. **Write file:** Write the code above to `.git/hooks/pre-commit`
+2. **Make executable:** `chmod +x .git/hooks/pre-commit`
+3. **Test:** Run `.git/hooks/pre-commit` and verify exit codes.
 
 ---
 
