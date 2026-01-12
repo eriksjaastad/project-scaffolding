@@ -4,8 +4,347 @@
 - [ ] **Remove Kiro:** Remove all Kiro references and `.kiro` directories from ecosystem. Kiro integration was abandoned.
 
 > **Purpose:** Current actionable tasks for project-scaffolding
-> **Last Updated:** January 10, 2026
+> **Last Updated:** January 11, 2026
 > **Type:** Infrastructure
+
+---
+
+## 🎯 NEW TOP PRIORITY: Code Review Infrastructure Integration (Jan 11+)
+
+**Context:** We have comprehensive code review infrastructure (review orchestrator, validation scripts, DNA integrity scans, review prompts) but it's trapped in `project-scaffolding` and not documented or accessible to other projects that use the scaffolding.
+
+**Problem Statement:**
+- When scaffolding new projects, we copy templates but NOT the review system
+- Projects don't know the code review workflow exists
+- The powerful `validate_project.py` script (scans for hardcoded paths, secrets, etc.) only runs FROM scaffolding, not IN projects
+- Templates don't reference or document the review infrastructure
+- New projects have no guidance on requesting code reviews or running validation
+
+**Goal:** Make code review infrastructure discoverable, documented, and accessible to all scaffolded projects.
+
+---
+
+### Phase 1: Documentation Updates (High Priority)
+
+These tasks update existing documentation to reference and explain the code review system.
+
+#### Task 1.1: Update QUICKSTART.md - Add Code Review Section
+**File:** `QUICKSTART.md`
+**Goal:** Add a new section explaining code review and validation workflow
+
+**What to add:**
+- Section: "Phase 6: Validation and Code Review" (after Phase 5: Start Building)
+- Explain how to validate project structure: `python $SCAFFOLDING/scripts/validate_project.py [project-name]`
+- Explain DNA integrity checks (scans for hardcoded paths, exposed secrets)
+- Explain how to request code reviews: `python $SCAFFOLDING/scaffold_cli.py review --type document --input [file]`
+- Link to `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for full review standards
+- Link to `patterns/code-review-standard.md` for pattern documentation
+
+**Acceptance Criteria:**
+- [ ] New "Phase 6" section exists in QUICKSTART.md
+- [ ] Code review workflow documented with commands
+- [ ] Validation workflow documented with commands
+- [ ] Links to detailed review docs included
+- [ ] Examples show both new project and existing project scenarios
+
+---
+
+#### Task 1.2: Update AGENTS.md.template - Add Code Review to Definition of Done
+**File:** `templates/AGENTS.md.template`
+**Goal:** Include code review as a standard step in the Definition of Done checklist
+
+**What to add:**
+- In the "Definition of Done" section, add checklist item: "Code review completed (if significant architectural changes)"
+- Add reference to code review standards: "See `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`"
+- In constraints section, add: "ALWAYS run validation before considering work complete: `python $SCAFFOLDING/scripts/validate_project.py [project-name]`"
+
+**Acceptance Criteria:**
+- [ ] Code review added to Definition of Done checklist in template
+- [ ] Reference to REVIEWS_AND_GOVERNANCE_PROTOCOL.md included
+- [ ] Validation command documented in constraints section
+- [ ] Template makes it clear this is centralized (runs from $SCAFFOLDING)
+
+---
+
+#### Task 1.3: Update CLAUDE.md.template - Add Code Review and Validation Instructions
+**File:** `templates/CLAUDE.md.template`
+**Goal:** Tell AI assistants how to request reviews and validate code
+
+**What to add:**
+- New section: "## Code Review and Validation"
+- Subsection: "When to Request a Code Review" (architectural decisions, security-critical code, before major features)
+- Subsection: "How to Request a Review" (use CODE_REVIEW.md.template, run scaffold_cli.py review command)
+- Subsection: "How to Validate Your Work" (run validate_project.py, what it checks for)
+- List what validation catches: hardcoded paths (/Users/, /home/), exposed secrets (API keys), missing files, structural issues
+
+**Acceptance Criteria:**
+- [ ] New "Code Review and Validation" section exists in template
+- [ ] When to review documented
+- [ ] How to request review documented with command
+- [ ] How to validate documented with command
+- [ ] AI understands this is available tooling, not something to implement
+
+---
+
+#### Task 1.4: Update .cursorrules-template - Reference Code Review Standards
+**File:** `templates/.cursorrules-template`
+**Goal:** Make Cursor-based AI aware of code review infrastructure
+
+**What to add:**
+- In "Definition of Done" section: Add "Code validated (no hardcoded paths, no secrets exposed)"
+- In "Related Files" section: Add link to `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- In "Execution Commands" section: Add validation command example
+
+**Acceptance Criteria:**
+- [ ] Code validation added to Definition of Done
+- [ ] Link to review protocol in Related Files section
+- [ ] Validation command in Execution Commands section
+- [ ] Format matches existing .cursorrules style
+
+---
+
+#### Task 1.5: Update Documents/PROJECT_KICKOFF_GUIDE.md - Add Code Review Phase
+**File:** `Documents/PROJECT_KICKOFF_GUIDE.md`
+**Goal:** Include code review as a standard phase in project kickoff workflow
+
+**What to add:**
+- New section after project setup: "Step 6: Validate Your Setup"
+- Explain running `validate_project.py` on new project
+- Show expected output (what passes, what might need fixes)
+- Add to "Quick Start" workflow
+- Reference ongoing validation during development
+
+**Acceptance Criteria:**
+- [ ] New "Step 6" section exists in PROJECT_KICKOFF_GUIDE.md
+- [ ] Validation command documented
+- [ ] Expected output shown (example of clean validation)
+- [ ] Integrated into main workflow, not just appendix
+- [ ] Mentions ongoing validation, not just initial setup
+
+---
+
+### Phase 2: Template Enhancement (Medium Priority)
+
+These tasks improve templates to better leverage the code review system.
+
+#### Task 2.1: Enhance CODE_REVIEW.md.template - Add Workflow Instructions
+**File:** `templates/CODE_REVIEW.md.template`
+**Goal:** The template currently is just a checklist; add instructions on HOW to use it
+
+**What to add:**
+- Header section: "How to Use This Template"
+- Step 1: Fill out the Definition of Done section (what makes this code "done")
+- Step 2: Run the review command from scaffolding
+- Step 3: Reviews saved to `Documents/archives/reviews/CODE_REVIEW_{REVIEWER}_{VERSION}.md`
+- Step 4: Archive old reviews before new rounds
+- Reference to `patterns/code-review-standard.md` for full pattern
+
+**Acceptance Criteria:**
+- [ ] "How to Use This Template" section exists
+- [ ] Step-by-step workflow documented
+- [ ] Command examples included
+- [ ] Links to pattern documentation included
+- [ ] Template explains review output location and archival
+
+---
+
+#### Task 2.2: Add Validation to TODO.md.template
+**File:** `templates/TODO.md.template`
+**Goal:** Include validation as a standard task category in new projects
+
+**What to add:**
+- Section: "## Validation Checklist"
+- Checklist items:
+  - [ ] No hardcoded absolute paths (/Users/, /home/)
+  - [ ] No exposed secrets (API keys in code)
+  - [ ] All mandatory files present (from PROJECT_STRUCTURE_STANDARDS.md)
+  - [ ] Project passes: `python $SCAFFOLDING/scripts/validate_project.py [project-name]`
+
+**Acceptance Criteria:**
+- [ ] "Validation Checklist" section in TODO.md.template
+- [ ] Key validation items listed
+- [ ] Validation command included
+- [ ] Format matches rest of TODO.md.template
+
+---
+
+### Phase 3: Infrastructure Documentation (Medium Priority)
+
+These tasks create new documentation explaining the review system architecture.
+
+#### Task 3.1: Create Documents/guides/CODE_REVIEW_SYSTEM.md
+**File:** `Documents/guides/CODE_REVIEW_SYSTEM.md` (NEW FILE)
+**Goal:** Comprehensive guide to the entire code review infrastructure
+
+**What to include:**
+- Overview: What the code review system does
+- Architecture: Components (review orchestrator, validation scripts, prompts, templates)
+- How to Request Reviews: Step-by-step with examples
+- How to Run Validation: Command examples and interpretation
+- Multi-AI Review: How the orchestrator works (parallel reviews, cost tracking)
+- Review Prompts: Available prompts (architecture, performance, security)
+- Centralized vs Distributed: Why the system is centralized in scaffolding
+- Integration with Projects: How projects reference and use the system
+
+**Acceptance Criteria:**
+- [ ] New file created at Documents/guides/CODE_REVIEW_SYSTEM.md
+- [ ] All sections listed above included
+- [ ] Examples and commands throughout
+- [ ] Links to related files (REVIEWS_AND_GOVERNANCE_PROTOCOL.md, patterns, scripts)
+- [ ] Explains both the "what" and the "why"
+
+---
+
+#### Task 3.2: Update patterns/code-review-standard.md - Add "How Projects Use This" Section
+**File:** `patterns/code-review-standard.md`
+**Goal:** Pattern doc currently explains the pattern but not how projects access it
+
+**What to add:**
+- New section: "## How to Use This Pattern in Your Project"
+- Explain that review system lives in scaffolding
+- Show commands to run from your project
+- Explain template usage (CODE_REVIEW.md.template)
+- Link to CODE_REVIEW_SYSTEM.md guide (once created)
+
+**Acceptance Criteria:**
+- [ ] New "How to Use This Pattern" section exists
+- [ ] Commands shown with $SCAFFOLDING variable
+- [ ] Template usage explained
+- [ ] Practical examples included
+- [ ] Links to full system guide
+
+---
+
+### Phase 4: Architecture Decision (Strategic Priority)
+
+These tasks require strategic decisions about the review system architecture.
+
+#### Task 4.1: Document Architecture Options for Review System
+**File:** `Documents/architecture/CODE_REVIEW_ARCHITECTURE_OPTIONS.md` (NEW FILE)
+**Goal:** Evaluate and document the three architectural approaches
+
+**Options to analyze:**
+1. **Centralized (Current):** Review system stays in scaffolding, projects call back to it
+2. **Distributed:** Copy review system to each project (fully independent)
+3. **Hybrid:** Keep orchestrator centralized, copy lightweight validation script per-project
+
+**For each option, document:**
+- Pros and cons
+- Maintenance burden
+- Discoverability
+- Independence vs centralization trade-offs
+- When each approach makes sense
+
+**Recommendation:** Analyze and recommend one approach
+
+**Acceptance Criteria:**
+- [ ] New file created at Documents/architecture/CODE_REVIEW_ARCHITECTURE_OPTIONS.md
+- [ ] All three options documented with pros/cons
+- [ ] Trade-offs clearly explained
+- [ ] Recommendation provided with reasoning
+- [ ] Migration path outlined (if changing from current centralized model)
+
+---
+
+#### Task 4.2: (Conditional) Implement Distributed Validation Script
+**File:** `scripts/distribute_validation.py` (NEW FILE - only if hybrid/distributed chosen)
+**Goal:** If we choose hybrid/distributed model, create script to copy validation to projects
+
+**What it should do:**
+- Copy a lightweight version of `validate_project.py` to target project
+- Create project-local validation command
+- Update project's .cursorrules to reference local validation
+- Keep it in sync when scaffolding validation updates
+
+**Note:** Only create this if Task 4.1 recommends hybrid or distributed architecture
+
+**Acceptance Criteria:**
+- [ ] Script created (if needed)
+- [ ] Can copy validation to existing project
+- [ ] Project can run validation locally
+- [ ] Documentation updated to reflect new workflow
+
+---
+
+### Phase 5: Quality Assurance (After Phase 1-3)
+
+These tasks verify the integration is complete and documented correctly.
+
+#### Task 5.1: Validate New Project Workflow with Updated Templates
+**Goal:** Create a test new project using updated templates and verify workflow is clear
+
+**Steps:**
+1. Create new test project: `test-code-review-integration`
+2. Copy all updated templates
+3. Follow QUICKSTART.md exactly as written
+4. Verify validation works
+5. Verify code review workflow is clear from documentation
+6. Document any confusion or gaps
+
+**Acceptance Criteria:**
+- [ ] Test project created successfully
+- [ ] Validation runs and works as documented
+- [ ] Code review workflow clear from templates
+- [ ] Any gaps identified and fixed
+- [ ] Test project can be used as reference example
+
+---
+
+#### Task 5.2: Validate Existing Project Integration
+**Goal:** Apply updated templates to an existing project and verify workflow
+
+**Steps:**
+1. Choose existing project (e.g., project-tracker)
+2. Update its AGENTS.md, CLAUDE.md, .cursorrules using new templates
+3. Run validation
+4. Verify the project now understands code review workflow
+5. Document experience
+
+**Acceptance Criteria:**
+- [ ] Existing project updated with new template content
+- [ ] Validation runs successfully
+- [ ] Project documentation now references review system
+- [ ] Any issues in "existing project" workflow fixed
+
+---
+
+#### Task 5.3: Create Example Code Review Request
+**Goal:** Create a real example of requesting and receiving a code review
+
+**Steps:**
+1. Use the updated CODE_REVIEW.md.template
+2. Request an actual review of some project-scaffolding component
+3. Run the multi-AI review orchestrator
+4. Archive the results properly
+5. Document the entire process as an example
+
+**Acceptance Criteria:**
+- [ ] Example review request created
+- [ ] Review actually run (multi-AI if possible)
+- [ ] Results archived correctly
+- [ ] Full process documented in CODE_REVIEW_SYSTEM.md as example
+
+---
+
+### Summary: What Success Looks Like
+
+After completing these tasks, any project scaffolded from project-scaffolding will:
+1. ✅ Know that code review infrastructure exists
+2. ✅ Understand when to request reviews
+3. ✅ Know how to request reviews (commands documented)
+4. ✅ Know how to validate their code (DNA integrity checks)
+5. ✅ Have templates that reference the review system
+6. ✅ Have AI collaborators that understand the review workflow
+7. ✅ Have clear documentation linking back to scaffolding
+
+**Estimated Effort:**
+- Phase 1 (Documentation Updates): ~3-4 hours of worker time
+- Phase 2 (Template Enhancement): ~1-2 hours of worker time  
+- Phase 3 (Infrastructure Docs): ~2-3 hours of worker time
+- Phase 4 (Architecture Decision): ~2-3 hours of analysis + potential implementation
+- Phase 5 (QA): ~2-3 hours of validation and examples
+
+**Total:** ~10-15 hours of focused work across multiple sessions
 
 ---
 

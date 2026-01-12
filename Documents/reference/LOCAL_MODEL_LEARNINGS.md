@@ -264,6 +264,133 @@ GOOD (atomic):
 
 ---
 
+### Pattern: Prompt Brevity Principle
+
+**What:** Keep worker prompts focused and minimal (100-200 lines ideal, not 400+).
+
+**Why it works:** Less context = faster reasoning, less chance of timeout, clearer task focus. Workers don't need verbose explanations - they need clear instructions and exact code.
+
+**Structure for worker prompts:**
+- Task description (1-2 lines)
+- Constraints (4-6 bullets max)
+- Acceptance criteria (5-7 items)
+- Exact code to write (if applicable)
+- Simple verification (3-4 commands)
+
+**What to EXCLUDE from worker prompts:**
+- Floor Manager instructions (put in INDEX instead)
+- Verbose explanations of "why"
+- Downstream harm estimates (that's for planning phase, not execution)
+- Learning justifications
+- Detailed protocol descriptions
+
+**Example (compare):**
+- ❌ **Bad:** 400-line prompt with FM Protocol, Downstream Harm, verbose context, learning justifications
+- ✅ **Good:** 150-line prompt with task, constraints, code, verification
+
+**First observed:** Project-tracker Agent Dispatcher prompts (Jan 11, 2026) - consistently under 200 lines, very focused
+
+---
+
+### Pattern: Code-First Prompting
+
+**What:** Show the exact code to write, not just describe what to write.
+
+**Why it works:** Reduces interpretation errors, faster generation, less reasoning overhead. Models spend less time "figuring out" the solution and more time executing the known solution.
+
+**Example (correct approach):**
+```markdown
+## Code to Add
+
+\```python
+def validate_project(path: Path) -> bool:
+    """Validate project structure."""
+    if not path.exists():
+        return False
+    # ... exact implementation here
+\```
+```
+
+**Example (anti-pattern):**
+```markdown
+## Task
+
+Add a function called validate_project that:
+- Takes a Path parameter
+- Checks if it exists
+- Returns a boolean
+- Should validate structure
+```
+
+**When to use:**
+- Creating new files with known structure
+- Adding functions with clear implementation
+- Modifying code where you know the exact changes
+
+**When not to use:**
+- Open-ended design tasks
+- When you want the model to choose the approach
+
+**First observed:** Project-tracker prompts (PROMPT_A1a_SKELETON.md, PROMPT_A2_AGENT_EXECUTOR.md) provide verbatim code (Jan 11, 2026)
+
+---
+
+### Pattern: INDEX for Multi-Prompt Work
+
+**What:** When you have 5+ related prompts for a feature, create an INDEX document that contains:
+- Overall context and goal
+- Prompt execution order table (with status tracking)
+- Escalation protocol (don't repeat in each prompt)
+- Progress tracking checkboxes
+- Shared constraints across all prompts
+- Floor Manager instructions
+
+**Why it works:** 
+- Floor Manager has one place to track progress
+- Individual prompts stay focused (no repeated protocol)
+- Easy to see what's done vs pending
+- Shared context documented once, not N times
+
+**Structure:**
+```markdown
+# Feature Name - Prompts Index
+
+## Context
+[Overall goal and why]
+
+## Done Criteria (Overall Feature)
+- [ ] Task 1
+- [ ] Task 2
+...
+
+## Prompt Execution Order
+| # | File | Description | Est Time | Status |
+|---|------|-------------|----------|--------|
+| 1 | PROMPT_1.md | ... | 5 min | [ ] |
+...
+
+## Escalation Protocol
+[3-Strike Rule, etc.]
+
+## Progress Tracking
+[Worker models used, notes]
+```
+
+**When to use:**
+- 5+ related atomic tasks
+- Complex features spanning multiple files
+- When you need to track progress across sessions
+
+**When not to use:**
+- Single atomic tasks
+- 1-3 simple prompts
+
+**Example:** `project-tracker/Documents/archives/planning/phase4_agent_dispatcher/AGENT_DISPATCHER_INDEX.md` (6 prompts for one feature)
+
+**First observed:** Project-tracker Agent Dispatcher (Jan 11, 2026)
+
+---
+
 ### Pattern: (Add more as discovered)
 
 ---

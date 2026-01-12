@@ -196,6 +196,68 @@ pytest tests/
 
 ---
 
+## Code Review and Validation
+
+### When to Request a Code Review
+
+Request architectural review, security audit, or performance analysis when:
+- Making significant architectural decisions
+- Implementing security-critical code paths
+- Before merging major features
+- When unsure about design approach
+
+### How to Request a Review
+
+**Step 1: Create review request**
+```bash
+# Use the template
+cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
+
+# Edit CODE_REVIEW_REQUEST.md:
+# - Fill out "Definition of Done" section
+# - Describe what you want reviewed
+# - Specify review focus (architecture/security/performance)
+```
+
+**Step 2: Run multi-AI review**
+```bash
+cd "$SCAFFOLDING"
+source venv/bin/activate
+python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
+```
+
+**Step 3: Review results**
+- Reviews saved to: `$SCAFFOLDING/review_outputs/round_1/CODE_REVIEW_*.md`
+- Copy relevant reviews to: `Documents/archives/reviews/`
+
+### How to Validate Your Work
+
+Run validation to check for common issues:
+
+```bash
+# Quick safety check (< 1 second)
+python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
+
+# Full project validation
+python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+```
+
+**What validation catches:**
+- ✅ Hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ Exposed secrets (API keys like `sk-...`, `AIza...`)
+- ✅ Missing required files (00_Index_*.md, AGENTS.md, etc.)
+- ✅ Invalid project structure
+
+**Best practice:** Validate before major commits or before requesting code reviews.
+
+### Learn More
+
+- **Full Protocol:** `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- **Pattern Docs:** `$SCAFFOLDING/patterns/code-review-standard.md`
+- **Review Prompts:** `$SCAFFOLDING/prompts/active/document_review/`
+
+---
+
 ## Common Patterns
 
 [Provide frequently-used code patterns specific to your project]

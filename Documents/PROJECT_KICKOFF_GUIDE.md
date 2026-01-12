@@ -112,6 +112,45 @@ ls -la 00_Index_*.md
 
 ---
 
+### Step 5: Validate Your Setup
+
+Run validation to ensure your project structure is correct:
+
+```bash
+# Validate project (from any directory)
+python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+```
+
+**What validation checks:**
+- ✅ Required files present (00_Index_*.md, AGENTS.md, CLAUDE.md, .cursorrules, etc.)
+- ✅ Project index has valid YAML frontmatter and required sections
+- ✅ **DNA Integrity:** No hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ **Security:** No exposed secrets (API keys like `sk-...`, `AIza...`)
+- ✅ Mandatory directories exist (Documents/, etc.)
+
+**Example output (clean project):**
+```
+✅ my-new-project (Fully Compliant)
+```
+
+**Example output (issues found):**
+```
+⚠️ my-new-project
+   - Missing mandatory file: .cursorrules
+   - Index file: Missing required section: ## Status
+```
+
+**Fix any issues and re-run validation until clean.**
+
+**Ongoing validation:** Run validation periodically during development, especially before major commits or code reviews.
+
+**Learn more:**
+- **Full validation script:** `$SCAFFOLDING/scripts/validate_project.py`
+- **Quick safety check:** `$SCAFFOLDING/scripts/warden_audit.py --root . --fast`
+- **Review system:** See QUICKSTART.md Phase 6 for code review workflow
+
+---
+
 ## Starting a Chat Session with AI
 
 ### Opening Prompt Template
