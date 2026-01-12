@@ -9,6 +9,17 @@
 
 ### Step 1: Copy the Bones
 
+You can use the automated `apply` command to bootstrap your project:
+
+```bash
+# In project-scaffolding directory
+./venv/bin/python scaffold_cli.py apply my-new-project
+```
+
+This will copy the core scripts, docs, and update references automatically.
+
+Alternatively, you can copy the structure manually:
+
 ```bash
 # In your new project directory
 NEW_PROJECT="PROJECTS_ROOT/my-new-project"
@@ -25,9 +36,6 @@ cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
 cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
 cp "$SCAFFOLDING/templates/README.md.template" ./README.md
 cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore
-
-# 2. Copy .env.example if it exists
-[[ -f "$SCAFFOLDING/templates/.env.example" ]] && cp "$SCAFFOLDING/templates/.env.example" ./.env.example
 ```
 
 ### Step 2: Customize Templates (Critical)

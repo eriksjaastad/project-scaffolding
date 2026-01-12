@@ -28,19 +28,29 @@ This scaffolding provides:
 
 ## Starting a New Project
 
-### Step 1: Copy Template Structure
+### Step 1: Initialize Project Structure
+
+You can use the CLI to apply the scaffolding structure to an existing project:
 
 ```bash
-# Create new project
-mkdir my-new-project
-cd my-new-project
+# In project-scaffolding directory
+./venv/bin/python scaffold_cli.py apply my-new-project
+```
 
-# Copy documentation structure
-cp -r /path/to/project-scaffolding/templates/Documents ./Documents
+Or copy the bones manually:
 
-# Copy AI collaboration templates
-cp /path/to/project-scaffolding/templates/CLAUDE.md.template ./CLAUDE.md
-cp /path/to/project-scaffolding/templates/.cursorrules.template ./.cursorrules
+```bash
+# In your new project directory
+NEW_PROJECT="PROJECTS_ROOT/my-new-project"
+SCAFFOLDING="PROJECTS_ROOT/project-scaffolding"
+
+cd "$NEW_PROJECT"
+
+# 1. Copy structure
+cp -r "$SCAFFOLDING/templates/Documents" ./Documents
+cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
+cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+cp "$SCAFFOLDING/templates/.cursorrules.template" ./.cursorrules
 ```
 
 ### Step 2: Customize for Your Project

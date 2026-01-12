@@ -76,6 +76,11 @@ Meta-project for extracting patterns from experiments to build better projects f
 
 ## Recent Activity
 
+- **2026-01-12**: Major Architectural Refactor: Decoupled meta-repo dependency from ecosystem projects.
+  - Implemented `scaffold_cli.py apply` for automated project standalone conversion.
+  - Redefined AI roles in `AGENTS.md`: Floor Manager as Primary File Operator, Workers for Logic/Code only.
+  - Successfully migrated 3 canary projects (`project-tracker`, `Tax processing`, `analyze-youtube-videos`) to standalone mode.
+  - Archived obsolete prompts and reports to improve documentation hygiene.
 - **2026-01-11**: Self-Learning Projects: Reframed skills library as flexible pattern (per-project, shared, or both). Added `learning-loop-pattern.md`. Created `staged-prompt-engineering` skill. Live-tested learning loop capture from project-tracker.
 - **2026-01-09**: Skills library integration and QUICKSTART.md workflow improvements.
 - **2026-01-07 14:30**: Industrial Hardening & Portability: Refactored all subprocess calls for safety, enforced atomic writes, and achieved 100% template portability by scrubbing absolute paths.

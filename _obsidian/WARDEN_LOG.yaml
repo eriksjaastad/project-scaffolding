@@ -1,3 +1,13 @@
+- timestamp: "2026-01-12T13:50:00Z"
+  action: "Implementation of `scaffold_cli.py apply`: Automated Project Standalone System"
+  changes:
+    - Added `apply` subcommand to `scaffold_cli.py` for automated project bootstrapping.
+    - Implemented script and doc copying logic to make target projects standalone.
+    - Implemented automated reference updates ($SCAFFOLDING -> ./) to decouple from meta-repo.
+    - Added version metadata injection to project indexes.
+    - Added verification step to detect remaining $SCAFFOLDING references.
+    - Successfully verified standalone migration on `project-tracker` and `Tax processing`.
+  warden_agent: "Project standalone automation implemented. Scaffolding v1.0.0 released."
 - timestamp: "2026-01-09T17:15:00Z"
   action: "Ecosystem Constitution v2.0: AI Hierarchy & Governance Reorganization"
   changes:

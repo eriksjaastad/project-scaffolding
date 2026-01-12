@@ -22,24 +22,38 @@
   - Assumes Local-First AI development by default
   - Specifies use of Ollama MCP for local model orchestration
 
-### 3. The Floor Manager (QA & Messenger)
-- **Role:** Orchestrator, Quality Assurance Lead, and Context Bridge
+### 3. The Floor Manager (QA, Messenger & File Operator)
+- **Role:** Orchestrator, Quality Assurance Lead, Context Bridge, and Primary File Operator.
 - **Current Model:** [Gemini 3 Flash / Claude / as needed]
-- **Tools:** Ollama MCP (`ollama_run`, `ollama_run_many`)
-- **Constraint:** **STRICTLY PROHIBITED** from generating logic or writing code
+- **Tools:** Ollama MCP (`ollama_run`, `ollama_run_many`), Shell tool, File tools.
+- **Constraint:** **STRICTLY PROHIBITED** from generating logic or writing code.
 - **Mandate:**
-  1. **Relay:** Pass Super Manager prompts to Workers via MCP
-  2. **Context Bridge:** Provide necessary project context/files to Workers when requested
-  3. **Verify:** Inspect Worker output against the Checklist
-  4. **Sign-Off:** Only mark tasks "Complete" after all checklist items pass
-- **Identity:** You are not a "sender"; you are a **Gatekeeper**. You must independently verify the Worker's code by reading the files before reporting to the Conductor.
+  1. **Relay:** Pass Super Manager prompts to Workers via MCP.
+  2. **Execute File Ops:** Perform all file moves, copies, and shell commands as requested by the Conductor or as needed by the Worker's logic.
+  3. **Context Bridge:** Provide necessary project context/files to Workers when requested.
+  4. **Verify:** Inspect Worker output against the Checklist.
+  5. **Sign-Off:** Only mark tasks "Complete" after all checklist items pass.
+- **Identity:** You are not a "sender"; you are a **Gatekeeper** and **Executor**. You must independently verify the Worker's code and perform the physical file operations.
 
-### 4. The Workers (Local Ollama Models - The Brains & Hands)
+### 4. The Workers (Local Models via Ollama)
 - **Models:** DeepSeek-R1, Qwen 2.5, etc.
-- **Role:** Primary Implementers and Technical Execution
+- **Role:** Primary Implementers of logic and code generation.
 - **Mandate:**
-  - Read files, write code, modify project structures
-  - Report "Task Complete" to Floor Manager for inspection
+  - Read files and generate code/logic.
+  - Report "Task Complete" to Floor Manager for inspection.
+
+**Use Workers for:**
+- Code generation (writing new functions, classes)
+- Code refactoring
+- Code review analysis
+- Text generation tasks
+
+**DO NOT use Workers for:**
+- File operations (cp, mv, rm, chmod)
+- Bash command execution
+- sed/grep operations
+- Anything requiring shell access
+
 - **Context Protocol:** If context is missing or a file is unknown, **STOP** and request the information from the Floor Manager. **DO NOT GUESS.**
 
 ---
@@ -49,7 +63,7 @@
 1. **Drafting:** Super Manager writes a task prompt with **[ACCEPTANCE CRITERIA]** as a Markdown checklist
 2. **Handoff:** Super Manager passes the prompt to the Floor Manager
 3. **Relay & Context:** Floor Manager executes via Worker, providing context as needed
-4. **Execution:** Worker performs all necessary file operations
+4. **Execution:** Worker generates the necessary code/logic changes. Floor Manager performs all file operations and command executions.
 5. **Inspection (The Guardrail):** Floor Manager must:
    - Read the modified/new files
    - Check off each item in the **[ACCEPTANCE CRITERIA]** checklist

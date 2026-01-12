@@ -2,7 +2,18 @@
 
 > **Purpose:** Institutional memory for working with local AI models (Ollama)
 > **Created:** January 10, 2026
-> **Updated:** January 10, 2026
+> **Updated:** January 12, 2026
+
+---
+
+## 🚨 CRITICAL: Workers Cannot Execute Commands (Jan 12, 2026)
+
+Workers (Ollama local models) can only generate text. They CANNOT:
+- Execute bash commands
+- Write files directly
+- Run cp, sed, chmod, etc.
+
+All file operations must be done by Floor Manager directly.
 
 ---
 

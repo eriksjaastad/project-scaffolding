@@ -3,6 +3,10 @@ CLI for Project Scaffolding automation system
 """
 
 import asyncio
+import os
+import re
+import shutil
+from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
@@ -10,7 +14,7 @@ import click
 from dotenv import load_dotenv
 from rich.console import Console
 
-from scaffold.review import ReviewConfig, create_orchestrator
+# from scaffold.review import ReviewConfig, create_orchestrator
 
 # Load environment variables from .env
 load_dotenv()
@@ -134,6 +138,9 @@ def review(
         console.print("[yellow]Hint: Create prompts in prompts/active/[/yellow]")
         return
     
+    # Import here to avoid dependency issues when running other commands
+    from scaffold.review import ReviewConfig, create_orchestrator
+
     # Load review configurations
     configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key, deepseek_key, ollama_model)
     
@@ -183,6 +190,246 @@ def review(
         raise
 
 
+@cli.command()
+@click.argument("project_name")
+@click.option("--dry-run", is_flag=True, help="Print what would happen, don't change anything")
+@click.option("--force", is_flag=True, help="Overwrite existing files (make .backup first)")
+@click.option("--verify-only", is_flag=True, help="Just check for $SCAFFOLDING refs, no copies")
+def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> None:
+    """
+    Apply scaffolding to a target project to make it standalone.
+    
+    Example:
+        scaffold apply project-tracker
+    """
+    scaffold_root = Path(__file__).parent.parent
+    
+    # Target resolution: try direct, then hyphen-to-space, then in parent dir
+    target_dir = Path(project_name)
+    if not target_dir.exists():
+        # Try in parent directory (standard project layout)
+        target_dir = scaffold_root.parent / project_name
+    
+    if not target_dir.exists() and "-" in project_name:
+        # Try with space instead of hyphen
+        alt_name = project_name.replace("-", " ")
+        alt_target = scaffold_root.parent / alt_name
+        if alt_target.exists():
+            target_dir = alt_target
+            project_name = alt_name
+
+    if not target_dir.exists():
+        console.print(f"[red]Error: Target project directory not found: {project_name}[/red]")
+        return
+
+    console.print(f"\n[bold]Applying scaffolding to {project_name}...[/bold]\n")
+    if dry_run:
+        console.print("[yellow]DRY RUN: No changes will be made.[/yellow]\n")
+
+    # 1. Verification Only mode
+    if verify_only:
+        _verify_references(target_dir)
+        return
+
+    # 2. Copy scripts
+    console.print("[bold]Copying scripts...[/bold]")
+    scripts_to_copy = [
+        "scripts/warden_audit.py",
+        "scripts/validate_project.py"
+    ]
+    
+    target_scripts_dir = target_dir / "scripts"
+    if not dry_run:
+        target_scripts_dir.mkdir(parents=True, exist_ok=True)
+
+    for script in scripts_to_copy:
+        src = scaffold_root / script
+        dst = target_dir / script
+        _copy_file(src, dst, dry_run, force)
+
+    # Special case: pre_review_scan.sh
+    pre_review_src = target_dir / "scripts/pre_review_scan.sh"
+    _create_pre_review_scan(pre_review_src, project_name, dry_run, force)
+
+    # 3. Copy docs
+    console.print("\n[bold]Copying docs...[/bold]")
+    docs_to_copy = [
+        ("REVIEWS_AND_GOVERNANCE_PROTOCOL.md", "Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md"),
+        ("patterns/code-review-standard.md", "Documents/patterns/code-review-standard.md"),
+        ("patterns/learning-loop-pattern.md", "Documents/patterns/learning-loop-pattern.md"),
+        ("Documents/reference/LOCAL_MODEL_LEARNINGS.md", "Documents/reference/LOCAL_MODEL_LEARNINGS.md")
+    ]
+    
+    for src_rel, dst_rel in docs_to_copy:
+        src = scaffold_root / src_rel
+        dst = target_dir / dst_rel
+        if not dry_run:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+        _copy_file(src, dst, dry_run, force)
+
+    # 4. Update references
+    console.print("\n[bold]Updating references...[/bold]")
+    files_to_update = ["AGENTS.md", "CLAUDE.md", ".cursorrules"]
+    for filename in files_to_update:
+        file_path = target_dir / filename
+        if file_path.exists():
+            _update_file_references(file_path, dry_run)
+        else:
+            console.print(f"  ⏭️  Skipped {filename} (not found)")
+
+    # 5. Add version metadata
+    console.print("\n[bold]Adding version metadata...[/bold]")
+    _add_version_metadata(target_dir, dry_run)
+
+    # 6. Final verification
+    console.print("\n[bold]Verifying...[/bold]")
+    _verify_references(target_dir)
+
+    if not dry_run:
+        console.print(f"\n[bold green]✅ {project_name} is standalone (scaffolding_version: 1.0.0)[/bold green]\n")
+
+
+def _copy_file(src: Path, dst: Path, dry_run: bool, force: bool) -> None:
+    if not src.exists():
+        console.print(f"  [red]error[/red] Source not found: {src}")
+        return
+
+    if dst.exists() and not force:
+        console.print(f"  ⏭️  Skipped {dst.name} (already exists)")
+        return
+
+    action = "Copying" if not dst.exists() else "Overwriting"
+    console.print(f"  {action} {dst.name}...")
+
+    if not dry_run:
+        if dst.exists() and force:
+            backup = dst.with_suffix(dst.suffix + ".backup")
+            shutil.copy2(dst, backup)
+        shutil.copy2(src, dst)
+
+
+def _create_pre_review_scan(dst: Path, project_name: str, dry_run: bool, force: bool) -> None:
+    template = """#!/bin/bash
+# pre_review_scan.sh - Run before code reviews or commits
+# Usage: ./scripts/pre_review_scan.sh
+
+set -e  # Exit on first error
+
+echo "=== Pre-Review Scan ==="
+echo ""
+
+# Get script directory and project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+cd "$PROJECT_ROOT"
+
+echo "1. Running Warden Security Audit (fast mode)..."
+python ./scripts/warden_audit.py --root . --fast
+WARDEN_EXIT=$?
+
+echo ""
+echo "2. Running Project Validation..."
+python ./scripts/validate_project.py {project_name}
+VALIDATE_EXIT=$?
+
+echo ""
+echo "=== Scan Complete ==="
+
+if [ $WARDEN_EXIT -ne 0 ] || [ $VALIDATE_EXIT -ne 0 ]; then
+    echo "FAILED: One or more checks failed"
+    exit 1
+else
+    echo "PASSED: All checks passed"
+    exit 0
+fi
+"""
+    content = template.replace("{project_name}", project_name)
+    
+    if dst.exists() and not force:
+        console.print("  ⏭️  Skipped pre_review_scan.sh (already exists)")
+        return
+
+    action = "Creating" if not dst.exists() else "Overwriting"
+    console.print(f"  {action} pre_review_scan.sh...")
+
+    if not dry_run:
+        if dst.exists() and force:
+            backup = dst.with_suffix(dst.suffix + ".backup")
+            dst.rename(backup)
+        dst.write_text(content)
+        dst.chmod(0o755)
+
+
+def _update_file_references(file_path: Path, dry_run: bool) -> None:
+    content = file_path.read_text()
+    
+    replacements = [
+        (r"\$SCAFFOLDING/scripts/", "./scripts/"),
+        (r"\$SCAFFOLDING/Documents/", "./Documents/"),
+        (r"\$SCAFFOLDING/patterns/", "./Documents/patterns/"),
+        (r"\$SCAFFOLDING/", "./"),
+    ]
+    
+    new_content = content
+    total_replacements = 0
+    for pattern, replacement in replacements:
+        new_content, count = re.subn(pattern, replacement, new_content)
+        total_replacements += count
+    
+    if total_replacements > 0:
+        console.print(f"  ✅ {file_path.name} - {total_replacements} replacements")
+        if not dry_run:
+            file_path.write_text(new_content)
+    else:
+        console.print(f"  ✅ {file_path.name} - 0 replacements (already clean)")
+
+
+def _add_version_metadata(target_dir: Path, dry_run: bool) -> None:
+    index_files = list(target_dir.glob("00_Index_*.md"))
+    if not index_files:
+        console.print("  [yellow]⏭️  Skipped version metadata (no 00_Index_*.md found)[/yellow]")
+        return
+
+    for index_file in index_files:
+        content = index_file.read_text()
+        if "scaffolding_version:" in content:
+            console.print(f"  ⏭️  Skipped {index_file.name} (version already present)")
+            continue
+            
+        today = datetime.now().strftime("%Y-%m-%d")
+        metadata = f"\nscaffolding_version: 1.0.0\nscaffolding_date: {today}\n"
+        
+        console.print(f"  ✅ Added to {index_file.name}")
+        if not dry_run:
+            with open(index_file, "a") as f:
+                f.write(metadata)
+
+
+def _verify_references(target_dir: Path) -> None:
+    files_to_check = ["AGENTS.md", "CLAUDE.md", ".cursorrules"]
+    found_any = False
+    
+    for filename in files_to_check:
+        file_path = target_dir / filename
+        if not file_path.exists():
+            continue
+            
+        content = file_path.read_text()
+        if "$SCAFFOLDING" in content:
+            found_any = True
+            lines = content.splitlines()
+            for i, line in enumerate(lines):
+                if "$SCAFFOLDING" in line:
+                    console.print(f"  [red]Error: Found $SCAFFOLDING in {filename}:{i+1}[/red]")
+                    console.print(f"    [dim]{line.strip()}[/dim]")
+    
+    if not found_any:
+        console.print("  ✅ No $SCAFFOLDING references found")
+    else:
+        console.print("\n[red]Verification failed: $SCAFFOLDING references remain.[/red]")
+
+
 def _load_review_configs(
     prompt_dir: Path,
     openai_key: Optional[str],
@@ -190,8 +437,10 @@ def _load_review_configs(
     google_key: Optional[str],
     deepseek_key: Optional[str],
     ollama_model: str
-) -> List[ReviewConfig]:
+) -> List:
     """Load review configurations from prompt directory"""
+    # Import here to avoid dependency issues
+    from scaffold.review import ReviewConfig
     configs = []
     
     # Map prompt names to API and model

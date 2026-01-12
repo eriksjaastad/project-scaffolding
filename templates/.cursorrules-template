@@ -40,7 +40,7 @@
 source venv/bin/activate
 
 # Validate project (before commits)
-python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
+python ./scripts/validate_project.py [project-name]
 
 # Run tests
 [your test command]
@@ -76,6 +76,28 @@ python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 
 ---
 
+## 📝 Documentation Hygiene
+
+**DO NOT create new .md files without explicit user request.**
+
+**Before creating any document, ask:**
+1. Can this go in an existing file? (CONSOLIDATE > CREATE)
+2. Can this be a code comment instead? (CODE > DOCS)
+3. Will someone actually read this? (If no, don't write it)
+
+**Rules:**
+- NEVER create files in Documents/ without asking first
+- PREFER adding sections to existing files over new files
+- PREFER code comments over separate documentation
+- KEEP explanations in code, not in external docs
+
+**Required docs only:** README.md, AGENTS.md, 00_Index, TODO.md
+**Everything else must justify its existence.**
+
+**See:** `./Documents/reference/DOCUMENTATION_HYGIENE.md` for full guidelines
+
+---
+
 ## 📜 Coding Standards (Project-Specific)
 
 - **File Ops:** Use `pathlib.Path`
@@ -96,8 +118,8 @@ python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 ## 🔗 Related Files
 
 - **Ecosystem Constitution:** `AGENTS.md`
-- **Review Protocol:** `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
-- **Code Review Pattern:** `$SCAFFOLDING/patterns/code-review-standard.md`
+- **Review Protocol:** `./Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- **Code Review Pattern:** `./Documents/patterns/code-review-standard.md`
 - **Project Index:** `[[00_Index_[project-name]]]`
 - [Add project-specific references]
 
