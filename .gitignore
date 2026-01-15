@@ -38,3 +38,4 @@ dist/
 .DS_Store
 Thumbs.db
 repomix-output.xml
+.env.doppler-backup
