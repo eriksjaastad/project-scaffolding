@@ -20,7 +20,7 @@ Run the following verification commands and report results:
 
 ### Step 1: Run Warden Audit
 ```bash
-python scripts/warden_audit.py --root . --fast
+doppler run -- python scripts/warden_audit.py --root . --fast
 ```
 
 **Expected output:**
@@ -72,7 +72,7 @@ Do not sign off until every [ ] is marked [x].
 - If unrelated: document as pre-existing issue
 
 **Success looks like:**
-```
+```bash
 INFO: --- Audit Summary ---
 INFO: Projects scanned: 1
 INFO: P0 (Critical): 0      ← THIS IS THE KEY

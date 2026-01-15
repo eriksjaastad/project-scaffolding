@@ -1,0 +1,30 @@
+# Coverage Configuration Template
+# Copy to your project root as .coveragerc
+# Customize the [run] source directive for your project structure
+
+[run]
+# Change this to your source directory (scripts/, src/, or .)
+source = scripts
+omit =
+    */tests/*
+    */__pycache__/*
+    */venv/*
+    */.venv/*
+    */site-packages/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+
+[html]
+# Customize output directory if needed
+directory = scripts/tests/htmlcov

@@ -90,7 +90,7 @@ This pattern addresses the DeepSeek-R1 timeout observed earlier today. See `Docu
 
 ## Projects Root
 
-Workers need to know: `/Users/eriksjaastad/projects`
+Workers need to know: `[USER_HOME]/projects`
 
 ---
 
@@ -98,19 +98,19 @@ Workers need to know: `/Users/eriksjaastad/projects`
 
 ```bash
 # 1. Test dry-run shows all projects
-python scripts/update_cursorrules.py --dry-run
+doppler run -- python scripts/update_cursorrules.py --dry-run
 # Expected: Lists 16 projects with compliance status
 
 # 2. Test canary deployment (dry-run first!)
-python scripts/update_cursorrules.py --dry-run --projects "project-tracker,Tax processing,analyze-youtube-videos"
+doppler run -- python scripts/update_cursorrules.py --dry-run --projects "project-tracker,tax-organizer,analyze-youtube-videos"
 # Expected: Shows only 3 projects
 
 # 3. Test execute creates backup
-python scripts/update_cursorrules.py --execute --projects "project-tracker"
+doppler run -- python scripts/update_cursorrules.py --execute --projects "project-tracker"
 # Expected: Backup created in _cursorrules_backups/, file modified
 
 # 4. Test rollback works
-python scripts/update_cursorrules.py --rollback
+doppler run -- python scripts/update_cursorrules.py --rollback
 # Expected: Restores from most recent backup
 
 # 5. Test all tests pass
@@ -130,7 +130,7 @@ After all tasks complete and tests pass:
 
 1. **Phase 2:** Execute canary on 3 approved projects
    ```bash
-   python scripts/update_cursorrules.py --execute --projects "project-tracker,Tax processing,analyze-youtube-videos"
+   doppler run -- python scripts/update_cursorrules.py --execute --projects "project-tracker,tax-organizer,analyze-youtube-videos"
    ```
 
 2. **Monitor 48 hours** - Check for:
@@ -140,7 +140,7 @@ After all tasks complete and tests pass:
 
 3. **Phase 3:** Full rollout (after canary success)
    ```bash
-   python scripts/update_cursorrules.py --execute
+   doppler run -- python scripts/update_cursorrules.py --execute
    ```
 
 ---

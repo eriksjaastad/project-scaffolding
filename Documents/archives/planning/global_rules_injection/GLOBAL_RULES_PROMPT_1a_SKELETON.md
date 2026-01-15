@@ -6,7 +6,7 @@
 - [ ] **File Created:** `scripts/update_cursorrules.py` exists
 - [ ] **Imports:** Includes argparse, logging, pathlib, sys
 - [ ] **Logging:** Configured using `logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')`
-- [ ] **Argparse:** Implements `main()` with `--dry-run` (default=True) and `--root` (default=/Users/eriksjaastad/projects) arguments
+- [ ] **Argparse:** Implements `main()` with `--dry-run` (default=True) and `--root` (default=[USER_HOME]/projects) arguments
 - [ ] **Entry Point:** Includes `if __name__ == "__main__": main()` block
 
 ### CONSTRAINTS (READ FIRST)
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def main():
     parser = argparse.ArgumentParser(description="Push safety rules to all project .cursorrules files")
     parser.add_argument("--dry-run", action="store_true", default=True, help="Show what would change (default)")
-    parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path("/Users/eriksjaastad/projects"), help="Projects root")
+    parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path("[USER_HOME]/projects"), help="Projects root")
     args = parser.parse_args()
     
     if not args.root.exists():

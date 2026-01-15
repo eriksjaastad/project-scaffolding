@@ -46,9 +46,9 @@ USER_PATH_PREFIX="${USER_PATH_PREFIX}s/"
 
 **Evidence:**
 ```
-.cursorrules:60:  **Core Reference:** `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`
-.cursorrules:147: - AI Journal: `$PROJECTS_ROOT/AI-journal/`
-templates/.cursorrules-template:62: - **Project Philosophy:** `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`
+.cursorrules:60:  **Core Reference:** `$PROJECTS_ROOT/trading-copilot/PROJECT_PHILOSOPHY.md`
+.cursorrules:147: - AI Journal: `$PROJECTS_ROOT/ai-journal/`
+templates/.cursorrules-template:62: - **Project Philosophy:** `$PROJECTS_ROOT/trading-copilot/PROJECT_PHILOSOPHY.md`
 ```
 
 ---
@@ -67,10 +67,10 @@ templates/.cursorrules-template:62: - **Project Philosophy:** `$PROJECTS_ROOT/Tr
 ### CRIT-4: `$PROJECTS_ROOT` is Not Portability
 
 Throughout the codebase, absolute paths like `~/` were replaced with `$PROJECTS_ROOT`. But `$PROJECTS_ROOT` still assumes:
-- A specific directory structure (`Trading Projects/`, `AI-journal/`, `agent-skills-library/`)
+- A specific directory structure (`trading-copilot/`, `ai-journal/`, `agent-skills-library/`)
 - These sibling directories exist on any machine using this scaffolding
 
-**This is not portable.** A new user cloning this repo doesn't have `$PROJECTS_ROOT/AI-journal/`.
+**This is not portable.** A new user cloning this repo doesn't have `$PROJECTS_ROOT/ai-journal/`.
 
 ---
 

@@ -16,8 +16,8 @@
 
 ## Documentation
 See the `Documents/` directory for detailed documentation:
-- [Architecture Overview](Documents/core/ARCHITECTURE_OVERVIEW.md)
-- [Operations Guide](Documents/core/OPERATIONS_GUIDE.md)
+- [Architecture Overview](Documents/ARCHITECTURE_OVERVIEW.md)
+- [Operations Guide](Documents/OPERATIONS_GUIDE.md)
 
 ## Status
 - **Current Phase:** [Phase Name]

@@ -65,7 +65,7 @@ echo "================================"
 
 # Run warden in fast mode
 # Exit code 0 = clean, exit code 1 = violations found
-python scripts/warden_audit.py --root . --fast
+doppler run -- python scripts/warden_audit.py --root . --fast
 
 WARDEN_EXIT=$?
 

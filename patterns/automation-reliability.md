@@ -12,20 +12,20 @@
 
 **Root causes:**
 
-1. **Cross-Project Dependency:** `run_daily_update.sh` sourced agent_os's virtual environment
+1. **Cross-Project Dependency:** `run_daily_update.sh` sourced agent-os's virtual environment
    ```bash
    # BROKEN - depended on external project
-   source "/Users/eriksjaastad/projects/agent_os/venv/bin/activate"
-   /Users/eriksjaastad/projects/agent_os/venv/bin/python scripts/core/daily_update.py
+   source "../../YOUR_PROJECT/venv/bin/activate"
+   ../../YOUR_PROJECT/venv/bin/python scripts/core/daily_update.py
    ```
 
-2. **Silent Bash Failure:** When agent_os was cleaned up, the `source` command failed, but bash didn't exit. The script continued but python never ran. No output = nothing logged.
+2. **Silent Bash Failure:** When agent-os was cleaned up, the `source` command failed, but bash didn't exit. The script continued but python never ran. No output = nothing logged.
 
 3. **No Heartbeat:** No mechanism to detect "script ran but produced nothing" vs "script succeeded."
 
 4. **No Monitoring:** No alert for "haven't seen a successful run in 24+ hours."
 
-5. **Undocumented Dependency:** Nobody knew Cortana depended on agent_os. When agent_os was cleaned up, it was believed "nothing uses this."
+5. **Undocumented Dependency:** Nobody knew Cortana depended on agent-os. When agent-os was cleaned up, it was believed "nothing uses this."
 
 **Impact:**
 - 22 days of voice recordings not processed
@@ -35,9 +35,9 @@
 **Fix applied:**
 ```bash
 # FIXED - self-sufficient
-cd "/Users/eriksjaastad/projects/Cortana personal AI"
+cd "../../cortana-personal-ai"
 export $(grep -v '^#' .env | xargs)
-./venv/bin/python scripts/core/daily_update.py
+doppler run -- ./venv/bin/python scripts/core/daily_update.py
 ```
 
 ---
@@ -77,7 +77,7 @@ cd "/path/to/project"
 export $(grep -v '^#' .env | xargs)
 
 # Use THIS project's venv
-./venv/bin/python scripts/my_script.py
+doppler run -- ./venv/bin/python scripts/my_script.py
 ```
 
 **Anti-pattern (what broke Cortana):**
@@ -86,7 +86,7 @@ export $(grep -v '^#' .env | xargs)
 #!/bin/bash
 # BAD - depends on external project
 source "/path/to/OTHER_PROJECT/venv/bin/activate"  # <-- External dependency!
-python scripts/my_script.py
+doppler run -- python scripts/my_script.py
 ```
 
 ### Checklist
@@ -113,7 +113,7 @@ Write a timestamp file on every successful run. Stale heartbeat = something is w
 
 ### Implementation
 
-```python
+```bash
 from pathlib import Path
 from datetime import datetime
 import json
@@ -143,7 +143,7 @@ def write_heartbeat(project_dir: Path, script_name: str) -> None:
 
 **Usage in scripts:**
 
-```python
+```bash
 def main():
     try:
         # ... do the work ...
@@ -162,7 +162,7 @@ def main():
 
 ```bash
 # Check if heartbeat is stale (older than 25 hours for daily job)
-python -c "
+doppler run -- python -c "
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -192,7 +192,7 @@ Send Discord notification on script completion (success or failure). Silence = s
 
 ### Implementation
 
-```python
+```bash
 import json
 import urllib.request
 from datetime import datetime
@@ -250,7 +250,7 @@ def send_discord_notification(
 
 **Wrapper pattern for scripts:**
 
-```python
+```bash
 import os
 import sys
 import traceback
@@ -314,7 +314,7 @@ trap 'echo "ERROR on line $LINENO"; exit 1' ERR
 # Now your script will FAIL LOUDLY instead of silently continuing
 cd "/path/to/project"
 export $(grep -v '^#' .env | xargs)
-./venv/bin/python scripts/my_script.py
+doppler run -- ./venv/bin/python scripts/my_script.py
 ```
 
 **Why this matters (the Cortana failure):**
@@ -322,7 +322,7 @@ export $(grep -v '^#' .env | xargs)
 Without `set -e`, this happens:
 ```bash
 source "/nonexistent/venv/bin/activate"  # Fails silently
-python scripts/daily_update.py           # Never runs, no error shown
+doppler run -- python scripts/daily_update.py           # Never runs, no error shown
 # Script "succeeds" but did nothing
 ```
 
@@ -354,12 +354,12 @@ Explicitly document when Project A depends on Project B.
 cortana-personal-ai:
   dependencies:
     internal:
-      - project: agent_os
+      - project: YOUR_PROJECT
         type: virtual_environment  # BAD - caused the failure
-        path: "/Users/.../agent_os/venv"
+        path: "[absolute_path]/.../YOUR_PROJECT/venv"
         why: "Shared Python environment"
         status: REMOVED  # Fixed!
-```
+```bash
 
 **In project's CLAUDE.md:**
 
@@ -375,7 +375,7 @@ Document here with:
 - What specifically (venv, .env, module import)
 - Why this dependency exists
 - What breaks if that project changes
-```
+```bash
 
 ### Before Removing/Modifying a Project
 
@@ -398,14 +398,14 @@ source something_that_might_not_exist
 do_thing
 do_other_thing
 # If any of these fail, script continues, no error shown
-```
+```bash
 
 ### Cross-Project Virtual Environments
 
 ```bash
 # BAD - external dependency
 source "/path/to/OTHER_PROJECT/venv/bin/activate"
-```
+```bash
 
 ### No Monitoring
 
@@ -415,7 +415,7 @@ No Discord notification
 No heartbeat file
 No health check
 → Can fail for 22 days without anyone noticing
-```
+```bash
 
 ### Undocumented Dependencies
 

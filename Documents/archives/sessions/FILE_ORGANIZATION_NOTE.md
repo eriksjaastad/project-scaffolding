@@ -6,7 +6,7 @@
 
 ### What Happened
 
-`PROJECT_PHILOSOPHY.md` was originally created in the Trading Projects directory during an early conversation where the idea for project-scaffolding was first articulated.
+`PROJECT_PHILOSOPHY.md` was originally created in the trading-copilot directory during an early conversation where the idea for project-scaffolding was first articulated.
 
 However, that file contains **zero trading-specific content**. It's pure meta-project philosophy about:
 - Building experiments vs products
@@ -17,10 +17,10 @@ However, that file contains **zero trading-specific content**. It's pure meta-pr
 ### Resolution
 
 **Moved to canonical location:**
-- **From:** `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`
+- **From:** `$PROJECTS_ROOT/trading-copilot/PROJECT_PHILOSOPHY.md`
 - **To:** `$PROJECTS_ROOT/project-scaffolding/PROJECT_PHILOSOPHY.md`
 
-**Created redirect:** Left a redirect file in Trading Projects pointing to the canonical version.
+**Created redirect:** Left a redirect file in trading-copilot pointing to the canonical version.
 
 **Updated references:** All `.cursorrules` and READMEs now point to the correct location.
 
@@ -35,7 +35,7 @@ However, that file contains **zero trading-specific content**. It's pure meta-pr
 
 This itself demonstrates a principle: **Move content to where it conceptually belongs, not where it was first created.**
 
-The Trading Projects directory should contain:
+The trading-copilot directory should contain:
 - ✅ Trading-specific philosophy (risk management, playbooks)
 - ✅ Model Arena roadmaps
 - ✅ Trading scripts and data
@@ -49,5 +49,5 @@ The project-scaffolding directory should contain:
 
 ---
 
-**Action:** File successfully migrated. No other Trading Projects content is scaffolding-related.
+**Action:** File successfully migrated. No other trading-copilot content is scaffolding-related.
 

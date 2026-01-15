@@ -9,7 +9,7 @@
 ## ✅ COMPLETED: Clean Up project-scaffolding & Apply to Canary Projects
 
 **Status:** DONE (Jan 12, 2026)
-**Result:** All 3 canary projects (project-tracker, Tax-processing, analyze-youtube-videos) are now standalone with scaffolding applied. Tasks A-D complete.
+**Result:** All 3 canary projects (project-tracker, tax-organizer, analyze-youtube-videos) are now standalone with scaffolding applied. Tasks A-D complete.
 
 **What was done:**
 - Task A: Removed Ollama/Worker references from file operations (Workers are for code gen only)
@@ -23,7 +23,6 @@
 
 ## 🚨 CURRENT PRIORITY: Remaining Cleanup
 
-- [ ] **Remove Kiro:** Remove all Kiro references and `.kiro` directories from ecosystem
 - [ ] **Doc hygiene pass on image-workflow:** After we prove the pattern works here
 
 ---
@@ -170,14 +169,91 @@ Before implementing, let's understand how professional tools handle this:
 
 ## 📋 BACKLOG - High Priority
 
+### Modular AI Workflow System (Jan 13, 2026)
+**Goal:** Separate "what to do" (project identity) from "how to do" (execution workflow) so workflows can be plugged/unplugged ecosystem-wide without editing every project.
+
+**Problem Discovered:**
+- Ollama delegation instructions were hardcoded into project `.cursorrules` and `AGENTS.md`
+- To "unplug" Ollama, we'd have to edit 36 projects manually
+- "How to execute" shouldn't be baked into project identity files
+
+**Proposed Architecture:**
+
+```
+_tools/workflows/                    ← Ecosystem-level (Erik's local control)
+├── active.md                        ← Symlink or current strategy
+├── direct-execution.md              ← "FM does work directly"
+├── ollama-delegation.md             ← "FM delegates to local Ollama workers"
+└── agent-hub.md                     ← "FM delegates via Agent Hub"
+
+project-scaffolding/templates/workflows/  ← Source templates
+└── (same files as above)
+```
+
+**How It Works:**
+
+1. **For Erik's ecosystem (36 projects):**
+   - Project `.cursorrules` says: "For execution workflow, see `$PROJECTS_ROOT/_tools/workflows/active.md`"
+   - Change `active.md` once → all projects inherit the change
+   - Central control, instant propagation
+
+2. **For standalone/downloaded projects:**
+   - `scaffold apply` COPIES the active workflow into `project/Documents/workflows/`
+   - Project checks: "Does `$PROJECTS_ROOT/_tools/workflows/` exist? Use that. Otherwise use my embedded copy."
+   - Graceful degradation - works standalone, but ecosystem can override
+
+**Tasks:**
+- [ ] Create `_tools/workflows/` directory structure
+- [ ] Create workflow files: `direct-execution.md`, `ollama-delegation.md`, `agent-hub.md`
+- [ ] Set `direct-execution.md` as `active.md` (current state - Ollama unplugged)
+- [ ] Create `project-scaffolding/templates/workflows/` with same files
+- [ ] Update `.cursorrules-template` to reference workflow system
+- [ ] Update existing projects to use new pattern (can be gradual)
+- [ ] Document in README: "How to switch execution workflows"
+
+**Why This Matters:**
+- One switch to change all projects
+- Workflows are versioned and can evolve
+- Projects remain standalone when shared
+- Clean separation of concerns (identity vs execution)
+
+**⚠️ CRITICAL PRINCIPLE: Build-Time vs Runtime**
+
+`_tools/` is **BUILD-TIME ONLY** infrastructure:
+- Used when DEVELOPING projects (scaffolding, validation, AI-assisted coding)
+- Referenced by developers and AI assistants during development
+- NEVER referenced by deployed/running projects
+
+Deployed projects must be 100% self-contained:
+- A website (muffin pan recipes) has no idea `_tools/` exists
+- An autonomous agent inside a project uses its OWN logic, not `_tools/agent-hub/`
+- If it would break when deployed to the internet, it shouldn't reference `_tools/`
+
+**Simple test:** "If I `git clone` this project on a fresh machine and run it, does it work without `_tools/`?"
+- YES → Correct architecture
+- NO → Build-time dependency leaked into runtime
+
+---
+
+### Ecosystem Integrity Warden (NEW TOOL)
+**Location:** `_tools/integrity-warden/integrity_warden.py`
+**Purpose:** Unified scanner for broken connections ecosystem-wide.
+- [x] Detect broken WikiLinks & Markdown links
+- [x] Detect broken absolute paths (`[absolute_path]/.../projects/`)
+- [x] Detect broken relative cross-project refs (`../other-project/`)
+- [ ] Add detector for broken Python imports (sys.path)
+- [ ] Add detector for broken Shell environment dependencies
+
+---
+
 ### Cortana Investigation & Monitoring
 **Goal:** Investigate why Cortana broke and set up monitoring to prevent future silent failures
 **Context:** Cortana was broken from Dec 18, 2025 to Jan 10, 2026 (22 days) - undetected until manual check
 
-- [ ] **Investigation:**
-  - [ ] Determine root cause of agent_os dependency breaking Cortana
-  - [ ] Review why 130 historical dates were missing (backfilled Aug 2025 - Jan 2026)
-  - [ ] Document findings in Cortana project
+- [x] **Investigation:**
+  - [x] Determine root cause of agent-os dependency breaking Cortana (COMPLETE: Cortana was sourcing agent-os venv)
+  - [x] Review why 130 historical dates were missing (COMPLETE: Backfilled)
+  - [x] Document findings in Cortana project (COMPLETE: INVESTIGATION_HANDOFF_2026-01-10.md)
 
 - [ ] **Monitoring System:**
   - [ ] Set up health check for Cortana LaunchAgent (daily cron? heartbeat file?)
@@ -193,7 +269,7 @@ Before implementing, let's understand how professional tools handle this:
 - Personal AI should be the most reliable system in the ecosystem
 
 **Fixes Applied (Jan 10, 2026):**
-- Created Cortana's own venv and .env (no agent_os dependency)
+- Created Cortana's own venv and .env (no agent-os dependency)
 - Fixed Wispr Flow timestamp parsing (trailing space issue)
 - Backfilled all 130 missing dates
 

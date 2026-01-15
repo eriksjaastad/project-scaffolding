@@ -519,7 +519,7 @@ Best for: Small projects with diverse tasks
 ```
 
 ### Example 2: Active Project (Standard)
-See: `Cortana personal AI/TODO.md` for excellent full example
+See: `cortana-personal-ai/TODO.md` for excellent full example
 
 ### Example 3: Planning Phase (Detailed)
 See: `actionable-ai-intel/TODO.md` for planning with blockers

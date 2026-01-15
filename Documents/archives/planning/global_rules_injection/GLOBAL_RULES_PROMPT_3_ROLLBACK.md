@@ -30,7 +30,7 @@ Tasks 1-2 created the script with dry-run and execute modes. Now we need the saf
 
 ### 1. Add Rollback Argument
 
-```python
+```bash
 parser.add_argument(
     "--rollback",
     action="store_true",
@@ -40,17 +40,17 @@ parser.add_argument(
 
 ### 2. Manifest Structure
 
-```python
+```bash
 import json
 
 # Manifest format:
 # {
 #     "timestamp": "2026-01-10T12:00:00",
-#     "projects_root": "/Users/eriksjaastad/projects",
+#     "projects_root": "[USER_HOME]/projects",
 #     "files_modified": [
 #         {
 #             "project": "project-tracker",
-#             "original": "/Users/eriksjaastad/projects/project-tracker/.cursorrules",
+#             "original": "[USER_HOME]/projects/project-tracker/.cursorrules",
 #             "backup": "_cursorrules_backups/2026-01-10T12-00-00/project-tracker/.cursorrules"
 #         }
 #     ]
@@ -59,7 +59,7 @@ import json
 
 ### 3. Update create_backup to Track Files
 
-```python
+```bash
 def create_backup(
     cursorrules_path: pathlib.Path,
     backup_dir: pathlib.Path,
@@ -86,7 +86,7 @@ def create_backup(
 
 ### 4. Write Manifest Function
 
-```python
+```bash
 def write_manifest(
     backup_dir: pathlib.Path,
     projects_root: pathlib.Path,
@@ -118,7 +118,7 @@ def write_manifest(
 
 ### 5. Rollback Function
 
-```python
+```bash
 def run_rollback(backup_dir: pathlib.Path) -> bool:
     """Restore .cursorrules files from most recent backup."""
     manifest_path = backup_dir / 'manifest.json'
@@ -164,7 +164,7 @@ def run_rollback(backup_dir: pathlib.Path) -> bool:
 
 ### 6. Update run_update to Use Manifest
 
-```python
+```bash
 def run_update(
     projects_root: pathlib.Path,
     backup_dir: pathlib.Path,
@@ -188,7 +188,7 @@ def run_update(
 
 ### 7. Update update_cursorrules Signature
 
-```python
+```bash
 def update_cursorrules(
     cursorrules_path: pathlib.Path,
     backup_dir: pathlib.Path,
@@ -205,7 +205,7 @@ def update_cursorrules(
 
 ### 8. Update main() for Rollback
 
-```python
+```bash
 def main():
     # ... existing args and parsing ...
 
@@ -228,7 +228,7 @@ def main():
    echo "# Test" > /tmp/test-project/.cursorrules
 
    # Run execute
-   python scripts/update_cursorrules.py --execute --root /tmp
+   doppler run -- python scripts/update_cursorrules.py --execute --root /tmp
 
    # Check manifest exists
    cat _cursorrules_backups/manifest.json
@@ -242,7 +242,7 @@ def main():
    # Should find the rule
 
    # Rollback
-   python scripts/update_cursorrules.py --rollback
+   doppler run -- python scripts/update_cursorrules.py --rollback
 
    # Verify file restored
    grep "Trash" /tmp/test-project/.cursorrules
@@ -252,7 +252,7 @@ def main():
 3. **Test rollback with no backups:**
    ```bash
    rm -rf _cursorrules_backups
-   python scripts/update_cursorrules.py --rollback
+   doppler run -- python scripts/update_cursorrules.py --rollback
    # Should show error: "No manifest found"
    ```
 

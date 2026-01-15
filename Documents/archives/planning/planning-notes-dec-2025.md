@@ -157,7 +157,7 @@
 **Mitigation Strategy:**
 
 1. **Cost Gates at Each Stage**
-   ```
+   ```bash
    Document Review Round 1: $X
    Continue to Round 2? [y/n]
    
@@ -196,7 +196,7 @@
 **Erik's Insight:** "We need to work really well on prompting. We're going to be learning about prompting as we do this."
 
 **Structure:**
-```
+```bash
 prompts/
 ├── versions/
 │   ├── document_review/
@@ -340,7 +340,7 @@ Everything is a learning opportunity. We're building the system, using the syste
 - Need continuous learning loop
 
 **The Separation:**
-```
+```bash
 DOING THE WORK          REVIEWING THE RESULTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Sprint planning    ←→   Cost estimate accuracy
@@ -378,7 +378,7 @@ Erik's insight: "Weakest link is relying on me to do something at the right time
 **Solution:** At end of sprint (all code reviews done):
 ```bash
 # Automatically runs:
-python scripts/data_export_server.py
+doppler run -- python scripts/data_export_server.py
 ```
 
 **What it does:**
@@ -508,7 +508,7 @@ Every month:
 - Alert: "Estimates consistently 50% low on Tier 2 tasks"
 
 **Visualization ideas:**
-```
+```bash
 COST ESTIMATION ACCURACY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Project A: Estimated $180, Actual $165 (8% under) ✅
@@ -571,7 +571,7 @@ Action: Be more conservative with Tier 3 assignments
 
 ### The Three-Stage Pipeline
 
-```
+```bash
 STAGE 1: Project Creation
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 You + AI → Initial roadmap
@@ -609,7 +609,7 @@ Output: Reviewed, merged code
 ### Directory Structure
 
 **Default for all projects:**
-```
+```bash
 project/
 ├── roadmap-reviews/
 │   ├── 2025-12-22_claude-opus-4-review.md
@@ -667,7 +667,7 @@ project/
 - January will be the real test
 
 **Adjusted math:**
-```
+```bash
 Stage 1: $60 (multiple reviewers, Tier 1 models)
 Stage 2: $180 → Maybe $90 if Tier 2/3 do more work
 Stage 3: $60 (code reviews, Tier 1 models)
@@ -692,12 +692,12 @@ Total: $210/project (if tiering works)
 - Automation = removing manual prompt pasting
 
 **Current workflow:**
-```
+```bash
 Erik → Document → Erik pastes to AI 1 → Erik pastes to AI 2 → Erik pastes to AI 3 → Erik reviews
 ```
 
 **Automated workflow:**
-```
+```bash
 Erik → Document → Script calls AI 1, 2, 3 in parallel → Erik reviews
 ```
 
@@ -791,7 +791,7 @@ REQUIRED REVIEW FORMAT:
 ## IF I HAD TO BREAK THIS, I'D... (minimum 2)
 1. [Adversarial thinking]
 2.
-```
+```bash
 
 **Why this works:** Can't say "looks great!" if forced to fill these sections.
 
@@ -810,7 +810,7 @@ Score this project review on:
 
 If any score < 6, this review is too shallow. 
 Flag it and explain why."
-```
+```bash
 
 **Cost:** Extra $1-2 per review, but catches sunshine reviews.
 
@@ -843,7 +843,7 @@ critical_count = count_phrases(review, critical_phrases)
 
 if sunshine_count > critical_count:
     flag_as_useless()
-```
+```bash
 
 **Simple but effective:** Quick automated check.
 
@@ -870,7 +870,7 @@ Don't say: "This project won't make money" or "Who would use this?"
 DO say: "This implementation will fail because..." or "What if the user does X?"
 
 You're making it better, not killing it."
-```
+```bash
 
 **Psychology:** Critical of HOW, not WHY. Focuses on technical execution, not business viability.
 
@@ -973,7 +973,7 @@ Follow pattern in Documents/architecture/AUTH.md"
 - Tokens: Expiry enforced?
 - Sessions: Redis connection handling?
 - Rate limiting: Actually working?"
-```
+```bash
 
 **Cost estimation purpose:**
 - NOT for real-time tracking (not possible across IDEs)
@@ -990,7 +990,7 @@ Tier 3: 20 tasks × $0.50 = $10
 Total estimate: $180
 
 (Compare against actual spend after project complete)
-```
+```bash
 
 **Status:** Design this into sprint planner flow
 
@@ -1030,7 +1030,7 @@ Original AI implements changes
 Reviewers CHECK changes were made correctly
     ↓
 DONE
-```
+```bash
 
 **WRONG flow (red flag):**
 ```
@@ -1038,7 +1038,7 @@ Code written
     ↓
 Review 1 → Changes → Review 2 → More changes → Review 3...
 (This means Tier 3 isn't capable or instructions weren't clear)
-```
+```bash
 
 **If multiple rounds needed:**
 - Task was mis-tiered (should have been higher tier)
@@ -1193,16 +1193,16 @@ If manual multi-AI review teaches you something, that's valuable even without au
 
 ## Future Pattern Extraction (When Ready)
 
-### From agent_os (When 2-3 Projects Use It)
+### From agent-os (When 2-3 Projects Use It)
 - [ ] Run tracking pattern (status, timestamps, errors)
 - [ ] Plugin system pattern (provider-agnostic infrastructure)
 - [ ] Idempotent execution pattern (database constraints)
 
-**Clarification:** This means extracting patterns FROM agent_os TO scaffolding as reusable documentation. NOT about making every project use agent_os.
+**Clarification:** This means extracting patterns FROM agent-os TO scaffolding as reusable documentation. NOT about making every project use agent-os.
 
-**Example:** "Run tracking pattern" = how to log execution status, timestamps, errors in SQLite. Other projects can use this pattern even if not using agent_os itself.
+**Example:** "Run tracking pattern" = how to log execution status, timestamps, errors in SQLite. Other projects can use this pattern even if not using agent-os itself.
 
-**Wait for:** agent_os architecture decisions, patterns proven across multiple projects
+**Wait for:** agent-os architecture decisions, patterns proven across multiple projects
 
 ---
 

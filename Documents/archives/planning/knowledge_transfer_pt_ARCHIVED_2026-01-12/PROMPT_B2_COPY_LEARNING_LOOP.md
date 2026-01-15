@@ -29,17 +29,17 @@
 **Step 1: Ensure directory exists**
 
 ```bash
-mkdir -p /Users/eriksjaastad/projects/project-tracker/Documents/patterns
+mkdir -p [USER_HOME]/projects/project-tracker/Documents/patterns
 ```
 
 **Step 2: Copy file**
 
-**Source:** `/Users/eriksjaastad/projects/project-scaffolding/patterns/learning-loop-pattern.md`
-**Destination:** `/Users/eriksjaastad/projects/project-tracker/Documents/patterns/learning-loop-pattern.md`
+**Source:** `[USER_HOME]/projects/project-scaffolding/patterns/learning-loop-pattern.md`
+**Destination:** `[USER_HOME]/projects/project-tracker/Documents/patterns/learning-loop-pattern.md`
 
 ```bash
-cp /Users/eriksjaastad/projects/project-scaffolding/patterns/learning-loop-pattern.md \
-   /Users/eriksjaastad/projects/project-tracker/Documents/patterns/learning-loop-pattern.md
+cp [USER_HOME]/projects/project-scaffolding/patterns/learning-loop-pattern.md \
+   [USER_HOME]/projects/project-tracker/Documents/patterns/learning-loop-pattern.md
 ```
 
 ---
@@ -47,7 +47,7 @@ cp /Users/eriksjaastad/projects/project-scaffolding/patterns/learning-loop-patte
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. Directory exists
 ls -la Documents/patterns/

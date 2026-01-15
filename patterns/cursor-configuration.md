@@ -322,7 +322,7 @@ build/
 - **Cursor Documentation:** https://cursor.sh/docs
 - **Related Patterns:**
   - `project-scaffolding/Documents/CODE_QUALITY_STANDARDS.md`
-  - `project-scaffolding/templates/00_Index_Template.md`
+  - `project-scaffolding/templates/00_Index.md.template`
 
 ---
 

@@ -30,7 +30,7 @@ This project is a well-intentioned scaffolding system that preaches absolute pat
 ### The "Heisenbug" — Silent Failure Scenarios
 
 **File:** `scripts/warden_audit.py:70-71`
-```python
+```bash
 except Exception:
     pass
 ```
@@ -38,7 +38,7 @@ except Exception:
 **Scenario:** When `warden_audit.py` encounters an unreadable file (permissions, encoding error, symlink loop), it **silently skips the file** without logging, counting the error, or surfacing it to the CLI exit code. A malicious or corrupted Python file in the scanned directory will be **invisible to the audit**.
 
 **File:** `scaffold/review.py:394-395`
-```python
+```bash
 except:
     pass
 ```
@@ -65,9 +65,9 @@ If `send2trash` encounters a permission prompt on certain Linux configurations (
 
 | File | Risk Type | Evidence | Status |
 |------|-----------|----------|--------|
-| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md` (line 60) | 🔴 **LEAK** |
+| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/trading-copilot/PROJECT_PHILOSOPHY.md` (line 60) | 🔴 **LEAK** |
 | `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/project-scaffolding/EXTERNAL_RESOURCES.yaml` (line 135) | 🔴 **LEAK** |
-| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/AI-journal/` (lines 147, 155, 235) | 🔴 **LEAK** |
+| `.cursorrules` | Hardcoded Path | `$PROJECTS_ROOT/ai-journal/` (lines 147, 155, 235) | 🔴 **LEAK** |
 | `EXTERNAL_RESOURCES.yaml` | Hardcoded Path | `template: "$PROJECTS_ROOT/.env.project-template"` (line 214) | 🔴 **LEAK** |
 | `EXTERNAL_RESOURCES.yaml` | Hardcoded Path | `template_source:` (line 284) | 🔴 **LEAK** |
 | `templates/.cursorrules-template` | Hardcoded Path | `$PROJECTS_ROOT/...` (lines 62-64) | 🔴 **LEAK** |
@@ -88,7 +88,7 @@ If `send2trash` encounters a permission prompt on certain Linux configurations (
 
 **File:** `scripts/validate_external_resources.py`
 
-```python
+```bash
 from pydantic import BaseModel, Field, validator  # ⚠️ `validator` is deprecated in Pydantic v2
 ```
 
@@ -440,7 +440,7 @@ $ ls Documents/archives/reviews/
 ### DEP-1: Requirements File Has No Upper Bounds
 
 **Current State:**
-```python
+```bash
 click>=8.1.0      # Could break on click 10.x
 pydantic>=2.0.0   # Could break on pydantic 3.x
 ```
@@ -523,11 +523,11 @@ This scaffolding was a **documentation project pretending to be infrastructure**
 # Verify all CRITICAL fixes
 grep -rn "sk-" scripts/*.py  # Should return nothing
 grep -rn "/Users/" scripts/*.py  # Should return nothing
-python scripts/archive_reviews.py --help  # Should run without error
+doppler run -- python scripts/archive_reviews.py --help  # Should run without error
 
 # Verify governance
 ls -la .git/hooks/pre-commit  # Should be executable
-python scripts/validate_external_resources.py  # Should pass
+doppler run -- python scripts/validate_external_resources.py  # Should pass
 
 # Verify tests
 ./venv/bin/pytest tests/test_smoke.py -v  # Should pass 12/12

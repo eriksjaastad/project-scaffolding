@@ -17,13 +17,19 @@ The **core standards used daily** (kept at the root for immediate access):
 **Every file in `guides/` and `reference/` is explicitly listed** to guarantee discoverability. No files are hidden or undocumented.
 
 ### Guides
+- [AUDIT_ASSEMBLY_LINE.md](guides/AUDIT_ASSEMBLY_LINE.md) - Standardized process for ecosystem-wide project hardening
 - [CODE_REVIEW_PROMPT.md](guides/CODE_REVIEW_PROMPT.md)
 - [DEEPSEEK_SETUP.md](guides/DEEPSEEK_SETUP.md)
 - [FREE_CREDITS_GUIDE.md](guides/FREE_CREDITS_GUIDE.md)
+- [REPOMIX_USAGE.md](guides/REPOMIX_USAGE.md) - How to use Repomix for project audits and context bundling
 - [USAGE_GUIDE.md](guides/USAGE_GUIDE.md)
 
 ### Reference
 - [CODE_REVIEW_ANTI_PATTERNS.md](reference/CODE_REVIEW_ANTI_PATTERNS.md)
+- [DOCUMENTATION_HYGIENE.md](reference/DOCUMENTATION_HYGIENE.md)
+- [DOPPLER_MIGRATION_PLAN.md](reference/DOPPLER_MIGRATION_PLAN.md) - Historical record of Doppler secrets management migration
+- [DOPPLER_SECRETS_MANAGEMENT.md](reference/DOPPLER_SECRETS_MANAGEMENT.md) - Comprehensive guide for Doppler usage across ecosystem
+- [LOCAL_MODEL_LEARNINGS.md](reference/LOCAL_MODEL_LEARNINGS.md)
 - [MODEL_COST_COMPARISON.md](reference/MODEL_COST_COMPARISON.md)
 - [PATTERN_ANALYSIS.md](reference/PATTERN_ANALYSIS.md)
 - [PATTERN_MANAGEMENT.md](reference/PATTERN_MANAGEMENT.md)

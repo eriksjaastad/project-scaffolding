@@ -110,5 +110,5 @@ Replace the placeholder tags in the frontmatter above with appropriate values:
 
 **Template Version:** 1.0  
 **Created:** 2025-12-31  
-**Location:** `project-scaffolding/templates/00_Index_Template.md`
+**Location:** `project-scaffolding/templates/00_Index.md.template`
 

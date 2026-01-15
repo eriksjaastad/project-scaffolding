@@ -32,7 +32,7 @@ Tasks 1-3 created the core script with dry-run, execute, and rollback. Now we ne
 
 ### 1. Add Arguments
 
-```python
+```bash
 parser.add_argument(
     "--projects",
     type=str,
@@ -47,7 +47,7 @@ parser.add_argument(
 
 ### 2. Parse Projects List
 
-```python
+```bash
 def parse_projects_filter(projects_arg: str | None) -> set | None:
     """Parse comma-separated project names into a set."""
     if not projects_arg:
@@ -60,7 +60,7 @@ def parse_projects_filter(projects_arg: str | None) -> set | None:
 
 ### 3. Update find_cursorrules_files for Filtering
 
-```python
+```bash
 def find_cursorrules_files(
     projects_root: pathlib.Path,
     projects_filter: set | None = None,
@@ -94,7 +94,7 @@ def find_cursorrules_files(
 
 ### 4. Create from Template Function
 
-```python
+```bash
 def create_from_template(
     project_dir: pathlib.Path,
     template_path: pathlib.Path,
@@ -131,7 +131,7 @@ def create_from_template(
 
 ### 5. Update run_update Function
 
-```python
+```bash
 def run_update(
     projects_root: pathlib.Path,
     backup_dir: pathlib.Path,
@@ -200,7 +200,7 @@ def run_update(
 
 ### 6. Update main() Function
 
-```python
+```bash
 def main():
     parser = argparse.ArgumentParser(
         description="Push safety rules to all project .cursorrules files"
@@ -237,29 +237,29 @@ def main():
 
 1. **Test --projects filter (dry-run):**
    ```bash
-   python scripts/update_cursorrules.py --dry-run --projects "project-tracker,AI-journal"
+   doppler run -- python scripts/update_cursorrules.py --dry-run --projects "project-tracker,ai-journal"
    # Should only show 2 projects, not all 16
    ```
 
 2. **Test --projects with non-existent project:**
    ```bash
-   python scripts/update_cursorrules.py --dry-run --projects "fake-project-xyz"
+   doppler run -- python scripts/update_cursorrules.py --dry-run --projects "fake-project-xyz"
    # Should show warning: "No matching projects found"
    ```
 
 3. **Test --create dry-run:**
    ```bash
    # Find a project without .cursorrules
-   ls /Users/eriksjaastad/projects/*/. | head -20
+   ls [USER_HOME]/projects/*/. | head -20
 
    # Test create flag
-   python scripts/update_cursorrules.py --dry-run --create --projects "some-project-without-cursorrules"
+   doppler run -- python scripts/update_cursorrules.py --dry-run --create --projects "some-project-without-cursorrules"
    # Should show: "WOULD CREATE: project-name/.cursorrules"
    ```
 
 4. **Test canary deployment simulation:**
    ```bash
-   python scripts/update_cursorrules.py --dry-run --projects "project-tracker,Tax processing,analyze-youtube-videos"
+   doppler run -- python scripts/update_cursorrules.py --dry-run --projects "project-tracker,tax-organizer,analyze-youtube-videos"
    # Should show exactly 3 projects
    ```
 

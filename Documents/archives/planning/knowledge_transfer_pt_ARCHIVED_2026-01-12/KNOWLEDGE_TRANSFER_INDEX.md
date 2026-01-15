@@ -107,10 +107,10 @@ These constraints must be included in every prompt:
 ## Reference Paths
 
 ### project-scaffolding paths:
-- `/Users/eriksjaastad/projects/project-scaffolding/`
+- `[USER_HOME]/projects/project-scaffolding/`
 
 ### project-tracker paths:
-- `/Users/eriksjaastad/projects/project-tracker/`
+- `[USER_HOME]/projects/project-tracker/`
 
 **Important:** All prompts should use ABSOLUTE paths to avoid ambiguity.
 
@@ -154,7 +154,7 @@ If a Worker times out or fails:
 After all prompts complete, verify:
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. Scripts exist locally
 ls -la scripts/warden_audit.py scripts/validate_project.py scripts/pre_review_scan.sh

@@ -624,7 +624,7 @@ During Phase 1 (planning), automate the multi-model review:
 
 ---
 
-### Trading Projects
+### trading-copilot
 
 **Tier 1 work:**
 - Fuzzy grading system design

@@ -8,7 +8,7 @@
 ## Quick Start
 
 ### New to this project?
-1. Read `core/ARCHITECTURE_OVERVIEW.md` (5-10 min)
+1. Read `ARCHITECTURE_OVERVIEW.md` (5-10 min)
 2. Skim this README for relevant sections
 3. Check `../TODO.md` for current work
 
@@ -25,7 +25,8 @@ This project follows the **Documents/ pattern** - a centralized documentation di
 
 ### Core Directories
 
-#### `core/`
+### Core Documents
+
 **Purpose:** Essential architecture and operations documentation
 
 **Suggested files:**
@@ -126,7 +127,7 @@ archives/
 
 Use relative paths:
 ```markdown
-See `core/ARCHITECTURE_OVERVIEW.md` for system design.
+See `ARCHITECTURE_OVERVIEW.md` for system design.
 See `../TODO.md` for current work.
 ```
 
@@ -160,7 +161,7 @@ AI assistants (Claude, ChatGPT, etc.) benefit from this structure:
 2. **They can update docs** - Clear ownership and format
 3. **They understand context** - Architecture + philosophy in one place
 
-**Tip:** Point AI to `core/ARCHITECTURE_OVERVIEW.md` at session start for quick context.
+**Tip:** Point AI to `ARCHITECTURE_OVERVIEW.md` at session start for quick context.
 
 ---
 
@@ -170,7 +171,7 @@ AI assistants (Claude, ChatGPT, etc.) benefit from this structure:
 
 **Monthly:**
 - Update `../TODO.md` (keep current)
-- Check `core/` docs for accuracy
+- Check core docs for accuracy
 
 **Quarterly:**
 - Review `archives/` for expiration candidates
@@ -215,7 +216,7 @@ project/
 ├── TODO.md                # Current work
 ├── Documents/
 │   ├── README.md          # This file (index)
-│   ├── core/              # Essential docs
+│   ├── ARCHITECTURE.md    # Essential docs
 │   └── archives/          # Historical docs
 ```
 
@@ -234,7 +235,7 @@ project/
 
 1. Can't find something? Check this README's index
 2. Not sure where to document? Ask in the pattern:
-   - Core system? → `core/`
+   - Core system? → `Documents/` (root)
    - How-to? → `guides/`
    - Standard/convention? → `reference/`
    - Scar story? → `safety/`

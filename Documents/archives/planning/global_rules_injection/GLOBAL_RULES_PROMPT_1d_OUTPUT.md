@@ -31,7 +31,7 @@
 
 Update main() with improved formatting:
 
-```python
+```bash
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
@@ -46,7 +46,7 @@ def main():
     parser.add_argument(
         "--root",
         type=pathlib.Path,
-        default=pathlib.Path("/Users/eriksjaastad/projects"),
+        default=pathlib.Path("[USER_HOME]/projects"),
         help="Projects root directory"
     )
 
@@ -101,11 +101,11 @@ if __name__ == "__main__":
 
 ```bash
 # 1. Script runs with clean output
-python scripts/update_cursorrules.py --dry-run
+doppler run -- python scripts/update_cursorrules.py --dry-run
 
 # Expected output format:
 # INFO: Mode: DRY-RUN
-# INFO: Scanning: /Users/eriksjaastad/projects
+# INFO: Scanning: [USER_HOME]/projects
 # INFO: ------------------------------------------------------------
 # INFO: OK: hypocrisynow - has all safety rules
 # INFO: NEEDS UPDATE: project-tracker - missing: Trash rule, Silent rule
@@ -114,7 +114,7 @@ python scripts/update_cursorrules.py --dry-run
 # INFO: Summary: 1 OK, 15 need update, 16 total
 
 # 2. Exit code is 0
-python scripts/update_cursorrules.py --dry-run && echo "Exit code: 0"
+doppler run -- python scripts/update_cursorrules.py --dry-run && echo "Exit code: 0"
 ```
 
 ---

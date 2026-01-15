@@ -26,7 +26,7 @@
 
 ### 1.1 Directory Structure
 
-```
+```bash
 project-scaffolding/
 ├── scaffold/                    # Core library
 │   ├── __init__.py              # Package definition (v0.1.0)
@@ -47,7 +47,7 @@ project-scaffolding/
 │   ├── Documents/               # Standard documentation structure
 │   ├── AGENTS.md.template       # AI agent instructions template
 │   ├── CLAUDE.md.template       # Claude-specific instructions
-│   ├── 00_Index_Template.md     # Project index template
+│   ├── 00_Index.md.template     # Project index template
 │   ├── TODO.md.template         # TODO format template
 │   ├── CODE_REVIEW.md.template  # Code review template
 │   ├── .cursorrules.template    # Cursor IDE rules
@@ -77,7 +77,6 @@ project-scaffolding/
 │
 ├── Documents/                   # Project documentation
 │   ├── archives/                # Archived documents
-│   ├── core/                    # Core documentation
 │   └── march-2026-review/       # Planning documents
 │
 ├── scaffold_cli.py              # CLI entry point
@@ -91,7 +90,7 @@ project-scaffolding/
 
 ### 1.2 Component Dependency Graph
 
-```
+```bash
 ┌─────────────────────────────────────────────────────────────────────┐
 │                           ENTRY POINTS                               │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -136,7 +135,7 @@ project-scaffolding/
 
 **Key Functions:**
 
-```python
+```bash
 # Factory function
 create_orchestrator(openai_key, anthropic_key, google_key, deepseek_key) → ReviewOrchestrator
 
@@ -248,10 +247,10 @@ scaffold review --type [document|code] --input PATH --round N [--output DIR]
 
 **Commands:**
 ```bash
-./scripts/reindex_projects.py --missing   # Create missing indexes
-./scripts/reindex_projects.py --stale     # Update >6 month old indexes
-./scripts/reindex_projects.py --all       # Recreate all (requires confirmation)
-./scripts/reindex_projects.py PROJECT     # Specific project
+doppler run -- python3 ./scripts/reindex_projects.py --missing   # Create missing indexes
+doppler run -- python3 ./scripts/reindex_projects.py --stale     # Update >6 month old indexes
+doppler run -- python3 ./scripts/reindex_projects.py --all       # Recreate all (requires confirmation)
+doppler run -- python3 ./scripts/reindex_projects.py PROJECT     # Specific project
 ```
 
 ### 2.6 Ecosystem Audit (`scripts/warden_audit.py`)
@@ -324,7 +323,7 @@ cost_summary:
   infrastructure: float
   ai_apis: float
   total_known: float
-```
+```bash
 
 ### 3.2 Review Prompt Schema (YAML Frontmatter)
 
@@ -335,7 +334,7 @@ type: str  # document_review, code_review
 focus: str  # architecture, security, performance
 api: str    # openai, anthropic, deepseek, ollama
 model: str  # Model identifier
-```
+```bash
 
 ### 3.3 Project Index Schema (YAML Frontmatter)
 
@@ -348,7 +347,7 @@ tags:
   - status/{active|archived|production|planning}
   - tech/{python|typescript|...}
 created: date
-```
+```bash
 
 ---
 
@@ -470,7 +469,7 @@ scaffold review --type document --input PATH --round N
 # Exit codes:
 # 0 = Success
 # 1 = Error (missing DoD, no API keys, review failure)
-```
+```bash
 
 ### 8.2 Orchestrator Contract
 
@@ -491,7 +490,7 @@ async def run_review(
 # - Failures are captured in ReviewResult.error (not raised)
 # - Output files use safe_slug() for filenames
 # - Atomic writes prevent partial files
-```
+```bash
 
 ### 8.3 Validation Contract
 

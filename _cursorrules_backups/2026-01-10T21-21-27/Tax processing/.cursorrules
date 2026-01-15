@@ -3,7 +3,7 @@
 ## 📝 Markdown & Documentation Standards
 - **ALWAYS preserve YAML frontmatter** when editing `.md` files.
 - Use **nested tags** for hierarchy: #p/tax-processing, #status/active, #type/platform.
-- Ensure `00_Index_TaxProcessing.md` stays synchronized with project progress.
+- Ensure `00_Index_tax-organizer.md` stays synchronized with project progress.
 
 ## 🐍 Python & Logic Standards
 - **Currency Precision:** ALWAYS use `Decimal` for currency values. NEVER use `float` for money.

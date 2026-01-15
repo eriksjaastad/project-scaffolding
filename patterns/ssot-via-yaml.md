@@ -41,7 +41,7 @@ Instead of a 500-line Markdown table, use a structured YAML list:
 
 ```yaml
 projects:
-  trading-projects:
+  trading-copilot:
     monthly_cost: 12
     services:
       - name: Railway

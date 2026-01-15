@@ -60,7 +60,7 @@ time python scripts/warden_audit.py --root . --fast
 # Expected: <1 second, finds scaffold/review.py issue as P0
 
 # 2. Test severity classification
-python scripts/warden_audit.py --root . | grep -E "P[0-2]"
+doppler run -- python scripts/warden_audit.py --root . | grep -E "P[0-2]"
 # Expected: Severity labels in output
 
 # 3. Test all tests pass

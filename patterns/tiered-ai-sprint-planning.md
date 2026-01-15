@@ -2,7 +2,7 @@
 
 **Pattern Type:** 🟡 Emerging (needs validation)  
 **First Applied:** December 22, 2025  
-**Source Project:** AI usage-billing tracker (cost crisis recovery)
+**Source Project:** ai-usage-billing-tracker (cost crisis recovery)
 
 ---
 
@@ -353,6 +353,6 @@ Result:
 
 ---
 
-*Pattern extracted from AI usage-billing tracker project after hitting $300 spend in 28 days*  
+*Pattern extracted from ai-usage-billing-tracker project after hitting $300 spend in 28 days*  
 *Author: Claude Sonnet 4.5 (ironically, using Tier 1 to create a pattern about not over-using Tier 1!)*
 

@@ -29,12 +29,12 @@ Projects should use relative paths or environment variables. Hardcoded absolute 
 ### 1. Expand dangerous_patterns (line 50)
 
 Change from:
-```python
+```bash
 dangerous_patterns = ['os.remove', 'os.unlink', 'shutil.rmtree']
 ```
 
 To:
-```python
+```bash
 dangerous_patterns = [
     'os.remove', 'os.unlink', 'shutil.rmtree',  # Dangerous functions
     '/Users/', '/home/',  # macOS/Linux absolute paths
@@ -46,7 +46,7 @@ dangerous_patterns = [
 
 After line ~67, update severity classification:
 
-```python
+```bash
 # Determine severity based on file location and pattern type
 is_test_file = 'test' in file_path.parts or file_path.name.startswith('test_')
 
@@ -68,7 +68,7 @@ else:
 
 If `check_dangerous_functions_fast()` exists, add the same patterns to it:
 
-```python
+```bash
 dangerous_patterns = [
     'os.remove', 'os.unlink', 'shutil.rmtree',
     '/Users/', '/home/',
@@ -97,13 +97,13 @@ And apply the same severity logic.
 
 2. **Run Warden:**
    ```bash
-   python scripts/warden_audit.py --root .
+   doppler run -- python scripts/warden_audit.py --root .
    ```
    Expected output: `[P1-ERROR] project-scaffolding: '/Users/' found in tests/test_hardcoded_path.py`
 
 3. **Verify exit code:**
    ```bash
-   python scripts/warden_audit.py --root . && echo "PASSED" || echo "FAILED"
+   doppler run -- python scripts/warden_audit.py --root . && echo "PASSED" || echo "FAILED"
    ```
    Should show "FAILED" (P1 blocks commit)
 
@@ -114,7 +114,7 @@ And apply the same severity logic.
 
 5. **Verify project-scaffolding is clean:**
    ```bash
-   python scripts/warden_audit.py --root . --fast
+   doppler run -- python scripts/warden_audit.py --root . --fast
    ```
    Should find only the P0 issue in `scaffold/review.py` (os.unlink), no hardcoded paths
 

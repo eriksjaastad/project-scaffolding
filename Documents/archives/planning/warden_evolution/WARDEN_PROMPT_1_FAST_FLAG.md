@@ -29,14 +29,14 @@ The current Warden uses Python's `.rglob()` to scan files, which takes 10+ secon
 
 ### 1. Add Argument (around line 121)
 
-```python
+```bash
 parser.add_argument("--fast", action="store_true",
                    help="Fast scan mode for pre-commit hooks (<1s target)")
 ```
 
 ### 2. Create Fast Function (after line 72)
 
-```python
+```bash
 def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
     """Fast grep-based scanner for pre-commit hooks.
 
@@ -83,22 +83,22 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
 ### 3. Update run_audit() (around line 103)
 
 Change line 103 from:
-```python
+```bash
 dangerous_usage = check_dangerous_functions(project_root)
 ```
 
 To:
-```python
+```bash
 dangerous_usage = check_dangerous_functions_fast(project_root) if use_fast else check_dangerous_functions(project_root)
 ```
 
 Add parameter to `run_audit()` function signature (line 74):
-```python
+```bash
 def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
 ```
 
 And in `__main__` section (line 131):
-```python
+```bash
 success = run_audit(root_path, use_fast=args.fast)
 ```
 
@@ -108,7 +108,7 @@ success = run_audit(root_path, use_fast=args.fast)
 
 1. **Test regular mode still works:**
    ```bash
-   python scripts/warden_audit.py --root .
+   doppler run -- python scripts/warden_audit.py --root .
    # Should complete (even if slow)
    ```
 

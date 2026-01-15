@@ -22,8 +22,8 @@
 
 **Examples:**
 - `SCAFFOLDING_DEEPSEEK_KEY` → `project-scaffolding/.env`
-- `CORTANA_OPENAI_KEY` → `Cortana personal AI/.env`
-- `TRADING_OPENAI_KEY` → `Trading Projects/.env`
+- `CORTANA_OPENAI_KEY` → `cortana-personal-ai/.env`
+- `TRADING_OPENAI_KEY` → `trading-copilot/.env`
 
 **Why this matters:**
 - ✅ Cost attribution (which project spent what?)
@@ -65,7 +65,7 @@ Ask yourself:
 ### Cloud Hosting/Deployment
 **What we have:**
 - Railway (Python cron jobs + Postgres)
-- Cloudflare R2 (S3-compatible storage for 3D Pose Factory)
+- Cloudflare R2 (S3-compatible storage for 3d-pose-factory)
 - Vercel (muffinpanrecipes)
 
 ---
@@ -73,7 +73,7 @@ Ask yourself:
 ### Cloud Storage/Backup
 **What we have:**
 - rclone (tool that connects to storage)
-- Cloudflare R2 (via rclone for 3D Pose Factory)
+- Cloudflare R2 (via rclone for 3d-pose-factory)
 - Google Drive (via rclone for image-workflow backups)
 
 ---
@@ -108,7 +108,7 @@ Ask yourself:
 | Anthropic | Trading, Scaffolding | `TRADING_ANTHROPIC_KEY`, etc. | Active |
 | Railway | Trading | `TRADING_RAILWAY_API_KEY` | Active |
 | Discord | Trading, Scaffolding | `TRADING_DISCORD_WEBHOOK_URL` | Active |
-| Cloudflare R2 | 3D Pose Factory | `POSE_FACTORY_CLOUDFLARE_R2_KEY` | Active |
+| Cloudflare R2 | 3d-pose-factory | `POSE_FACTORY_CLOUDFLARE_R2_KEY` | Active |
 
 ---
 
