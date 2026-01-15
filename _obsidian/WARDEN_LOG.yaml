@@ -6,7 +6,7 @@
     - Implemented automated reference updates ($SCAFFOLDING -> ./) to decouple from meta-repo.
     - Added version metadata injection to project indexes.
     - Added verification step to detect remaining $SCAFFOLDING references.
-    - Successfully verified standalone migration on `project-tracker` and `Tax processing`.
+    - Successfully verified standalone migration on `project-tracker` and `tax-organizer`.
   warden_agent: "Project standalone automation implemented. Scaffolding v1.0.0 released."
 - timestamp: "2026-01-09T17:15:00Z"
   action: "Ecosystem Constitution v2.0: AI Hierarchy & Governance Reorganization"
@@ -26,7 +26,7 @@
     - Eradicated silent error laundering; replaced with explicit `logging`.
     - Implemented Atomic Writes (temp-file + rename) for project index updates.
     - Purged remaining hardcoded `/Users/` paths from documentation and templates.
-    - Hardened Kiro CLI path lookup with `shutil.which` and graceful failure.
+    - Hardened CLI path lookup with `shutil.which` and graceful failure.
     - Standardized `validate_project.py` to ignore caches and environment files.
   warden_agent: "Industrial-grade subprocess safety and 100% path portability verified."
 - timestamp: "2026-01-07T11:30:00Z"
@@ -49,7 +49,7 @@
 - timestamp: "2026-01-06T17:00:00Z"
   action: "Master API Key Registry Migration"
   changes:
-    - Migrated all ecosystem API keys from agent_os/.env to project-scaffolding/.env.
+    - Migrated all ecosystem API keys from agent-os/.env to project-scaffolding/.env.
     - project-scaffolding/.env now serves as the Master Keychain (Centralized Record).
     - Established PROJECT_SERVICE_TYPE naming convention for all registered keys.
     - Updated EXTERNAL_RESOURCES.md to reflect the new Master Registry location.

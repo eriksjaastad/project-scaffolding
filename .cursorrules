@@ -29,6 +29,9 @@ Meta-project for standardizing ecosystem structures, AI-agent role definitions, 
 - [x] Documentation updated (if user-facing changes)
 - [x] Tests pass: `pytest tests/`
 - [x] **Index updated** (if new patterns, templates, or major components added)
+- [ ] **Directory Standardization:** Lowercase-kebab-case, matches GitHub repo name.
+- [ ] **Domain Check:** Include `domain_name:` in `00_Index_*.md` frontmatter if applicable.
+- [ ] **Plugin Prefix:** Plugin projects MUST be prefixed with `plugin-`.
 
 ---
 
@@ -105,7 +108,7 @@ If this project builds on patterns from other projects, document them here:
 | Source Project | Pattern Borrowed |
 |----------------|------------------|
 | image-workflow | FileTracker pattern |
-| Trading Projects | SSOT via YAML |
+| trading-copilot | SSOT via YAML |
 
 ---
 

@@ -60,13 +60,13 @@ Instead of relying on a local `.env` file, prefix your commands with `doppler ru
 
 #### Before Doppler:
 ```bash
-cd /Users/eriksjaastad/projects/trading-copilot
-python3 scripts/main.py
+cd [USER_HOME]/projects/trading-copilot
+doppler run -- python3 scripts/main.py
 ```
 
 #### After Doppler:
 ```bash
-cd /Users/eriksjaastad/projects/trading-copilot
+cd [USER_HOME]/projects/trading-copilot
 doppler run -- python3 scripts/main.py
 ```
 
@@ -88,7 +88,7 @@ doppler projects create my-new-project
 doppler secrets set DATABASE_URL="postgresql://..." --project my-new-project --config dev
 
 # 3. Initialize the local directory
-cd /Users/eriksjaastad/projects/my-new-project
+cd [USER_HOME]/projects/my-new-project
 doppler setup --project my-new-project --config dev --no-interactive
 
 # 4. Run your app
@@ -104,7 +104,7 @@ doppler run -- python3 main.py
 ### View Secrets for a Project
 
 ```bash
-cd /Users/eriksjaastad/projects/trading-copilot
+cd [USER_HOME]/projects/trading-copilot
 doppler secrets
 ```
 
@@ -147,7 +147,7 @@ If Doppler breaks or you need to return to `.env` files:
 ### Per-Project Rollback
 
 ```bash
-cd /Users/eriksjaastad/projects/trading-copilot
+cd [USER_HOME]/projects/trading-copilot
 mv .env.doppler-backup .env
 ```
 
@@ -158,7 +158,7 @@ Your project will work as it did before Doppler.
 If you need to rollback ALL projects at once:
 
 ```bash
-cd /Users/eriksjaastad/projects
+cd [USER_HOME]/projects
 for project in ai-usage-billing-tracker analyze-youtube-videos cortana-personal-ai hypocrisynow muffinpanrecipes project-scaffolding smart-invoice-workflow trading-copilot; do
     cd "$project"
     if [ -f .env.doppler-backup ]; then
@@ -182,7 +182,7 @@ Add to `.gitignore`:
 .env
 .env.*
 !.env.example
-```
+```bash
 
 The `!.env.example` line allows you to commit a template with dummy values.
 
@@ -195,7 +195,7 @@ Create a template file that shows what variables are needed (without real values
 DATABASE_URL=postgresql://user:password@host:port/dbname
 OPENAI_API_KEY=sk-...
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
-```
+```bash
 
 Commit this to Git as documentation.
 
@@ -219,7 +219,7 @@ For high-stakes operations (database migrations, production deployments), verify
 
 ```bash
 doppler secrets | grep DATABASE_URL
-```
+```bash
 
 ### 6. Offline Considerations
 
@@ -257,9 +257,9 @@ Doppler encrypts secrets in their cloud storage (AES-256).
 ### Test Doppler is Working
 
 ```bash
-cd /Users/eriksjaastad/projects/trading-copilot
+cd [USER_HOME]/projects/trading-copilot
 doppler run -- python3 -c "import os; print('DATABASE_URL:', os.getenv('DATABASE_URL')[:30])"
-```
+```bash
 
 Expected output: `DATABASE_URL: postgresql://postgres:...`
 
@@ -270,26 +270,26 @@ If you see `None`, Doppler is not injecting secrets correctly.
 1. **Check setup:**
    ```bash
    doppler setup
-   ```
+   ```bash
    Verify project and config are correct.
 
 2. **Check authentication:**
    ```bash
    doppler whoami
-   ```
+   ```bash
    Verify you're logged in.
 
 3. **Check secrets exist:**
    ```bash
    doppler secrets
-   ```
+   ```bash
    Verify the secrets are uploaded.
 
 4. **Check `.doppler` directory:**
    ```bash
    ls -la .doppler
    cat .doppler/.doppler.yaml
-   ```
+   ```bash
    Verify config file exists and has correct project/config.
 
 ---
@@ -302,9 +302,9 @@ If you see `None`, Doppler is not injecting secrets correctly.
 - [Doppler Dashboard](https://dashboard.doppler.com)
 
 ### Internal Documentation
-- **Migration Plan:** `/Users/eriksjaastad/projects/DOPPLER_MIGRATION_PLAN.md` (detailed timeline and steps)
-- **Root Governance:** `/Users/eriksjaastad/projects/.cursorrules` (see `.env` rules)
-- **Security Standards:** `/Users/eriksjaastad/projects/project-scaffolding/Documents/CODE_QUALITY_STANDARDS.md`
+- **Migration Plan:** `[USER_HOME]/projects/DOPPLER_MIGRATION_PLAN.md` (detailed timeline and steps)
+- **Root Governance:** `[USER_HOME]/projects/.cursorrules` (see `.env` rules)
+- **Security Standards:** `[USER_HOME]/projects/project-scaffolding/Documents/CODE_QUALITY_STANDARDS.md`
 
 ### Quick Reference Commands
 
@@ -327,7 +327,7 @@ doppler run -- your-command
 
 # Update a secret
 doppler secrets set KEY="value"
-```
+```bash
 
 ---
 
@@ -345,7 +345,7 @@ doppler run -- /usr/local/bin/python3 script.py
 # Option 2: Activate venv first
 source venv/bin/activate
 doppler run -- python script.py
-```
+```bash
 
 ### Problem: "No project or config set for this directory"
 
@@ -354,7 +354,7 @@ doppler run -- python script.py
 **Solution:**
 ```bash
 doppler setup --project your-project --config dev --no-interactive
-```
+```bash
 
 ### Problem: "Rate limit exceeded" or "API error"
 
@@ -384,7 +384,7 @@ doppler setup --project your-project --config dev --no-interactive
 2. **Check for unused projects:**
    ```bash
    doppler projects
-   ```
+   ```bash
    Archive projects that are no longer active.
 
 3. **Verify backups:**
@@ -422,14 +422,14 @@ doppler secrets set DATABASE_URL="prod-url" --config prod
 
 # Deploy to production
 doppler run --config prod -- deploy-script.sh
-```
+```bash
 
 ### CI/CD Integration
 
 For automated deployments, generate a service token:
 ```bash
 doppler configs tokens create prod-deploy --config prod
-```
+```bash
 
 Add that token to your CI/CD environment (GitHub Actions, Railway, etc.).
 
@@ -439,12 +439,12 @@ Add that token to your CI/CD environment (GitHub Actions, Railway, etc.).
 
 **Questions or issues?**
 1. Check this document first
-2. Check `/Users/eriksjaastad/projects/DOPPLER_MIGRATION_PLAN.md` for detailed migration notes
+2. Check `[USER_HOME]/projects/DOPPLER_MIGRATION_PLAN.md` for detailed migration notes
 3. Check Doppler docs: https://docs.doppler.com
 
 **Emergency rollback?**
 ```bash
-cd /Users/eriksjaastad/projects/{project-name}
+cd [USER_HOME]/projects/{project-name}
 mv .env.doppler-backup .env
 ```
 

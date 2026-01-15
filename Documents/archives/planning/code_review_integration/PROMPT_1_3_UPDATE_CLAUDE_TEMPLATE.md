@@ -34,7 +34,7 @@
 ## Common Patterns
 
 [Provide frequently-used code patterns specific to your project]
-```
+```bash
 
 **new_string:**
 ```markdown
@@ -67,7 +67,7 @@ cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 ```bash
 cd "$SCAFFOLDING"
 source venv/bin/activate
-python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
+doppler run -- python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
 ```
 
 **Step 3: Review results**
@@ -80,14 +80,14 @@ Run validation to check for common issues:
 
 ```bash
 # Quick safety check (< 1 second)
-python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
+doppler run -- python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
 
 # Full project validation
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **What validation catches:**
-- ✅ Hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ Hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ Exposed secrets (API keys like `sk-...`, `AIza...`)
 - ✅ Missing required files (00_Index_*.md, AGENTS.md, etc.)
 - ✅ Invalid project structure
@@ -105,7 +105,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ## Common Patterns
 
 [Provide frequently-used code patterns specific to your project]
-```
+```bash
 
 ---
 

@@ -29,20 +29,20 @@
 **Step 1: Check if existing file exists**
 
 ```bash
-ls -la /Users/eriksjaastad/projects/project-tracker/Documents/reference/MODEL_LEARNINGS.md
+ls -la [USER_HOME]/projects/project-tracker/Documents/reference/MODEL_LEARNINGS.md
 ```
 
 **Step 2: Ensure directory exists**
 
 ```bash
-mkdir -p /Users/eriksjaastad/projects/project-tracker/Documents/reference
+mkdir -p [USER_HOME]/projects/project-tracker/Documents/reference
 ```
 
 **Step 3: Copy scaffolding version**
 
 ```bash
-cp /Users/eriksjaastad/projects/project-scaffolding/Documents/reference/LOCAL_MODEL_LEARNINGS.md \
-   /Users/eriksjaastad/projects/project-tracker/Documents/reference/LOCAL_MODEL_LEARNINGS.md
+cp [USER_HOME]/projects/project-scaffolding/Documents/reference/LOCAL_MODEL_LEARNINGS.md \
+   [USER_HOME]/projects/project-tracker/Documents/reference/LOCAL_MODEL_LEARNINGS.md
 ```
 
 **Step 4: If MODEL_LEARNINGS.md exists, merge content**
@@ -60,7 +60,7 @@ If no existing file, just use the copied file as-is.
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. File exists
 ls -la Documents/reference/LOCAL_MODEL_LEARNINGS.md

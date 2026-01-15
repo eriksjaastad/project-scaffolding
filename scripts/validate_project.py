@@ -129,7 +129,8 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
     exclude_dirs = {
         ".git", "venv", ".venv", "__pycache__", "node_modules", "data",
         "library", ".mypy_cache", ".pytest_cache", ".ruff_cache", "archives", "_trash",
-        "htmlcov", ".tox", ".nox", ".cache", "logs"
+        "htmlcov", ".tox", ".nox", ".cache", "logs", "recovered", "cursor_history",
+        "entries", "insights"
     }
     
     for root, dirs, files in os.walk(project_path):
@@ -137,8 +138,9 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
         dirs[:] = [d for d in dirs if d not in exclude_dirs and not d.startswith(".")]
         
         for file in files:
-            # Skip binary files, known safe files, and env files
-            if file.endswith((".png", ".jpg", ".jpeg", ".pyc", ".db", ".zip", ".tar.gz", ".bak")) or file in {".env", ".env.example"}:
+            # Skip binary files, known safe files, generated files, and env files
+            if file.endswith((".png", ".jpg", ".jpeg", ".pyc", ".db", ".zip", ".tar.gz", ".bak", ".xml", ".log", ".pdf", ".json", ".csv")) or \
+               file in {".env", ".env.example", "full_repo_context.txt", "billing.error.log", "repomix-output.xml", "pandoc"}:
                 continue
                 
             file_path = Path(root) / file

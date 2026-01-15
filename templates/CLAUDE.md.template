@@ -11,7 +11,7 @@
 
 1. **README.md** - Project overview and quick start
 2. **This file (CLAUDE.md)** - Coding standards and safety rules
-3. **Documents/core/ARCHITECTURE_OVERVIEW.md** - System design (if exists)
+3. **Documents/ARCHITECTURE_OVERVIEW.md** - System design (if exists)
 4. **.cursorrules** - Project-specific Cursor rules (if exists)
 
 ---
@@ -48,7 +48,7 @@
 │   └── logs/                  # Log files
 │
 └── Documents/                 # Documentation
-    ├── core/                  # Architecture & operations
+    ├── ARCHITECTURE.md        # Architecture & operations
     ├── guides/                # How-to documents
     ├── reference/             # Standards & knowledge
     └── safety/                # Safety systems
@@ -88,6 +88,7 @@ value: Optional[str] = None
 - **Error handling:** Explicit exception handling (no bare except)
 - **Logging:** Use logging module, not print statements (except CLI tools)
 - **File paths:** Use `pathlib.Path`, not `os.path`
+- **Markdown links:** Use relative paths, never absolute (`../../other-project/file.md` not `[absolute_path]/file.md`)
 
 ### Code Organization
 
@@ -243,7 +244,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **What validation catches:**
-- ✅ Hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ Hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ Exposed secrets (API keys like `sk-...`, `AIza...`)
 - ✅ Missing required files (00_Index_*.md, AGENTS.md, etc.)
 - ✅ Invalid project structure
@@ -449,7 +450,7 @@ Notes: Additional context if needed
 ## Questions? Check These First:
 
 1. **README.md** - Project overview
-2. **Documents/core/ARCHITECTURE_OVERVIEW.md** - System design (if exists)
+2. **Documents/ARCHITECTURE_OVERVIEW.md** - System design (if exists)
 3. **ROADMAP.md** - Long-term vision (if exists)
 4. **TODO.md** - Current work priorities (if exists)
 5. **This file** - When in doubt about safety/standards

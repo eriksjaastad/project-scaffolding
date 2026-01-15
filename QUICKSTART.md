@@ -42,7 +42,7 @@ cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
 cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
 cp "$SCAFFOLDING/templates/README.md.template" ./README.md
 cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore
-cp "$SCAFFOLDING/templates/00_Index_Template.md" "./00_Index_$(basename $NEW_PROJECT).md"
+cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
 
 # 3. Initialize git
 git init
@@ -182,23 +182,23 @@ Once your project is set up, use the scaffolding's validation and review infrast
 
 **Command:**
 ```bash
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **What it checks:**
 - ✅ Required files present (00_Index_*.md, AGENTS.md, CLAUDE.md, .cursorrules, etc.)
 - ✅ Project index has valid YAML frontmatter and required sections
-- ✅ **DNA Integrity:** No hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ **DNA Integrity:** No hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ **Security:** No exposed secrets (API keys like `sk-...`, `AIza...`)
 - ✅ Mandatory directories exist (Documents/, etc.)
 
 **Example output (clean project):**
-```
+```bash
 ✅ my-new-project (Fully Compliant)
 ```
 
 **Example output (issues found):**
-```
+```bash
 ⚠️ my-new-project
    - Missing mandatory file: .cursorrules
    - DNA Defect: Absolute path found in scripts/helper.py
@@ -226,7 +226,7 @@ cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 ```bash
 cd "$SCAFFOLDING"
 source venv/bin/activate
-python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
+doppler run -- python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
 ```
 
 **Step 3: Review results**
@@ -248,10 +248,10 @@ Run validation periodically as you build:
 
 ```bash
 # Quick check (< 1 second)
-python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
+doppler run -- python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
 
 # Full validation
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **Best practice:** Validate before major commits or before requesting code reviews.
@@ -298,7 +298,7 @@ Scaffolding an existing project requires **deep understanding first**. This is N
 
 During ANY phase, **stop and ask** if you encounter:
 
-- ❌ **Absolute paths** in your proposed changes (e.g., `/Users/...`) - This violates scaffolding principles
+- ❌ **Absolute paths** in your proposed changes (e.g., `[absolute_path]/...`) - This violates scaffolding principles
 - ❌ **Overwriting files** that have significant custom content
 - ❌ **Moving files** without understanding why they're where they are
 - ❌ **Breaking imports** or file references
@@ -361,7 +361,7 @@ ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
 
 ### What I Don't Understand Yet
 [List things you need clarification on]
-```
+```bash
 
 **STOP HERE.** Present this report and wait for feedback before proceeding.
 
@@ -413,7 +413,7 @@ ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
 - Modified: [files to change - explain what changes]
 - Moved: [files to relocate - explain why]
 - Unchanged: [files to leave alone]
-```
+```bash
 
 ---
 
@@ -446,7 +446,7 @@ ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
 - [ ] Proposed changes align with project's existing conventions where possible
 
 ### Awaiting your approval before proceeding.
-```
+```bash
 
 **Only proceed after explicit approval.**
 
@@ -464,7 +464,7 @@ export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 
 # Project Index (MANDATORY if missing)
 [[ ! -f 00_Index_*.md ]] && \
-  cp "$SCAFFOLDING/templates/00_Index_Template.md" \
+  cp "$SCAFFOLDING/templates/00_Index.md.template" \
   "./00_Index_$(basename $(pwd)).md"
 
 # AI collaboration files (if missing)
@@ -478,7 +478,7 @@ export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 
 # Task tracking (if missing)
 [[ ! -f TODO.md ]] && cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
-```
+```bash
 
 **Step 5.2: Customize each file for the project**
 
@@ -507,7 +507,7 @@ pytest tests/ 2>/dev/null || python -m pytest 2>/dev/null
 npm test 2>/dev/null
 
 # Or whatever the project uses
-```
+```bash
 
 **Check for scaffolding violations in YOUR changes:**
 ```bash
@@ -516,7 +516,7 @@ grep -r "/Users/" . --include="*.md" --include="*.py" --include="*.json" 2>/dev/
 
 # Did we add any API keys?
 grep -rE "(sk-|AIza|AKIA)" . --include="*.md" --include="*.py" 2>/dev/null
-```
+```bash
 
 **Verify checklist:**
 - [ ] Project runs/builds as before
@@ -537,7 +537,7 @@ git commit -m "Add project scaffolding structure
 - Added AI collaboration files (AGENTS.md, CLAUDE.md, .cursorrules)
 - Standardized documentation structure
 - Project enhanced with scaffolding patterns"
-```
+```bash
 
 ---
 
@@ -557,7 +557,7 @@ Documents/
 └── archives/              # Historical docs
     ├── reviews/           # Code review history
     └── sessions/          # Session notes
-```
+```bash
 
 **IMPORTANT:** Core documents (Architecture, Operations, Standards) go **at the Documents/ root level**, NOT in a `core/` subdirectory. This makes them immediately visible and discoverable.
 
@@ -569,7 +569,7 @@ Documents/
 
 | Template | Purpose |
 |----------|---------|
-| `00_Index_Template.md` | Project index for Obsidian discovery |
+| `00_Index.md.template` | Project index for Obsidian discovery |
 | `AGENTS.md.template` | AI source of truth (DoD, constraints) |
 | `CLAUDE.md.template` | AI working instructions & safety rules |
 | `.cursorrules-template` | Cursor IDE configuration |
@@ -622,19 +622,19 @@ See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
 ### Validate a Project
 ```bash
 python "$SCAFFOLDING/scripts/validate_project.py" /path/to/project
-```
+```bash
 
 ### Run Multi-AI Review
 ```bash
 cd "$SCAFFOLDING"
 source venv/bin/activate
 python scaffold_cli.py review --type document --input /path/to/doc.md --round 1
-```
+```bash
 
 ### Archive Old Reviews
 ```bash
 python "$SCAFFOLDING/scripts/archive_reviews.py" /path/to/project
-```
+```bash
 
 ---
 
@@ -653,7 +653,7 @@ export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 Common issues:
 1. **Missing index file:** Create `00_Index_[ProjectName].md`
 2. **Missing YAML frontmatter:** Add tags to index file
-3. **Hardcoded paths:** Replace `/Users/...` with relative paths
+3. **Hardcoded paths:** Replace `[absolute_path]/...` with relative paths
 
 ### "Which files are absolutely required?"
 

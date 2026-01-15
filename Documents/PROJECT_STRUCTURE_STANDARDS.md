@@ -178,9 +178,9 @@ scripts/
 ```
 Documents/
 ├── README.md               # Docs index (Grand Central Station)
-├── ARCHITECTURE.md         # Core Architecture
-├── OPERATIONS.md           # Core Operations
-├── DATA_MODEL.md           # Core Data Model
+├── ARCHITECTURE.md         # Core Architecture (at root!)
+├── OPERATIONS.md           # Core Operations (at root!)
+├── DATA_MODEL.md           # Core Data Model (at root!)
 ├── guides/                 # How-to guides
 │   ├── SETUP.md
 │   └── DEPLOYMENT.md
@@ -345,9 +345,9 @@ image-workflow/
 └── Documents/             ✅ Docs clear
 ```
 
-### Trading Projects (Python)
+### trading-copilot (Python)
 ```
-Trading Projects/
+trading-copilot/
 ├── venv/                  ✅ Venv in root
 ├── scripts/               ✅ Scripts organized
 │   ├── daily/
@@ -542,7 +542,7 @@ This enables:
 ### Mandatory Structure
 - [ ] **`Documents/`** directory - Centralized documentation following the [Documents/ pattern](PROJECT_STRUCTURE_STANDARDS.md#documentation-structure).
   - `Documents/README.md` (Index)
-  - `Documents/*.md` (Architecture/Operations in root)
+  - `Documents/*.md` (Architecture/Operations/Standards in root)
 - [ ] **Review History Retention** - `Documents/archives/reviews/`
   - **Why Mandatory**: Facilitates "Black Box Thinking" by analyzing past successes and failures. It ensures institutional memory is preserved so we can learn from patterns rather than repeating mistakes.
 - [ ] **Code Review Standards** (if reviews exist):
@@ -569,7 +569,7 @@ This enables:
 
 **Version:** 1.0  
 **Established:** December 30, 2025  
-**Source:** Extracted from image-workflow, Trading Projects, project-tracker
+**Source:** Extracted from image-workflow, trading-copilot, project-tracker
 
 ---
 

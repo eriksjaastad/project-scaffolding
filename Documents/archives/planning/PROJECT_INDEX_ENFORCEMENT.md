@@ -60,7 +60,7 @@ This single file provides:
 - `Documents/CODE_QUALITY_STANDARDS.md` - Made indexing Critical Rule #0
 - `Documents/PROJECT_KICKOFF_GUIDE.md` - Added as mandatory Step 3
 - `Documents/PROJECT_INDEXING_SYSTEM.md` - Complete indexing guide
-- `templates/00_Index_Template.md` - Template for new projects
+- `templates/00_Index.md.template` - Template for new projects
 
 ### 2. Validation Scripts (✅ Complete)
 
@@ -71,19 +71,19 @@ This single file provides:
 **Usage:**
 ```bash
 # Check specific project
-./scripts/validate_project.py image-workflow
+doppler run -- python3 ./scripts/validate_project.py image-workflow
 
 # Check all projects
-./scripts/validate_project.py --all
+doppler run -- python3 ./scripts/validate_project.py --all
 
 # List missing indexes
-./scripts/validate_project.py --missing
+doppler run -- python3 ./scripts/validate_project.py --missing
 
 # Create missing indexes
-./scripts/reindex_projects.py --missing
+doppler run -- python3 ./scripts/reindex_projects.py --missing
 
 # Update stale indexes (>6 months old)
-./scripts/reindex_projects.py --stale
+doppler run -- python3 ./scripts/reindex_projects.py --stale
 ```
 
 ### 3. Project Kickoff Process (✅ Updated)
@@ -105,7 +105,7 @@ Add to `.git/hooks/pre-commit` in project:
 if [ ! -f 00_Index_*.md ]; then
   echo "❌ ERROR: Missing project index file"
   echo "Required: 00_Index_[ProjectName].md"
-  echo "Template: project-scaffolding/templates/00_Index_Template.md"
+   echo "Template: project-scaffolding/templates/00_Index.md.template"
   exit 1
 fi
 ```
@@ -145,7 +145,7 @@ $ ./scripts/validate_project.py --all
 
 ❌ new-project
    ERROR: Missing index file (00_Index_*.md)
-   Create one: cp templates/00_Index_Template.md "new-project/00_Index_new-project.md"
+   Create one: cp templates/00_Index.md.template "new-project/00_Index_new-project.md"
 
 ⚠️  old-project
    Index exists: 00_Index_old-project.md
@@ -168,16 +168,16 @@ Summary: 13/15 projects valid (2 need attention)
 **Usage scenarios:**
 ```bash
 # Create indexes for projects that don't have them
-./scripts/reindex_projects.py --missing
+doppler run -- python3 ./scripts/reindex_projects.py --missing
 
 # Update indexes that are >6 months old
-./scripts/reindex_projects.py --stale
+doppler run -- python3 ./scripts/reindex_projects.py --stale
 
 # Re-index specific project
-./scripts/reindex_projects.py image-workflow
+doppler run -- python3 ./scripts/reindex_projects.py image-workflow
 
 # Recreate ALL indexes (destructive!)
-./scripts/reindex_projects.py --all
+doppler run -- python3 ./scripts/reindex_projects.py --all
 ```
 
 ---
@@ -194,7 +194,7 @@ Summary: 13/15 projects valid (2 need attention)
 ```bash
 # Create remaining indexes
 cd $PROJECTS_ROOT/project-scaffolding
-./scripts/reindex_projects.py --missing
+doppler run -- python3 ./scripts/reindex_projects.py --missing
 
 # This will create 22 new index files automatically
 ```
@@ -244,7 +244,7 @@ of battle-testing.
 **Status:** #status/active #status/production
 **Last Major Update:** December 2025
 **Priority:** #mission-critical #high-volume
-```
+```bash
 
 ### Experimental Project
 ```markdown
@@ -264,7 +264,7 @@ exploratory phase with minimal structure.
 **Tags:** #map/project #p/ai-model-testing
 **Status:** #status/experimental
 **Last Major Update:** 2025
-```
+```bash
 
 ---
 
@@ -371,7 +371,7 @@ exploratory phase with minimal structure.
 ./scripts/reindex_projects.py [project-name]
 
 # Copy template for new project
-cp templates/00_Index_Template.md "../[ProjectName]/00_Index_[ProjectName].md"
+cp templates/00_Index.md.template "../[ProjectName]/00_Index_[ProjectName].md"
 ```
 
 ---

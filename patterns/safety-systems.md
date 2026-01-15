@@ -115,7 +115,7 @@ def save_append_only(data_dir: Path, data: str, file_date: date) -> None:
 - Session summaries: one file per session, immutable
 - Scar: Early version modified files in place, corrupted data during crashes
 
-**Trading Projects:**
+**trading-copilot:**
 - Trade journal: `04_journal/daily/YYYY-MM-DD_journal.md`
 - One entry per day, never edited
 - Scar: Accidentally overwrote week's worth of notes before this pattern
@@ -208,7 +208,7 @@ chmod +X source_data/  # Keep directory executable
 - All processing writes to separate `data/memories/` directory
 - Scar: None (built with this principle from start)
 
-**Trading Projects:**
+**trading-copilot:**
 - Raw market data CSVs never modified
 - Paper trading history files read-only
 - All analysis writes to separate `data/` directory
@@ -683,7 +683,7 @@ Safety systems without scar stories.
 
 ---
 
-*Based on battle scars from image-workflow (2.5 months), Cortana Personal AI, and Trading Projects.*
+*Based on battle scars from image-workflow (2.5 months), Cortana Personal AI, and trading-copilot.*
 
 **Remember:** The best safety system is the one that prevents a failure you've actually experienced.
 

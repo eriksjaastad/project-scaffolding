@@ -46,7 +46,7 @@ ls -la 00_Index_*.md
 # Should show: 00_Index_[YourProject].md
 ---
 ## Starting a Chat Session with AI
-```
+```bash
 
 **new_string:**
 ```markdown
@@ -74,23 +74,23 @@ Run validation to ensure your project structure is correct:
 
 ```bash
 # Validate project (from any directory)
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **What validation checks:**
 - ✅ Required files present (00_Index_*.md, AGENTS.md, CLAUDE.md, .cursorrules, etc.)
 - ✅ Project index has valid YAML frontmatter and required sections
-- ✅ **DNA Integrity:** No hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ **DNA Integrity:** No hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ **Security:** No exposed secrets (API keys like `sk-...`, `AIza...`)
 - ✅ Mandatory directories exist (Documents/, etc.)
 
 **Example output (clean project):**
-```
+```bash
 ✅ my-new-project (Fully Compliant)
 ```
 
 **Example output (issues found):**
-```
+```bash
 ⚠️ my-new-project
    - Missing mandatory file: .cursorrules
    - Index file: Missing required section: ## Status
@@ -107,7 +107,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 
 ---
 ## Starting a Chat Session with AI
-```
+```bash
 
 ---
 

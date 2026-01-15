@@ -1,7 +1,7 @@
 # Context Handoff: Tiered AI Sprint Planning Implementation
 
 **Date:** December 22, 2025  
-**From:** Claude Sonnet 4.5 (AI usage-billing tracker context)  
+**From:** Claude Sonnet 4.5 (ai-usage-billing-tracker context)  
 **To:** Next AI assistant in project-scaffolding context  
 **Session:** Billing crisis → Pattern extraction → Cross-project setup
 
@@ -17,7 +17,7 @@
 
 ### The Solution We Built
 1. ✅ Created **tiered AI sprint planning pattern** (in this project)
-2. ✅ Moved it from `AI usage-billing tracker` to `project-scaffolding/patterns/`
+2. ✅ Moved it from `ai-usage-billing-tracker` to `project-scaffolding/patterns/`
 3. ✅ Made it universal across all Erik's projects
 4. ✅ Updated `.cursorrules` in billing tracker to reference it
 
@@ -132,7 +132,7 @@ Instead of fighting Cursor's system, work WITH it:
 - ✅ Created: `patterns/tiered-ai-sprint-planning.md` (full pattern doc)
 - ✅ **Creating now:** `Documents/CONTEXT_HANDOFF_2025-12-22_tiered-ai-planning.md` (this file)
 
-### In `AI usage-billing tracker`:
+### In `ai-usage-billing-tracker`:
 - ✅ Updated: `.cursorrules` (added reference to tiered planning)
 - ✅ Organized: Moved docs to `Documents/`, billing_app to `integrations/`
 - ✅ Recovered: Restored entire codebase after ChatGPT deletion (Dec 14)
@@ -141,7 +141,7 @@ Instead of fighting Cursor's system, work WITH it:
 
 ## Erik's Project Philosophy (Context)
 
-From `$PROJECTS_ROOT/Trading Projects/PROJECT_PHILOSOPHY.md`:
+From `$PROJECTS_ROOT/trading-copilot/PROJECT_PHILOSOPHY.md`:
 - **Explorer mindset:** Building experiments, not products
 - **Two-level game:** Domain patterns + meta patterns (scaffolding)
 - **Consolidate on 3rd duplicate:** Don't abstract until you see the pattern 3 times
@@ -235,8 +235,8 @@ Score = (Complexity + Ambiguity + Risk) / 3
 
 ## Related Projects
 
-- **AI usage-billing tracker:** Where this pattern was born (billing crisis recovery)
-- **Trading Projects:** Home of PROJECT_PHILOSOPHY.md (Erik's core principles)
+- **ai-usage-billing-tracker:** Where this pattern was born (billing crisis recovery)
+- **trading-copilot:** Home of PROJECT_PHILOSOPHY.md (Erik's core principles)
 - **AI Journal:** Where all sessions are logged (UTC timestamps, full model names)
 
 ---
@@ -248,7 +248,7 @@ Score = (Complexity + Ambiguity + Risk) / 3
 - Uncommitted: This handoff doc (you'll need to commit it)
 - Branch: Probably `main`
 
-### `AI usage-billing tracker`:
+### `ai-usage-billing-tracker`:
 - Last commit: Updated .cursorrules with tiered planning reference
 - All changes committed ✅
 - Dashboard running on port 8001 (might still be background process)
@@ -288,6 +288,6 @@ Score = (Complexity + Ambiguity + Risk) / 3
 
 **End of handoff. Good luck! 🚀**
 
-*- Claude Sonnet 4.5, signing off from AI usage-billing tracker context*  
+*- Claude Sonnet 4.5, signing off from ai-usage-billing-tracker context*  
 *Dec 22, 2025, 11:47 PM Pacific*
 

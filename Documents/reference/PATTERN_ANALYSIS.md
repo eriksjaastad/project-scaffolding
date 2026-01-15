@@ -44,7 +44,7 @@ Documents/
 **Evidence:**
 - **image-workflow:** Full implementation, 2.5 months battle-tested
 - **Cortana:** Has `Documents/` with similar structure (core, guides, reference, archives)
-- **Trading Projects:** Has `Documents/` directory with guides and reference material
+- **trading-copilot:** Has `Documents/` directory with guides and reference material
 
 **Benefits:**
 - Prevents root-level documentation sprawl
@@ -71,7 +71,7 @@ Documents/
 **Evidence:**
 - **image-workflow:** `CLAUDE.md` (58 lines, focused on safety + typing)
 - **Cortana:** `CLAUDE.md` (544 lines, comprehensive with examples)
-- **Trading Projects:** No CLAUDE.md yet (but should have one!)
+- **trading-copilot:** No CLAUDE.md yet (but should have one!)
 
 **Benefits:**
 - AI gets context without guessing
@@ -96,7 +96,7 @@ Documents/
 
 **Evidence:**
 - **Cortana:** Comprehensive ROADMAP.md (1400+ lines, 7 layers)
-- **Trading Projects:** MODEL_ARENA_ROADMAP.md + TRADE_SNAPSHOT_ROADMAP.md
+- **trading-copilot:** MODEL_ARENA_ROADMAP.md + TRADE_SNAPSHOT_ROADMAP.md
 - **image-workflow:** No formal ROADMAP (uses TODO.md instead)
 
 **Benefits:**
@@ -124,7 +124,7 @@ Documents/
 **Evidence:**
 - **image-workflow:** FileTracker, send2trash, companion file tracking (all from real incidents)
 - **Cortana:** Atomic writes for memory files, read-only SuperWhisper access
-- **Trading Projects:** Risk breach logging (from actual trading mistakes)
+- **trading-copilot:** Risk breach logging (from actual trading mistakes)
 
 **Benefits:**
 - Focused safety systems (not bloated)
@@ -148,7 +148,7 @@ Documents/
 **Evidence:**
 - **image-workflow:** File operation logs (append-only)
 - **Cortana:** Memory files (append-only JSON + MD per day)
-- **Trading Projects:** Trade journal entries (one file per day, immutable)
+- **trading-copilot:** Trade journal entries (one file per day, immutable)
 
 **Benefits:**
 - Data integrity (can't accidentally corrupt history)
@@ -184,7 +184,7 @@ def save_safely(target: Path, data: str) -> None:
 **Examples:**
 - **image-workflow:** PNG/YAML files moved, never modified
 - **Cortana:** SuperWhisper database read-only access
-- **Trading Projects:** Raw market data CSV files preserved
+- **trading-copilot:** Raw market data CSV files preserved
 
 **Benefits:**
 - Can always re-run from original data
@@ -219,7 +219,7 @@ value: Optional[str] = None
 **Evidence:**
 - **image-workflow:** Enforced in CODE_QUALITY_RULES.md + Ruff config
 - **Cortana:** Documented in CLAUDE.md, used throughout
-- **Trading Projects:** Python 3.14 venv (should enforce this)
+- **trading-copilot:** Python 3.14 venv (should enforce this)
 
 **Benefits:**
 - Cleaner code (less imports)
@@ -237,7 +237,7 @@ value: Optional[str] = None
 **Evidence:**
 - **image-workflow:** `pyproject.toml` with Ruff config, validation commands in CLAUDE.md
 - **Cortana:** mypy commands in CLAUDE.md, no pyproject.toml yet
-- **Trading Projects:** Has requirements.txt, no linter config
+- **trading-copilot:** Has requirements.txt, no linter config
 
 **Standard Commands:**
 ```bash
@@ -260,7 +260,7 @@ mypy scripts --ignore-missing-imports --allow-untyped-defs
 
 **Evidence:**
 - **Cortana:** Explicit 7-layer roadmap, Layer 1 complete and USEFUL
-- **Trading Projects:** Layer 1-3 complete, each layer functional
+- **trading-copilot:** Layer 1-3 complete, each layer functional
 - **image-workflow:** Evolved over 2.5 months, tools added incrementally
 
 **Benefits:**
@@ -288,7 +288,7 @@ Layer 3: Automation & Intelligence
 **What:** Collect data for 30-60 days BEFORE evaluating success
 
 **Evidence:**
-- **Trading Projects:** "Let it run 30 days before judging"
+- **trading-copilot:** "Let it run 30 days before judging"
 - **image-workflow:** 2.5 months of real use before major decisions
 - **Cortana:** 3 months of data backfilled before building features
 
@@ -327,7 +327,7 @@ Layer 3: Automation & Intelligence
 
 **Evidence:**
 - **Cortana:** launchd daily at 10pm (macOS native)
-- **Trading Projects:** Railway cron daily (cloud deployment)
+- **trading-copilot:** Railway cron daily (cloud deployment)
 - **image-workflow:** Manual workflow (but has session tracking)
 
 **Two Approaches:**
@@ -368,7 +368,7 @@ command = "python scripts/daily_job.py"
 **What:** Single cron entry dispatches to multiple jobs
 
 **Evidence:**
-- **Trading Projects:** One schedule, multiple model evaluations
+- **trading-copilot:** One schedule, multiple model evaluations
 - Not yet seen in other projects
 
 **Benefits:**
@@ -389,7 +389,7 @@ command = "python scripts/daily_job.py"
 **Evidence:**
 - **Cortana:** Every memory is `.json` + `.md` (same date)
 - **image-workflow:** Session logs in structured + markdown format
-- **Trading Projects:** Trade journal has CSV + Markdown
+- **trading-copilot:** Trade journal has CSV + Markdown
 
 **Benefits:**
 - Machines can process efficiently (JSON)
@@ -423,7 +423,7 @@ def save_dual_format(base_path: Path, data: dict, summary: str) -> None:
 
 **Evidence:**
 - **Cortana:** `data/memories/daily/2025-12-15.json`
-- **Trading Projects:** `04_journal/daily/2025-09-30_journal.md`
+- **trading-copilot:** `04_journal/daily/2025-09-30_journal.md`
 - **image-workflow:** `data/daily_summaries/` (similar pattern)
 
 **Benefits:**
@@ -444,7 +444,7 @@ def save_dual_format(base_path: Path, data: dict, summary: str) -> None:
 
 **Evidence:**
 - **Cortana:** gpt-4o-mini by default, ~$0.02/day, cost tracking in code
-- **Trading Projects:** Multiple model comparison (includes cost factors)
+- **trading-copilot:** Multiple model comparison (includes cost factors)
 - **image-workflow:** AI training uses batch processing (not real-time)
 
 **Pattern:**
@@ -497,7 +497,7 @@ def call_with_cost_tracking(prompt: str) -> tuple[str, float]:
 **Evidence:**
 - **image-workflow:** Tests for utils, not for workflow scripts
 - **Cortana:** Manual testing Layer 1, planning automated for Layer 2
-- **Trading Projects:** Tests for grading systems (critical logic)
+- **trading-copilot:** Tests for grading systems (critical logic)
 
 **Extraction Ready:** Yes - document testing philosophy
 
@@ -598,7 +598,7 @@ def call_with_cost_tracking(prompt: str) -> tuple[str, float]:
 *This document grows as patterns emerge. Don't force extraction too early.*
 
 **Last updated:** January 9, 2026
-**Projects analyzed:** image-workflow, Trading Projects, Cortana Personal AI, project-scaffolding
+**Projects analyzed:** image-workflow, trading-copilot, Cortana Personal AI, project-scaffolding
 **Patterns extracted:** 10 total (8 proven, 2 emerging)
 
 ---

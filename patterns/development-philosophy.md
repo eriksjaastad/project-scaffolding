@@ -95,7 +95,7 @@ project/
 - Layer 2: Query interface (next, but Layer 1 already valuable)
 - Layers 3-7: Planned, but not blocking value
 
-**Trading Projects:**
+**trading-copilot:**
 - Layer 1: Data pipeline (✅ complete)
 - Layer 2: Model arena (✅ complete)
 - Layer 3: Automated grading (✅ complete)
@@ -185,7 +185,7 @@ Collect data for **30-60 days** before evaluating success or making major change
 
 ### Evidence from Projects
 
-**Trading Projects:**
+**trading-copilot:**
 - Explicit 30-day data collection period
 - Not judging models until sufficient data
 - Philosophy documented in PROJECT_PHILOSOPHY.md
@@ -442,7 +442,7 @@ def get_config_path() -> Path:
 - Planning automated tests for Layer 2
 - Focus on data integrity tests
 
-**Trading Projects:**
+**trading-copilot:**
 - Tests for grading logic (critical)
 - Tests for data parsing (fragile)
 - No tests for dashboard (changes too fast)
@@ -739,7 +739,7 @@ Don't force it. Let patterns emerge from experience.
 
 ---
 
-*Based on PROJECT_PHILOSOPHY.md and battle-tested experience from image-workflow, Cortana Personal AI, and Trading Projects.*
+*Based on PROJECT_PHILOSOPHY.md and battle-tested experience from image-workflow, Cortana Personal AI, and trading-copilot.*
 
 **Remember:** These are patterns, not rules. Use what helps, adapt what doesn't fit, ignore what doesn't apply.
 
@@ -771,6 +771,6 @@ Orchestrate complex project launches by separating AI agents into specialized ro
 ### Evidence from Projects
 **Muffin Pan Recipes Kickoff:**
 - Conductor (Erik) provided the "Oven-less" vision.
-- Super Manager identified the "Mission Control" alias in the 3D Pose Factory project and wrote prompts.
+- Super Manager identified the "Mission Control" alias in the 3d-pose-factory project and wrote prompts.
 - Floor Manager relayed prompts to Workers via Ollama MCP.
 - Workers (Local Ollama models) executed the Phase 0-2 build in a single 8-hour marathon.

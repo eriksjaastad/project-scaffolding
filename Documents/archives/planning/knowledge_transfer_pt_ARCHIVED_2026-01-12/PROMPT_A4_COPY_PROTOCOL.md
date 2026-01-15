@@ -27,13 +27,13 @@
 
 Copy this file:
 
-**Source:** `/Users/eriksjaastad/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
-**Destination:** `/Users/eriksjaastad/projects/project-tracker/Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+**Source:** `[USER_HOME]/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+**Destination:** `[USER_HOME]/projects/project-tracker/Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
 
 Use:
 ```bash
-cp /Users/eriksjaastad/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md \
-   /Users/eriksjaastad/projects/project-tracker/Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
+cp [USER_HOME]/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md \
+   [USER_HOME]/projects/project-tracker/Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
 ```
 
 ---
@@ -41,7 +41,7 @@ cp /Users/eriksjaastad/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTO
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. File exists
 ls -la Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
@@ -51,7 +51,7 @@ head -20 Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
 # Should show first 20 lines
 
 # 3. Compare sizes (should match)
-wc -l /Users/eriksjaastad/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
+wc -l [USER_HOME]/projects/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
 wc -l Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
 # Line counts should match
 ```

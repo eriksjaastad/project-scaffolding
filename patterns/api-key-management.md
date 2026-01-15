@@ -19,17 +19,17 @@
 
 **Anti-pattern:** Centralized API key storage
 ```
-agent_os/.env:
+agent-os/.env:
   OPENAI_API_KEY=sk-shared-key-123
   ANTHROPIC_API_KEY=sk-shared-key-456
 
-Projects import agent_os and use shared keys
+Projects import agent-os and use shared keys
 ```
 
 **Problems:**
 - ❌ **Can't attribute costs** - Which project spent $50 on OpenAI?
 - ❌ **Shared failure** - One project hits rate limit → all projects affected
-- ❌ **Security blast radius** - Compromise agent_os → compromise all projects
+- ❌ **Security blast radius** - Compromise agent-os → compromise all projects
 - ❌ **Unclear ownership** - Who pays for the shared key?
 - ❌ **No isolation** - Can't disable one project without affecting others
 
@@ -149,8 +149,8 @@ ANTHROPIC_API_KEY=sk-ant-your-key-here
 | image-workflow | image-workflow-openai | ~$8 | Active |
 
 **Key Locations:**
-- Cortana: `Cortana personal AI/.env`
-- Trading: `Trading Projects/.env`
+- Cortana: `cortana-personal-ai/.env`
+- Trading: `trading-copilot/.env`
 - image-workflow: `image-workflow/.env`
 ```
 
@@ -299,12 +299,12 @@ Answer: Clear. ✅
 ### Current State (Before Migration)
 
 ```
-agent_os/.env:
+agent-os/.env:
   OPENAI_API_KEY=sk-shared-123
 
 Projects:
-  - Cortana (uses agent_os key)
-  - Trading (uses agent_os key)
+  - Cortana (uses agent-os key)
+  - Trading (uses agent-os key)
   - image-workflow (has own key ✓)
 ```
 
@@ -316,7 +316,7 @@ Projects:
   - Trading/.env: OPENAI_API_KEY=sk-proj-trading-openai
   - image-workflow/.env: OPENAI_API_KEY=sk-proj-image-workflow-openai
 
-agent_os:
+agent-os:
   - No API keys (becomes library, not service)
 ```
 
@@ -337,10 +337,10 @@ agent_os:
 
 3. **Update code to load from project's `.env`**
    ```python
-   # If code loads from agent_os, change it:
+   # If code loads from agent-os, change it:
    # Before:
-   # sys.path.insert(0, '../agent_os')
-   # from agent_os import get_api_key
+   # sys.path.insert(0, '../agent-os')
+   # from agent-os import get_api_key
    
    # After:
    from dotenv import load_dotenv
@@ -356,7 +356,7 @@ agent_os:
    - Document key name
    - Document location
 
-6. **After all projects migrated:** Remove keys from agent_os
+6. **After all projects migrated:** Remove keys from agent-os
 
 ---
 
@@ -366,16 +366,16 @@ agent_os:
 
 **Before:**
 ```python
-# Used agent_os key
-sys.path.insert(0, '../agent_os')
-api_key = os.getenv("OPENAI_API_KEY")  # From agent_os/.env
+# Used agent-os key
+sys.path.insert(0, '../agent-os')
+api_key = os.getenv("OPENAI_API_KEY")  # From agent-os/.env
 ```
 
 **After:**
 ```python
 # Uses own key
 from dotenv import load_dotenv
-load_dotenv()  # Loads from Cortana personal AI/.env
+load_dotenv()  # Loads from cortana-personal-ai/.env
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("OPENAI_API_KEY not found - check .env file")
@@ -386,11 +386,11 @@ if not api_key:
 
 ---
 
-### Example 2: Trading Projects
+### Example 2: trading-copilot
 
 **Before:**
 ```python
-# Used agent_os key (potentially)
+# Used agent-os key (potentially)
 ```
 
 **After:**
@@ -523,7 +523,7 @@ When starting a new project:
 
 ## Lessons Learned
 
-**From agent_os experience:**
+**From agent-os experience:**
 - Centralized keys seemed efficient initially
 - Cost attribution became impossible at scale
 - Shared rate limits caused mysterious failures

@@ -43,7 +43,7 @@
 **Step 1: Find all $SCAFFOLDING references**
 
 ```bash
-grep -n "\$SCAFFOLDING" /Users/eriksjaastad/projects/project-tracker/CLAUDE.md
+grep -n "\$SCAFFOLDING" [USER_HOME]/projects/project-tracker/CLAUDE.md
 ```
 
 **Step 2: Replace each reference**
@@ -59,11 +59,11 @@ Common replacements:
 
 Use sed or manual edit:
 ```bash
-sed -i '' 's|\$SCAFFOLDING/scripts/|./scripts/|g' /Users/eriksjaastad/projects/project-tracker/CLAUDE.md
-sed -i '' 's|\$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md|./Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md|g' /Users/eriksjaastad/projects/project-tracker/CLAUDE.md
-sed -i '' 's|\$SCAFFOLDING/patterns/|./Documents/patterns/|g' /Users/eriksjaastad/projects/project-tracker/CLAUDE.md
-sed -i '' 's|\$SCAFFOLDING/Documents/|./Documents/|g' /Users/eriksjaastad/projects/project-tracker/CLAUDE.md
-sed -i '' 's|\$SCAFFOLDING/|./|g' /Users/eriksjaastad/projects/project-tracker/CLAUDE.md
+sed -i '' 's|\$SCAFFOLDING/scripts/|./scripts/|g' [USER_HOME]/projects/project-tracker/CLAUDE.md
+sed -i '' 's|\$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md|./Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md|g' [USER_HOME]/projects/project-tracker/CLAUDE.md
+sed -i '' 's|\$SCAFFOLDING/patterns/|./Documents/patterns/|g' [USER_HOME]/projects/project-tracker/CLAUDE.md
+sed -i '' 's|\$SCAFFOLDING/Documents/|./Documents/|g' [USER_HOME]/projects/project-tracker/CLAUDE.md
+sed -i '' 's|\$SCAFFOLDING/|./|g' [USER_HOME]/projects/project-tracker/CLAUDE.md
 ```
 
 ---
@@ -71,7 +71,7 @@ sed -i '' 's|\$SCAFFOLDING/|./|g' /Users/eriksjaastad/projects/project-tracker/C
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. No $SCAFFOLDING references remain
 grep "\$SCAFFOLDING" CLAUDE.md

@@ -10,7 +10,7 @@
 The file `scaffold/review.py` uses `os.unlink()` at line 79 to delete a temp file during error cleanup. This violates the ecosystem's "Trash, Don't Delete" safety rule and triggers a P0 (Critical) alert from Warden.
 
 **Current code (lines 73-82):**
-```python
+```bash
 try:
     os.replace(temp_name, path)
 except Exception as e:
@@ -28,17 +28,17 @@ except Exception as e:
 ## Your Task
 
 1. **Add import** at top of file (with other imports):
-   ```python
+   ```bash
    from send2trash import send2trash
    ```
 
 2. **Replace os.unlink** with send2trash:
-   ```python
+   ```bash
    send2trash(temp_name)
    ```
 
 3. **Update the warning message** to reflect new behavior:
-   ```python
+   ```bash
    logger.warning(f"Failed to trash temp file {temp_name}: {cleanup_err}")
    ```
 
@@ -69,7 +69,7 @@ grep -n "os.unlink" scaffold/review.py
 grep -n "send2trash(temp_name)" scaffold/review.py
 
 # Syntax check
-python -m py_compile scaffold/review.py && echo "Syntax OK"
+doppler run -- python -m py_compile scaffold/review.py && echo "Syntax OK"
 ```
 
 If any item fails, provide the specific error to the Worker and demand a retry (Max 3 attempts).

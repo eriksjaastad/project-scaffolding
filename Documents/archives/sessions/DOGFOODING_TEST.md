@@ -51,7 +51,7 @@
 ### Multi-AI Review
 **Command:**
 ```bash
-python scaffold_cli.py review \
+doppler run -- python scaffold_cli.py review \
     --type document \
     --input $PROJECTS_ROOT/project-tracker/.specs/specs/cli-status/design.md \
     --round 1

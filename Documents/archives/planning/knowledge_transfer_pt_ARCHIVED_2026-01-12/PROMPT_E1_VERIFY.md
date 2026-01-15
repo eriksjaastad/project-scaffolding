@@ -33,7 +33,7 @@
 Run ALL of these from project-tracker directory:
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 ```
 
 ### 1. Scripts Exist
@@ -73,10 +73,10 @@ Expected: No output, exit code 1 (not found).
 
 ```bash
 echo "=== Testing warden_audit.py ==="
-python scripts/warden_audit.py --root . --fast
+doppler run -- python scripts/warden_audit.py --root . --fast
 
 echo "=== Testing validate_project.py ==="
-python scripts/validate_project.py project-tracker
+doppler run -- python scripts/validate_project.py project-tracker
 
 echo "=== Testing pre_review_scan.sh ==="
 ./scripts/pre_review_scan.sh
@@ -99,7 +99,7 @@ Expected: Shows `scaffolding_version: 1.0.0`
 
 After running all checks, report:
 
-```
+```bash
 === STANDALONE VERIFICATION REPORT ===
 
 Scripts:

@@ -267,15 +267,61 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
             dst.parent.mkdir(parents=True, exist_ok=True)
         _copy_file(src, dst, dry_run, force)
 
-    # 4. Update references
-    console.print("\n[bold]Updating references...[/bold]")
-    files_to_update = ["AGENTS.md", "CLAUDE.md", ".cursorrules"]
-    for filename in files_to_update:
+    # 4. Update/append templates OR create from template if missing
+    console.print("\n[bold]Updating/creating from templates...[/bold]")
+
+    # Marker to detect if template was already appended
+    SCAFFOLD_MARKER = "<!-- project-scaffolding template appended -->"
+
+    # Map files to their templates (None means no template available)
+    files_with_templates = {
+        "AGENTS.md": "templates/AGENTS.md.template",
+        "CLAUDE.md": "templates/CLAUDE.md.template",
+        "TODO.md": "templates/TODO.md.template",
+        "README.md": "templates/README.md.template",
+        ".cursorrules": "templates/.cursorrules.template",
+        ".cursorignore": "templates/.cursorignore.template",
+        ".gitignore": "templates/.gitignore.template",
+    }
+
+    for filename, template_path in files_with_templates.items():
         file_path = target_dir / filename
         if file_path.exists():
-            _update_file_references(file_path, dry_run)
+            if template_path:
+                # File exists AND template available - append template if not already done
+                template_full_path = scaffold_root / template_path
+                if template_full_path.exists():
+                    existing_content = file_path.read_text()
+                    if SCAFFOLD_MARKER in existing_content:
+                        console.print(f"  ✅ {filename} - template already appended")
+                        _update_file_references(file_path, dry_run)
+                    else:
+                        console.print(f"  📝 Appending template to {filename}...")
+                        if not dry_run:
+                            template_content = template_full_path.read_text()
+                            appended_content = f"{existing_content}\n\n{SCAFFOLD_MARKER}\n\n{template_content}"
+                            file_path.write_text(appended_content)
+                        _update_file_references(file_path, dry_run)
+            else:
+                # File exists but no template - just update references
+                _update_file_references(file_path, dry_run)
+        elif template_path:
+            # File missing but template available - create from template
+            template_full_path = scaffold_root / template_path
+            if template_full_path.exists():
+                console.print(f"  📝 Creating {filename} from template...")
+                if not dry_run:
+                    template_content = template_full_path.read_text()
+                    # Add marker so future runs know this was scaffolded
+                    content_with_marker = f"{SCAFFOLD_MARKER}\n\n{template_content}"
+                    file_path.write_text(content_with_marker)
+                    # Also update references in the newly created file
+                    _update_file_references(file_path, dry_run=False)
+            else:
+                console.print(f"  [yellow]⚠️  Template not found for {filename}[/yellow]")
         else:
-            console.print(f"  ⏭️  Skipped {filename} (not found)")
+            # No template available
+            console.print(f"  ⏭️  Skipped {filename} (not found, no template)")
 
     # 5. Add version metadata
     console.print("\n[bold]Adding version metadata...[/bold]")

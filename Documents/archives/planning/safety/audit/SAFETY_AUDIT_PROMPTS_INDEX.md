@@ -49,7 +49,7 @@ grep -n "send2trash" scaffold/review.py
 # Expected: Line ~79 shows send2trash usage
 
 # 2. Run Warden - should be clean
-python scripts/warden_audit.py --root . --fast
+doppler run -- python scripts/warden_audit.py --root . --fast
 # Expected: Zero P0 issues in production code
 
 # 3. Run full test suite

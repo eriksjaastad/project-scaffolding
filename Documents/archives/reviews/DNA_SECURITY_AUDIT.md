@@ -22,7 +22,7 @@ This audit found **17 P0 DNA DEFECTS** across the project-scaffolding codebase. 
 
 **File:** `.env.example:8`
 ```
-PROJECTS_ROOT=/Users/eriksjaastad/projects
+PROJECTS_ROOT=[USER_HOME]/projects
 ```
 
 **Severity:** CRITICAL
@@ -62,16 +62,16 @@ if not PROJECTS_ROOT:
 
 **File:** `.cursorrules:60`
 ```
-**Core Reference:** `../Trading Projects/PROJECT_PHILOSOPHY.md`
+**Core Reference:** `../trading-copilot/PROJECT_PHILOSOPHY.md`
 ```
 
 **File:** `.cursorrules:147,155,235`
 ```
-- AI Journal: `../AI-journal/`
+- AI Journal: `../ai-journal/`
 ```
 
 **Severity:** HIGH
-**Impact:** Assumes sibling directories exist (`Trading Projects/`, `AI-journal/`). External users don't have these.
+**Impact:** Assumes sibling directories exist (`trading-copilot/`, `ai-journal/`). External users don't have these.
 
 **Remediation:** Remove ecosystem-specific references or make them conditional.
 

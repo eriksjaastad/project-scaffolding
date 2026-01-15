@@ -111,7 +111,7 @@ This validated waiting for strong evidence before extraction.
 Every documented safety pattern has a real scar story:
 - image-workflow: Lost 300 images, 500 metadata files
 - Cortana: Learned from other projects (no scars yet)
-- Trading Projects: Overwrote week's journal notes
+- trading-copilot: Overwrote week's journal notes
 
 This confirms the "wait for the scar" philosophy.
 
@@ -150,8 +150,8 @@ Pattern was universal even when not articulated.
 ### Updates
 15. Updated `README.md` (added Cortana, quick start, status)
 16. Updated `.cursorrules` (added Cortana)
-17. **Moved `PROJECT_PHILOSOPHY.md`** from Trading Projects → project-scaffolding
-18. Created redirect in Trading Projects pointing to canonical version
+17. **Moved `PROJECT_PHILOSOPHY.md`** from trading-copilot → project-scaffolding
+18. Created redirect in trading-copilot pointing to canonical version
 
 **Total:** 18 files created/updated, ~3000 lines of documentation
 
@@ -253,7 +253,7 @@ Every development principle has:
 ### Immediate (Next Time)
 1. Extract real examples from image-workflow
 2. Extract real examples from Cortana
-3. Extract real examples from Trading Projects
+3. Extract real examples from trading-copilot
 4. Populate examples/ directory
 
 ### Short-term (This Month)

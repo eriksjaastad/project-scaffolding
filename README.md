@@ -40,7 +40,7 @@ cp -r "$SCAFFOLDING/templates/Documents" ./Documents
 cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
 cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
 cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
-cp "$SCAFFOLDING/templates/00_Index_Template.md" "./00_Index_$(basename $NEW_PROJECT).md"
+cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
 git init
 ```
 
@@ -53,7 +53,7 @@ cd /path/to/existing-project
 export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 
 # Copy only what's missing
-[[ ! -f 00_Index_*.md ]] && cp "$SCAFFOLDING/templates/00_Index_Template.md" "./00_Index_$(basename $(pwd)).md"
+[[ ! -f 00_Index_*.md ]] && cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $(pwd)).md"
 [[ ! -f AGENTS.md ]] && cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
 [[ ! -f CLAUDE.md ]] && cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
 [[ ! -f .cursorrules ]] && cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules

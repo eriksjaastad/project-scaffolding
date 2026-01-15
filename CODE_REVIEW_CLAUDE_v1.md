@@ -27,9 +27,9 @@
   [4.1] Checking for functions without type hints... ⚠️ WARN (52 functions)
 ```
 
-**False Positive Analysis:** The scan detected `/Users/...` in `templates/CLAUDE.md.template:246`, but this is documentation describing what validation catches:
+**False Positive Analysis:** The scan detected `[absolute_path]/...` in `templates/CLAUDE.md.template:246`, but this is documentation describing what validation catches:
 ```
-- ✅ Hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ Hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 ```
 This is not an actual hardcoded path - it's an example in documentation.
 
@@ -45,7 +45,7 @@ This is not an actual hardcoded path - it's an example in documentation.
 | `.cursorrules-template` | None | None | ✅ Clean |
 | `AGENTS.md.template` | None | None | ✅ Clean |
 | `TODO.md.template` | None | None | ✅ Clean |
-| `00_Index_Template.md` | None | None | ✅ Clean |
+| `00_Index.md.template` | None | None | ✅ Clean |
 | `CODE_REVIEW.md.template` | None | None | ✅ Clean |
 | `.cursorignore.template` | None | None | ✅ Clean |
 | `README.md.template` | None | None | ✅ Clean |

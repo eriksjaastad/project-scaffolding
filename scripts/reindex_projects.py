@@ -35,8 +35,8 @@ if not PROJECTS_ROOT_ENV:
     raise EnvironmentError("PROJECTS_ROOT environment variable is not set.")
 PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
-TEMPLATE_PATH = SCAFFOLDING_ROOT / "templates" / "00_Index_Template.md"
-SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
+TEMPLATE_PATH = SCAFFOLDING_ROOT / "templates" / "00_Index.md.template"
+SKIP_DIRS = {"writing", "ai-journal"}
 ARCHIVE_THRESHOLD_DAYS = 180  # 6 months
 
 # Setup logging
@@ -62,7 +62,7 @@ def find_projects(root: Path) -> List[Path]:
     """Find all project directories."""
     projects = []
     for item in root.iterdir():
-        if item.is_dir() and not item.name.startswith("."):
+        if item.is_dir() and not item.name.startswith((".", "_")):
             if item.name in SKIP_DIRS:
                 continue
             projects.append(item)

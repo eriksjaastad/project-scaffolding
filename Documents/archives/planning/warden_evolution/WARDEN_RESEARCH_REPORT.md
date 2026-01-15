@@ -28,7 +28,7 @@ The Warden audit system is **architecturally sound but incomplete** for pre-comm
 - `run_audit()` - Orchestrates full ecosystem scan (lines 74-116)
 
 **Current workflow:**
-```
+```bash
 1. Find all projects (00_Index_*.md files)
 2. For each project:
    a. Classify as Tier 1 (code) or Tier 2 (other)
@@ -76,7 +76,7 @@ The Warden audit system is **architecturally sound but incomplete** for pre-comm
 ### Root Cause: Filesystem Traversal
 
 **Problem location:** Line 54
-```python
+```bash
 for file_path in project_root.rglob('*.py'):
 ```
 
@@ -93,7 +93,7 @@ for file_path in project_root.rglob('*.py'):
 **Approach:** Grep-based scanning instead of file walking
 
 **Pseudocode:**
-```python
+```bash
 def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
     """Fast grep-based scanner for pre-commit hooks."""
     import subprocess
@@ -126,7 +126,7 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
 **Impact:** Cannot be used in pre-commit hooks (blocks developers for 10+ seconds)
 
 **Implementation requirement:**
-```python
+```bash
 parser.add_argument("--fast", action="store_true",
                    help="Fast scan mode for pre-commit hooks (<1s target)")
 ```
@@ -138,7 +138,7 @@ parser.add_argument("--fast", action="store_true",
 **Known issue:** No detection of portability violations
 
 **Pattern to detect:**
-```python
+```bash
 hardcoded_paths = [
     r'/Users/',      # macOS absolute paths
     r'/home/',       # Linux absolute paths
@@ -285,7 +285,7 @@ hardcoded_paths = [
 **Status:** Documented in TODO Task #2 (Safety Audit)
 
 **Expected Warden output (after enhancement):**
-```
+```bash
 [P0-CRITICAL] project-scaffolding: Raw 'os.unlink' found in scaffold/review.py:79
 ```
 
@@ -302,7 +302,7 @@ hardcoded_paths = [
 # .git/hooks/pre-commit
 
 echo "Running Warden safety checks..."
-python scripts/warden_audit.py --root . --fast
+doppler run -- python scripts/warden_audit.py --root . --fast
 
 if [ $? -ne 0 ]; then
   echo ""

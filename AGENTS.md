@@ -142,7 +142,7 @@ See: `agent-skills-library/playbooks/staged-prompt-engineering/` for templates.
 
 ## 📔 JOURNAL ENTRY PROTOCOL (UNIVERSAL)
 
-**Location:** `{PROJECTS_ROOT}/AI-journal/entries/YYYY/`
+**Location:** `{PROJECTS_ROOT}/ai-journal/entries/YYYY/`
 **Format:** `YYYY-MM-DDTHH-MM-SSZ__{model}-{role}__{descriptive-title}.md` (UTC)
 
 ### Role Identification

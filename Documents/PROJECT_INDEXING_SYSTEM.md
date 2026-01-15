@@ -58,7 +58,7 @@ created: YYYY-MM-DD
 **Status:** #status/[active|archived]
 **Last Major Update:** [Date or period]
 [Additional context]
-```
+```bash
 
 ---
 
@@ -83,14 +83,14 @@ created: YYYY-MM-DD
 1. **Review project folder**
    ```bash
    ls -lt $PROJECTS_ROOT/[ProjectName]/
-   ```
+   ```bash
 
 2. **Check last modification**
    ```bash
    find $PROJECTS_ROOT/[ProjectName]/ \
      -type f -not -path "*/\.*" -exec stat -f "%m %N" {} \; | \
      sort -rn | head -1
-   ```
+   ```bash
 
 3. **Update index file**
    - Revise 3-sentence summary if project evolved
@@ -146,7 +146,7 @@ def generate_index(project_path: Path) -> str:
     pass
 
 # Implementation...
-```
+```bash
 
 ---
 
@@ -154,7 +154,7 @@ def generate_index(project_path: Path) -> str:
 
 ### 1. New Project Template
 
-**Location:** `templates/00_Index_Template.md`
+**Location:** `templates/00_Index.md.template`
 
 ```markdown
 ---
@@ -193,7 +193,7 @@ created: YYYY-MM-DD
 **Tags:** #map/project #p/PROJECT_NAME_HERE
 **Status:** #status/active
 **Last Major Update:** [DATE]
-```
+```bash
 
 ### 2. Project Kickoff Checklist
 
@@ -206,7 +206,7 @@ After initial project setup, create the index file:
 
 1. **Copy template**
    ```bash
-   cp templates/00_Index_Template.md \
+   cp templates/00_Index.md.template \
       "00_Index_[ProjectName].md"
    ```
 
@@ -227,7 +227,7 @@ After initial project setup, create the index file:
    git add "00_Index_[ProjectName].md"
    git commit -m "Add project index for Obsidian"
    ```
-```
+```bash
 
 ### 3. Maintenance Reminder
 
@@ -239,13 +239,13 @@ After initial project setup, create the index file:
 - [ ] Run re-index script for stale projects
   ```bash
   cd project-scaffolding
-  ./scripts/reindex_projects.py --stale
+  doppler run -- python3 ./scripts/reindex_projects.py --stale
   ```
 
 - [ ] Review changed indexes
 - [ ] Update status tags if projects archived
 - [ ] Commit updated indexes
-```
+```bash
 
 ---
 
@@ -278,7 +278,7 @@ TABLE status, tech, domain
 FROM #map/project
 WHERE contains(status, "active")
 SORT file.name ASC
-```
+```bash
 
 ### Projects by Technology
 ```dataview
@@ -286,7 +286,7 @@ TABLE domain, status
 FROM #map/project
 WHERE contains(tech, "python")
 SORT status ASC
-```
+```bash
 
 ### Archived Projects (Candidates for Cleanup)
 ```dataview
@@ -294,14 +294,14 @@ TABLE status, file.mtime as "Last Modified"
 FROM #map/project
 WHERE contains(status, "archived")
 SORT file.mtime ASC
-```
+```bash
 
 ### Production Systems
 ```dataview
 TABLE domain, tech
 FROM #map/project
 WHERE contains(status, "production")
-```
+```bash
 
 ---
 
@@ -329,37 +329,36 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 
 ### Production (8 projects)
 - [x] image-workflow
-- [x] Trading Projects
-- [x] Cortana personal AI
-- [x] 3D Pose Factory
-- [x] AI usage-billing tracker
+- [x] trading-copilot
+- [x] cortana-personal-ai
+- [x] 3d-pose-factory
+- [x] ai-usage-billing-tracker
 - [x] hypocrisynow
 - [x] project-scaffolding
-- [x] AI-journal
+- [x] ai-journal
 
 ### Active Development (6 projects)
 - [x] hologram
-- [x] agent_os
 - [x] agent-skills-library
-- [x] Automation Consulting
-- [x] Country AI Futures Tracker
+- [x] automation-consulting
+- [x] country-ai-futures-tracker
 - [x] project-tracker
 
 ### Pending (~22 projects)
-- [ ] Tax processing
+- [ ] tax-organizer
 - [ ] Smart Invoice Follow-Up
 - [ ] Speech-to-text
 - [ ] writing
-- [ ] Van Build
+- [ ] van-build
 - [ ] epstien files
-- [ ] NationalCattleBrands
+- [ ] national-cattle-brands
 - [ ] duplicate-detection
-- [ ] find-names-chrome-plugin
-- [ ] Flo-Fi
-- [ ] SynthInsightLabs
+- [ ] plugin-find-names-chrome
+- [ ] flo-fi
+- [ ] synth-insight-labs
 - [ ] AI video-image generation
-- [ ] ollama-mcp
-- [ ] Portfolio-ai
+- [ ] _tools/ollama-mcp
+- [ ] portfolio-ai
 - [ ] actionable-ai-intel
 - [ ] AI agent training lab
 - [ ] ai-model-testing
@@ -375,7 +374,7 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 
 ### Immediate
 1. **Create template file**
-   - Add `templates/00_Index_Template.md`
+   - Add `templates/00_Index.md.template`
    - Include in project-scaffolding repo
 
 2. **Update kickoff guide**
@@ -414,7 +413,7 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 
 ### In project-scaffolding/
 - [x] `Documents/PROJECT_INDEXING_SYSTEM.md` (this file)
-- [ ] `templates/00_Index_Template.md`
+- [ ] `templates/00_Index.md.template`
 - [ ] `scripts/reindex_projects.py`
 - [ ] Update `Documents/PROJECT_KICKOFF_GUIDE.md`
 - [ ] Update `patterns/maintenance-checklist.md`

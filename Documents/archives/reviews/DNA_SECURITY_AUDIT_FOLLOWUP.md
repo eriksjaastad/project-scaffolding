@@ -20,7 +20,7 @@ All **17 P0 DNA Defects** from the previous security audit (DNA_SECURITY_AUDIT.m
 
 ### ✅ P0-001: Hardcoded Username in .env.example
 
-**Previous State:** `/Users/eriksjaastad/projects`
+**Previous State:** `[USER_HOME]/projects`
 **Current State:** `/path/to/your/projects`
 
 ```
@@ -57,13 +57,13 @@ PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
 ### ✅ P0-003: Ecosystem Paths in .cursorrules
 
-**Previous State:** `../Trading Projects/`, `../AI-journal/`
-**Current State:** `{PROJECTS_ROOT}/Trading Projects/`, `{PROJECTS_ROOT}/AI-journal/`
+**Previous State:** `../trading-copilot/`, `../ai-journal/`
+**Current State:** `{PROJECTS_ROOT}/trading-copilot/`, `{PROJECTS_ROOT}/ai-journal/`
 
 ```
-.cursorrules:60    {PROJECTS_ROOT}/Trading Projects/PROJECT_PHILOSOPHY.md
-.cursorrules:147   {PROJECTS_ROOT}/AI-journal/
-.cursorrules:155   {PROJECTS_ROOT}/AI-journal/entries/YYYY/
+.cursorrules:60    {PROJECTS_ROOT}/trading-copilot/PROJECT_PHILOSOPHY.md
+.cursorrules:147   {PROJECTS_ROOT}/ai-journal/
+.cursorrules:155   {PROJECTS_ROOT}/ai-journal/entries/YYYY/
 ```
 
 **Verdict:** FIXED
@@ -182,7 +182,7 @@ if not project_path.is_relative_to(PROJECTS_ROOT):
 
 ### Absolute Paths Scan
 ```bash
-grep -rn "/Users/eriksjaastad" <production_code>
+grep -rn "[USER_HOME]" <production_code>
 # Result: 0 matches in production code
 # Only matches in: repomix-output.xml (cache), Documents/archives/ (historical)
 ```

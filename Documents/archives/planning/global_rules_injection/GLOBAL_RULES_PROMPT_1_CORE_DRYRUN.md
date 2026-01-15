@@ -42,14 +42,14 @@ The script must detect these two rules in .cursorrules files:
 
 ### 1. File Structure
 
-```python
+```bash
 #!/usr/bin/env python3
 """
 update_cursorrules.py - Push safety rules to all project .cursorrules files.
 
 Usage:
-    python scripts/update_cursorrules.py --dry-run
-    python scripts/update_cursorrules.py --dry-run --root /path/to/projects
+    doppler run -- python scripts/update_cursorrules.py --dry-run
+    doppler run -- python scripts/update_cursorrules.py --dry-run --root /path/to/projects
 """
 
 import argparse
@@ -67,7 +67,7 @@ logger = logging.getLogger(__name__)
 
 ### 2. Project Scanner
 
-```python
+```bash
 def find_cursorrules_files(projects_root: pathlib.Path) -> list[pathlib.Path]:
     """Find all .cursorrules files in project directories (not nested)."""
     cursorrules_files = []
@@ -87,7 +87,7 @@ def find_cursorrules_files(projects_root: pathlib.Path) -> list[pathlib.Path]:
 
 ### 3. Rule Detection
 
-```python
+```bash
 def check_compliance(cursorrules_path: pathlib.Path) -> dict:
     """Check if a .cursorrules file has the required safety rules."""
     content = cursorrules_path.read_text()
@@ -102,7 +102,7 @@ def check_compliance(cursorrules_path: pathlib.Path) -> dict:
 
 ### 4. Main Logic
 
-```python
+```bash
 def run_dry_run(projects_root: pathlib.Path) -> bool:
     """Show what would be updated without making changes."""
     logger.info(f"Scanning: {projects_root}")
@@ -139,7 +139,7 @@ def run_dry_run(projects_root: pathlib.Path) -> bool:
 
 ### 5. CLI Entry Point
 
-```python
+```bash
 def main():
     parser = argparse.ArgumentParser(
         description="Push safety rules to all project .cursorrules files"
@@ -153,7 +153,7 @@ def main():
     parser.add_argument(
         "--root",
         type=pathlib.Path,
-        default=pathlib.Path("/Users/eriksjaastad/projects"),
+        default=pathlib.Path("[USER_HOME]/projects"),
         help="Projects root directory"
     )
 
@@ -177,13 +177,13 @@ if __name__ == "__main__":
 
 1. **Test script runs:**
    ```bash
-   python scripts/update_cursorrules.py --dry-run
+   doppler run -- python scripts/update_cursorrules.py --dry-run
    # Should show list of projects with OK/NEEDS UPDATE status
    ```
 
 2. **Test with explicit root:**
    ```bash
-   python scripts/update_cursorrules.py --dry-run --root /Users/eriksjaastad/projects
+   doppler run -- python scripts/update_cursorrules.py --dry-run --root [USER_HOME]/projects
    # Same output as above
    ```
 
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 
 4. **Test exit code:**
    ```bash
-   python scripts/update_cursorrules.py --dry-run && echo "Success"
+   doppler run -- python scripts/update_cursorrules.py --dry-run && echo "Success"
    # Should print "Success"
    ```
 

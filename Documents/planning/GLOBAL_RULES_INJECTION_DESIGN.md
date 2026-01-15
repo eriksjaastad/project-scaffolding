@@ -53,7 +53,7 @@ We need to ensure all projects have consistent safety rules in their `.cursorrul
 python scripts/update_cursorrules.py --dry-run
 
 # Canary deployment - only update specific projects
-python scripts/update_cursorrules.py --projects "hypocrisynow,project-tracker,AI-journal"
+python scripts/update_cursorrules.py --projects "hypocrisynow,project-tracker,ai-journal"
 
 # Full deployment (after canary success)
 python scripts/update_cursorrules.py --execute
@@ -72,7 +72,7 @@ python scripts/update_cursorrules.py --rollback
 | `--rollback` | Restore all .cursorrules from backups |
 | `--create` | Create .cursorrules from template for projects that don't have one |
 | `--backup-dir` | Where to store backups (default: `_cursorrules_backups/`) |
-| `--root` | Projects root directory (default: `/Users/eriksjaastad/projects`) |
+| `--root` | Projects root directory (default: `[USER_HOME]/projects`) |
 
 ### Core Logic
 
@@ -125,7 +125,7 @@ def update_cursorrules(project_path, dry_run=True):
 _cursorrules_backups/
 ├── 2026-01-10T12-00-00/
 │   ├── project-tracker/.cursorrules
-│   ├── AI-journal/.cursorrules
+│   ├── ai-journal/.cursorrules
 │   └── ... (all modified files)
 └── manifest.json  # What was backed up, when, by whom
 ```
@@ -166,10 +166,10 @@ All operations are logged to a manifest file with timestamps and file hashes.
 | Project | Type | Why Selected |
 |---------|------|--------------|
 | `project-tracker` | Tier 1 (Code) | Infrastructure project, well-tested |
-| `Tax processing` | Tier 1 (Code) | Active project Erik should be working on |
+| `tax-organizer` | Tier 1 (Code) | Active project Erik should be working on |
 | `analyze-youtube-videos` | Mixed | Has known DNA defects, good stress test |
 
-**Erik's decision:** AI-journal dropped (it's writing, not code). Tax Processing added as active coding project.
+**Erik's decision:** ai-journal dropped (it's writing, not code). Tax Processing added as active coding project.
 
 ### Success Criteria
 
@@ -195,20 +195,20 @@ Immediately rollback if:
 ### Projects WITH .cursorrules (16 total)
 
 ```
-1. 3D Pose Factory         - Unknown compliance
-2. Trading Projects        - Unknown compliance
+1. 3d-pose-factory         - Unknown compliance
+2. trading-copilot        - Unknown compliance
 3. ollama-mcp              - Unknown compliance
-4. Holoscape               - Unknown compliance
-5. Cortana personal AI     - Unknown compliance
+4. holoscape               - Unknown compliance
+5. cortana-personal-ai     - Unknown compliance
 6. [ROOT]                  - Super Manager Protocol (different format)
-7. AI usage-billing tracker - Unknown compliance
-8. Tax processing          - Unknown compliance
+7. ai-usage-billing-tracker - Unknown compliance
+8. tax-organizer          - Unknown compliance
 9. muffinpanrecipes        - Unknown compliance
 10. analyze-youtube-videos - Unknown compliance
 11. project-tracker        - Unknown compliance
 12. image-workflow         - Unknown compliance
 13. project-scaffolding    - Template format, needs rules
-14. AI-journal             - Unknown compliance
+14. ai-journal             - Unknown compliance
 15. hypocrisynow           - HAS RULES ✅
 16. audit-agent            - Unknown compliance
 ```
@@ -229,7 +229,7 @@ Review output, verify no surprises.
 
 ### Phase 2: Canary Deployment (After Erik Approval)
 ```bash
-python scripts/update_cursorrules.py --execute --projects "project-tracker,AI-journal,analyze-youtube-videos"
+python scripts/update_cursorrules.py --execute --projects "project-tracker,ai-journal,analyze-youtube-videos"
 ```
 Wait 24-48 hours. Monitor for issues.
 

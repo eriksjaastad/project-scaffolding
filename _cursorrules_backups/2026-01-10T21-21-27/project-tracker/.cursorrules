@@ -48,7 +48,7 @@
 
 ## 📋 Project Overview
 
-**Purpose:** Track all projects in `/Users/eriksjaastad/projects` workspace and surface status, health, and resource usage.
+**Purpose:** Track all projects in `[USER_HOME]/projects` workspace and surface status, health, and resource usage.
 
 **Architecture:**
 - **Scanner:** Discovers projects, READMEs, TODOs
@@ -85,8 +85,8 @@ pt list
 ## 🔗 Integration Points
 
 **Reads from:**
-- `/Users/eriksjaastad/projects/` - All projects
-- `/Users/eriksjaastad/projects/project-scaffolding/EXTERNAL_RESOURCES.md` - Resource tracking
+- `[USER_HOME]/projects/` - All projects
+- `[USER_HOME]/projects/project-scaffolding/EXTERNAL_RESOURCES.md` - Resource tracking
 - Individual project `README.md`, `TODO.md`, `00_Index_*.md` files
 
 **Project Index Validation:**
@@ -103,7 +103,7 @@ pt list
 
 ## Related Documentation
 
-- **Project Philosophy:** `/Users/eriksjaastad/projects/Trading Projects/PROJECT_PHILOSOPHY.md`
-- **Project Scaffolding:** `/Users/eriksjaastad/projects/project-scaffolding/`
+- **Project Philosophy:** `[USER_HOME]/projects/trading-copilot/PROJECT_PHILOSOPHY.md`
+- **Project Scaffolding:** `[USER_HOME]/projects/project-scaffolding/`
 - **TODO:** `TODO.md` - Current work items
 

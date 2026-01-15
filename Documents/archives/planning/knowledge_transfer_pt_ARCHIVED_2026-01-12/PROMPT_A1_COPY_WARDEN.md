@@ -28,15 +28,15 @@
 
 Copy this file:
 
-**Source:** `/Users/eriksjaastad/projects/project-scaffolding/scripts/warden_audit.py`
-**Destination:** `/Users/eriksjaastad/projects/project-tracker/scripts/warden_audit.py`
+**Source:** `[USER_HOME]/projects/project-scaffolding/scripts/warden_audit.py`
+**Destination:** `[USER_HOME]/projects/project-tracker/scripts/warden_audit.py`
 
 Use:
 ```bash
-cp /Users/eriksjaastad/projects/project-scaffolding/scripts/warden_audit.py \
-   /Users/eriksjaastad/projects/project-tracker/scripts/warden_audit.py
+cp [USER_HOME]/projects/project-scaffolding/scripts/warden_audit.py \
+   [USER_HOME]/projects/project-tracker/scripts/warden_audit.py
 
-chmod +x /Users/eriksjaastad/projects/project-tracker/scripts/warden_audit.py
+chmod +x [USER_HOME]/projects/project-tracker/scripts/warden_audit.py
 ```
 
 ---
@@ -44,18 +44,18 @@ chmod +x /Users/eriksjaastad/projects/project-tracker/scripts/warden_audit.py
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. File exists
 ls -la scripts/warden_audit.py
 # Should show file with -rwxr-xr-x permissions
 
 # 2. File runs
-python scripts/warden_audit.py --help
+doppler run -- python scripts/warden_audit.py --help
 # Should show help text
 
 # 3. Quick test
-python scripts/warden_audit.py --root . --fast
+doppler run -- python scripts/warden_audit.py --root . --fast
 # Should run without errors
 ```
 

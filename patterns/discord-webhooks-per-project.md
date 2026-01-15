@@ -75,7 +75,7 @@ Add to your project-scaffolding/EXTERNAL_RESOURCES.md:
 - **Cost:** Free
 - **Pattern:** One channel per project
 - **Channels:**
-  - #trading-copilot → Trading Projects
+  - #trading-copilot → trading-copilot
   - #image-workflow → image-workflow
   - etc.
 ```

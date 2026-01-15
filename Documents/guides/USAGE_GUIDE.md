@@ -34,7 +34,7 @@ You can use the CLI to apply the scaffolding structure to an existing project:
 
 ```bash
 # In project-scaffolding directory
-./venv/bin/python scaffold_cli.py apply my-new-project
+doppler run -- ./venv/bin/python scaffold_cli.py apply my-new-project
 ```
 
 Or copy the bones manually:
@@ -77,7 +77,7 @@ Edit the templates to fit your project:
 Start with these files:
 
 ```bash
-cd Documents/core/
+cd Documents/
 # Create initial docs
 touch ARCHITECTURE_OVERVIEW.md
 touch OPERATIONS_GUIDE.md
@@ -108,7 +108,7 @@ touch OPERATIONS_GUIDE.md
 
 ## Directory Structure
 
-```
+```bash
 project/
 ├── [main code directory]/
 ├── config/
@@ -122,7 +122,7 @@ project/
 **Why:** [Rationale]
 **Trade-offs:** [What we gave up]
 **Alternatives considered:** [What else we looked at]
-```
+```bash
 
 ### Step 4: Start Building
 
@@ -201,7 +201,7 @@ Create `PATTERNS_OBSERVED.md`:
 - **Instance 2:** Session notes (2024-12-21_session.md)
 - **Instance 3:** ??? (waiting)
 - **Status:** Emerging pattern (2/3)
-```
+```bash
 
 ### Contribute Back
 
@@ -224,7 +224,7 @@ Don't cargo-cult the templates. Pick what fits.
 ```bash
 # Copy entire scaffolding structure
 cp -r project-scaffolding/* my-project/
-```
+```bash
 
 **Right:**
 ```bash

@@ -20,7 +20,7 @@ We rewrote the `QUICKSTART.md` existing project scaffolding workflow to prevent 
 
 When testing the original QUICKSTART.md with Gemini 3 Flash, the AI agent:
 - Immediately started moving files to `Documents/core/` 
-- Used absolute paths (`/Users/eriksjaastad/...`) violating scaffolding principles
+- Used absolute paths (`[USER_HOME]/...`) violating scaffolding principles
 - Did not ask questions before making changes
 - Created a temp validation script without approval
 

@@ -152,7 +152,7 @@ Keep local models for tasks that need intelligence:
 ### Phase 3: Prove It Works (After CLI exists)
 
 - [ ] **3.1** Run `./scaffold_cli.py apply project-tracker`
-- [ ] **3.2** Run `./scaffold_cli.py apply Tax-processing`
+- [ ] **3.2** Run `./scaffold_cli.py apply tax-organizer`
 - [ ] **3.3** Run `./scaffold_cli.py apply analyze-youtube-videos`
 - [ ] **3.4** Verify all three are standalone (no $SCAFFOLDING refs)
 

@@ -39,7 +39,7 @@
 - [ ] Documentation updated (if user-facing changes)
 - [ ] Tests pass: `[specific test command]`
 - [ ] **Index updated** (if new patterns, components, or major structure changes)
-```
+```bash
 
 **new_string:**
 ```markdown
@@ -51,7 +51,7 @@
 - [ ] Documentation updated (if user-facing changes)
 - [ ] Tests pass: `[specific test command]`
 - [ ] **Index updated** (if new patterns, components, or major structure changes)
-```
+```bash
 
 ---
 
@@ -71,7 +71,7 @@ source venv/bin/activate
 # Run main script
 [your run command]
 ```
-```
+```bash
 
 **new_string:**
 ```markdown
@@ -82,7 +82,7 @@ source venv/bin/activate
 source venv/bin/activate
 
 # Validate project (before commits)
-python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 
 # Run tests
 [your test command]
@@ -90,7 +90,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 # Run main script
 [your run command]
 ```
-```
+```bash
 
 ---
 
@@ -104,7 +104,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 - **Review Protocol:** `REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
 - **Project Index:** `[[00_Index_[project-name]]]`
 - [Add project-specific references]
-```
+```bash
 
 **new_string:**
 ```markdown
@@ -115,7 +115,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" [project-name]
 - **Code Review Pattern:** `$SCAFFOLDING/patterns/code-review-standard.md`
 - **Project Index:** `[[00_Index_[project-name]]]`
 - [Add project-specific references]
-```
+```bash
 
 ---
 

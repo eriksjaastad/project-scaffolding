@@ -43,7 +43,7 @@
 **Step 1: Find the index file**
 
 ```bash
-ls -la /Users/eriksjaastad/projects/project-tracker/00_Index*.md
+ls -la [USER_HOME]/projects/project-tracker/00_Index*.md
 ```
 
 **Step 2: Add version metadata**
@@ -74,7 +74,7 @@ transferred_date: 2026-01-12
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. Version field exists
 grep "scaffolding_version" 00_Index*.md

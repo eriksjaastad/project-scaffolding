@@ -29,17 +29,17 @@
 **Step 1: Ensure directory exists**
 
 ```bash
-mkdir -p /Users/eriksjaastad/projects/project-tracker/Documents/patterns
+mkdir -p [USER_HOME]/projects/project-tracker/Documents/patterns
 ```
 
 **Step 2: Copy file**
 
-**Source:** `/Users/eriksjaastad/projects/project-scaffolding/patterns/code-review-standard.md`
-**Destination:** `/Users/eriksjaastad/projects/project-tracker/Documents/patterns/code-review-standard.md`
+**Source:** `[USER_HOME]/projects/project-scaffolding/patterns/code-review-standard.md`
+**Destination:** `[USER_HOME]/projects/project-tracker/Documents/patterns/code-review-standard.md`
 
 ```bash
-cp /Users/eriksjaastad/projects/project-scaffolding/patterns/code-review-standard.md \
-   /Users/eriksjaastad/projects/project-tracker/Documents/patterns/code-review-standard.md
+cp [USER_HOME]/projects/project-scaffolding/patterns/code-review-standard.md \
+   [USER_HOME]/projects/project-tracker/Documents/patterns/code-review-standard.md
 ```
 
 ---
@@ -47,7 +47,7 @@ cp /Users/eriksjaastad/projects/project-scaffolding/patterns/code-review-standar
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. Directory exists
 ls -la Documents/patterns/

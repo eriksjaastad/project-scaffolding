@@ -34,7 +34,7 @@
 ---
 
 ## Existing Project Checklist
-```
+```bash
 
 **new_string (replace with this):**
 
@@ -49,23 +49,23 @@ Once your project is set up, use the scaffolding's validation and review infrast
 
 **Command:**
 ```bash
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **What it checks:**
 - ✅ Required files present (00_Index_*.md, AGENTS.md, CLAUDE.md, .cursorrules, etc.)
 - ✅ Project index has valid YAML frontmatter and required sections
-- ✅ **DNA Integrity:** No hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ **DNA Integrity:** No hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ **Security:** No exposed secrets (API keys like `sk-...`, `AIza...`)
 - ✅ Mandatory directories exist (Documents/, etc.)
 
 **Example output (clean project):**
-```
+```bash
 ✅ my-new-project (Fully Compliant)
 ```
 
 **Example output (issues found):**
-```
+```bash
 ⚠️ my-new-project
    - Missing mandatory file: .cursorrules
    - DNA Defect: Absolute path found in scripts/helper.py
@@ -94,7 +94,7 @@ cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 ```bash
 cd "$SCAFFOLDING"
 source venv/bin/activate
-python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
+doppler run -- python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
 ```
 
 **Step 3: Review results**
@@ -116,10 +116,10 @@ Run validation periodically as you build:
 
 ```bash
 # Quick check (< 1 second)
-python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
+doppler run -- python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
 
 # Full validation
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **Best practice:** Validate before major commits or before requesting code reviews.
@@ -136,7 +136,7 @@ python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 **Key principle:** The review system is centralized in `project-scaffolding` to maintain consistency across all your projects. Projects reference and use it via `$SCAFFOLDING` commands.
 
 ---
-```
+```bash
 
 ---
 

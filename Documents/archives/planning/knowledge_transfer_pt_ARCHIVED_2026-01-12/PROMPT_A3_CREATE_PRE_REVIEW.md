@@ -29,7 +29,7 @@
 
 ## Task
 
-Create this file at `/Users/eriksjaastad/projects/project-tracker/scripts/pre_review_scan.sh`:
+Create this file at `[USER_HOME]/projects/project-tracker/scripts/pre_review_scan.sh`:
 
 ```bash
 #!/bin/bash
@@ -48,12 +48,12 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT"
 
 echo "1. Running Warden Security Audit (fast mode)..."
-python ./scripts/warden_audit.py --root . --fast
+doppler run -- python ./scripts/warden_audit.py --root . --fast
 WARDEN_EXIT=$?
 
 echo ""
 echo "2. Running Project Validation..."
-python ./scripts/validate_project.py project-tracker
+doppler run -- python ./scripts/validate_project.py project-tracker
 VALIDATE_EXIT=$?
 
 echo ""
@@ -70,7 +70,7 @@ fi
 
 Then make it executable:
 ```bash
-chmod +x /Users/eriksjaastad/projects/project-tracker/scripts/pre_review_scan.sh
+chmod +x [USER_HOME]/projects/project-tracker/scripts/pre_review_scan.sh
 ```
 
 ---
@@ -78,7 +78,7 @@ chmod +x /Users/eriksjaastad/projects/project-tracker/scripts/pre_review_scan.sh
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. File exists and is executable
 ls -la scripts/pre_review_scan.sh

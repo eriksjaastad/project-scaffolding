@@ -29,7 +29,7 @@ Pre-commit hooks need to distinguish between critical violations (block commit) 
 
 ### 1. Add Severity Enum (after imports, around line 7)
 
-```python
+```bash
 from enum import Enum
 
 class Severity(Enum):
@@ -43,7 +43,7 @@ class Severity(Enum):
 
 Change from returning `list` to returning `list[tuple]` with severity:
 
-```python
+```bash
 def check_dangerous_functions(project_root: pathlib.Path) -> list:
     """Greps for dangerous file removal functions.
 
@@ -83,7 +83,7 @@ def check_dangerous_functions(project_root: pathlib.Path) -> list:
 
 If Worker completed Task 1 (--fast flag), update that function too:
 
-```python
+```bash
 # In check_dangerous_functions_fast(), change append to:
 severity = Severity.P2 if 'test' in file_path else Severity.P0
 found_issues.append((pathlib.Path(file_path), pattern, severity))
@@ -91,7 +91,7 @@ found_issues.append((pathlib.Path(file_path), pattern, severity))
 
 ### 4. Update run_audit() to Track Severity (line 74)
 
-```python
+```bash
 def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
     """Crawls the ecosystem and performs the audit."""
     logger.info(f"Starting Warden Audit in: {root_dir}")
@@ -147,21 +147,21 @@ def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
 
 1. **Test severity classification on known file:**
    ```bash
-   python scripts/warden_audit.py --root .
+   doppler run -- python scripts/warden_audit.py --root .
    ```
    Expected: `[P0-CRITICAL]` for `scaffold/review.py` (production code)
 
 2. **Create test file with os.remove:**
    ```bash
    echo "import os; os.remove('test.txt')" > tests/test_temp.py
-   python scripts/warden_audit.py --root .
+   doppler run -- python scripts/warden_audit.py --root .
    ```
    Expected: `[P2-WARNING]` for `tests/test_temp.py` (test code)
    Expected: Exit code 0 (warnings don't fail)
 
 3. **Verify exit codes:**
    ```bash
-   python scripts/warden_audit.py --root . && echo "PASSED" || echo "FAILED"
+   doppler run -- python scripts/warden_audit.py --root . && echo "PASSED" || echo "FAILED"
    ```
    Should show "FAILED" because scaffold/review.py has P0 issue
 

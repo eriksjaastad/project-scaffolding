@@ -35,7 +35,7 @@ projects:
         env_var: "SCAFFOLDING_ANTHROPIC_KEY"
         cost: 2
 
-  trading-projects:
+  trading-copilot:
     monthly_cost: 12
     credential_file: ".env"
     services:
@@ -139,16 +139,6 @@ projects:
         env_var: "POSE_FACTORY_RUNPOD_API_KEY"
         cost: "Pay-per-use"
 
-  agent_os:
-    monthly_cost: 0
-    credential_file: ".env"
-    services:
-      - name: SQLite
-        purpose: "Local data storage"
-        type: database
-        cost: 0
-    notes: "Provides .env for other projects"
-
   project-tracker:
     monthly_cost: 0
     services:
@@ -222,8 +212,8 @@ api_key_pattern:
   naming_rule: "PREFIX_SERVICE_TYPE"
   examples:
     - "SCAFFOLDING_DEEPSEEK_KEY → project-scaffolding/.env"
-    - "CORTANA_OPENAI_KEY → Cortana personal AI/.env"
-    - "TRADING_OPENAI_KEY → Trading Projects/.env"
+    - "CORTANA_OPENAI_KEY → cortana-personal-ai/.env"
+    - "TRADING_OPENAI_KEY → trading-copilot/.env"
   why:
     - "Cost attribution (which project spent what?)"
     - "Failure isolation (one project's rate limit doesn't affect others)"
@@ -251,7 +241,7 @@ action_items:
   
   this_week:
     - "Migrate individual project keys to their respective .env files"
-    - "Audit 3D Pose Factory resources"
+    - "Audit 3d-pose-factory resources"
     - "Audit Hypocrisy Now resources"
   
   ongoing:

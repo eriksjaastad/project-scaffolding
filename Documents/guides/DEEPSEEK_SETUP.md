@@ -24,11 +24,11 @@ Before integrating, let's test if quality is acceptable:
 pip install openai
 
 # Test script
-python scripts/test_deepseek.py
+doppler run -- python scripts/test_deepseek.py
 ```
 
 **Test script** (`scripts/test_deepseek.py`):
-```python
+```bash
 #!/usr/bin/env python3
 """Test DeepSeek quality vs Claude"""
 
@@ -72,7 +72,7 @@ print(f"Cost: ${response.usage.total_tokens * 0.00000027:.6f}")
 ## 3. Integrate into scaffold
 
 **Add to `scaffold/deepseek.py`:**
-```python
+```bash
 """DeepSeek integration for Tier 2/3 tasks"""
 
 from openai import OpenAI
@@ -128,7 +128,7 @@ XAI_API_KEY=xai-...
 
 ## 5. Usage in Tier System
 
-```python
+```bash
 # In scaffold/dispatch.py
 
 if task.tier == 1:

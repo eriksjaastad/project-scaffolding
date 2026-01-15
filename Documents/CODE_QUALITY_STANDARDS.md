@@ -125,7 +125,7 @@ Every project MUST include a `.env.example` file. This file must be the "Documen
 If a project is cloned from GitHub without a `.env.example`, the developer has to guess which environment variables are needed. If the project uses absolute paths for things like `SKILLS_LIBRARY_PATH`, the project is "locked" to a specific machine.
 
 ### What to Do
-1. Create a `.env.example` with relative path defaults (e.g., `SKILLS_LIBRARY_PATH=../agent-skills-library`).
+1. Create a `.env.example` with relative path defaults (e.g., `SKILLS_LIBRARY_PATH=$PROJECTS_ROOT/agent-skills-library`).
 2. Include a `check_environment()` function in your `config.py` that verifies the presence of required variables and provides a "Human-Actionable" error message if they are missing.
 
 ---

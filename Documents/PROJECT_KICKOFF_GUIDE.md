@@ -13,7 +13,7 @@ You can use the automated `apply` command to bootstrap your project:
 
 ```bash
 # In project-scaffolding directory
-./venv/bin/python scaffold_cli.py apply my-new-project
+doppler run -- ./venv/bin/python scaffold_cli.py apply my-new-project
 ```
 
 This will copy the core scripts, docs, and update references automatically.
@@ -64,7 +64,7 @@ cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore
 
 ```bash
 # Copy template
-cp "$SCAFFOLDING/templates/00_Index_Template.md" \
+cp "$SCAFFOLDING/templates/00_Index.md.template" \
    "./00_Index_$(basename "$NEW_PROJECT").md"
 
 # Edit the file:
@@ -88,7 +88,7 @@ Multi-AI trading intelligence platform that compares GPT, Claude, and Gemini
 for market analysis. Built with Python, PostgreSQL on Railway with cron 
 dispatcher for automated analysis. Layer 1-3 complete with full deployment 
 pipeline ready for production.
-```
+```bash
 
 **Tags to include:**
 - `map/project` (always)
@@ -110,13 +110,13 @@ git commit -m "Initial commit: Project structure from scaffolding
 - Added project index (mandatory)
 - Copied scaffolding templates
 - Ready for development"
-```
+```bash
 
 **Verify index exists:**
 ```bash
 ls -la 00_Index_*.md
 # Should show: 00_Index_[YourProject].md
-```
+```bash
 
 ---
 
@@ -127,26 +127,26 @@ Run validation to ensure your project structure is correct:
 ```bash
 # Validate project (from any directory)
 python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
-```
+```bash
 
 **What validation checks:**
 - ✅ Required files present (00_Index_*.md, AGENTS.md, CLAUDE.md, .cursorrules, etc.)
 - ✅ Project index has valid YAML frontmatter and required sections
-- ✅ **DNA Integrity:** No hardcoded absolute paths (`/Users/...`, `/home/...`)
+- ✅ **DNA Integrity:** No hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ **Security:** No exposed secrets (API keys like `sk-...`, `AIza...`)
 - ✅ Mandatory directories exist (Documents/, etc.)
 
 **Example output (clean project):**
 ```
 ✅ my-new-project (Fully Compliant)
-```
+```bash
 
 **Example output (issues found):**
 ```
 ⚠️ my-new-project
    - Missing mandatory file: .cursorrules
    - Index file: Missing required section: ## Status
-```
+```bash
 
 **Fix any issues and re-run validation until clean.**
 
@@ -185,7 +185,7 @@ Please:
 3. Let's start Phase 1 planning (big idea → breakdown)
 
 Ready to explore this idea?
-```
+```bash
 
 ---
 
@@ -237,7 +237,7 @@ Task:
 4. Suggest execution order
 
 Create a tiered sprint document in: Documents/SPRINT_PLAN.md
-```
+```bash
 
 **Output:** `Documents/SPRINT_PLAN.md` with tiered task list
 
@@ -268,7 +268,7 @@ Requirements:
 - Ignore logs
 
 Please generate the .gitignore file.
-```
+```bash
 
 ### Tier 2 Tasks (GPT-4o)
 
@@ -287,7 +287,7 @@ Please:
 2. Include error handling
 3. Follow existing code patterns
 4. Write basic tests
-```
+```bash
 
 ### Tier 1 Tasks (Claude Sonnet/GPT-4)
 
@@ -308,7 +308,7 @@ Please:
 2. Propose 2-3 approaches
 3. Recommend one with rationale
 4. Identify risks and edge cases
-```
+```bash
 
 ---
 
@@ -330,7 +330,7 @@ Please:
 3. **How to Run:**
    ```bash
    scaffold review --type code --input path/to/your/request.md --round 1
-   ```
+   ```bash
 
 ---
 
@@ -346,7 +346,7 @@ Please:
 
 **Current phase:** [Planning / Implementation / etc]
 **Key constraints:** [Budget, performance, privacy, etc]
-```
+```bash
 
 **2. Tiered AI Reference:**
 ```markdown
@@ -361,7 +361,7 @@ Before starting work:
 1. Check Documents/SPRINT_PLAN.md for task tier
 2. Use appropriate model for the tier
 3. Default to Tier 3, escalate only when stuck
-```
+```bash
 
 **3. External Resources:**
 ```markdown
@@ -377,7 +377,7 @@ Document:
 - Cost
 - Purpose
 - API key location
-```
+```bash
 
 **4. Project-Specific Safety Rules:**
 ```markdown
@@ -391,7 +391,7 @@ Document:
 
 ✅ Safe to modify:
 - [List freely editable code]
-```
+```bash
 
 ---
 
@@ -426,7 +426,7 @@ my-new-project/
 ├── tests/                     # Tests (if applicable)
 ├── data/                      # Data files (if applicable)
 └── config/                    # Configuration (if applicable)
-```
+```bash
 
 ---
 
@@ -488,7 +488,7 @@ Please review this ROADMAP.md and provide:
 4. What's under-specified?
 
 Be critical. I need reality checks, not cheerleading.
-```
+```bash
 
 **Run with:** Claude Opus 4, GPT-4, Gemini, Grok (like Hologram did)
 
@@ -508,7 +508,7 @@ Spike 1: Performance Testing
 - Measure FPS, CPU, memory
 - Pass/fail against targets
 - Document in Documents/spikes/
-```
+```bash
 
 **Use Tier 2** for spikes (implementation with measurement)
 
@@ -523,7 +523,7 @@ Documents/milestones/
 ├── 2025-12-19_phase-0-complete.png
 ├── 2025-12-20_first-animation.png
 └── MILESTONES.md (describe each)
-```
+```bash
 
 **Why:** Motivating, shareable, documents progress
 
@@ -557,7 +557,7 @@ Don't add services without updating EXTERNAL_RESOURCES.md.
 
 ### ❌ Shared API Keys
 
-Don't reuse API keys across projects (even from agent_os).
+Don't reuse API keys across projects (even from agent-os).
 
 **Why:** Can't attribute costs, can't isolate failures, can't control blast radius.
 
@@ -633,7 +633,7 @@ Key references:
 - Templates: templates/
 - Philosophy: PROJECT_PHILOSOPHY.md
 - External resources: EXTERNAL_RESOURCES.md
-```
+```bash
 
 ---
 

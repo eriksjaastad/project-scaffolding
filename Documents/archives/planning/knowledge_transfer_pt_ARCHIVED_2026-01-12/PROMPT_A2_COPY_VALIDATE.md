@@ -29,10 +29,10 @@
 **Step 1: Copy file**
 
 ```bash
-cp /Users/eriksjaastad/projects/project-scaffolding/scripts/validate_project.py \
-   /Users/eriksjaastad/projects/project-tracker/scripts/validate_project.py
+cp [USER_HOME]/projects/project-scaffolding/scripts/validate_project.py \
+   [USER_HOME]/projects/project-tracker/scripts/validate_project.py
 
-chmod +x /Users/eriksjaastad/projects/project-tracker/scripts/validate_project.py
+chmod +x [USER_HOME]/projects/project-tracker/scripts/validate_project.py
 ```
 
 **Step 2: Update internal paths**
@@ -47,18 +47,18 @@ If it has hardcoded paths to project-scaffolding, those need updating.
 ## Verification
 
 ```bash
-cd /Users/eriksjaastad/projects/project-tracker
+cd [USER_HOME]/projects/project-tracker
 
 # 1. File exists
 ls -la scripts/validate_project.py
 # Should show file with -rwxr-xr-x permissions
 
 # 2. Help works
-python scripts/validate_project.py --help
+doppler run -- python scripts/validate_project.py --help
 # Should show usage
 
 # 3. Test on project-tracker itself
-python scripts/validate_project.py project-tracker
+doppler run -- python scripts/validate_project.py project-tracker
 # Should run validation
 ```
 

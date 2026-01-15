@@ -128,7 +128,7 @@ A code review identified critical issues that prevent the codebase from function
 5. **Final verification:** After all tasks complete, run:
    ```bash
    # Verify no broken imports
-   python -m py_compile scripts/*.py scaffold/*.py
+   doppler run -- python -m py_compile scripts/*.py scaffold/*.py
 
    # Verify tests can at least be collected
    pytest tests/ --collect-only
