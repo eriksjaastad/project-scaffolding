@@ -17,7 +17,7 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 - More consistent across collaborators (AI and human)
 
 **What We DON'T Do:**
-- ❌ Cost tracking (that's `AI usage-billing tracker`'s job)
+- ❌ Cost tracking (that's `ai-usage-billing-tracker`'s job)
 - ❌ Project status monitoring (that's `project-tracker`'s job)
 - ✅ We recommend patterns and build automation; others implement monitoring
 
@@ -70,6 +70,7 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
 | `Documents/PROJECT_KICKOFF_GUIDE.md` | Detailed planning workflow |
 | `Documents/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
 | `Documents/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
+| `Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md` | **NEW:** Secrets management (replaces `.env` files) |
 
 ### Understanding This Scaffolding
 
@@ -112,7 +113,15 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
 
 ### Managing Your Projects
 
-**NEW:** `EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
+**Secrets Management (Doppler):**  
+As of January 2026, **8 core projects** use Doppler for centralized secrets management instead of local `.env` files. See `Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md` for:
+- Which projects are migrated
+- How to run projects with `doppler run --`
+- Rollback procedures if needed
+- Best practices for new projects
+
+**External Resources:**  
+`EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
 - Prevents "I got a bill but don't know which project" situations
 - Cost tracking across all projects
 - Credential locations documented
@@ -223,7 +232,7 @@ project-scaffolding/
 ├── templates/                   ← Reusable starting points
 │   ├── Documents/               ← Documentation structure template ✅
 │   │   ├── README.md            ← Index and usage guide
-│   │   ├── core/                ← Architecture, operations
+│   │   ├── ARCHITECTURE.md      ← Architecture, operations
 │   │   ├── guides/              ← How-to documents
 │   │   ├── reference/           ← Standards, knowledge base
 │   │   ├── safety/              ← Safety systems

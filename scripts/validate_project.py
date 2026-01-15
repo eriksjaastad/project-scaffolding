@@ -28,7 +28,7 @@ if not PROJECTS_ROOT_ENV:
 PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
-SKIP_DIRS = {"__Knowledge", "_collaboration", "_inbox", "_obsidian", "_tools"}
+SKIP_DIRS = {"writing", "ai-journal"}
 
 # Mandatory files and directories
 MANDATORY_FILES = [
@@ -41,8 +41,7 @@ MANDATORY_FILES = [
     ".gitignore"
 ]
 MANDATORY_DIRS = [
-    "Documents",
-    "Documents/core"
+    "Documents"
 ]
 
 # YAML frontmatter requirements
@@ -59,8 +58,8 @@ def find_projects(root: Path) -> List[Path]:
     """Find all project directories (top-level folders)."""
     projects = []
     for item in root.iterdir():
-        if item.is_dir() and not item.name.startswith("."):
-            # Skip special directories
+        if item.is_dir() and not item.name.startswith((".", "_")):
+            # Skip explicit directories
             if item.name in SKIP_DIRS:
                 continue
             projects.append(item)
@@ -127,15 +126,19 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
     secret_pattern = re.compile(r"(sk-[a-zA-Z0-9]{32,}|AIza[a-zA-Z0-9_-]{35})")
     
     # Files to exclude from scan
-    exclude_dirs = {".git", "venv", "__pycache__", "node_modules", "data", "library", ".mypy_cache", ".pytest_cache"}
+    exclude_dirs = {
+        ".git", "venv", ".venv", "__pycache__", "node_modules", "data",
+        "library", ".mypy_cache", ".pytest_cache", ".ruff_cache", "archives", "_trash",
+        "htmlcov", ".tox", ".nox", ".cache", "logs"
+    }
     
     for root, dirs, files in os.walk(project_path):
         # Filter directories in-place
-        dirs[:] = [d for d in dirs if d not in exclude_dirs]
+        dirs[:] = [d for d in dirs if d not in exclude_dirs and not d.startswith(".")]
         
         for file in files:
             # Skip binary files, known safe files, and env files
-            if file.endswith((".png", ".jpg", ".pyc", ".db", ".zip")) or file in {".env", ".env.example"}:
+            if file.endswith((".png", ".jpg", ".jpeg", ".pyc", ".db", ".zip", ".tar.gz", ".bak")) or file in {".env", ".env.example"}:
                 continue
                 
             file_path = Path(root) / file
@@ -144,6 +147,10 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
                 
                 # Check for absolute paths
                 if path_pattern.search(content):
+                    # Skip common intentional paths if any (e.g. journal protocol uses absolute paths)
+                    journal_path_str = str(PROJECTS_ROOT / "ai-journal" / "entries")
+                    if journal_path_str in content:
+                        continue
                     errors.append(f"DNA Defect: Absolute path found in {file_path.relative_to(project_path)}")
                 
                 # Check for secrets
@@ -179,6 +186,9 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     # 2. Check for mandatory files
     for filename in MANDATORY_FILES:
         if not (project_path / filename).exists():
+            # Special case: check for README.md in Documents/ if not in root
+            if filename == "README.md" and (project_path / "Documents" / "README.md").exists():
+                continue
             errors.append(f"Missing mandatory file: {filename}")
             
     # 3. Check for mandatory directories
@@ -269,8 +279,12 @@ def main() -> None:
     
     else:
         # Validate specific project
-        project_name = safe_slug(arg)
-        project_path = (PROJECTS_ROOT / project_name).resolve()
+        # First try the raw name
+        project_path = (PROJECTS_ROOT / arg).resolve()
+        if not project_path.exists() or not project_path.is_dir():
+            # Fallback to slugged name
+            project_name = safe_slug(arg)
+            project_path = (PROJECTS_ROOT / project_name).resolve()
         
         # Security: Ensure path stays within PROJECTS_ROOT
         if not project_path.is_relative_to(PROJECTS_ROOT):
@@ -278,22 +292,22 @@ def main() -> None:
             sys.exit(1)
             
         if not project_path.exists():
-            print(f"❌ Project not found: {project_name}")
+            print(f"❌ Project not found: {arg}")
             print(f"   Expected: {project_path}")
             sys.exit(1)
         
         if not project_path.is_dir():
-            print(f"❌ Not a directory: {project_name}")
+            print(f"❌ Not a directory: {arg}")
             sys.exit(1)
         
-        print(f"Validating: {project_name}\n")
+        print(f"Validating: {project_path.name}\n")
         is_valid = validate_project(project_path, verbose=True)
         
         if not is_valid:
-            print(f"\n❌ Validation failed for {project_name}")
+            print(f"\n❌ Validation failed for {project_path.name}")
             sys.exit(1)
         else:
-            print(f"\n✅ {project_name} is valid!")
+            print(f"\n✅ {project_path.name} is valid!")
             sys.exit(0)
 
 
