@@ -44,6 +44,26 @@ created: 2025-12-31
 
 [Repeat sections as needed for major components]
 
+## Skills Used
+
+**From agent-skills-library:** (see `$PROJECTS_ROOT/agent-skills-library/`)
+
+| Skill | Status | Notes |
+|-------|--------|-------|
+| [skill-name] | [🟢 Active / 🟡 Considering / ❌ Tried, didn't fit] | [Brief note on usage] |
+
+*Run `python $PROJECTS_ROOT/agent-skills-library/scripts/detect_skill_candidates.py` to find relevant skills.*
+
+### Skill Feedback
+
+**Improvements suggested for skills used:**
+- [skill-name]: [What could be better? Edge cases found?]
+
+**New patterns emerging in this project:**
+- [Pattern description]: [Could this become a skill? Used in other projects?]
+
+---
+
 ## Status
 
 **Tags:** #map/project #p/[project-name]  

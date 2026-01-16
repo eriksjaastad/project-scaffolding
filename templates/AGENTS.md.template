@@ -30,7 +30,30 @@
 
 **Code Review Standards:** See `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for full review process.
 
+## 🧠 Skills Library
+
+**Before starting work, check for relevant skills:**
+```
+$PROJECTS_ROOT/agent-skills-library/
+```
+
+**Skills currently used in this project:**
+| Skill | Purpose |
+|-------|---------|
+| [skill-name] | [How it's used here] |
+
+**To find relevant skills:**
+```bash
+python $PROJECTS_ROOT/agent-skills-library/scripts/detect_skill_candidates.py
+```
+
+**When using a skill:**
+1. Follow the playbook at `agent-skills-library/playbooks/[skill-name]/`
+2. Note any gaps or improvements in the project's `00_Index_*.md` → "Skill Feedback" section
+3. If a pattern emerges that could help other projects, consider proposing a new skill
+
 ## 📖 Reference Links
 - [[00_Index_{project_name}]]
 - [[Project Philosophy]]
+- [[agent-skills-library/README]] - Skills Library
 
