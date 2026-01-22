@@ -70,7 +70,8 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
 | `Documents/PROJECT_KICKOFF_GUIDE.md` | Detailed planning workflow |
 | `Documents/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
 | `Documents/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
-| `Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md` | **NEW:** Secrets management (replaces `.env` files) |
+| `Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md` | Secrets management (replaces `.env` files) |
+| `Documents/reference/AGENT_CONFIG_SYNC.md` | **NEW:** Auto-sync AGENTS.md to all IDEs |
 
 ### Understanding This Scaffolding
 
@@ -276,3 +277,36 @@ Don't force it. Let patterns emerge naturally.
 *This is a living meta-project. It grows as we learn.*  
 *Started: December 21, 2025*
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[billing_workflows]] - billing/payments
+- [[cost_management]] - cost management
+- [[database_setup]] - database
+- [[error_handling_patterns]] - error handling
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[deployment_patterns]] - deployment
+- [[hypocrisy_methodology]] - bias detection
+- [[orchestration_patterns]] - orchestration
+- [[testing_strategy]] - testing/QA
+- [[agent-skills-library/README]] - Agent Skills
+- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[hypocrisynow/README]] - Hypocrisy Now
+- [[image-workflow/README]] - Image Workflow
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[project-tracker/README]] - Project Tracker
+
+## Development Resources
+- [[project-tracker/data/WARDEN_LOG.yaml|WARDEN_LOG.yaml]]
+- [[project-scaffolding/scripts/warden_audit.py|warden_audit.py]]
+- [[project-scaffolding/prompts/active/document_review/performance.md|performance.md]]
+- [[project-scaffolding/prompts/active/document_review/security.md|security.md]]
+- [[project-scaffolding/scaffold/__init__.py|__init__.py]]

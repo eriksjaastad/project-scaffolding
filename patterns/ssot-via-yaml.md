@@ -69,3 +69,14 @@ projects:
 - **The "Broken Regex" Scar:** Trying to parse Markdown tables with regex led to silent failures in cost tracking when a single character changed.
 - **The "Dual Update" Scar:** Updating a Markdown doc and forgetting to update the DB led to conflicting realities. YAML SSOT prevents this.
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[database_schema]] - database design
+- [[database_setup]] - database
+- [[case_studies]] - examples
+- [[security_patterns]] - security
+- [[project-tracker/README]] - Project Tracker
+- [[trading-copilot/README]] - Trading Copilot

@@ -342,3 +342,15 @@ build/
 *Pattern Status: ✅ Implemented*  
 *Projects Using This: All (workspace-level)*
 
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[database_setup]] - database
+- [[queue_processing_guide]] - queue/workflow
+- [[case_studies]] - examples
+- [[performance_optimization]] - performance
+- [[testing_strategy]] - testing/QA
+- [[image-workflow/README]] - Image Workflow
+- [[project-scaffolding/README]] - Project Scaffolding

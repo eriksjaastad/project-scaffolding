@@ -387,3 +387,11 @@ secrets:
 **End of DNA Security Audit**
 
 *This audit must be resolved before this project can be considered portable or production-ready.*
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

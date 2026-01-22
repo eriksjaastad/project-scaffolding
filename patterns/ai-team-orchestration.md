@@ -47,11 +47,13 @@ This is **generator / implementer / verifier** - not junior/mid/senior.
 - Produce a **diff** (or patch) with minimal scope
 - Prefer small changes over rewrites
 - Follow the acceptance criteria exactly
+- **V4:** Write changes to sandbox via draft tools (gated by Manager)
 
 **Does NOT:**
 - Decide what to work on
 - Skip tests
 - Expand scope beyond the task
+- Write files directly (must use sandbox drafts)
 
 ---
 
@@ -253,15 +255,38 @@ That's how you get to "I can hand work off to an AI team and not worry" - throug
 ### Connects To:
 - **local-ai-integration.md** - Model selection and routing
 - **tiered-ai-sprint-planning.md** - Sprint-level task planning
-- **safety-systems.md** - Guardrails and stop conditions
+- **safety-systems.md** - Guardrails, stop conditions, and Sandbox Draft Pattern (V4)
 - **learning-loop-pattern.md** - Iteration and improvement cycles
+- **agent-hub/** - Unified Agent System (message bus, model routing, budget management, circuit breakers)
+
+### MCP Server Infrastructure (`_tools/`):
+| Server | Purpose |
+|--------|---------|
+| **agent-hub** | Core orchestration - SQLite message bus, LiteLLM routing, budget tracking, circuit breakers |
+| **librarian-mcp** | Knowledge queries - wraps project-tracker's graph.json and tracker.db |
+| **ollama-mcp** | Local model execution - draft tools, model invocation |
+| **claude-mcp** | Agent communication hub |
 
 ### Implementation Notes:
 - Manager role maps to "Super Manager" in AGENTS.md hierarchy
-- Worker role maps to "Floor Manager" or specialized agents
+- Worker role maps to local Ollama models via ollama-mcp
+- Floor Manager orchestrates workers and gates their file edits (V4)
 - Reviewer role can be human, AI, or automated tests
-- Metrics should feed into project-tracker for visibility
+- Metrics feed into project-tracker for visibility
+- Agents can query librarian-mcp before falling back to grep/glob
+- **V4:** Workers can write to sandbox, Floor Manager reviews diffs before applying (see `safety-systems.md` Pattern 7)
 
 ---
 
 *This pattern extracted from AI Training Lab research, January 2026*
+
+## Related Documentation
+
+- [[ai_training_methodology]] - AI training
+- [[cost_management]] - cost management
+- [[error_handling_patterns]] - error handling
+- [[adult_business_compliance]] - adult industry
+- [[case_studies]] - examples
+- [[performance_optimization]] - performance
+- [[research_methodology]] - research
+- [[project-tracker/README]] - Project Tracker

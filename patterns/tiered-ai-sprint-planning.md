@@ -356,3 +356,17 @@ Result:
 *Pattern extracted from ai-usage-billing-tracker project after hitting $300 spend in 28 days*  
 *Author: Claude Sonnet 4.5 (ironically, using Tier 1 to create a pattern about not over-using Tier 1!)*
 
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[architecture_patterns]] - architecture
+- [[billing_workflows]] - billing/payments
+- [[cost_management]] - cost management
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[performance_optimization]] - performance
+- [[security_patterns]] - security
+- [[testing_strategy]] - testing/QA
+- [[ai-usage-billing-tracker/README]] - AI Billing Tracker

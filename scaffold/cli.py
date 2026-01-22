@@ -19,7 +19,7 @@ from rich.console import Console
 # Load environment variables from .env
 load_dotenv()
 
-console = Console()
+console = Console(force_terminal=False)
 
 
 @click.group()
@@ -202,6 +202,13 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
     Example:
         scaffold apply project-tracker
     """
+    # 0. Protection Check
+    PROTECTED_PROJECTS = {"ai-journal", "writing", "plugin-duplicate-detection", "plugin-find-names-chrome"}
+    if project_name in PROTECTED_PROJECTS:
+        console.print(f"[bold red]ERROR: {project_name} is a PROTECTED PROJECT.[/bold red]")
+        console.print("[red]These projects are on the 'Do Not Touch' list and cannot be scaffolded or modified by automatic services.[/red]")
+        return
+
     scaffold_root = Path(__file__).parent.parent
     
     # Target resolution: try direct, then hyphen-to-space, then in parent dir
@@ -219,8 +226,11 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
             project_name = alt_name
 
     if not target_dir.exists():
-        console.print(f"[red]Error: Target project directory not found: {project_name}[/red]")
-        return
+        if not dry_run:
+            console.print(f"[yellow]Creating directory: {target_dir}[/yellow]")
+            target_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            console.print(f"[yellow]Would create directory: {target_dir}[/yellow]")
 
     console.print(f"\n[bold]Applying scaffolding to {project_name}...[/bold]\n")
     if dry_run:

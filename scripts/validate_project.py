@@ -28,7 +28,7 @@ if not PROJECTS_ROOT_ENV:
 PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
-SKIP_DIRS = {"writing", "ai-journal"}
+SKIP_DIRS = {"writing", "ai-journal", "plugin-duplicate-detection", "plugin-find-names-chrome"}
 
 # Mandatory files and directories
 MANDATORY_FILES = [

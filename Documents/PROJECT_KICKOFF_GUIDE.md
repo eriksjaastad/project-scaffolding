@@ -143,57 +143,12 @@ Now you execute using appropriate tiers.
 *Part of the [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding) meta-project.*
 *See also: [[PROJECT_STRUCTURE_STANDARDS]] and [[CODE_QUALITY_STANDARDS]].*
 
-
 ## Related Documentation
 
 - [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
 - [[PROJECT_KICKOFF_GUIDE]] - project setup
-
 - [[architecture_patterns]] - architecture
 - [[prompt_engineering_guide]] - prompt engineering
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-
 - [[ai_model_comparison]] - AI models
 - [[project_planning]] - planning/roadmap
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-
-- [[architecture_patterns]] - architecture
-- [[prompt_engineering_guide]] - prompt engineering
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-
 - [[project-scaffolding/README]] - Project Scaffolding
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-
-- [[architecture_patterns]] - architecture
-- [[prompt_engineering_guide]] - prompt engineering
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-
-- [[ai_model_comparison]] - AI models
-- [[project_planning]] - planning/roadmap
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-
-- [[architecture_patterns]] - architecture
-- [[prompt_engineering_guide]] - prompt engineering
-
-
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-

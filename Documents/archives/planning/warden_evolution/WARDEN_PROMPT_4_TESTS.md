@@ -292,3 +292,9 @@ Do not sign off until:
 **STATUS: SIGNED OFF BY FLOOR MANAGER**
 
 **Note:** If coverage is 70-80%, that's acceptable. Focus on testing critical paths (severity logic, fast mode, path detection).
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

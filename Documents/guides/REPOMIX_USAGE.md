@@ -67,3 +67,11 @@ Since you're frustrated and taking a breather, let's do one tiny thing to make t
 **Would you like me to draft a "Ruthless Auditor" prompt that you can paste into your `.cursorrules` or Claude Project?** It will specifically tell the AI to stop pandering and start treating every line of code like a potential security breach.
 
 I can also include a rule that says: **"If you see any file named .env, stop everything and warn the user they are violating the Doppler protocol."** That way, the AI acts as your 5:00 AM guard dog.
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[prompt_engineering_guide]] - prompt engineering
+- [[ai_model_comparison]] - AI models
+- [[security_patterns]] - security

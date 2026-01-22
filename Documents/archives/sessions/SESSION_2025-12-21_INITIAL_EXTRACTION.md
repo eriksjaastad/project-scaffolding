@@ -308,3 +308,10 @@ Key validation: Every pattern has evidence from 2-3 projects. Nothing was extrac
 
 *Next session: Extract examples and test templates on a new project.*
 
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

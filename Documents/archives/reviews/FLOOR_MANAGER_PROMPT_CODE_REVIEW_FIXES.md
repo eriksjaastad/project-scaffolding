@@ -153,3 +153,11 @@ When complete:
 
 *Generated from CODE_REVIEW_CLAUDE_OPUS_v1.md findings*
 *Template per AGENTS.md v1.0*
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

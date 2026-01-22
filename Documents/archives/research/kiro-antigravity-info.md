@@ -93,3 +93,10 @@ To strictly answer your request on how to **spread the workload** to include bot
 ### **Next Step**
 
 Would you like me to generate a specific **Kiro Agent Hook configuration** (e.g., for Python/SQLite) so you can immediately plug it into your tax tool project?
+
+---
+
+## Related Documentation
+- [[kiro-antigravity-info-v2]] - Detailed technical research on Kiro & Antigravity.
+- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
+- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.

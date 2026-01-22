@@ -141,3 +141,10 @@ Do not sign off until:
 
 **STATUS: SIGNED OFF BY FLOOR MANAGER**
 *Note: Due to worker timeouts and output repetition issues, the Floor Manager performed the final implementation and verification to ensure sub-second performance and correctness.*
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

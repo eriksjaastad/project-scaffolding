@@ -245,3 +245,11 @@ kiro_path = shutil.which("kiro-cli") or "/Applications/Kiro CLI.app/Contents/Mac
 **Review Conducted By:** Claude (Opus 4.5)
 **Methodology:** Applied project's own `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` v1.2 checklist
 **Files Examined:** 25+ across scripts/, scaffold/, templates/, tests/, Documents/
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

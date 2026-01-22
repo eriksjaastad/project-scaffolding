@@ -28,3 +28,9 @@ def find_cursorrules_files(projects_root: pathlib.Path) -> list[pathlib.Path]:
             cursorrules_files.append(cursorrules)
     return sorted(cursorrules_files)
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

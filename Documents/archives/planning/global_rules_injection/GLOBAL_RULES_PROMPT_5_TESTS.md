@@ -293,3 +293,10 @@ Do not sign off until:
 - [ ] At least 8 distinct tests
 
 **Max 3 attempts.** If Worker fails 3x, halt and alert Conductor.
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

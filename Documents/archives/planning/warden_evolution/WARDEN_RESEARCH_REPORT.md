@@ -419,3 +419,11 @@ exit 0
 
 **Analyst signature:** Claude Sonnet 4.5
 **Date:** 2026-01-10T02:30:00Z
+
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

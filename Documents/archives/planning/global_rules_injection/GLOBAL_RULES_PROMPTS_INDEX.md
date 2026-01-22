@@ -152,3 +152,10 @@ The original Task 1 prompt (`GLOBAL_RULES_PROMPT_1_CORE_DRYRUN.md`) is preserved
 ---
 
 **Ready to hand off to Workers**
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

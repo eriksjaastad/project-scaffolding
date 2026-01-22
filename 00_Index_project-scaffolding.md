@@ -11,60 +11,104 @@ tags:
 created: 2025-12-31
 ---
 
-# project-scaffolding
+# Project Scaffolding: Building Better Projects Faster
 
-Meta-project for extracting patterns from experiments to build better projects faster, serving as the "scaffolding is the product" philosophy repository. This system documents 20+ proven patterns from battle-tested projects, provides templates for new projects, enforces code quality standards through multi-model review orchestration (DeepSeek + Ollama), and tracks external resources to prevent duplicate services and surprise bills. Initial extraction is complete with comprehensive pattern analysis, safety systems, and development philosophy documentation.
+This meta-project serves as a central repository for proven patterns, templates, and automation tools designed to accelerate project development and ensure consistent quality.  It embodies the "scaffolding is the product" philosophy, providing a robust framework for new projects and continuous improvement.  The system documents over 20 battle-tested patterns, offers project templates, enforces code quality standards through multi-model review orchestration (DeepSeek + Ollama), and tracks external resources to prevent duplication and unexpected costs.
+
+**Goal:** To provide a standardized, efficient, and reliable foundation for all new projects, reducing development time and improving overall quality.
+
+## Table of Contents
+
+1.  [Key Components](#key-components)
+    *   [Patterns](#patterns)
+    *   [Templates](#templates)
+    *   [Core Library](#core-library)
+    *   [Documentation](#documentation)
+    *   [Resource Tracking](#resource-tracking)
+    *   [Tests](#tests)
+2.  [Usage](#usage)
+3.  [Status](#status)
+4.  [Recent Activity](#recent-activity)
+5.  [Contributing](#contributing)
+6.  [License](#license)
 
 ## Key Components
 
 ### Patterns
-- `patterns/` - Documented patterns
-  - `safety-systems.md` - 6 proven patterns
-  - `development-philosophy.md` - 7 core principles
-  - `tiered-ai-sprint-planning.md` - Cost-effective AI usage
-  - `learning-loop-pattern.md` - **Reinforcement learning cycles**
-  - `code-review-standard.md` - Review orchestration
-  - `ssot-via-yaml.md` - Data management
+
+The `patterns/` directory contains documented patterns extracted from successful projects. These patterns represent best practices and proven solutions to common development challenges.
+
+*   `safety-systems.md`:  Details 6 proven patterns for building robust and secure systems.
+*   `development-philosophy.md`: Outlines 7 core principles guiding our development approach.
+*   `tiered-ai-sprint-planning.md`:  Explains how to leverage AI cost-effectively in sprint planning.
+*   `learning-loop-pattern.md`: Describes the implementation of reinforcement learning cycles for continuous improvement.
+*   `code-review-standard.md`: Defines the standards and orchestration process for code reviews.
+*   `ssot-via-yaml.md`:  Explains how to manage data using a Single Source of Truth (SSOT) approach with YAML.
 
 ### Templates
-- `templates/` - Reusable starting points
-  - `Documents/` - Documentation structure
-  - `.cursorrules.template` - Project rules
-  - `CLAUDE.md.template` - AI instructions
-  - `TIERED_SPRINT_PLANNER.md` - Sprint planning
+
+The `templates/` directory provides reusable starting points for new projects, ensuring consistency and accelerating setup.
+
+*   `Documents/`: A pre-defined documentation structure to promote clear and comprehensive documentation.
+*   `.cursorrules.template`:  A template file for defining project-specific rules and guidelines.
+*   `CLAUDE.md.template`: A template for AI instruction prompts, tailored for the Claude model.
+*   `TIERED_SPRINT_PLANNER.md`: A template for tiered sprint planning, optimizing resource allocation.
 
 ### Core Library
-- `scaffold/` - Automation library (10 Python files)
-  - `review.py` - Code review orchestrator
-  - `cli.py` - CLI tools
-- `scripts/` - Maintenance & Governance utilities
-  - `pre_review_scan.sh` - Mandatory v1.1 Gate 0 scan
-  - `archive_reviews.py` - Automated review history retention
-  - `warden_audit.py` - Infrastructure audit agent (Phase 1)
-  - Multi-model coordination
-  - YAML processing
+
+The `scaffold/` directory contains the automation library, written in Python, that powers many of the project scaffolding features.
+
+*   `review.py`:  The code review orchestrator, responsible for managing the multi-model review process.
+*   `cli.py`:  Provides command-line interface (CLI) tools for interacting with the scaffolding system.
+
+### Scripts
+
+The `scripts/` directory contains maintenance and governance utilities used to manage and maintain the project scaffolding system.
+
+*   `pre_review_scan.sh`: A mandatory script that performs a pre-review scan (v1.1 Gate 0) to identify potential issues early.
+*   `archive_reviews.py`:  Automates the process of archiving review history for compliance and analysis.
+*   `warden_audit.py`:  An infrastructure audit agent (Phase 1) for monitoring and ensuring infrastructure compliance.
+*   Multi-model coordination scripts (details to be added).
+*   YAML processing scripts (details to be added).
 
 ### Documentation
-- `Documents/` - Meta-documentation (formerly `Documents/`)
-  - `PATTERN_ANALYSIS.md` - Pattern extraction
-  - `USAGE_GUIDE.md` - How to use scaffolding
-  - `PROJECT_KICKOFF_GUIDE.md` - Starting new projects
-  - `CODE_QUALITY_STANDARDS.md` - Mandatory rules
-  - `CODE_REVIEW_ANTI_PATTERNS.md` - Database of recurring defects
-  - `REVIEW_SYSTEM_DESIGN.md` - Process-based review philosophy
+
+The `Documents/` directory (formerly `Documents/`) contains meta-documentation about the project scaffolding system itself.
+
+*   `PATTERN_ANALYSIS.md`:  Describes the process of pattern extraction and analysis.
+*   `USAGE_GUIDE.md`:  Provides a comprehensive guide on how to use the project scaffolding system.
+*   `PROJECT_KICKOFF_GUIDE.md`:  Offers step-by-step instructions for starting new projects using the scaffolding.
+*   `CODE_QUALITY_STANDARDS.md`:  Defines the mandatory code quality standards that must be followed.
+*   `CODE_REVIEW_ANTI_PATTERNS.md`:  Maintains a database of recurring defects and anti-patterns identified during code reviews.
+*   `REVIEW_SYSTEM_DESIGN.md`:  Explains the process-based review philosophy and design of the review system.
 
 ### Resource Tracking
-- `EXTERNAL_RESOURCES.yaml` - Service registry
-  - API costs by project
-  - Credential locations
-  - Service health monitoring
-  - Prevents duplicate signups
+
+The `EXTERNAL_RESOURCES.yaml` file serves as a service registry, tracking external resources used by projects.
+
+*   API costs by project
+*   Credential locations
+*   Service health monitoring
+*   Prevents duplicate signups
 
 ### Tests
-- `tests/` - Test suite
-  - Integration tests (19/19 passing)
-  - Code review validation
-  - YAML processing tests
+
+The `tests/` directory contains the test suite for the project scaffolding system.
+
+*   Integration tests (19/19 passing)
+*   Code review validation tests
+*   YAML processing tests
+
+## Usage
+
+To use the project scaffolding system, follow these steps:
+
+1.  **Install the `scaffold` CLI:**  (Instructions to be added)
+2.  **Create a new project:**  Use the `scaffold` CLI to create a new project from a template. (Example command to be added)
+3.  **Configure the project:**  Customize the project settings and dependencies as needed.
+4.  **Develop the project:**  Follow the code quality standards and development principles outlined in the documentation.
+5.  **Submit code for review:**  Use the `review.py` script to initiate the multi-model code review process.
+6.  **Deploy the project:**  (Deployment instructions to be added)
 
 ## Status
 
@@ -76,28 +120,130 @@ Meta-project for extracting patterns from experiments to build better projects f
 
 ## Recent Activity
 
-- **2026-01-12**: Major Architectural Refactor: Decoupled meta-repo dependency from ecosystem projects.
-  - Implemented `scaffold_cli.py apply` for automated project standalone conversion.
-  - Redefined AI roles in `AGENTS.md`: Floor Manager as Primary File Operator, Workers for Logic/Code only.
-  - Successfully migrated 3 canary projects (`project-tracker`, `tax-organizer`, `analyze-youtube-videos`) to standalone mode.
-  - Archived obsolete prompts and reports to improve documentation hygiene.
-- **2026-01-11**: Self-Learning Projects: Reframed skills library as flexible pattern (per-project, shared, or both). Added `learning-loop-pattern.md`. Created `staged-prompt-engineering` skill. Live-tested learning loop capture from project-tracker.
-- **2026-01-09**: Skills library integration and QUICKSTART.md workflow improvements.
-- **2026-01-07 14:30**: Industrial Hardening & Portability: Refactored all subprocess calls for safety, enforced atomic writes, and achieved 100% template portability by scrubbing absolute paths.
-- **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests to allow absolute paths in documentation and config files while blocking them in code. Verified all 28 tests pass.
- - **2026-01-07 10:30**: Ecosystem Governance v1.2: Hardened protocol with industrial subprocess rules, data clobber guards, and context window scaling strategies. Automated DNA integrity scans in `validate_project.py`.
-- **2026-01-07 09:00**: Ecosystem Governance v1.1: Implemented `pre_review_scan.sh`, updated `CODE_REVIEW.md.template`, and established Anti-Patterns Database.
-- **2026-01-06 17:00**: Master Registry: Migrated all ecosystem API keys to `project-scaffolding/.env` for centralized record-keeping.
-- **2026-01-06 16:30**: Decentralization: Implemented global environment template and decentralized key management mappings.
-- **2026-01-06 16:00**: Official Graduation: Marked project as #status/production and #status/hardened following completion of all Mission Orders.
-- **2026-01-06 15:30**: Dependency Shielding: Secured `requirements.txt` with compatible release pinning.
-- **2026-01-06 15:00**: Automated Warden: Built CI-ready standards guard and added type hints to all scripts.
-- **2026-01-06 14:30**: Institutional Memory: Documented review archive purpose and retention policy.
-- **2026-01-06 14:00**: Documentation Hygiene: Completed Hardening Sprint and sanitized documentation examples.
-- **2026-01-06 13:30**: Automated Governance: Installed git hooks and YAML schema validation.
-- **2026-01-06 13:00**: Type Safety & Error Hardening: Refactored `archive_reviews.py` into a production-grade script.
+*   **2026-01-12**: Major Architectural Refactor: Decoupled meta-repo dependency from ecosystem projects.
+    *   Implemented `scaffold_cli.py apply` for automated project standalone conversion.
+    *   Redefined AI roles in `AGENTS.md`: Floor Manager as Primary File Operator, Workers for Logic/Code only.
+    *   Successfully migrated 3 canary projects (`project-tracker`, `tax-organizer`, `analyze-youtube-videos`) to standalone mode.
+    *   Archived obsolete prompts and reports to improve documentation hygiene.
+*   **2026-01-11**: Self-Learning Projects: Reframed skills library as flexible pattern (per-project, shared, or both). Added `learning-loop-pattern.md`. Created `staged-prompt-engineering` skill. Live-tested learning loop capture from project-tracker.
+*   **2026-01-09**: Skills library integration and QUICKSTART.md workflow improvements.
+*   **2026-01-07 14:30**: Industrial Hardening & Portability: Refactored all subprocess calls for safety, enforced atomic writes, and achieved 100% template portability by scrubbing absolute paths.
+*   **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests
 
-- **2026-01-01 18:16**: validate_project.py: .
+## Contributing
 
-- **2026-01-01 18:19**: validate_project.py: .
+We welcome contributions to the project scaffolding system!  Please see the `CONTRIBUTING.md` file for guidelines on how to contribute. (File to be created)
 
+## License
+
+This project is licensed under the [MIT License](LICENSE). (License file to be created)
+
+<!-- LIBRARIAN-INDEX-START -->
+
+### File Index
+
+| File | Description |
+| :--- | :--- |
+| [[AGENTS.md]] | > The single source of truth for hierarchy, workflow, and AI collaboration philosophy. |
+| [[CLAUDE.md]] | 🛑 READ AGENTS.md FIRST |
+| [[CODE_REVIEW_CLAUDE_v1.md]] | Code Review: Project Scaffolding |
+| [[Documents/CODE_QUALITY_STANDARDS.md]] | Code Quality Standards |
+| [[Documents/PROJECT_INDEXING_SYSTEM.md]] | Project Indexing System |
+| [[Documents/PROJECT_KICKOFF_GUIDE.md]] | Project Kickoff Guide |
+| [[Documents/PROJECT_STRUCTURE_STANDARDS.md]] | Project Structure Standards |
+| [[Documents/README.md]] | Project Documentation |
+| [[Documents/TODO_FORMAT_STANDARD.md]] | TODO.md Format Standard |
+| [[Documents/guides/AUDIT_ASSEMBLY_LINE.md]] | 🏭 The Audit Assembly Line (V2.1) |
+| [[Documents/guides/CODE_REVIEW_PROMPT.md]] | Code Review Prompt: Project Scaffolding System |
+| [[Documents/guides/DEEPSEEK_SETUP.md]] | DeepSeek Setup Guide |
+| [[Documents/guides/FREE_CREDITS_GUIDE.md]] | AWS Activate & Google Cloud Credits - Quick Guide |
+| [[Documents/guides/REPOMIX_USAGE.md]] | You’re right—pandering is the opposite of progress. In engineering, "You're exactly right" is often ... |
+| [[Documents/guides/USAGE_GUIDE.md]] | Project Scaffolding - Usage Guide |
+| [[Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md]] | Global Rules Injection - Design Document |
+| [[Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md]] | Knowledge Cycle Discussion |
+| [[Documents/planning/README.md]] | Planning Directory Overview |
+| [[Documents/planning/SCAFFOLDING_SIMPLIFICATION_PLAN.md]] | Scaffolding Simplification Plan |
+| [[Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md]] | Ollama MCP Enhancement: Retry & Escalation Tracking |
+| [[Documents/planning/pre_commit_hook/PRE_COMMIT_HOOK_PROMPTS_INDEX.md]] | Pre-Commit Hook: Worker Task Prompts |
+| [[Documents/planning/pre_commit_hook/PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md]] | Worker Task: Create Pre-Commit Hook |
+| [[Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md]] | Claude Code Hooks and Sub-Agents |
+| [[Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md]] | Code Review Anti-Patterns Database |
+| [[Documents/reference/DOCUMENTATION_HYGIENE.md]] | Documentation Hygiene |
+| [[Documents/reference/DOPPLER_MIGRATION_PLAN.md]] | Doppler Migration Strategy |
+| [[Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md]] | Doppler Secrets Management Guide |
+| [[Documents/reference/LOCAL_MODEL_LEARNINGS.md]] | Local Model Learnings |
+| [[Documents/reference/MODEL_COST_COMPARISON.md]] | AI Model Cost Comparison (December 2025) |
+| [[Documents/reference/PATTERN_ANALYSIS.md]] | Pattern Analysis - Extracted from Source Projects |
+| [[Documents/reference/PATTERN_MANAGEMENT.md]] | Pattern Management System |
+| [[Documents/reference/REVIEW_SYSTEM_DESIGN.md]] | Review System Design & Recommendations |
+| [[Documents/reports/trustworthy_ai_report.md]] | Making AI Trustworthy Enough for Production Infrastructure Work |
+| [[EXTERNAL_RESOURCES.md]] | External Resources & Services |
+| [[EXTERNAL_RESOURCES.yaml]] | No description available. |
+| [[PROJECT_PHILOSOPHY.md]] | Project Philosophy |
+| [[QUICKSTART.md]] | Project Scaffolding - Quick Start |
+| [[README.md]] | Project Scaffolding |
+| [[REVIEWS_AND_GOVERNANCE_PROTOCOL.md]] | 🛡️ Ecosystem Governance & Review Protocol (v1.2) |
+| [[TODO.md]] | > **Purpose:** Current actionable tasks for project-scaffolding |
+| [[_cursorrules_backups/manifest.json]] | No description available. |
+| [[local-ai-integration.md]] | What LM Studio gives you |
+| [[patterns/ai-team-orchestration.md]] | AI Team Orchestration Pattern |
+| [[patterns/api-key-management.md]] | API Key Management Pattern |
+| [[patterns/automation-reliability.md]] | Automation Reliability Patterns |
+| [[patterns/code-review-standard.md]] | Code Review Standardization |
+| [[patterns/cursor-configuration.md]] | Cursor Configuration Best Practices |
+| [[patterns/development-philosophy.md]] | Development Philosophy Patterns |
+| [[patterns/discord-webhooks-per-project.md]] | Discord Webhooks: One Channel Per Project |
+| [[patterns/foundation-documents-first.md]] | Foundation Documents First |
+| [[patterns/learning-loop-pattern.md]] | Learning Loop Pattern |
+| [[patterns/local-ai-integration.md]] | Local AI Integration Guide |
+| [[patterns/project-vs-tool-requirements.md]] | Project vs Tool Requirements |
+| [[patterns/safety-systems.md]] | Safety Systems Patterns |
+| [[patterns/scaffolding-as-dependency.md]] | Scaffolding as Dependency (DRAFT) |
+| [[patterns/ssot-via-yaml.md]] | Pattern: Single Source of Truth (SSOT) via YAML |
+| [[patterns/tiered-ai-sprint-planning.md]] | Tiered AI Sprint Planning |
+| [[prompts/active/document_review/architecture.md]] | You are an **architecture-focused purist reviewer** with expertise in system design, software archit... |
+| [[prompts/active/document_review/performance.md]] | You are a **performance-focused critical reviewer** with expertise in scalability, database optimiza... |
+| [[prompts/active/document_review/security.md]] | You are a **security-focused skeptical reviewer** with expertise in application security, authentica... |
+| [[pytest.ini]] | No description available. |
+| [[requirements.txt]] | No description available. |
+| [[scaffold/__init__.py]] | Project Scaffolding - Automated Multi-AI Review & Build System |
+| [[scaffold/cli.py]] | CLI for Project Scaffolding automation system |
+| [[scaffold/review.py]] | Multi-AI Review Orchestrator |
+| [[scaffold/utils.py]] | No description available. |
+| [[scaffold-20-projects-prompt.md]] | Scaffold 20 Projects Prompt |
+| [[scaffold_cli.py]] | No description available. |
+| [[scripts/00_Index_scripts.md]] | Scripts Index |
+| [[scripts/archive_reviews.py]] | No description available. |
+| [[scripts/compare_models.py]] | No description available. |
+| [[scripts/mark_scaffolded_files.py]] | No description available. |
+| [[scripts/migrate_docs_to_documents.py]] | No description available. |
+| [[scripts/pre_review_scan.sh]] | Mandatory pre-review scan for project-scaffolding |
+| [[scripts/reindex_projects.py]] | No description available. |
+| [[scripts/test_deepseek.py]] | No description available. |
+| [[scripts/update_cursorrules.py]] | No description available. |
+| [[scripts/validate_external_resources.py]] | No description available. |
+| [[scripts/validate_project.py]] | No description available. |
+| [[scripts/warden_audit.py]] | No description available. |
+| [[spec.md]] | **Document Type:** System Specification (Auditor-Generated) |
+| [[templates/00_Index.md.template]] | No description available. |
+| [[templates/AGENTS.md.template]] | No description available. |
+| [[templates/CLAUDE.md.template]] | No description available. |
+| [[templates/CODE_REVIEW.md.template]] | No description available. |
+| [[templates/Documents/README.md]] | Documentation Template Directory |
+| [[templates/README.md.template]] | No description available. |
+| [[templates/TIERED_SPRINT_PLANNER.md]] | Tiered Sprint Planner Template |
+| [[templates/TODO.md.template]] | No description available. |
+| [[templates/claude-code/README.md]] | Claude Code Templates |
+| [[templates/spec-template.md]] | PROJECT SPEC: [Project Name] |
+| [[templates/test-coverage/README.md]] | Test Coverage Templates |
+| [[templates/test-coverage/coveragerc.template]] | No description available. |
+| [[templates/test-coverage/run_coverage.py]] | No description available. |
+| [[tests/README.md]] | Tests for Project Scaffolding |
+| [[tests/test_review.py]] | Tests for review orchestrator (DeepSeek + Ollama integration) |
+| [[tests/test_scripts_follow_standards.py]] | Test that scripts follow CODE_QUALITY_STANDARDS.md |
+| [[tests/test_security.py]] | Security-focused adversarial tests - The Dark Territory |
+| [[tests/test_smoke.py]] | Quick smoke tests - run these first! |
+| [[tests/test_update_cursorrules.py]] | Tests for update_cursorrules.py - Global Rules Injection script. |
+| [[validation_report.txt]] | No description available. |
+
+<!-- LIBRARIAN-INDEX-END -->

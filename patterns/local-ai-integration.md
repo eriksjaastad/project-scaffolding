@@ -442,8 +442,28 @@ See: /project-scaffolding/patterns/local-ai-integration.md
 - **Local AI Test Results:** See `/LOCAL_AI_TEST_RESULTS.md` for detailed benchmarks
 - **Local AI Setup Script:** `/setup_local_ai.sh`
 - **Cost Comparison:** See cost analysis section above
+- **Production Implementation:** `_tools/agent-hub/` - Unified Agent System with LiteLLM routing, budget management, and circuit breakers
+- **MCP Integration:** `_tools/ollama-mcp/` - MCP server for Ollama model execution
 
 ---
 
 *Add this guide to project-scaffolding/patterns/ for future projects*
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[cost_management]] - cost management
+- [[error_handling_patterns]] - error handling
+- [[prompt_engineering_guide]] - prompt engineering
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[performance_optimization]] - performance
+- [[testing_strategy]] - testing/QA
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[project-scaffolding/README]] - Project Scaffolding

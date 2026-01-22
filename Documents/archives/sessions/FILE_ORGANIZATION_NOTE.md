@@ -51,3 +51,8 @@ The project-scaffolding directory should contain:
 
 **Action:** File successfully migrated. No other trading-copilot content is scaffolding-related.
 
+
+## Related Documentation
+
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

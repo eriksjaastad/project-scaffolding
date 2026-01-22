@@ -143,3 +143,10 @@ Do not sign off until:
 - [ ] Ready to proceed to Task 2 (Backup + Execute)
 
 **Task 1 Foundation Complete. Ready for Task 2.**
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

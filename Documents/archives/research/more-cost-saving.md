@@ -77,4 +77,17 @@ Since you are a startup/builder, you might be paying for compute/models you can 
 1. **Cancel Cursor Ultra.** It's overpriced if you are comfortable with VS Code.
 2. **Install Cline (VS Code Ext)** and plug in a **DeepSeek V3** key for your daily "Tier 2" coding.
 3. **Keep Kiro ($19/mo)** for the heavy "Tier 1" architecture work, but try to pay for it using **AWS Startup Credits**.
-4. **Build your Automation** using **Cline CLI + DeepSeek** to handle the "grunt work" automatically.
+4. **Build your Automation** using **Cline CLI + DeepSeek** to handle the "grunt work" automatically. See [[project-scaffolding]].
+
+---
+
+## Related Documentation
+- [[project-scaffolding]] - Automated project scaffolding system.
+- [[LOCAL_MODEL_LEARNINGS]] - Institutional memory for local models.
+- [[AGENTS]] - Agent hierarchy and escalation rules.
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+
+- [[project-scaffolding]] - Automated project scaffolding system.
+- [[LOCAL_MODEL_LEARNINGS]] - Institutional memory for local models.
+- [[AGENTS]] - Agent hierarchy and escalation rules.

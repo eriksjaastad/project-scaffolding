@@ -279,3 +279,10 @@ Do not sign off until:
 - [ ] Rollback actually restores original content
 
 **Max 3 attempts.** If Worker fails 3x, halt and alert Conductor.
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

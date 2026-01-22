@@ -30,3 +30,9 @@ SAFETY_RULES_SECTION = '''
 parser.add_argument("--execute", action="store_true", help="Actually modify files")
 parser.add_argument("--backup-dir", type=pathlib.Path, default=pathlib.Path("_cursorrules_backups"), help="Backup directory")
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

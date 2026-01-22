@@ -153,3 +153,27 @@ Ask yourself:
 ---
 
 *This file is the Source of Truth for resource mapping. See EXTERNAL_RESOURCES.yaml for automated parsing.*
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[automation_patterns]] - automation
+- [[cost_management]] - cost management
+- [[database_setup]] - database
+- [[discord_integration]] - Discord
+- [[error_handling_patterns]] - error handling
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[deployment_patterns]] - deployment
+- [[security_patterns]] - security
+- [[3d-pose-factory/README]] - 3D Pose Factory
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[image-workflow/README]] - Image Workflow
+- [[muffinpanrecipes/README]] - Muffin Pan Recipes
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[trading-copilot/README]] - Trading Copilot
+- [[recipe_system]] - recipe generation

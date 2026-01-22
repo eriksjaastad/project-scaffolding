@@ -42,3 +42,15 @@
 - [ ] UI is "functional-minimal" (Industrial over Aesthetic).
 - [ ] Scaling guards for >1GB datasets not yet implemented.
 - [ ] Documentation is Spec-first; full README comes later.
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[architecture_patterns]] - architecture
+- [[dashboard_architecture]] - dashboard/UI
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[hypocrisy_methodology]] - bias detection
+- [[hypocrisynow/README]] - Hypocrisy Now

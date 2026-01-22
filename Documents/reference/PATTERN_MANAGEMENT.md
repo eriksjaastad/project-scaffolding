@@ -263,3 +263,18 @@ When reviewing a pattern, ask:
 ---
 
 *Keep patterns lean. Keep registry current. No fluff.*
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PATTERN_MANAGEMENT]] - patterns
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[discord_integration]] - Discord
+- [[queue_processing_guide]] - queue/workflow
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[image-workflow/README]] - Image Workflow
+- [[project-scaffolding/README]] - Project Scaffolding

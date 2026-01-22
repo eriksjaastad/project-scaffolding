@@ -291,3 +291,9 @@ Score = (Complexity + Ambiguity + Risk) / 3
 *- Claude Sonnet 4.5, signing off from ai-usage-billing-tracker context*  
 *Dec 22, 2025, 11:47 PM Pacific*
 
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

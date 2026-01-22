@@ -109,3 +109,10 @@ Each loop consumes 3 API calls (+$7-15) and 30+ seconds of human context switchi
 5. **Implement batch processing for task scoring** - Reduces API calls from N to N/20 for large projects
 6. **Add real-time cost tracking with budget alerts** - Prevents unexpected API bill shocks at scale
 7. **Create pattern library for common architectures** - Accelerates project setup and reduces redundant Tier 1 work
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+

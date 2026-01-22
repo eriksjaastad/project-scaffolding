@@ -75,3 +75,9 @@ pytest tests/test_security.py --cov=scripts.warden_audit --cov-report=term
 ---
 
 **Ready to hand off to Workers** ✅
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+

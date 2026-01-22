@@ -212,7 +212,7 @@ Request architectural review, security audit, or performance analysis when:
 **Step 1: Create review request**
 ```bash
 # Use the template
-cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
+cp "$PROJECT_ROOT/project-scaffolding/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 
 # Edit CODE_REVIEW_REQUEST.md:
 # - Fill out "Definition of Done" section
@@ -222,13 +222,14 @@ cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 
 **Step 2: Run multi-AI review**
 ```bash
-cd "$SCAFFOLDING"
+# Run from project-scaffolding directory (requires API keys configured)
+cd "$PROJECT_ROOT/project-scaffolding"
 source venv/bin/activate
 python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
 ```
 
 **Step 3: Review results**
-- Reviews saved to: `$SCAFFOLDING/review_outputs/round_1/CODE_REVIEW_*.md`
+- Reviews saved to: `$PROJECT_ROOT/project-scaffolding/review_outputs/round_1/CODE_REVIEW_*.md`
 - Copy relevant reviews to: `Documents/archives/reviews/`
 
 ### How to Validate Your Work
@@ -237,10 +238,10 @@ Run validation to check for common issues:
 
 ```bash
 # Quick safety check (< 1 second)
-python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
+python ./scripts/warden_audit.py --root . --fast
 
 # Full project validation
-python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+python ./scripts/validate_project.py "$(basename $(pwd))"
 ```
 
 **What validation catches:**
@@ -253,9 +254,9 @@ python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
 
 ### Learn More
 
-- **Full Protocol:** `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
-- **Pattern Docs:** `$SCAFFOLDING/patterns/code-review-standard.md`
-- **Review Prompts:** `$SCAFFOLDING/prompts/active/document_review/`
+- **Full Protocol:** `./Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- **Pattern Docs:** `./Documents/patterns/code-review-standard.md`
+- **Review Prompts:** `$PROJECT_ROOT/project-scaffolding/prompts/active/document_review/`
 
 ---
 

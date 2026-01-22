@@ -137,3 +137,10 @@ Tier 3 tasks include generating boilerplate code and configuration files. AI mod
 5. **Medium Priority:** Create secure boilerplate templates for Tier 3 tasks with security-hardened defaults.
 6. **Medium Priority:** Explicitly add authentication/authorization design tasks to Phase 1 planning methodology.
 7. **Long-term:** Implement automated security testing in CI/CD that validates AI-generated code against security benchmarks.
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+

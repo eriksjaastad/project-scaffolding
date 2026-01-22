@@ -174,3 +174,20 @@ After today:
 - This simplification is about matching tool to task
 - Bash for file ops, AI for intelligence
 - "Docs about docs" is a smell - keep docs that DO things, cut docs that EXPLAIN docs
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[database_schema]] - database design
+- [[prompt_engineering_guide]] - prompt engineering
+- [[tax_documentation]] - tax/accounting
+- [[ai_model_comparison]] - AI models
+- [[database_setup]] - database
+- [[video_analysis_tools]] - video analysis
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[project-tracker/README]] - Project Tracker
+- [[tax-organizer/README]] - Tax Organizer

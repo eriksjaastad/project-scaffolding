@@ -484,3 +484,14 @@ When setting up new automation:
 **Pattern discovered:** January 10, 2026
 **First scar:** Cortana Personal AI (22 days of silent failure)
 **Contributed by:** Erik (debugging) + Claude (documentation)
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[automation_patterns]] - automation
+- [[discord_integration]] - Discord
+- [[error_handling_patterns]] - error handling
+- [[ai_model_comparison]] - AI models
+- [[cortana_architecture]] - Cortana AI
+- [[testing_strategy]] - testing/QA
+- [[cortana-personal-ai/README]] - Cortana AI

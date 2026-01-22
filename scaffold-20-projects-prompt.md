@@ -136,3 +136,40 @@ When done, fill in this summary:
 - Validation script `validate_project.py` skips `ai-journal`, but it was successfully scaffolded with the standard files.
 - Many projects still show "DNA Defects" (absolute paths) which scaffolding does not automatically fix.
 ```
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[billing_workflows]] - billing/payments
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[tax_documentation]] - tax/accounting
+- [[adult_business_compliance]] - adult industry
+- [[ai_model_comparison]] - AI models
+- [[cortana_architecture]] - Cortana AI
+- [[holoscape_architecture]] - Holoscape
+- [[portfolio_content]] - portfolio/career
+- [[video_analysis_tools]] - video analysis
+- [[3d-pose-factory/README]] - 3D Pose Factory
+- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[audit-agent/README]] - Audit Agent
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[country-ai-futures-tracker/README]] - Country AI Futures
+- [[flo-fi/README]] - Flo-Fi
+- [[holoscape/README]] - Holoscape
+- [[hypocrisynow/README]] - Hypocrisy Now
+- [[image-workflow/README]] - Image Workflow
+- [[muffinpanrecipes/README]] - Muffin Pan Recipes
+- [[national-cattle-brands/README]] - Cattle Brands
+- [[portfolio-ai/README]] - Portfolio AI
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[project-tracker/README]] - Project Tracker
+- [[smart-invoice-workflow/README]] - Smart Invoice
+- [[synth-insight-labs/README]] - Synth Insight Labs
+- [[tax-organizer/README]] - Tax Organizer
+- [[trading-copilot/README]] - Trading Copilot
+- [[van-build/README]] - Van Build
+- [[hypocrisy_methodology]] - bias detection
+- [[recipe_system]] - recipe generation

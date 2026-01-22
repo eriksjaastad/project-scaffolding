@@ -319,3 +319,16 @@ When you find patterns worth sharing:
 
 **The goal:** Build better experiments faster, compound learnings across projects.
 
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[cost_management]] - cost management
+- [[database_setup]] - database
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[testing_strategy]] - testing/QA
+- [[project-scaffolding/README]] - Project Scaffolding

@@ -40,3 +40,9 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

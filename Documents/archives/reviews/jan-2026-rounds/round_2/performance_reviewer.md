@@ -89,3 +89,9 @@ None mention caching strategy despite API calls being expensive (~200-500ms each
 7. **Create performance integration testing tasks** - Validate cross-component performance early
 
 **Most Critical:** The tiering system must recognize that performance work is architectural work. A task's performance impact should weigh as heavily as its complexity in determining tier assignment. Without this, you'll build beautifully architected systems that fail under load.
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+

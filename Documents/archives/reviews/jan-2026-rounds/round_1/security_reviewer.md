@@ -135,3 +135,10 @@ The document focuses on task completion rather than data protection requirements
 5. **Process:** Add security-focused multi-model review for all architecture documents. Implement security incident response for AI-generated vulnerabilities.
 
 **Critical Missing Component:** The entire methodology lacks a "Security Tier" or security review process. Security cannot be an afterthought or implementation detail—it must be integrated into planning, architecture, and execution at every tier.
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+

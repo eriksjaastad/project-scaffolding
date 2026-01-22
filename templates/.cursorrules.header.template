@@ -1,0 +1,4 @@
+# Cursor Rules for {project_name}
+# AUTO-GENERATED from AGENTS.md - Do not edit directly
+# Run: python $SCAFFOLDING/scripts/sync_agent_configs.py {project_name}
+

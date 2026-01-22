@@ -110,3 +110,11 @@ The multi-AI hierarchy is working well. Local models had some timeout issues but
 **Check first:**
 - Is the rm hook active? (`/hooks` command)
 - Is Erik on Max account? (`/status` command)
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

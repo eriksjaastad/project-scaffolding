@@ -38,3 +38,9 @@ def run_dry_run(projects_root: pathlib.Path) -> bool:
     logger.info(f"Summary: {stats['ok']} OK, {stats['needs_update']} need update, {len(cursorrules_files)} total")
     return True
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

@@ -37,3 +37,9 @@ These docs were useful for planning but became noise once we knew what to build.
 
 **Philosophy:** Delete the theater, keep the tools.
 
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

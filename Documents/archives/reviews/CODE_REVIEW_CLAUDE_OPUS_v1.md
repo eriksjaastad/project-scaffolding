@@ -160,3 +160,12 @@ All P0 and P1 blocking issues identified by Claude Opus have been resolved. The 
 ---
 
 *Review updated after remediation on 2026-01-10*
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

@@ -77,3 +77,10 @@ If any item fails, provide the specific error to the Worker and demand a retry (
 ---
 
 **Estimated time:** 10 minutes
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

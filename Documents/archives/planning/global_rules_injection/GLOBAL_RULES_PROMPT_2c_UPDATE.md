@@ -29,3 +29,9 @@ def update_cursorrules(cursorrules_path: pathlib.Path, backup_dir: pathlib.Path,
         logger.info(f"WOULD UPDATE: {project}")
     return 'updated'
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

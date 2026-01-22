@@ -206,13 +206,16 @@ Erik wants something "fuzzy" - organic and automatic. But AI systems often need 
 ## Next Steps
 
 - [x] Decide on template vs. scaffold vs. framework terminology → Using "prompt template" with embedded operational sections
-- [x] Define where operational rules live → Embedded in AGENTS.md prompt template (Downstream Harm Estimate, Learnings Applied sections)
-- [x] Create the first "compiled" prompt scaffold with today's learnings → Done: AGENTS.md updated
+- [x] Define where operational rules live → Embedded in [[AGENTS]] prompt template (Downstream Harm Estimate, Learnings Applied sections)
+- [x] Create the first "compiled" prompt scaffold with today's learnings → Done: [[AGENTS]] updated
 - [ ] Test on next Worker task to see if it works
 - [ ] Document what we learn from that test
-- [x] Create Learning Loop Pattern → `patterns/learning-loop-pattern.md`
-- [x] Add Learning Debt Tracker → `LOCAL_MODEL_LEARNINGS.md`
+- [x] Create Learning Loop Pattern → [[learning-loop-pattern]]
+- [x] Add Learning Debt Tracker → [[LOCAL_MODEL_LEARNINGS]]
 
+---
+
+*See also: [[PROJECT_STRUCTURE_STANDARDS]], [[DOPPLER_SECRETS_MANAGEMENT]], and [[CODE_QUALITY_STANDARDS]].*
 ---
 
 ## Update: January 10, 2026 (Night) - Breakthrough via Society Parallel
@@ -251,3 +254,10 @@ This moves us past Stuck Point 5 (Fuzzy vs Explicit) by:
 ---
 
 *This document captures our discussion. To be updated as we refine the approach.*
+
+## Related Documentation
+
+- [[cost_management]] - cost management
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models

@@ -57,3 +57,10 @@ Coverage reports are generated in `scripts/tests/htmlcov/`:
 
 - `patterns/project-vs-tool-requirements.md` - When to use coverage
 - `patterns/testing-patterns.md` - Test structure guidelines
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[testing_strategy]] - testing/QA
+- [[project-scaffolding/README]] - Project Scaffolding

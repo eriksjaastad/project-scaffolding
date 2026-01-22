@@ -175,3 +175,9 @@ If they're just IDEs without APIs (like Cursor), then they're not useful for my 
 
 **Please provide a technical deep-dive with hard facts, not a philosophical overview.**
 
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

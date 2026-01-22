@@ -23,3 +23,9 @@ def check_compliance(cursorrules_path: pathlib.Path) -> dict:
         'has_silent_rule': "Silent Failures" in content,
     }
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

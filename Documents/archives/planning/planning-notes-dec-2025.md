@@ -1351,3 +1351,12 @@ Need to figure out what Tier 3 is actually good at. Fast doesn't matter if code 
 **Last Updated:** December 22, 2025  
 **Next Review:** End of January 2026 (after holidays, new projects in 2026)
 
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

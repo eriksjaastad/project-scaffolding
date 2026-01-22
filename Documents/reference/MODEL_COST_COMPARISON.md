@@ -233,3 +233,17 @@
 - Create integration code for Cline CLI?
 - Research more alternatives?
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[cost_management]] - cost management
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[portfolio_content]] - portfolio/career
+- [[research_methodology]] - research
+- [[testing_strategy]] - testing/QA
+- [[project-scaffolding/README]] - Project Scaffolding

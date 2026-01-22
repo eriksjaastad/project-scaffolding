@@ -85,3 +85,10 @@ Based on this test:
 - [ ] Update scaffolding docs
 - [ ] Ready for real use
 
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

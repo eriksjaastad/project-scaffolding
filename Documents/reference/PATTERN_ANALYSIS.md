@@ -610,3 +610,33 @@ def call_with_cost_tracking(prompt: str) -> tuple[str, float]:
 - **USAGE_GUIDE.md** - How to apply patterns in new projects
 - **patterns/** - Detailed pattern documentation
 
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[ai_training_methodology]] - AI training
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[database_setup]] - database
+- [[discord_integration]] - Discord
+- [[error_handling_patterns]] - error handling
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[adult_business_compliance]] - adult industry
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[deployment_patterns]] - deployment
+- [[orchestration_patterns]] - orchestration
+- [[performance_optimization]] - performance
+- [[project_planning]] - planning/roadmap
+- [[sales_strategy]] - sales/business
+- [[testing_strategy]] - testing/QA
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[image-workflow/README]] - Image Workflow
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[trading-copilot/README]] - Trading Copilot
