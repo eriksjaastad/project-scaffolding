@@ -301,3 +301,13 @@ The three remaining issues are minor and can be fixed during active use. The sys
 
 *Follow-up review conducted: December 23, 2025*
 *Compared against: CODE_REVIEW_2025-12-23.md*
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

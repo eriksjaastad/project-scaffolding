@@ -1,0 +1,18 @@
+---
+targets: ["*"]
+root: true
+---
+
+# {project_name}
+
+> {project_description}
+
+## Tech Stack
+
+- **Language:** {language}
+- **Frameworks:** {frameworks}
+
+## Commands
+
+- **Run:** `{run_command}`
+- **Test:** `{test_command}`

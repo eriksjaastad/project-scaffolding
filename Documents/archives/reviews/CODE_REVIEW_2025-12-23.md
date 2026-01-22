@@ -281,3 +281,12 @@ Delete the brain dumps, fix the tests, and actually use this on a real project b
 
 *Review conducted: December 23, 2025*
 *Methodology: Full codebase analysis including scaffold/, scripts/, templates/, tests/, Documents/, patterns/*
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

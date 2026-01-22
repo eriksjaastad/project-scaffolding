@@ -189,3 +189,9 @@ This aligns with the project-scaffolding philosophy: **thoughtfully enhance, nev
 ---
 
 *Report generated: 2026-01-11T18:04:03Z*
+
+
+## Related Documentation
+
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

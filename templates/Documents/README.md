@@ -1,7 +1,15 @@
-# Documentation
+# Documentation Template Directory
 
-**Last Updated:** [DATE]  
+**Last Updated:** 2024-01-26
 **Audience:** Developers, Operators, AI Collaborators
+
+---
+
+## Overview
+
+This directory provides a template for structuring project documentation. It promotes a centralized and organized approach, making it easier to find and maintain crucial information. The template encourages clear separation of concerns, versioning, and consistent documentation practices.
+
+This `Documents/` directory is intended to be a central repository for all project-related documentation. It aims to prevent documentation from being scattered throughout the project, improving discoverability and maintainability.
 
 ---
 
@@ -153,95 +161,10 @@ See `../TODO.md` for current work.
 
 ---
 
-## Working with AI Collaborators
+## Using this Template
 
-AI assistants (Claude, ChatGPT, etc.) benefit from this structure:
+To use this template, simply copy the `Documents/` directory into your project's root directory. Then, populate the directories and files with your project's specific documentation. Remember to adhere to the documentation standards outlined in this README.
 
-1. **They can find information** - Predictable locations
-2. **They can update docs** - Clear ownership and format
-3. **They understand context** - Architecture + philosophy in one place
-
-**Tip:** Point AI to `ARCHITECTURE_OVERVIEW.md` at session start for quick context.
+This template is a starting point and can be customized to fit the specific needs of your project. Feel free to add, remove, or modify directories and files as necessary. The key is to maintain a consistent and organized approach to documentation.
 
 ---
-
-## Maintenance
-
-### Document Review Schedule
-
-**Monthly:**
-- Update `../TODO.md` (keep current)
-- Check core docs for accuracy
-
-**Quarterly:**
-- Review `archives/` for expiration candidates
-- Update this README if structure changes
-- Check for broken cross-links
-
-**Annually:**
-- Full documentation audit
-- Archive deprecated features
-- Compress old implementations
-
-### Archive Cleanup Process
-
-```bash
-# Generate cleanup candidates (if script exists)
-python scripts/tools/generate_archive_cleanup_report.py
-
-# Output: data/reports/archive_cleanup_YYYY-MM-DD.txt
-# Review manually before deleting anything
-```
-
----
-
-## Documentation Anti-Patterns
-
-### ❌ Root-Level Sprawl
-```
-project/
-├── README.md
-├── ARCHITECTURE.md
-├── SETUP.md
-├── DEPLOY.md
-├── OLD_ARCHITECTURE.md    # Lost in the noise
-├── SETUP_NEW.md           # Which one is current?
-└── ... (20 more docs)
-```
-
-### ✅ Organized Structure
-```
-project/
-├── README.md              # Project overview only
-├── TODO.md                # Current work
-├── Documents/
-│   ├── README.md          # This file (index)
-│   ├── ARCHITECTURE.md    # Essential docs
-│   └── archives/          # Historical docs
-```
-
----
-
-## Related Files
-
-- **Project-wide rules:** `../.cursorrules`
-- **AI collaboration:** `../CLAUDE.md` (if exists)
-- **Current work:** `../TODO.md`
-- **Project vision:** `../ROADMAP.md` (if exists)
-
----
-
-## Questions?
-
-1. Can't find something? Check this README's index
-2. Not sure where to document? Ask in the pattern:
-   - Core system? → `Documents/` (root)
-   - How-to? → `guides/`
-   - Standard/convention? → `reference/`
-   - Scar story? → `safety/`
-   - Old/superseded? → `archives/`
-
----
-
-*This structure is based on the [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding) Documents/ pattern, battle-tested across multiple projects.*
-

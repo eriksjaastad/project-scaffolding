@@ -208,3 +208,10 @@ Our response: Fix the fragility (Chunk 2), delete the theater (Chunk 3), prove i
 
 **Ready to start Chunk 1?** Should take ~30 min and give immediate wins! 🚀
 
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

@@ -64,3 +64,9 @@ grep -n "from send2trash import send2trash" scaffold/review.py
 ---
 
 **Ready to hand off to Workers** ✅
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+

@@ -173,3 +173,20 @@ See: [Documents/reports/trustworthy_ai_report.md](reports/trustworthy_ai_report.
 **Version:** 1.2.2
 **Established:** January 7, 2026
 **Trigger:** Scaffolding v2 review found pervasive portability and safety violations.
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[trustworthy_ai_report]] - AI safety
+- [[architecture_patterns]] - architecture
+- [[database_setup]] - database
+- [[error_handling_patterns]] - error handling
+- [[case_studies]] - examples
+- [[security_patterns]] - security
+- [[video_analysis_tools]] - video analysis
+- [[agent-skills-library/README]] - Agent Skills
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[project-scaffolding/README]] - Project Scaffolding

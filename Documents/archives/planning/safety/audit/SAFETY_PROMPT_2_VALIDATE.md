@@ -83,3 +83,10 @@ INFO: P2 (Warning): 3       ← Warnings in test files are OK
 ---
 
 **Estimated time:** 10 minutes
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

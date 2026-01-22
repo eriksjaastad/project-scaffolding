@@ -300,3 +300,19 @@ Fix your operating system first. Then build.
 *Pattern extracted from project-scaffolding meta-project after discovering agents were interpreting roles differently despite weeks of working together.*
 
 *"The foundation problem you don't see until later" - Erik Sjaastad, January 2026*
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[automation_patterns]] - automation
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[orchestration_patterns]] - orchestration
+- [[session_documentation]] - session notes
+- [[testing_strategy]] - testing/QA
+- [[project-scaffolding/README]] - Project Scaffolding

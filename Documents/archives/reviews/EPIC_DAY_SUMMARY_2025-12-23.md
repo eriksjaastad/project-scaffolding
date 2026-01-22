@@ -192,3 +192,9 @@
 
 *"Delete the theater, keep the tools."* - Claude Code Review, Dec 23, 2025
 
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

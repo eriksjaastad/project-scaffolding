@@ -145,3 +145,13 @@ grep "code-review-standard.md" templates/.cursorrules-template
 - [ ] FAIL: Describe error
 
 **Hand back to Floor Manager when complete.**
+
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

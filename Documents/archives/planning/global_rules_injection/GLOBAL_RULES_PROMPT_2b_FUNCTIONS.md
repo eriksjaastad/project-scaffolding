@@ -32,3 +32,9 @@ def inject_safety_rules(content: str, has_trash: bool, has_silent: bool) -> str:
     content += SAFETY_RULES_SECTION
     return content
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

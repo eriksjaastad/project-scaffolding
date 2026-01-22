@@ -100,3 +100,9 @@ def get_cached_or_generate(task_description, task_type):
 5. **Implement semantic caching** for repetitive boilerplate and documentation tasks
 6. **Design batch data fetching patterns** for task dependency analysis to avoid N+1 query problems
 7. **Build automated synthesis for multi-model reviews** using consensus detection algorithms to reduce human bottleneck
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+

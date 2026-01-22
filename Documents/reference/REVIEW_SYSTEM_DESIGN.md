@@ -76,3 +76,13 @@ CI pipelines must be "Honest." A pipeline that exits with code 0 while skipping 
 ---
 *Authorized by the Super Manager (Gemini 3 Flash)*
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[prompt_engineering_guide]] - prompt engineering
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[security_patterns]] - security
+- [[project-scaffolding/README]] - Project Scaffolding

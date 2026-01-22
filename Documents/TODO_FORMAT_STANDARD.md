@@ -601,17 +601,26 @@ See: `project-scaffolding/TODO.md` for focused sprint format
 
 ## Related Documentation
 
-- **Template:** `project-scaffolding/templates/TODO.md.template`
-- **Project Kickoff Guide:** `project-scaffolding/Documents/PROJECT_KICKOFF_GUIDE.md`
-- **Dashboard README:** `project-tracker/README.md`
-- **Dashboard TODO:** `project-tracker/TODO.md` (uses this format!)
-
----
-
-**Version History:**
-- v1.0 (December 30, 2025) - Initial standard based on analysis of 4 projects
-
----
-
-*This document is the "why" behind the template. The template is the "what". Use both together.*
-
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[database_setup]] - database
+- [[discord_integration]] - Discord
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[performance_optimization]] - performance
+- [[project_planning]] - planning/roadmap
+- [[security_patterns]] - security
+- [[session_documentation]] - session notes
+- [[testing_strategy]] - testing/QA
+- [[video_analysis_tools]] - video analysis
+- [[agent-skills-library/README]] - Agent Skills
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[project-tracker/README]] - Project Tracker

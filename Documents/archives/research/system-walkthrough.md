@@ -37,13 +37,13 @@ Erik has an idea and starts a conversation with a Tier 1 AI (Claude Sonnet/Opus)
 
 ### Handoff to Next Stage
 **Input:** Rough vision/idea document  
-**Output:** `Documents/VISION.md` (doesn't need to be polished)
+**Output:** [[VISION]] (doesn't need to be polished)
 
 ---
 
 ## Stage 2: SPRINT PLANNING (Multi-AI Review System)
 
-This is where the tiered sprint planner gets created.
+This is where the tiered sprint planner gets created. See [[tiered-ai-sprint-planning]].
 
 ### Step 2.1: Initial Sprint Plan (Erik + Tier 1 AI)
 
@@ -545,7 +545,7 @@ Next: Review escalation and assign to Tier 2
 ```
 
 **Option C: Project Tracker Integration**
-- Project Tracker reads sprint plan
+- [[project-tracker]] reads sprint plan
 - Shows progress visually
 - Tracks costs in real-time
 
@@ -878,7 +878,329 @@ Lessons Learned:
 **What exists:**
 - ✅ Data collection plan
 - ✅ Analysis approach defined
-- ✅ Learning loop cadence defined
+- ✅ Learning loop cadence defined. See [[learning-loop-pattern]].
+
+---
+
+## Related Documentation
+- [[VISION]] - Project vision document.
+- [[tiered-ai-sprint-planning]] - Tiered AI sprint planning pattern.
+- [[learning-loop-pattern]] - Design for the learning loop.
+- [[project-tracker]] - Dashboard for tracking progress and costs.
+
+**What needs building:**
+- ❌ Data export server (simple, ~1 day)
+- ❌ Analysis script (~2 days)
+- ❌ Pattern update workflow (manual for now)
+
+**Time estimate:**
+- Data collection: ~5 min (click links, save files)
+- Analysis: ~2 min (run script, read output)
+- Pattern updates: ~15 min (update docs)
+
+**🚨 Over-engineering check:**
+- Real-time dashboards? Over-engineered.
+- Automated pattern updates (ML)? Way over-engineered.
+
+**Verdict:** Build simple tools, manual review.
+
+---
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+## 🎯 Complete Flow Summary
+
+### The Stages
+
+```
+1. IDEA (Erik + Tier 1)
+   → Documents/VISION.md
+   
+2. SPRINT PLANNING (Multi-AI Review)
+   → Documents/TIERED_SPRINT_PLANNER.md (with prompts + estimates)
+   
+3. BUILD (Task Dispatch)
+   → Code written by Tier 1/2/3
+   
+4. CODE REVIEW (Multi-AI Review)
+   → Issues found, fixed (one pass)
+   
+5. SHIP (Deploy)
+   → Live project
+   
+6. LEARN (Analytics)
+   → Lessons applied to next project
+```
+
+### Time Estimates
+
+**First project (learning):**
+- Sprint planning: ~1 day (with 2 review rounds)
+- Build: ~1 week (20-50 tasks, manual)
+- Code review: ~1 day (manual reviews)
+- Ship: ~1 day (standard deployment)
+- Learn: ~1 hour (data collection + analysis)
+- **Total: ~2 weeks**
+
+**Subsequent projects (with practice):**
+- Sprint planning: ~4 hours
+- Build: ~3-5 days
+- Code review: ~4 hours
+- Ship: ~1 day
+- Learn: ~30 min
+- **Total: ~1 week**
+
+**With automation (Option B tools built):**
+- Sprint planning: ~2 hours
+- Build: ~2-3 days
+- Code review: ~2 hours
+- Ship: ~1 day
+- Learn: ~10 min
+- **Total: ~4-5 days**
+
+---
+
+## 🛠️ What Needs Building
+
+### Tier 1: Critical (Block usage without them)
+
+**Nothing!** The system works manually right now.
+
+### Tier 2: High Value (Build after 1-2 projects)
+
+1. **Prompt Generator CLI** (Option B)
+   - Time to build: ~1 day
+   - Value: Reduces dispatch time from 2min to 30sec
+   - When: After first project, if we felt the pain
+
+2. **Data Export Server**
+   - Time to build: ~1 day
+   - Value: Removes "weakest link" (Erik forgetting)
+   - When: Before second project
+
+3. **Analysis Script**
+   - Time to build: ~2 days
+   - Value: Automates learning loop
+   - When: After second project (need 2 data points)
+
+### Tier 3: Nice to Have (Build if doing 5+ projects)
+
+4. **Multi-AI Review Automation**
+   - Time to build: ~2-3 days
+   - Value: Saves 30min per review round
+   - When: If doing 5+ projects with reviews
+
+5. **API Dispatcher** (Option C)
+   - Time to build: ~1 week
+   - Value: Fully automated execution
+   - When: If building 5+ projects/month consistently
+
+6. **Project Tracker Integration**
+   - Time to build: Depends on Project Tracker existing
+   - Value: Visual progress, cost tracking
+   - When: After Project Tracker built
+
+---
+
+## 🚨 Over-Engineering Reality Check
+
+### Current Status
+
+**What we have:**
+- ✅ Templates
+- ✅ Patterns documented
+- ✅ Process defined
+- ✅ Everything works manually
+
+**What we're proposing to build:**
+- Data export server (~1 day)
+- Analysis script (~2 days)
+- Prompt generator CLI (~1 day)
+
+**Total build time:** ~4 days
+
+**Total scaffolding time so far:** ~2-3 days
+
+### The Litmus Tests
+
+**1. Can Erik start a new project in < 30 minutes?**
+- Open `templates/TIERED_SPRINT_PLANNER.md`
+- Copy to new project
+- Start conversation with AI
+- **Answer: YES** ✅
+
+**2. Does it make next project faster/better/cheaper?**
+- **Faster:** Unclear (no baseline yet)
+- **Better:** Sprint planning reviews should improve quality
+- **Cheaper:** Tiering should reduce costs vs all-Tier-1
+- **Answer: MAYBE** (need to prove with data)
+
+**3. Would Erik use this if he wasn't building it?**
+- Sprint planning with reviews: **Probably** (he already does similar)
+- Tiered execution: **Maybe** (if cost savings are real)
+- Analytics loop: **Definitely** (Erik loves data)
+- **Answer: MOSTLY YES** ✅
+
+**4. Are we spending more time on system than using it?**
+- Time spent on scaffolding: ~3 days
+- Time to use on first project: ~2 weeks
+- Ratio: 1:5 (system:usage)
+- **Answer: NO, we're good** ✅
+
+**5. Can we explain the system in 5 minutes?**
+- "Plan with AI reviews, build in tiers, review code, measure if it worked"
+- **Answer: YES** ✅
+
+### Verdict: Not Over-Engineered (Yet)
+
+**Why:**
+- System works manually today
+- Only building tools after feeling pain
+- Build time < usage time
+- Clear value proposition
+- Can stop at any time and still get value
+
+**Risks to watch:**
+- Building automation before proving manual works
+- Adding features that don't save time
+- Making it complex to explain
+- Spending more time fixing system than using it
+
+**Safe guards:**
+- Do first project 100% manually
+- Only build Option B tools if we do 2nd project
+- Only build Option C tools if doing 5+ projects
+- Re-evaluate at end of January with real data
+
+---
+
+## 🎯 Recommended Approach
+
+### Phase 1: First Project (Manual)
+
+**Goal:** Prove the process works
+
+**Do:**
+- ✅ Use templates
+- ✅ Do sprint planning with reviews (manual)
+- ✅ Execute tasks by tier (manual dispatch)
+- ✅ Do code reviews (manual)
+- ✅ Collect data (manual export)
+- ✅ Analyze (manually or simple script)
+
+**Don't:**
+- ❌ Build any automation yet
+- ❌ Optimize prematurely
+- ❌ Add features
+
+**Duration:** ~2 weeks  
+**Output:** 
+- One shipped project
+- Data on costs, tiering effectiveness
+- Pain points identified
+- Decision: Continue or abandon?
+
+---
+
+### Phase 2: Second Project (Light Automation)
+
+**Only if Phase 1 proved valuable!**
+
+**Build:**
+- Data export server (removes weakest link)
+- Prompt generator CLI (if task dispatch was painful)
+
+**Goal:** Prove automation adds value
+
+**Duration:** ~1 week for project + 2 days for tools  
+**Output:**
+- Second shipped project
+- Two data points for comparison
+- Decision: Build more or stop here?
+
+---
+
+### Phase 3: Scaling (If Doing 3+ Projects)
+
+**Only if Phase 2 showed clear value!**
+
+**Build:**
+- Analysis script (if doing manual analysis is tedious)
+- Review automation (if doing 5+ review rounds/month)
+
+**Goal:** Reduce friction for repeat usage
+
+---
+
+## 📊 Success Metrics (End of January 2026)
+
+**What we'll measure:**
+
+**1. Did it make projects faster?**
+- Compare: Time to ship with scaffolding vs previous projects
+- Target: 20% faster
+
+**2. Did it make projects cheaper?**
+- Compare: AI costs with tiering vs all-Tier-1
+- Target: 30% cost reduction
+
+**3. Did it improve quality?**
+- Bugs found in production (after vs before reviews)
+- Target: 50% fewer bugs
+
+**4. Was it worth the effort?**
+- Time spent on scaffolding: ~1 week
+- Time saved on projects: ≥ 1 week
+- Target: Break even or better
+
+**5. Did we over-engineer?**
+- Tools built but not used?
+- Features that added complexity but no value?
+- Target: Zero unused features
+
+---
+
+## Questions for Discussion
+
+1. **Is manual sprint planning review feasible?** Or do we need automation from day 1?
+
+2. **What's the minimum viable automation?** Data export server? Prompt generator? Neither?
+
+3. **When do we decide to stop?** If first project doesn't show value, do we abandon immediately?
+
+4. **What's the escape hatch?** If this doesn't work, what's the fallback? (Answer: Keep doing what Erik's doing now)
+
+5. **Are we solving a real problem?** Is multi-project chaos actually painful enough to justify this system?
+
+---
+
+## Next Steps
+
+**Immediate (Right Now):**
+1. Erik reviews this walkthrough
+2. Reality check: Over-engineered? Missing anything? Makes sense?
+3. Decision: Try first project with this system or simplify further?
+
+**If proceeding:**
+4. Pick first project to apply this to (new project or existing?)
+5. Copy templates to that project
+6. Start Phase 1 (100% manual)
+7. Document pain points as we go
+8. Re-evaluate after first project ships
+
+---
+
+**Last Updated:** December 22, 2025  
+**Status:** Design phase - awaiting Erik's review and decision
+
+
+- [[VISION]] - Project vision document.
+- [[tiered-ai-sprint-planning]] - Tiered AI sprint planning pattern.
+- [[learning-loop-pattern]] - Design for the learning loop.
+- [[project-tracker]] - Dashboard for tracking progress and costs.
 
 **What needs building:**
 - ❌ Data export server (simple, ~1 day)

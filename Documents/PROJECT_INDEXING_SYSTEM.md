@@ -427,3 +427,40 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 **Status:** Documentation complete, tooling pending  
 **Priority:** High - improves discoverability across entire ecosystem
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[billing_workflows]] - billing/payments
+- [[dashboard_architecture]] - dashboard/UI
+- [[error_handling_patterns]] - error handling
+- [[queue_processing_guide]] - queue/workflow
+- [[tax_documentation]] - tax/accounting
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[portfolio_content]] - portfolio/career
+- [[testing_strategy]] - testing/QA
+- [[video_analysis_tools]] - video analysis
+- [[3d-pose-factory/README]] - 3D Pose Factory
+- [[agent-skills-library/README]] - Agent Skills
+- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[country-ai-futures-tracker/README]] - Country AI Futures
+- [[flo-fi/README]] - Flo-Fi
+- [[hypocrisynow/README]] - Hypocrisy Now
+- [[image-workflow/README]] - Image Workflow
+- [[national-cattle-brands/README]] - Cattle Brands
+- [[portfolio-ai/README]] - Portfolio AI
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[project-tracker/README]] - Project Tracker
+- [[smart-invoice-workflow/README]] - Smart Invoice
+- [[synth-insight-labs/README]] - Synth Insight Labs
+- [[tax-organizer/README]] - Tax Organizer
+- [[trading-copilot/README]] - Trading Copilot
+- [[van-build/README]] - Van Build
+- [[hypocrisy_methodology]] - bias detection

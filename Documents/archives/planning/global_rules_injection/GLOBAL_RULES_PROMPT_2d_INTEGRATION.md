@@ -29,3 +29,9 @@ def run_update(projects_root: pathlib.Path, backup_dir: pathlib.Path, execute: b
 backup_dir = args.backup_dir.resolve()
 success = run_update(args.root, backup_dir, execute=args.execute)
 ```
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

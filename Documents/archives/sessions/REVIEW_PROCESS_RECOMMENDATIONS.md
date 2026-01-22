@@ -816,3 +816,13 @@ Use metrics to improve scan + checklist.
 
 **Last Updated:** 2026-01-06 (Post failed A+ review)
 **Next Review:** After next major scaffolding update
+
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

@@ -146,3 +146,9 @@ The document mentions using multiple AI providers (Claude, OpenAI, Google AI, et
 5. **Medium Priority:** Create security reference architectures that constrain AI design decisions
 6. **Lower Priority:** Implement secure logging and debugging practices across all tiers
 7. **Ongoing:** Add security scoring to the tier evaluation formula (Complexity + Ambiguity + Risk + SecurityCriticality) / 4
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+

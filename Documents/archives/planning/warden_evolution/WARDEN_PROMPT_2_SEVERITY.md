@@ -187,3 +187,10 @@ Do not sign off until:
 - [x] Exit code 0 for P2-only, exit code 1 for P0/P1
 
 **STATUS: SIGNED OFF BY FLOOR MANAGER**
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

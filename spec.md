@@ -577,3 +577,27 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool
 **End of Specification**
 
 *This document defines the "Contract" of what project-scaffolding currently is. Security review is deferred to a subsequent audit.*
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[database_setup]] - database
+- [[discord_integration]] - Discord
+- [[error_handling_patterns]] - error handling
+- [[prompt_engineering_guide]] - prompt engineering
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[deployment_patterns]] - deployment
+- [[orchestration_patterns]] - orchestration
+- [[performance_optimization]] - performance
+- [[sales_strategy]] - sales/business
+- [[security_patterns]] - security
+- [[audit-agent/README]] - Audit Agent
+- [[project-scaffolding/README]] - Project Scaffolding

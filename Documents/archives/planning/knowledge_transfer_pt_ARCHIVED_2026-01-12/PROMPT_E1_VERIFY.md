@@ -147,3 +147,11 @@ project-tracker is now:
 - Version-tracked for future drift detection
 
 **Next:** Apply same transfer pattern to Tax Processing and analyze-youtube-videos.
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

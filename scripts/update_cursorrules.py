@@ -23,6 +23,8 @@ SAFETY_RULES_SECTION = '''
 - ALWAYS log errors with context (file path, operation attempted, error message).
 '''
 
+SKIP_DIRS = {"writing", "ai-journal", "plugin-duplicate-detection", "plugin-find-names-chrome"}
+
 def parse_projects_filter(projects_arg: str | None) -> set | None:
     """Parse comma-separated project names into a set."""
     if not projects_arg:
@@ -45,6 +47,8 @@ def find_cursorrules_files(
         if not project_dir.is_dir():
             continue
         if project_dir.name.startswith('.') or project_dir.name.startswith('_'):
+            continue
+        if project_dir.name in SKIP_DIRS:
             continue
 
         # Apply filter if specified

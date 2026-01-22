@@ -18,7 +18,7 @@
 
 ## 📚 LEARNINGS APPLIED
 
-- [x] Consulted LOCAL_MODEL_LEARNINGS.md (date: Jan 10, 2026)
+- [x] Consulted [[LOCAL_MODEL_LEARNINGS]] (date: Jan 10, 2026)
 - [x] Task is micro-level (~10 min) - appropriate for local models
 - [x] Creating new file (not modifying) - no StrReplace needed
 - [x] Explicit constraints included below
@@ -95,6 +95,16 @@ exit 0
 
 1. Do not sign off until every [ ] is marked [x]
 2. If any item fails, provide the specific error to the Worker and retry (Max 3 attempts)
-3. **After any failure:** Ask "Was this preventable?" If a documented learning was ignored, log it in LOCAL_MODEL_LEARNINGS.md → Learning Debt Tracker
+3. **After any failure:** Ask "Was this preventable?" If a documented learning was ignored, log it in [[LOCAL_MODEL_LEARNINGS]] → Learning Debt Tracker
 
-**This is a Learning Loop Pattern test.** Document the outcome regardless of success/failure.
+**This is a [[learning-loop-pattern]] test.** Document the outcome regardless of success/failure.
+
+---
+
+## Related Documentation
+
+- [[PRE_COMMIT_HOOK_PROMPTS_INDEX]] - Index for hook prompts.
+- [[learning-loop-pattern]] - Design for the learning loop.
+- [[LOCAL_MODEL_LEARNINGS]] - Local model knowledge base.
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[prompt_engineering_guide]] - prompt engineering

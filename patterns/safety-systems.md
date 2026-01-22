@@ -495,14 +495,12 @@ def delete_safely(path: Path) -> None:
 **Bash alternative:**
 
 ```bash
-# macOS
-trash() {
-    mv "$@" ~/.Trash/
-}
+# macOS - trash CLI is built-in at /usr/bin/trash
+trash myfile.txt
 
 # Linux (requires trash-cli)
 # sudo apt-get install trash-cli
-alias rm='trash'
+trash-put myfile.txt
 ```
 
 ### Evidence from Projects
@@ -575,6 +573,153 @@ def save_with_validation(path: Path, entry: MemoryEntry) -> None:
 
 ---
 
+## Pattern 7: Sandbox Draft Pattern (V4)
+
+### What
+
+Untrusted agents write to a controlled sandbox directory. A gatekeeper reviews diffs before applying changes to target files.
+
+### When to Use
+
+- Multi-agent systems where workers need to edit files
+- AI assistants that generate code
+- Any system where untrusted processes need write access
+- Workflows where parse failures from code extraction are unacceptable
+
+### Implementation
+
+**Directory structure:**
+```
+project/
+├── _handoff/
+│   └── drafts/           # SANDBOX - workers can ONLY write here
+│       ├── file.py.task123.draft
+│       └── task123.submission.json
+├── src/                  # TARGET - workers CANNOT write here directly
+│   └── file.py
+```
+
+**Security Layers:**
+
+```python
+# Layer 1: Path Validation (sandbox.py)
+def validate_sandbox_write(path: str) -> ValidationResult:
+    """
+    SECURITY CRITICAL: Only allow writes to sandbox.
+
+    Checks:
+    1. Path must resolve inside _handoff/drafts/
+    2. No path traversal (..)
+    3. Only .draft or .submission.json extensions
+    """
+    target = Path(path).resolve()
+    sandbox = SANDBOX_DIR.resolve()
+
+    if not target.is_relative_to(sandbox):
+        return ValidationResult(valid=False, reason="Outside sandbox")
+
+    if ".." in str(path):
+        return ValidationResult(valid=False, reason="Path traversal")
+
+    return ValidationResult(valid=True, resolved_path=target)
+
+
+# Layer 2: Content Analysis (draft_gate.py)
+SECRET_PATTERNS = [
+    r'sk-[a-zA-Z0-9]{20,}',           # OpenAI
+    r'ANTHROPIC_API_KEY',              # Anthropic
+    r'password\s*=\s*["\'][^"\']+["\']' # Hardcoded passwords
+]
+
+HARDCODED_PATH_PATTERNS = [
+    r'/Users/[a-zA-Z0-9_]+/',          # macOS home dirs
+    r'/home/[a-zA-Z0-9_]+/',           # Linux home dirs
+]
+
+def analyze_diff(original: str, draft: str) -> SafetyAnalysis:
+    """Check diff for security issues."""
+    # ... implementation
+    return SafetyAnalysis(
+        has_secrets=check_patterns(draft, SECRET_PATTERNS),
+        has_hardcoded_paths=check_patterns(draft, HARDCODED_PATH_PATTERNS),
+        deletion_ratio=calculate_deletion_ratio(original, draft)
+    )
+
+
+# Layer 3: Gate Decision
+class GateDecision(Enum):
+    ACCEPT = "accept"    # Apply the diff
+    REJECT = "reject"    # Discard, log reason
+    ESCALATE = "escalate" # Needs human review
+
+def gate_draft(submission: DraftSubmission) -> GateResult:
+    """
+    Floor Manager reviews draft and decides.
+
+    Scar story: Local model wrote API keys into a config file.
+    Without the gate, it would have been committed.
+    """
+    safety = analyze_diff(submission.original, submission.draft)
+
+    if safety.has_secrets:
+        return GateResult.reject("Contains secrets")
+
+    if safety.has_hardcoded_paths:
+        return GateResult.reject("Contains hardcoded paths")
+
+    if safety.deletion_ratio > 0.5:
+        return GateResult.escalate("Large deletion (>50%)")
+
+    return GateResult.accept(diff_summary, safety)
+```
+
+**Draft Workflow:**
+
+```
+Worker                      Floor Manager              Target
+  │                              │                        │
+  ├──request_draft(file.py)─────▶│                        │
+  │                              ├──copy to sandbox──────▶│
+  │◀──────────────draft_path─────┤                        │
+  │                              │                        │
+  ├──write_draft(content)───────▶│                        │
+  │                              ├──write to sandbox      │
+  │                              │                        │
+  ├──submit_draft()─────────────▶│                        │
+  │                              ├──GATE: analyze diff    │
+  │                              ├──GATE: check safety    │
+  │                              ├──GATE: decide          │
+  │                              │                        │
+  │                              ├───[ACCEPT]────────────▶│ apply
+  │◀──────────────result─────────┤                        │
+```
+
+### Evidence from Projects
+
+**agent-hub (V4):**
+- Workers write to `_handoff/drafts/` only
+- Floor Manager gates all submissions
+- Parse failure rate: ~15% → ~0%
+- Security bypasses: 0
+- Scar: Pre-V4, had to parse Worker output with regex, broke constantly
+
+### Trade-offs
+
+| Pro | Con |
+|-----|-----|
+| Workers can "edit" files safely | Extra complexity in tooling |
+| Parse failures eliminated | Requires sandbox directory |
+| Security maintained | Gate adds latency |
+| Full audit trail | Workers need draft tools |
+
+### When NOT to Use
+
+- Single-agent systems (no untrusted actors)
+- Read-only workflows
+- When direct file access is acceptable (trusted environment)
+
+---
+
 ## Safety System Checklist
 
 When building a new project, ask these questions:
@@ -594,6 +739,10 @@ When building a new project, ask these questions:
   - → Implement trash-don't-delete (Pattern 5)
 - [ ] Are there structured data files (JSON, YAML)?
   - → Implement validate-before-write (Pattern 6)
+
+### Multi-Agent Safety
+- [ ] Do untrusted agents need to write files?
+  - → Implement Sandbox Draft Pattern (Pattern 7)
 
 ### Don't Overdo It
 - [ ] Have you actually experienced this failure mode?
@@ -667,13 +816,14 @@ Safety systems without scar stories.
 
 **Core principle:** "Every safety system was a scar"
 
-**Six proven patterns:**
+**Seven proven patterns:**
 1. **Append-Only Archives** - Never modify historical data
 2. **Read-Only Source Data** - Never write to original files
 3. **Atomic Writes** - No partial/corrupted files
 4. **Move, Don't Modify** - Keep file groups together
 5. **Trash, Don't Delete** - Recoverable deletions
 6. **Validate Before Writing** - Catch errors before persistence
+7. **Sandbox Draft Pattern** - Gate untrusted agent writes (V4)
 
 **When to use them:**
 - Wait for the scar (actual failure)
@@ -687,3 +837,18 @@ Safety systems without scar stories.
 
 **Remember:** The best safety system is the one that prevents a failure you've actually experienced.
 
+## Related Documentation
+
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[trustworthy_ai_report]] - AI safety
+- [[ai_training_methodology]] - AI training
+- [[cost_management]] - cost management
+- [[database_setup]] - database
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[performance_optimization]] - performance
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[image-workflow/README]] - Image Workflow
+- [[trading-copilot/README]] - Trading Copilot

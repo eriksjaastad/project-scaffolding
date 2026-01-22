@@ -142,3 +142,12 @@ pip install -r requirements.txt
 **Last Updated:** December 23, 2025  
 **Status:** Test suite complete! 🧪
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[orchestration_patterns]] - orchestration
+- [[project-scaffolding/README]] - Project Scaffolding

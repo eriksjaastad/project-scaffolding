@@ -291,3 +291,13 @@ A bulldozer:
 ---
 
 *"Understand deeply. Apply thoughtfully. Preserve intentionality."*
+
+## Related Documentation
+
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[automation_patterns]] - automation
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[project-scaffolding/README]] - Project Scaffolding

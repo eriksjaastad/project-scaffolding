@@ -179,3 +179,10 @@ The best code is the code you delete. The best automation is automation you actu
 **Estimated Time:** ~8-10 hours total  
 **Payoff:** Tool that actually works vs. documentation about a tool
 
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+

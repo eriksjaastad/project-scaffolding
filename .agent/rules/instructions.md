@@ -1,3 +1,12 @@
+---
+trigger: always_on
+---
+
+# Antigravity Rules for project-scaffolding
+
+<!-- AUTO-GENERATED from .agentsync/rules/ - Do not edit directly -->
+<!-- Run: uv run $TOOLS_ROOT/agentsync/sync_rules.py project-scaffolding -->
+
 # AGENTS.md - Ecosystem Constitution (SSOT)
 
 > The single source of truth for hierarchy, workflow, and AI collaboration philosophy.
@@ -23,9 +32,9 @@
   - Specifies use of Ollama MCP for local model orchestration
 
 ### 3. The Floor Manager (QA, Messenger & File Operator)
-- **Role:** Orchestrator, Quality Assurance Lead, Context Bridge, and Primary File Operator.
+- **Role:** Orchestrator, Quality Assurance Lead, Context Bridge, Draft Gatekeeper, and Primary File Operator.
 - **Current Model:** [Gemini 3 Flash / Claude / as needed]
-- **Tools:** Ollama MCP (`ollama_run`, `ollama_run_many`), Shell tool, File tools.
+- **Tools:** Ollama MCP (`ollama_run`, `ollama_run_many`), Shell tool, File tools, Draft Gate.
 - **Constraint:** **STRICTLY PROHIBITED** from generating logic or writing code.
 - **Mandate:**
   1. **Relay:** Pass Super Manager prompts to Workers via MCP.
@@ -33,13 +42,15 @@
   3. **Context Bridge:** Provide necessary project context/files to Workers when requested.
   4. **Verify:** Inspect Worker output against the Checklist.
   5. **Sign-Off:** Only mark tasks "Complete" after all checklist items pass.
-- **Identity:** You are not a "sender"; you are a **Gatekeeper** and **Executor**. You must independently verify the Worker's code and perform the physical file operations.
+  6. **V4 - Draft Gate:** Review Worker draft submissions, run safety analysis, decide Accept/Reject/Escalate.
+- **Identity:** You are not a "sender"; you are a **Gatekeeper** and **Executor**. You must independently verify the Worker's code, review draft submissions for safety issues, and perform the physical file operations.
 
 ### 4. The Workers (Local Models via Ollama)
 - **Models:** DeepSeek-R1, Qwen 2.5, etc.
 - **Role:** Primary Implementers of logic and code generation.
 - **Mandate:**
   - Read files and generate code/logic.
+  - **V4:** Write to sandbox drafts via draft tools (see V4 Sandbox Draft Pattern below).
   - Report "Task Complete" to Floor Manager for inspection.
 
 **Use Workers for:**
@@ -47,12 +58,13 @@
 - Code refactoring
 - Code review analysis
 - Text generation tasks
+- **V4:** File edits via sandbox drafts (gated by Floor Manager)
 
 **DO NOT use Workers for:**
-- File operations (cp, mv, rm, chmod)
+- Direct file operations (cp, mv, rm, chmod) - use draft tools instead
 - Bash command execution
 - sed/grep operations
-- Anything requiring shell access
+- Writing outside the sandbox (`_handoff/drafts/`)
 
 - **Context Protocol:** If context is missing or a file is unknown, **STOP** and request the information from the Floor Manager. **DO NOT GUESS.**
 
@@ -74,6 +86,109 @@
 7. **Finalization:** Task marked **Complete** only after Sign-off
 
 **CRITICAL RULE:** Only the **Workers** write code. Under no circumstances should the Super Manager or Floor Manager generate code snippets or implementation logic.
+
+---
+
+## 🔒 V4 SANDBOX DRAFT PATTERN
+
+**Added:** January 2026
+**Purpose:** Give Workers "hands" to edit files while maintaining safety guardrails.
+
+### The Problem (Pre-V4)
+
+Workers could generate code but couldn't write files. The Floor Manager had to parse their output and apply changes manually - leading to ~15% parse failures and brittle workflows.
+
+### The Solution (V4)
+
+**Draft → Gate → Apply**
+
+Workers write to a sandbox. The Floor Manager reviews the diff and decides whether to apply it.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     V4 DRAFT WORKFLOW                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│   Worker                    Floor Manager           Target   │
+│   ┌──────────┐             ┌──────────┐          ┌────────┐ │
+│   │ 1. Request│────────────▶│ Copy to  │          │        │ │
+│   │    Draft  │             │ sandbox  │          │        │ │
+│   │          │◀────────────│          │          │        │ │
+│   │ 2. Edit  │             │          │          │        │ │
+│   │    Draft │────────────▶│ Write to │          │        │ │
+│   │          │             │ sandbox  │          │        │ │
+│   │ 3. Submit│────────────▶│ GATE:    │          │        │ │
+│   │    Draft │             │ - Diff   │─────────▶│ Apply  │ │
+│   │          │             │ - Safety │          │        │ │
+│   │          │◀────────────│ - Decide │          │        │ │
+│   └──────────┘  ACCEPTED   └──────────┘          └────────┘ │
+│                 REJECTED                                     │
+│                 ESCALATED                                    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Draft Tools (ollama-mcp)
+
+| Tool | Purpose |
+|------|---------|
+| `ollama_request_draft` | Copy source file to sandbox |
+| `ollama_write_draft` | Write/update draft in sandbox |
+| `ollama_read_draft` | Read current draft content |
+| `ollama_submit_draft` | Submit draft for review |
+
+### Security Layers
+
+| Layer | Protection |
+|-------|------------|
+| **Path Validation** | Only `_handoff/drafts/` is writable |
+| **Content Analysis** | Secrets, hardcoded paths, deletion ratio |
+| **Floor Manager Gate** | Diff review, conflict detection |
+| **Audit Trail** | All decisions logged, rollback capable |
+
+### Gate Decisions
+
+| Decision | When | Action |
+|----------|------|--------|
+| **ACCEPT** | All checks pass | Apply diff to target file |
+| **REJECT** | Security violation | Discard draft, log reason |
+| **ESCALATE** | Large change / uncertain | Alert Conductor for review |
+
+### Why This Matters
+
+- **Parse failure rate:** ~15% → ~0%
+- **Worker autonomy:** Can now complete file edits independently
+- **Safety maintained:** Floor Manager still gates all changes
+- **Audit trail:** Every decision logged for rollback
+
+**Implementation:** See `_tools/agent-hub/` for the Unified Agent System.
+
+---
+
+## 🔌 MCP SERVER INFRASTRUCTURE
+
+The agent ecosystem runs on MCP (Model Context Protocol) servers in `_tools/`:
+
+| Server | Purpose | Key Features |
+|--------|---------|--------------|
+| **agent-hub** | Core orchestration | SQLite message bus, LiteLLM routing, budget management, circuit breakers, graceful degradation |
+| **librarian-mcp** | Knowledge queries | Wraps project-tracker's graph.json and tracker.db; natural language queries via `ask_librarian` |
+| **ollama-mcp** | Local model execution | Draft tools (`ollama_request_draft`, `ollama_write_draft`, etc.), model invocation |
+| **claude-mcp** | Agent communication | Message hub for cross-agent coordination |
+
+### Agent-Hub Capabilities (Unified Agent System)
+- **Message Bus:** SQLite-based ask/reply pattern for worker communication
+- **Model Routing:** LiteLLM integration with provider fallbacks (Ollama → Cloud)
+- **Budget Management:** Session and daily cost limits with automatic enforcement
+- **Circuit Breakers:** Automatic halt on repeated failures (router, SQLite, Ollama)
+- **Graceful Degradation:** Low Power Mode when local models unavailable
+- **Audit Logging:** NDJSON event logs for debugging and compliance
+
+### Knowledge Queries (Librarian MCP)
+Agents can query the knowledge graph before falling back to grep/glob:
+- `search_knowledge` - Full-text search across projects and files
+- `get_project_info` - Project details with dependencies
+- `find_related_docs` - Graph-based related file discovery
+- `ask_librarian` - Natural language questions about the codebase
 
 ---
 
@@ -125,6 +240,7 @@ See: `agent-skills-library/playbooks/staged-prompt-engineering/` for templates.
 ## ⚠️ UNIVERSAL CONSTRAINTS
 
 - NEVER modify `.env` or `venv/`
+- NEVER install dependencies globally. Use a project-local virtual environment or tool-managed environment (e.g., `venv`, `uv`, `pipx`, `poetry`).
 - NEVER hard-code API keys, secrets, or credentials in script files. Use `.env` and `os.getenv()`
 - NEVER use absolute paths (e.g., `/Users/erik/...`). Use relative paths or environment variables
 - ALWAYS update `EXTERNAL_RESOURCES.yaml` when adding external services
@@ -299,3 +415,22 @@ created: YYYY-MM-DD
 *This is the ecosystem constitution. Let it evolve as we learn.*
 
 ---
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[trustworthy_ai_report]] - AI safety
+- [[architecture_patterns]] - architecture
+- [[cost_management]] - cost management
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[orchestration_patterns]] - orchestration
+- [[security_patterns]] - security
+- [[session_documentation]] - session notes
+- [[testing_strategy]] - testing/QA
+- [[agent-skills-library/README]] - Agent Skills
+
+<!-- Source of truth: .agentsync/rules/ -->

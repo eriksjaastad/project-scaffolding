@@ -34,7 +34,7 @@
 ```markdown
 ## 📋 Definition of Done (DoD)
 - [ ] Code is documented with type hints.
-- [ ] Technical changes are logged to `_obsidian/WARDEN_LOG.yaml`.
+- [ ] Technical changes are logged to `project-tracker/data/WARDEN_LOG.yaml` (formerly `_obsidian/WARDEN_LOG.yaml`).
 - [ ] `00_Index_*.md` is updated with recent activity.
 - [ ] [Project-specific DoD item]
 ```
@@ -43,7 +43,7 @@
 ```markdown
 ## 📋 Definition of Done (DoD)
 - [ ] Code is documented with type hints.
-- [ ] Technical changes are logged to `_obsidian/WARDEN_LOG.yaml`.
+- [ ] Technical changes are logged to `project-tracker/data/WARDEN_LOG.yaml` (formerly `_obsidian/WARDEN_LOG.yaml`).
 - [ ] `00_Index_*.md` is updated with recent activity.
 - [ ] Code validated (no hardcoded paths, no secrets exposed).
 - [ ] Code review completed (if significant architectural changes).
@@ -103,3 +103,12 @@ grep "REVIEWS_AND_GOVERNANCE_PROTOCOL" templates/AGENTS.md.template
 - [ ] FAIL: Describe error
 
 **Hand back to Floor Manager when complete.**
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

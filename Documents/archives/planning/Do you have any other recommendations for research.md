@@ -322,3 +322,8 @@ These are fundamentally different problems. Use their patterns as inspiration, n
 
 [^48]: http://www.osha.gov/laws-regs/regulations/standardnumber/1926/1926.501
 
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+

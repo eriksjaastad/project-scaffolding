@@ -14,12 +14,15 @@
 The following domains are **Human-First Zones** and are strictly exempt from the Audit Assembly Line:
 - **The Vault:** `ai-journal/` (Context history & personal notes)
 - **Creative:** `writing/` (Drafts and novels)
+- **Extensions:** `plugin-duplicate-detection/`, `plugin-find-names-chrome/` (Protected Chrome extensions)
 - **Rule:** If a directory does not contain a code manifest (`requirements.txt`, `package.json`, `go.mod`), it is skipped by default.
 
 ## 🧹 STEP 0: The Local Baseline (Ground Truth)
 **Management:** Floor Manager (Gemini)
 **Execution:** Worker (Ollama / `qwen3:4b`)
 **Action:** Noise reduction, dependency extraction, and debt extraction.
+
+**See:** [[TODO_FORMAT_STANDARD]] for the expected debt tracking format.
 
 **Prompt for Floor Manager:**
 > "Execute **Step 0 (Local Baseline)** for this project.
@@ -36,7 +39,7 @@ The following domains are **Human-First Zones** and are strictly exempt from the
 
 **Command:**
 ```bash
-npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**,**/__pycache__/**,**/.pytest_cache/**,**/.venv/**,**/venv/**,**/.DS_Store,**/build/**,**/.idea/**,**/.vscode/**,**/ai-journal/**,**/writing/**"
+npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**,**/__pycache__/**,**/.pytest_cache/**,**/.venv/**,**/venv/**,**/.DS_Store,**/build/**,**/.idea/**,**/.vscode/**,**/ai-journal/**,**/writing/**,**/plugin-duplicate-detection/**,**/plugin-find-names-chrome/**"
 ```
 
 ## 📝 STEP 2: The "Contract" (Spec Generation)
@@ -57,9 +60,9 @@ npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**,*
 ### 🚩 PHASE A: DNA & SECURITY (The "Warden" Pass)
 **Prompt for Reviewer:**
 > "Audit this project for DNA Security based on our Gold Standard.
-> 1. Find every absolute path (e.g., `[USER_HOME]/...` or `~/...`). These are critical failures.
+> 1. Find every absolute path (e.g., `[USER_HOME]/...` or `~/...`). These are critical failures. See [[PROJECT_STRUCTURE_STANDARDS]].
 > 2. Search for hardcoded API keys, secrets, or plain-text credentials.
-> 3. **Doppler Readiness:** Flag every instance of `os.getenv` or `process.env`. These must be mapped to our central Doppler naming convention in the new Spec.
+> 3. **Doppler Readiness:** Flag every instance of `os.getenv` or `process.env`. These must be mapped to our central Doppler naming convention in the new Spec. See [[DOPPLER_SECRETS_MANAGEMENT]].
 > 4. Check all user-input paths for `safe_slug()` and path traversal protection.
 > 5. List every violation as a 'P0 DNA DEFECT'."
 
@@ -76,7 +79,7 @@ npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**,*
 > "Compare the code against the `spec.md` we just generated.
 > 1. Does the code actually do what the Spec says it does?
 > 2. Is there 'Dead Code' or 'Feature Creep' that isn't in the Spec?
-> 3. Identify any logic that is 'too clever' and needs to be simplified for long-term maintenance.
+> 3. Identify any logic that is 'too clever' and needs to be simplified for long-term maintenance. See [[CODE_QUALITY_STANDARDS]].
 > 4. Final Verdict: Grade the project from A to F based on its readiness for the Doppler/Hardened ecosystem."
 
 ## 🔨 STEP 4: Industrial Remediation (The Redemption)
@@ -115,21 +118,12 @@ Deliver these one-by-one to the Floor Manager.
    - **Evidence:** `ls` and `git status` showing a clean tree.
 
 ## 🏆 STEP 5: Final Certification (The Redemption Certificate)
-**Executed by:** Reviewer (Web)
-**Action:** Verification of all Step 4 remediations and issuance of a Final Grade upgrade.
 
-### 🛑 CRITICAL: THE FRESHNESS MANDATE
-> "Before starting the Final Audit, the Reviewer **MUST** verify they are reading the latest code.
-> 1. If using a Git tool: **Pull the `main` branch** to clear any local cache.
-> 2. If using Repomix: Verify the file contains new symbols (e.g., `safe_slug`) identified in the remediation.
-> 3. **DO NOT** rely on memory from previous turns. Treat this as a 'Zero-Knowledge' audit of the new state."
+**Verification:** All P0 DNA Defects and Resilience issues must be resolved.
 
-**Prompt for Reviewer:**
-> "I am providing a post-remediation Repomix snapshot of [Project Name]. 
-> 1. Compare this snapshot against the previous 'Ruthless Audit' findings and the `spec.md`.
-> 2. **Verification:** Confirm that every P0 DNA Defect and Resilience issue has been resolved.
-> 3. **Final Grade:** If the project is 100% compliant with the Gold Standard, award a **Grade: A**.
-> 4. **Archive:** Generate a `REVIEWS/REDEMPTION_CERTIFICATE.md` summarizing the transition from the old grade to the new."
+---
+
+*See also: [[PROJECT_STRUCTURE_STANDARDS]], [[DOPPLER_SECRETS_MANAGEMENT]], [[CODE_QUALITY_STANDARDS]], and [[LOCAL_MODEL_LEARNINGS]].*
 
 ---
 
@@ -142,3 +136,20 @@ Deliver these one-by-one to the Floor Manager.
 - [ ] `audit-agent`
 - [ ] `automation-consulting`
 - [ ] ... (Continue down the directory list)
+
+## Related Documentation
+
+- [[automation_patterns]] - automation
+- [[billing_workflows]] - billing/payments
+- [[error_handling_patterns]] - error handling
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[project_planning]] - planning/roadmap
+- [[security_patterns]] - security
+- [[testing_strategy]] - testing/QA
+- [[video_analysis_tools]] - video analysis
+- [[3d-pose-factory/README]] - 3D Pose Factory
+- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[audit-agent/README]] - Audit Agent

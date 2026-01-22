@@ -57,3 +57,9 @@ If you paste (1) the model name LM Studio shows when the server is running, and 
 [3]: https://docs.continue.dev/customize/model-providers/top-level/openai?utm_source=chatgpt.com "How to Configure OpenAI Models with Continue"
 [4]: https://forum.cursor.com/t/using-local-llms-with-cursor-is-it-possible/15494?page=2&utm_source=chatgpt.com "Using Local LLMs with Cursor: Is it Possible? - Page 2"
 [5]: https://forum.cursor.com/t/cannot-override-openai-base-url/144198?utm_source=chatgpt.com "Cannot override OpenAI Base URL - Bug Reports"
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[dashboard_architecture]] - dashboard/UI
+- [[case_studies]] - examples

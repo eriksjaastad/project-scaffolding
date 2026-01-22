@@ -246,3 +246,18 @@ The project-scaffolding codebase passes all critical quality gates and is safe t
 ---
 
 *Review conducted following `REVIEW_PROCESS_RECOMMENDATIONS.md` and `CODE_QUALITY_STANDARDS.md`*
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[error_handling_patterns]] - error handling
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[performance_optimization]] - performance
+- [[security_patterns]] - security
+- [[project-scaffolding/README]] - Project Scaffolding

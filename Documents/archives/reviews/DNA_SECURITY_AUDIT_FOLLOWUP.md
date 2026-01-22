@@ -240,3 +240,11 @@ All 17 P0 defects have been remediated:
 **End of Follow-Up DNA Security Audit**
 
 *This audit verifies remediation of all defects from DNA_SECURITY_AUDIT.md dated 2026-01-08.*
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

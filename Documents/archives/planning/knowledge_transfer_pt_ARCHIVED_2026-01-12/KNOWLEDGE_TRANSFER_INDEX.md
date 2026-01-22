@@ -186,3 +186,11 @@ grep "scaffolding_version" 00_Index_project-tracker.md
 ---
 
 **Hand to Floor Manager to begin knowledge transfer.**
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

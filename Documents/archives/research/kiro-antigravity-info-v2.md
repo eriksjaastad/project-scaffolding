@@ -132,7 +132,7 @@ For simple tasks (fixing syntax, updating docs), do **not** use Kiro or Antigrav
 
 ### **Final Verdict for Your Project**
 
-* **Can you integrate Kiro?** **YES**, via the CLI. It is excellent for "Phase 1: Scaffolding" to ensure your project structure is solid.
+* **Can you integrate Kiro?** **YES**, via the CLI. It is excellent for "Phase 1: Scaffolding" to ensure your project structure is solid. See [[PROJECT_STRUCTURE_STANDARDS]].
 * **Can you integrate Antigravity?** **NO**, not programmatically. It is a tool for *you* (the human) to use for review. For automation, use the **Gemini 3 API**.
 
 **Recommendation:**
@@ -142,3 +142,10 @@ Here is a video reviewing the actual hands-on workflow of Antigravity to see the
 [Google Antigravity: Hands on with our new agentic development platform](https://www.youtube.com/watch?v=uzFOhkORVfk)
 
 This video is relevant because it demonstrates the "Mission Control" and "Browser Agent" features in real-time, helping you visualize exactly what logic you would need to replicate programmatically using the Gemini API.
+
+---
+
+## Related Documentation
+- [[gemini-research-prompt]] - Initial research prompt.
+- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout rules.
+- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.

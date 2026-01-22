@@ -118,3 +118,10 @@ AI-generated code often includes verbose logging and error messages that leak se
 4. **Medium Priority:** Implement automated security scanning for AI-generated code. Integrate SAST tools into the development workflow.
 
 5. **Long-term:** Create security-specific tiering for security-critical components. Some security work should never be delegated to lower-tier AI models regardless of apparent complexity.
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+

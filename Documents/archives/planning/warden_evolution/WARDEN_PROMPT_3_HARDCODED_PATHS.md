@@ -148,3 +148,11 @@ Do not sign off until:
 - [x] Clean project shows no hardcoded path violations
 
 **STATUS: SIGNED OFF BY FLOOR MANAGER**
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

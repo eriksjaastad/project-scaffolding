@@ -261,3 +261,24 @@ send_test_message()
 
 *"One project, one channel, zero chaos."*
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[cost_management]] - cost management
+- [[discord_integration]] - Discord
+- [[error_handling_patterns]] - error handling
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[hypocrisy_methodology]] - bias detection
+- [[testing_strategy]] - testing/QA
+- [[3d-pose-factory/README]] - 3D Pose Factory
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[hypocrisynow/README]] - Hypocrisy Now
+- [[image-workflow/README]] - Image Workflow
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[trading-copilot/README]] - Trading Copilot

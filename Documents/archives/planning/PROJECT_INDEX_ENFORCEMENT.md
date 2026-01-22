@@ -393,3 +393,10 @@ cp templates/00_Index.md.template "../[ProjectName]/00_Index_[ProjectName].md"
 **Status:** MANDATORY  
 **Scripts:** Validated and ready to use
 
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

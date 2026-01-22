@@ -1,7 +1,7 @@
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding
-> **Last Updated:** January 12, 2026
+> **Last Updated:** January 17, 2026
 > **Type:** Infrastructure
 
 ---
@@ -23,6 +23,10 @@
 
 ## 🚨 CURRENT PRIORITY: Remaining Cleanup
 
+- [ ] **PRD Template System:**
+  - [ ] Come up with a PRD template
+  - [ ] Figure out how or if the PRD template fits in with our "Get shit done" Prompting System (Modular AI Workflow)
+  - [ ] Evaluate effectiveness / "See if we like it"
 - [ ] **Doc hygiene pass on image-workflow:** After we prove the pattern works here
 
 ---
@@ -291,6 +295,69 @@ Deployed projects must be 100% self-contained:
 - Project-tracker dashboard will display pending code reviews
 - Alerts table will show code review status
 - Need standard format to parse and display
+
+---
+
+### Code Review Standards Enhancement (Jan 17, 2026)
+**Goal:** Expand code review checklist beyond mechanical checks to catch senior-level concerns
+
+**Current State (Tier 1 - Implemented):**
+- Silent failures (`except: pass`)
+- Hardcoded absolute paths (`/Users/`, `/home/`)
+- Secrets in code (API keys, passwords)
+
+**Tier 2: Architecture/Maintainability (To Add)**
+> "Will this bite us later?" checks
+- [ ] **Duplication detection**: Is this functionality already in the codebase or a library?
+- [ ] **Architectural fit**: Does new code match existing patterns (microservices, monorepo, etc.)?
+- [ ] **Dependency hygiene**: Are new packages necessary? Maintained? Security issues?
+
+**Tier 3: Language-Specific Idioms (To Add)**
+
+*Python:*
+- [ ] **Type hints**: Public functions should have them
+- [ ] **Context managers**: Resources (files, connections) properly closed?
+- [ ] **Mutable defaults**: `def foo(items=[])` - classic footgun
+- [ ] **Exception specificity**: Catching `Exception` vs specific exceptions
+
+*TypeScript/JavaScript:*
+- [ ] **Strict mode**: `"strict": true` in tsconfig
+- [ ] **Async/await**: Proper error handling, no floating promises
+- [ ] **Type safety**: Avoid `any`, use generics properly
+- [ ] **Null checks**: Optional chaining vs explicit checks
+
+*Go:*
+- [ ] **Error handling**: Always check returned errors
+- [ ] **Goroutine leaks**: Context cancellation, proper cleanup
+- [ ] **Interface satisfaction**: Compile-time checks
+- [ ] **Resource cleanup**: `defer` for cleanup operations
+
+**Tier 4: Concurrency/Performance (To Add)**
+> "This will blow up at scale" checks
+- [ ] **Race conditions**: Shared state without locks?
+- [ ] **N+1 queries**: Loop inside database calls?
+- [ ] **Memory leaks**: Unbounded lists, large file reads into memory?
+- [ ] **Blocking operations**: Sync I/O in async context?
+
+**Implementation Tasks:**
+- [ ] Update `CODE_QUALITY_STANDARDS.md` with Tier 2-4 checks
+- [ ] Create language-specific review checklists:
+  - [ ] `Documents/patterns/code-review-python.md`
+  - [ ] `Documents/patterns/code-review-typescript.md`
+  - [ ] `Documents/patterns/code-review-go.md`
+- [ ] Update `warden_audit.py` to detect Tier 2 issues (where automatable)
+- [ ] Add Tier 3/4 checks to `CODE_REVIEW.md.template` as reviewer prompts
+
+**Why This Matters:**
+- Current checks catch mechanical issues but miss design problems
+- Senior developers care about maintainability, not just correctness
+- Multi-language ecosystem needs language-specific guidance
+- Catches issues that cause pain 6 months later
+
+**Reference Sources:**
+- [Microsoft Engineering Playbook - Python](https://microsoft.github.io/code-with-engineering-playbook/code-reviews/recipes/python/)
+- [DeepSource Python Checklist](https://deepsource.com/blog/python-code-review-checklist)
+- [Qodo Code Review Best Practices 2025](https://www.qodo.ai/blog/code-review-best-practices/)
 
 ---
 
@@ -574,3 +641,40 @@ Deployed projects must be 100% self-contained:
 ---
 
 **END OF TODO**
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PATTERN_MANAGEMENT]] - patterns
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[trustworthy_ai_report]] - AI safety
+- [[architecture_patterns]] - architecture
+- [[automation_patterns]] - automation
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[error_handling_patterns]] - error handling
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[tax_documentation]] - tax/accounting
+- [[trading_backtesting_guide]] - backtesting
+- [[adult_business_compliance]] - adult industry
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[cortana_architecture]] - Cortana AI
+- [[recipe_system]] - recipe generation
+- [[research_methodology]] - research
+- [[security_patterns]] - security
+- [[session_documentation]] - session notes
+- [[testing_strategy]] - testing/QA
+- [[video_analysis_tools]] - video analysis
+- [[agent-skills-library/README]] - Agent Skills
+- [[analyze-youtube-videos/README]] - YouTube Analyzer
+- [[cortana-personal-ai/README]] - Cortana AI
+- [[image-workflow/README]] - Image Workflow
+- [[muffinpanrecipes/README]] - Muffin Pan Recipes
+- [[project-scaffolding/README]] - Project Scaffolding
+- [[project-tracker/README]] - Project Tracker
+- [[tax-organizer/README]] - Tax Organizer

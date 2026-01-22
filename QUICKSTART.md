@@ -33,25 +33,31 @@ NEW_PROJECT="$PROJECTS_ROOT/my-new-project"
 mkdir -p "$NEW_PROJECT"
 cd "$NEW_PROJECT"
 
-# 2. Copy all templates
+# 2. Initialize git (needed for governance hooks)
+git init
+
+# 3. Copy templates
 cp -r "$SCAFFOLDING/templates/Documents" ./Documents
 cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
-cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
-cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
 cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
 cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
 cp "$SCAFFOLDING/templates/README.md.template" ./README.md
 cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore
 cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
 
-# 3. Initialize git
-git init
+# 4. Generate IDE configs from AGENTS.md (creates .cursorrules, CLAUDE.md, .agent/rules/)
+$HOME/.local/bin/uv run "$SCAFFOLDING/scripts/sync_agent_configs.py" "$(basename $NEW_PROJECT)"
+
+# 5. Install governance hooks (secrets scanning, path checking, auto-sync)
+"$PROJECTS_ROOT/_tools/governance/install-hooks.sh" .
 ```
 
 **Checklist:**
 - [ ] Project directory created
-- [ ] Templates copied from scaffolding
 - [ ] Git initialized
+- [ ] Templates copied from scaffolding
+- [ ] IDE configs generated via sync script
+- [ ] Governance hooks installed
 
 ---
 
@@ -80,36 +86,30 @@ Edit each file and replace the placeholders:
 
 **File:** `AGENTS.md`
 
+> **Important:** AGENTS.md is the **single source of truth** for AI agent configuration. Edit only this file - `.cursorrules`, `CLAUDE.md`, and `.agent/rules/agents.md` are auto-generated from it. See `Documents/reference/AGENT_CONFIG_SYNC.md` for details.
+
 - [ ] Replace `{project_description}` with clear summary
 - [ ] Update `{language}`, `{frameworks}`, `{ai_strategy}`
 - [ ] Set `{run_command}` and `{test_command}`
 - [ ] Add project-specific constraints
 - [ ] Update Definition of Done checklist
+- [ ] Run sync: `$HOME/.local/bin/uv run $SCAFFOLDING/scripts/sync_agent_configs.py $(basename $(pwd))`
 
-#### 2.3 CLAUDE.md (AI Working Instructions)
+#### 2.3 CLAUDE.md (Auto-Generated)
 
 **File:** `CLAUDE.md`
 
-- [ ] Write project summary (2-3 sentences)
-- [ ] Update current status
-- [ ] Specify key constraints (budget, privacy, etc.)
-- [ ] Update project structure diagram
-- [ ] Define Safety Rules:
-  - 🔴 NEVER modify (append-only/read-only files)
-  - 🟡 Be careful with (config, APIs)
-  - ✅ Safe to modify (code, docs)
-- [ ] Add validation commands
+> **Note:** This file is auto-generated from AGENTS.md. Do not edit directly - your changes will be overwritten. Edit AGENTS.md instead.
 
-#### 2.4 .cursorrules (Cursor AI Rules)
+After running sync, CLAUDE.md will contain your AGENTS.md content with a Claude-specific header.
+
+#### 2.4 .cursorrules (Auto-Generated)
 
 **File:** `.cursorrules`
 
-- [ ] Replace `[PROJECT_NAME]` with project name
-- [ ] Write 1-2 sentence description
-- [ ] Set domain and status
-- [ ] Update tech stack
-- [ ] Add project-specific constraints
-- [ ] Update execution commands
+> **Note:** This file is auto-generated from AGENTS.md. Do not edit directly - your changes will be overwritten. Edit AGENTS.md instead.
+
+After running sync, .cursorrules will contain your AGENTS.md content with a Cursor-specific header.
 
 #### 2.5 README.md
 
@@ -683,3 +683,25 @@ Common issues:
 
 *Part of the [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding) meta-project.*  
 *Last Updated: January 2026*
+
+## Related Documentation
+
+- [[CODE_QUALITY_STANDARDS]] - code standards
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+- [[architecture_patterns]] - architecture
+- [[cost_management]] - cost management
+- [[dashboard_architecture]] - dashboard/UI
+- [[prompt_engineering_guide]] - prompt engineering
+- [[queue_processing_guide]] - queue/workflow
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[orchestration_patterns]] - orchestration
+- [[performance_optimization]] - performance
+- [[research_methodology]] - research
+- [[security_patterns]] - security
+- [[agent-skills-library/README]] - Agent Skills
+- [[project-scaffolding/README]] - Project Scaffolding

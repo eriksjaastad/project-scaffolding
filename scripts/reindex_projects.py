@@ -36,7 +36,7 @@ if not PROJECTS_ROOT_ENV:
 PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
 TEMPLATE_PATH = SCAFFOLDING_ROOT / "templates" / "00_Index.md.template"
-SKIP_DIRS = {"writing", "ai-journal"}
+SKIP_DIRS = {"writing", "ai-journal", "plugin-duplicate-detection", "plugin-find-names-chrome"}
 ARCHIVE_THRESHOLD_DAYS = 180  # 6 months
 
 # Setup logging

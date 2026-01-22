@@ -241,10 +241,20 @@ When circuit is "open", all requests to that model immediately return:
 
 ## Related Documents
 
-- `AGENTS.md` - 3-Strike Escalation Rule
-- `LOCAL_MODEL_LEARNINGS.md` - Timeout patterns
-- `patterns/learning-loop-pattern.md` - Structural enforcement rationale
+- [[AGENTS]] - 3-Strike Escalation Rule
+- [[LOCAL_MODEL_LEARNINGS]] - Timeout patterns
+- [[learning-loop-pattern]] - Structural enforcement rationale
 
 ---
 
 *This spec is ready for Conductor review before implementation.*
+
+## Related Documentation
+
+- [[dashboard_architecture]] - dashboard/UI
+- [[error_handling_patterns]] - error handling
+- [[prompt_engineering_guide]] - prompt engineering
+- [[adult_business_compliance]] - adult industry
+- [[ai_model_comparison]] - AI models
+- [[case_studies]] - examples
+- [[security_patterns]] - security

@@ -155,3 +155,11 @@ elif task.tier == 3:
 5. [ ] If good → integrate
 6. [ ] If bad → try GPT-4o-mini instead
 
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[cost_management]] - cost management
+- [[prompt_engineering_guide]] - prompt engineering
+- [[ai_model_comparison]] - AI models
+- [[sales_strategy]] - sales/business

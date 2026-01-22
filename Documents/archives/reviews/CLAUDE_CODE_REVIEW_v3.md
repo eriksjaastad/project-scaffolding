@@ -568,3 +568,12 @@ pytest tests/ -v
 ---
 
 *"The best code review is the one that makes you uncomfortable. The worst is the one that makes you complacent."*
+
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

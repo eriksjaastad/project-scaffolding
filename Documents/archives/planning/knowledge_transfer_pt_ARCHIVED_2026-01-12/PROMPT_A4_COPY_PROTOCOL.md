@@ -64,3 +64,10 @@ wc -l Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md
 - [ ] FAIL: Describe error
 
 **Hand back to Floor Manager when complete.**
+
+
+## Related Documentation
+
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

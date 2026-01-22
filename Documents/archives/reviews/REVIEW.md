@@ -536,3 +536,12 @@ doppler run -- python scripts/validate_external_resources.py  # Should pass
 ---
 
 **End of Consolidated Review Document**
+
+
+## Related Documentation
+
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+

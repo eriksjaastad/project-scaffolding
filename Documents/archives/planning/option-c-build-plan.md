@@ -985,3 +985,11 @@ A: Cost explosion. Mitigation: dry-run mode, cost gates, budget limits, comparis
 
 **Let's do this!** 🚀
 
+
+## Related Documentation
+
+- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
+- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
+- [[PROJECT_KICKOFF_GUIDE]] - project setup
+- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
+
