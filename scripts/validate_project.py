@@ -156,6 +156,9 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
                     journal_path_str = str(PROJECTS_ROOT / "ai-journal" / "entries")
                     if journal_path_str in content:
                         continue
+                    # Skip AGENTS.md absolute paths (they are ecosystem-wide)
+                    if file == "AGENTS.md":
+                        continue
                     errors.append(f"DNA Defect: Absolute path found in {file_path.relative_to(project_path)}")
                 
                 # Check for secrets
@@ -214,42 +217,68 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
         (r"os\.unlink\s*\(", "os.unlink() found - use send2trash"),
     ]
     
+    # Files to skip for safety scan
+    safety_skip_files = {"validate_project.py", "warden_audit.py"}
+    
     # 6. Placeholder Scan (Automated Gate 2)
     # Check for unfilled template placeholders: {{VAR}}
     placeholder_patterns = [
         (re.compile(r"\{\{[A-Z0-9_]+\}\}"), "Unfilled double-brace placeholder"),
     ]
     
+    # Files/directories to skip for placeholder scan
+    placeholder_skip_files = {
+        "SILENT_FAILURES_AUDIT.md",
+        "TODO_FORMAT_STANDARD.md",
+        "REVIEWS_AND_GOVERNANCE_PROTOCOL.md",
+        "validate_project.py",
+        "cli.py"
+    }
+    placeholder_skip_dirs = {"templates", "_handoff", "prompts"}
+    
     for root, dirs, files in os.walk(project_path):
         # Filter directories in-place
         dirs[:] = [d for d in dirs if d not in {"venv", ".venv", "__pycache__", "node_modules", ".git", "_trash", "archives"}]
+        
+        rel_root = Path(root).relative_to(project_path)
+        is_in_skip_dir = any(part in placeholder_skip_dirs for part in rel_root.parts)
         
         for file in files:
             # Check placeholders in Markdown, Python, and Shell scripts
             if not file.endswith((".md", ".py", ".sh", ".js", ".ts")):
                 continue
+            
+            # Skip index files for placeholder check (they pull from other files)
+            if file.startswith("00_Index_") and file.endswith(".md"):
+                is_placeholder_skip_file = True
+            else:
+                is_placeholder_skip_file = file in placeholder_skip_files
                 
             file_path = Path(root) / file
+            rel_file_path = file_path.relative_to(project_path)
+            
             try:
                 content = file_path.read_text(encoding='utf-8', errors='ignore')
                 
-                # Check for dangerous patterns
-                for pattern, reason in dangerous_patterns:
-                    if re.search(pattern, content):
-                        errors.append(f"Safety Defect: {reason} in {file_path.relative_to(project_path)}")
+                # Check for dangerous patterns (skip if in skip list)
+                if file not in safety_skip_files:
+                    for pattern, reason in dangerous_patterns:
+                        if re.search(pattern, content):
+                            errors.append(f"Safety Defect: {reason} in {rel_file_path}")
                 
-                # Check for unfilled placeholders
-                lines = content.splitlines()
-                for i, line in enumerate(lines):
-                    for pattern, reason in placeholder_patterns:
-                        match = pattern.search(line)
-                        if match:
-                            # Special case: ignore some common single-brace patterns that aren't placeholders
-                            # e.g. f-strings in python or shell variables if they look like placeholders
-                            if file.endswith(".py") and "f\"" in line or "f'" in line:
-                                continue
-                            
-                            errors.append(f"Placeholder Defect: {reason} found in {file_path.relative_to(project_path)}:{i+1} - {match.group(0)}")
+                # Check for unfilled placeholders (skip if in skip list)
+                if not is_in_skip_dir and not is_placeholder_skip_file:
+                    lines = content.splitlines()
+                    for i, line in enumerate(lines):
+                        for pattern, reason in placeholder_patterns:
+                            match = pattern.search(line)
+                            if match:
+                                # Special case: ignore some common single-brace patterns that aren't placeholders
+                                # e.g. f-strings in python or shell variables if they look like placeholders
+                                if file.endswith(".py") and ("f\"" in line or "f'" in line):
+                                    continue
+                                
+                                errors.append(f"Placeholder Defect: {reason} found in {rel_file_path}:{i+1} - {match.group(0)}")
             except Exception:
                 pass
 

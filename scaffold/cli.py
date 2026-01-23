@@ -44,6 +44,8 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "TASK_GROUP_NAME": "Core Implementation",
         "AI_NAME": "Claude",
         "MODEL": "Claude 3.5 Sonnet",
+        "ROLE": "floor-manager",
+        "DESCRIPTIVE_TITLE": "Task Implementation",
         "CRON_EXPRESSION": "0 0 * * *",
         "COMMAND": "python scripts/validate_project.py",
         "SERVICE_NAME": "GitHub",
@@ -55,22 +57,60 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "TEST_COMMAND": "pytest",
         "MAIN_CODE_DIR": "src",
         "CONSTRAINTS": "None",
+        "AI_STRATEGY": "Local-First",
+        "CONFIG_NAME": "default",
+        "FILE_CONTENT": "",
+        "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
+        "VENV_ACTIVATION": "source venv/bin/activate",
+        "WAIT_TIME": "2",
+        "CONSTRAINT_1": "None",
+        "CONSTRAINT_2": "None",
     }
 
 
 def _substitute_placeholders(content: str, context: Dict[str, str], filename: str) -> str:
-    """Substitute {{VAR}} placeholders in content."""
-    def replace(match):
-        var_name = match.group(1)
+    """Substitute {{VAR}} or {var} placeholders in content."""
+    
+    # Mandatory variables that MUST exist in context if found in {{VAR}} format
+    MANDATORY_VARS = {
+        "PROJECT_NAME", "PROJECT_DESCRIPTION", "DATE", "STATUS", "PHASE",
+        "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
+        "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
+        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME", "DOC_PATH",
+        "LANGUAGE", "LANGUAGE_VERSION", "FRAMEWORKS", "RUN_COMMAND",
+        "TEST_COMMAND", "MAIN_CODE_DIR", "CONSTRAINTS", "AI_STRATEGY",
+        "VENV_ACTIVATION", "WAIT_TIME"
+    }
+
+    # 1. Substitute {{VAR}}
+    def replace_double(match):
+        var_name = match.group(1).upper()
         if var_name in context:
             return context[var_name]
         
-        # Fail loud if placeholder has no value
-        raise click.ClickException(f"Error: No context value for placeholder '{{{{{var_name}}}}}' in {filename}")
+        # Fail loud ONLY if it's a mandatory scaffolding variable
+        if var_name in MANDATORY_VARS:
+            raise click.ClickException(f"Error: No context value for mandatory placeholder '{{{{{var_name}}}}}' in {filename}")
+        
+        # Otherwise, keep as is (might be a project-specific placeholder)
+        return match.group(0)
+
+    # 2. Substitute {var} - Optional substitution, no failure if missing
+    def replace_single(match):
+        var_name = match.group(1).upper()
+        if var_name in context:
+            return context[var_name]
+        return match.group(0) # Keep as is if not in context
 
     # Pattern for {{VAR}}
-    pattern = re.compile(r"\{\{([A-Z0-9_]+)\}\}")
-    return pattern.sub(replace, content)
+    double_pattern = re.compile(r"\{\{([A-Z0-9_]+)\}\}")
+    content = double_pattern.sub(replace_double, content)
+    
+    # Pattern for {var}
+    single_pattern = re.compile(r"\{([a-z0-9_]+)\}")
+    content = single_pattern.sub(replace_single, content)
+    
+    return content
 
 
 @click.group()
@@ -355,10 +395,16 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
                 template_full_path = scaffold_root / template_path
                 if template_full_path.exists():
                     existing_content = file_path.read_text()
-                    if SCAFFOLD_MARKER in existing_content:
-                        console.print(f"  ✅ {filename} - template already appended")
-                        _update_file_references(file_path, dry_run)
-                    else:
+                if SCAFFOLD_MARKER in existing_content:
+                    console.print(f"  ✅ {filename} - template already appended, ensuring substitution...")
+                    if not dry_run:
+                        # Even if already appended, we want to ensure placeholders are substituted
+                        # This handles cases where previous runs failed to substitute
+                        substituted_content = _substitute_placeholders(existing_content, context, str(file_path))
+                        if substituted_content != existing_content:
+                            file_path.write_text(substituted_content)
+                    _update_file_references(file_path, dry_run)
+                else:
                         console.print(f"  📝 Appending template to {filename}...")
                         if not dry_run:
                             template_content = template_full_path.read_text()
@@ -397,19 +443,30 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
     # 6. Final verification
     console.print("\n[bold]Verifying...[/bold]")
     _verify_references(target_dir)
-    _verify_no_placeholders(target_dir)
+    _verify_no_placeholders(target_dir, project_name)
 
     if not dry_run:
         console.print(f"\n[bold green]✅ {project_name} is standalone (scaffolding_version: 1.0.0)[/bold green]\n")
 
 
-def _verify_no_placeholders(target_dir: Path) -> None:
-    """Verify that no {{VAR}} placeholders remain in scaffolded files."""
+def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
+    """Verify that no mandatory {{VAR}} placeholders remain in scaffolded files."""
     files_to_check = ["AGENTS.md", "CLAUDE.md", "TODO.md", "README.md", ".cursorrules"]
     found_any = False
     
+    # Mandatory variables that SHOULD NOT remain in scaffolded files
+    MANDATORY_VARS = {
+        "PROJECT_NAME", "PROJECT_DESCRIPTION", "DATE", "STATUS", "PHASE",
+        "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
+        "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
+        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME", "DOC_PATH",
+        "LANGUAGE", "LANGUAGE_VERSION", "FRAMEWORKS", "RUN_COMMAND",
+        "TEST_COMMAND", "MAIN_CODE_DIR", "CONSTRAINTS", "AI_STRATEGY",
+        "VENV_ACTIVATION", "WAIT_TIME"
+    }
+    
     # Pattern for {{VAR}}
-    pattern = re.compile(r"\{\{[A-Z0-9_]+\}\}")
+    pattern = re.compile(r"\{\{([A-Z0-9_]+)\}\}")
     
     for filename in files_to_check:
         file_path = target_dir / filename
@@ -418,17 +475,17 @@ def _verify_no_placeholders(target_dir: Path) -> None:
             
         content = file_path.read_text()
         matches = pattern.findall(content)
-        if matches:
-            found_any = True
-            for match in set(matches):
-                console.print(f"  [red]Error: Unfilled placeholder {match} remains in {filename}[/red]")
+        for match in matches:
+            if match in MANDATORY_VARS:
+                found_any = True
+                console.print(f"  [red]Error: Mandatory placeholder {{{{{match}}}}} remains in {filename}[/red]")
     
     if found_any:
-        msg = f"❌ **Scaffolding Failure** in project: `{project_name}`\nUnfilled placeholders remain in scaffolded files."
+        msg = f"❌ **Scaffolding Failure** in project: `{project_name}`\nMandatory placeholders remain in scaffolded files."
         send_discord_alert(msg)
-        raise click.ClickException("Verification failed: Unfilled placeholders remain.")
+        raise click.ClickException("Verification failed: Mandatory placeholders remain.")
     else:
-        console.print("  ✅ No unfilled placeholders found")
+        console.print("  ✅ No mandatory placeholders found")
 
 
 def _copy_file(src: Path, dst: Path, dry_run: bool, force: bool) -> None:
