@@ -25,8 +25,10 @@ from scaffold.alerts import send_discord_alert
 # Configuration
 PROJECTS_ROOT_ENV = os.getenv("PROJECTS_ROOT")
 if not PROJECTS_ROOT_ENV:
-    raise EnvironmentError("PROJECTS_ROOT environment variable is not set.")
-PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
+    # Fallback to standard layout: parent of scaffolding root
+    PROJECTS_ROOT = Path(__file__).parent.parent.parent.resolve()
+else:
+    PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
 SKIP_DIRS = {"writing", "ai-journal", "plugin-duplicate-detection", "plugin-find-names-chrome"}
