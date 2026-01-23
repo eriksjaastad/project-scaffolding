@@ -126,12 +126,17 @@ project/
 
 ### Step 4: Start Building
 
-Use the patterns as guidelines, not rules:
+> **MANDATORY:** Follow the **Unified Project Workflow** for all feature development.
 
-- **Layer-by-Layer:** Plan your layers before building
-- **Data Before Decisions:** Set evaluation timeline (30-60 days)
-- **Safety Systems:** Wait for the scar, then protect
-- **Testing:** Focus on fragile parts first
+Do not "vibe code" or build without a spec. Use the single source of truth in the projects root:
+
+👉 **[[Project-workflow]]** (`/Users/eriksjaastad/projects/Project-workflow.md`)
+
+This workflow ensures that:
+1. **Intent is captured** (PRD)
+2. **Specs are structured** (Kiro)
+3. **Infrastructure is verified** (Dependency Check)
+4. **Implementation is audited** (Judge Review)
 
 ---
 

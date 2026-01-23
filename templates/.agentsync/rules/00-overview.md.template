@@ -3,16 +3,16 @@ targets: ["*"]
 root: true
 ---
 
-# {project_name}
+# {{PROJECT_NAME}}
 
-> {project_description}
+> {{PROJECT_DESCRIPTION}}
 
 ## Tech Stack
 
-- **Language:** {language}
-- **Frameworks:** {frameworks}
+- **Language:** {{LANGUAGE}}
+- **Frameworks:** {{FRAMEWORKS}}
 
 ## Commands
 
-- **Run:** `{run_command}`
-- **Test:** `{test_command}`
+- **Run:** `{{RUN_COMMAND}}`
+- **Test:** `{{TEST_COMMAND}}`
