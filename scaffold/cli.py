@@ -8,11 +8,13 @@ import re
 import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import click
 from dotenv import load_dotenv
 from rich.console import Console
+
+from scaffold.alerts import send_discord_alert
 
 # from scaffold.review import ReviewConfig, create_orchestrator
 
@@ -20,6 +22,55 @@ from rich.console import Console
 load_dotenv()
 
 console = Console(force_terminal=False)
+
+
+def _get_context(project_name: str) -> Dict[str, str]:
+    """Derive context variables for template substitution."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    # Try to find existing context from 00_Index or project.yaml if we're updating
+    # For now, we derive from project name and defaults
+    return {
+        "PROJECT_NAME": project_name,
+        "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
+        "DATE": today,
+        "STATUS": "Active",
+        "PHASE": "Foundation",
+        "PHASE_NUMBER": "1",
+        "PHASE_NAME": "Initial Setup",
+        "PREVIOUS_PHASE": "None",
+        "DATE_RANGE": today,
+        "PREVIOUS_DATE": today,
+        "TASK_GROUP_NAME": "Core Implementation",
+        "AI_NAME": "Claude",
+        "MODEL": "Claude 3.5 Sonnet",
+        "CRON_EXPRESSION": "0 0 * * *",
+        "COMMAND": "python scripts/validate_project.py",
+        "SERVICE_NAME": "GitHub",
+        "DOC_PATH": "Documents/README.md",
+        "LANGUAGE": "Python",
+        "LANGUAGE_VERSION": "3.11+",
+        "FRAMEWORKS": "None",
+        "RUN_COMMAND": "python main.py",
+        "TEST_COMMAND": "pytest",
+        "MAIN_CODE_DIR": "src",
+        "CONSTRAINTS": "None",
+    }
+
+
+def _substitute_placeholders(content: str, context: Dict[str, str], filename: str) -> str:
+    """Substitute {{VAR}} placeholders in content."""
+    def replace(match):
+        var_name = match.group(1)
+        if var_name in context:
+            return context[var_name]
+        
+        # Fail loud if placeholder has no value
+        raise click.ClickException(f"Error: No context value for placeholder '{{{{{var_name}}}}}' in {filename}")
+
+    # Pattern for {{VAR}}
+    pattern = re.compile(r"\{\{([A-Z0-9_]+)\}\}")
+    return pattern.sub(replace, content)
 
 
 @click.group()
@@ -294,6 +345,8 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
         ".gitignore": "templates/.gitignore.template",
     }
 
+    context = _get_context(project_name)
+
     for filename, template_path in files_with_templates.items():
         file_path = target_dir / filename
         if file_path.exists():
@@ -309,7 +362,9 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
                         console.print(f"  📝 Appending template to {filename}...")
                         if not dry_run:
                             template_content = template_full_path.read_text()
-                            appended_content = f"{existing_content}\n\n{SCAFFOLD_MARKER}\n\n{template_content}"
+                            # Perform substitution on template content before appending
+                            substituted_template = _substitute_placeholders(template_content, context, str(template_path))
+                            appended_content = f"{existing_content}\n\n{SCAFFOLD_MARKER}\n\n{substituted_template}"
                             file_path.write_text(appended_content)
                         _update_file_references(file_path, dry_run)
             else:
@@ -322,8 +377,10 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
                 console.print(f"  📝 Creating {filename} from template...")
                 if not dry_run:
                     template_content = template_full_path.read_text()
+                    # Perform substitution
+                    substituted_content = _substitute_placeholders(template_content, context, str(template_path))
                     # Add marker so future runs know this was scaffolded
-                    content_with_marker = f"{SCAFFOLD_MARKER}\n\n{template_content}"
+                    content_with_marker = f"{SCAFFOLD_MARKER}\n\n{substituted_content}"
                     file_path.write_text(content_with_marker)
                     # Also update references in the newly created file
                     _update_file_references(file_path, dry_run=False)
@@ -340,9 +397,38 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
     # 6. Final verification
     console.print("\n[bold]Verifying...[/bold]")
     _verify_references(target_dir)
+    _verify_no_placeholders(target_dir)
 
     if not dry_run:
         console.print(f"\n[bold green]✅ {project_name} is standalone (scaffolding_version: 1.0.0)[/bold green]\n")
+
+
+def _verify_no_placeholders(target_dir: Path) -> None:
+    """Verify that no {{VAR}} placeholders remain in scaffolded files."""
+    files_to_check = ["AGENTS.md", "CLAUDE.md", "TODO.md", "README.md", ".cursorrules"]
+    found_any = False
+    
+    # Pattern for {{VAR}}
+    pattern = re.compile(r"\{\{[A-Z0-9_]+\}\}")
+    
+    for filename in files_to_check:
+        file_path = target_dir / filename
+        if not file_path.exists():
+            continue
+            
+        content = file_path.read_text()
+        matches = pattern.findall(content)
+        if matches:
+            found_any = True
+            for match in set(matches):
+                console.print(f"  [red]Error: Unfilled placeholder {match} remains in {filename}[/red]")
+    
+    if found_any:
+        msg = f"❌ **Scaffolding Failure** in project: `{project_name}`\nUnfilled placeholders remain in scaffolded files."
+        send_discord_alert(msg)
+        raise click.ClickException("Verification failed: Unfilled placeholders remain.")
+    else:
+        console.print("  ✅ No unfilled placeholders found")
 
 
 def _copy_file(src: Path, dst: Path, dry_run: bool, force: bool) -> None:

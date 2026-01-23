@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import List, Tuple
 import re
 from scaffold.utils import safe_slug
+from scaffold.alerts import send_discord_alert
 
 # Configuration
 PROJECTS_ROOT_ENV = os.getenv("PROJECTS_ROOT")
@@ -202,12 +203,68 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     dna_errors = validate_dna_integrity(project_path)
     errors.extend(dna_errors)
     
+    # 5. Dangerous Command Scan (Automated Gate 1)
+    # Check for banned functions like rm, shutil.rmtree, os.remove
+    dangerous_patterns = [
+        (r"\brm\s+", "rm command found - use 'trash <file>' instead"),
+        (r"shutil\.rmtree\s*\(", "shutil.rmtree() found - use send2trash"),
+        (r"os\.remove\s*\(", "os.remove() found - use send2trash"),
+        (r"os\.unlink\s*\(", "os.unlink() found - use send2trash"),
+    ]
+    
+    # 6. Placeholder Scan (Automated Gate 2)
+    # Check for unfilled template placeholders: {{VAR}}
+    placeholder_patterns = [
+        (re.compile(r"\{\{[A-Z0-9_]+\}\}"), "Unfilled double-brace placeholder"),
+    ]
+    
+    for root, dirs, files in os.walk(project_path):
+        # Filter directories in-place
+        dirs[:] = [d for d in dirs if d not in {"venv", ".venv", "__pycache__", "node_modules", ".git", "_trash", "archives"}]
+        
+        for file in files:
+            # Check placeholders in Markdown, Python, and Shell scripts
+            if not file.endswith((".md", ".py", ".sh", ".js", ".ts")):
+                continue
+                
+            file_path = Path(root) / file
+            try:
+                content = file_path.read_text(encoding='utf-8', errors='ignore')
+                
+                # Check for dangerous patterns
+                for pattern, reason in dangerous_patterns:
+                    if re.search(pattern, content):
+                        errors.append(f"Safety Defect: {reason} in {file_path.relative_to(project_path)}")
+                
+                # Check for unfilled placeholders
+                lines = content.splitlines()
+                for i, line in enumerate(lines):
+                    for pattern, reason in placeholder_patterns:
+                        match = pattern.search(line)
+                        if match:
+                            # Special case: ignore some common single-brace patterns that aren't placeholders
+                            # e.g. f-strings in python or shell variables if they look like placeholders
+                            if file.endswith(".py") and "f\"" in line or "f'" in line:
+                                continue
+                            
+                            errors.append(f"Placeholder Defect: {reason} found in {file_path.relative_to(project_path)}:{i+1} - {match.group(0)}")
+            except Exception:
+                pass
+
     if errors:
         if verbose:
             status_icon = "⚠️ " if has_index else "❌ "
             print(f"{status_icon} {project_name}")
             for error in errors:
                 print(f"   - {error}")
+        
+        # Send Discord alert for validation failure
+        msg = f"❌ **Project Validation Failed** for: `{project_name}`\n"
+        msg += "\n".join(f"- {e}" for e in errors[:10])
+        if len(errors) > 10:
+            msg += f"\n... and {len(errors) - 10} more errors."
+        send_discord_alert(msg)
+        
         return False
     
     # All good!

@@ -19,26 +19,26 @@
 ## Project Summary
 
 **What this project does:**
-[Brief 2-3 sentence description of the project's purpose]
+{{PROJECT_DESCRIPTION}}
 
 **Current status:**
-[Layer/phase complete, what's working, what's next]
+{{STATUS}} - {{PHASE}}
 
 **Key constraints:**
-[Any important limitations - budget, performance, privacy, etc.]
+{{CONSTRAINTS}}
 
 ---
 
 ## Project Structure
 
 ```
-[PROJECT_NAME]/
+{{PROJECT_NAME}}/
 ├── README.md                  # Project overview
 ├── CLAUDE.md                  # This file
 ├── TODO.md                    # Current work (if exists)
 ├── ROADMAP.md                 # Long-term vision (if exists)
 │
-├── [main_code_directory]/     # Primary codebase
+├── {{MAIN_CODE_DIR}}/     # Primary codebase
 │   ├── core/                  # Core functionality
 │   ├── utils/                 # Utility functions
 │   └── tools/                 # CLI tools/scripts
@@ -60,7 +60,7 @@
 
 ### Language & Version
 
-**[Language]:** [Version] (e.g., Python 3.11+)
+**{{LANGUAGE}}:** {{LANGUAGE_VERSION}}
 
 ### Code Style
 
@@ -132,7 +132,7 @@ value: Optional[str] = None
 [List what's freely editable]
 
 **Example:**
-1. **Code files** - All code in `[main_directory]/`
+1. **Code files** - All code in `{{MAIN_CODE_DIR}}/`
 2. **Documentation** - All `Documents/**/*.md`
 3. **Tests** - All test files
 4. **Scripts** - Development/utility scripts
@@ -167,7 +167,9 @@ def save_data_safely(target_path: Path, data: str) -> None:
         # Atomic rename (POSIX guarantee)
         shutil.move(temp_path, target_path)
     except Exception:
-        Path(temp_path).unlink(missing_ok=True)
+        # Use send2trash for cleanup
+        from send2trash import send2trash
+        send2trash(str(temp_path))
         raise
 ```
 
@@ -183,13 +185,13 @@ def save_data_safely(target_path: Path, data: str) -> None:
 
 ```bash
 # Check syntax
-python -m py_compile [main_directory]/**/*.py
+python -m py_compile {{MAIN_CODE_DIR}}/**/*.py
 
 # Type checking (if using mypy)
-mypy [main_directory] --ignore-missing-imports
+mypy {{MAIN_CODE_DIR}} --ignore-missing-imports
 
 # Linting (if using ruff)
-ruff check [main_directory]/
+ruff check {{MAIN_CODE_DIR}}/
 
 # Tests (if you have them)
 pytest tests/

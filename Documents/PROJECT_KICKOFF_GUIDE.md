@@ -78,70 +78,36 @@ python $PROJECTS_ROOT/agent-skills-library/scripts/detect_skill_candidates.py
 
 ---
 
-## Phase 1: Planning (Tier 1 - Big Idea → Concrete Plan)
+## The Development Workflow
 
-### What Happens Here
-**This is hours of chatting with Tier 1 models** (Claude Sonnet, GPT-4).
+> **MANDATORY:** All projects in this ecosystem follow the **Unified Project Workflow**.
 
-**Outputs:**
-- `ROADMAP.md` - Long-term vision
-- `ARCHITECTURE.md` - System design
-- See [[ARCHITECTURE_OVERVIEW_PATTERN]] for layout ideas.
+Do not follow the old Phase 1-4 instructions previously found in this document. Instead, use the single source of truth located in the projects root:
 
----
+👉 **[[Project-workflow]]** (`/Users/eriksjaastad/projects/Project-workflow.md`)
 
-## Phase 2: Task Tiering (Still Tier 1)
-
-Once you have a solid plan, use the **Tiered Sprint Planner**.
-
-### Prompt for This Phase
-```
-We've finished Phase 1 planning. Now I want to tier the execution work.
-Please read:
-- Tiered Sprint Planner: [[TIERED_SPRINT_PLANNER]]
-- Our project docs: [ROADMAP.md, ARCHITECTURE.md, etc.]
-```
-
-**See:** [[TIERED_AI_SPRINT_PLANNING]] for the full pattern.
-
----
-
-## Phase 3: Execution (Mixed Tiers)
-
-Now you execute using appropriate tiers.
-
-- **Tier 3 Tasks:** [[GPT_4O_MINI_WEE_BEE]]
-- **Tier 2 Tasks:** [[GPT_4O_MID_WEIGHT]]
-- **Tier 1 Tasks:** [[CLAUDE_SONNET_BIG_BRAIN]]
-
----
-
-## Phase 4: Code Reviews (Quality Control)
-
-**Goal:** Ensure every significant change is reviewed by multiple AI models.
-
-**Standards:**
-- [ ] Active review in project root.
-- [ ] Naming: `CODE_REVIEW_{REVIEWER}_{VERSION}.md`.
-- [ ] Definition of Done (DoD) included.
-
-**See:** [[CODE_REVIEW_STANDARD]] and [[CODE_REVIEW_PROMPT]].
+This workflow covers:
+1. **Strategy** (PRD)
+2. **Planning** (Kiro)
+3. **Proposal** (Agent Hub)
+4. **Handoff**
+5. **Execution** (Floor Manager + Workers)
+6. **Retrospective** (Lessons Learned)
 
 ---
 
 ## Checklist: New Project Setup
 
 - [ ] Create project directory
-- [ ] Copy templates from scaffolding
+- [ ] Copy templates from scaffolding (`scaffold_cli.py apply`)
 - [ ] Customize `.cursorrules`
 - [ ] Customize `CLAUDE.md`
 - [ ] Create Project Index ([[PROJECT_INDEXING_SYSTEM]])
-- [ ] Document in `Documents/SPRINT_PLAN.md` ([[TIERED_SPRINT_PLANNER]])
+- [ ] **Follow Unified Workflow:** Start at Phase 1 in [[Project-workflow]]
 
 ---
 
 *Part of the [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding) meta-project.*
-*See also: [[PROJECT_STRUCTURE_STANDARDS]] and [[CODE_QUALITY_STANDARDS]].*
 
 ## Related Documentation
 

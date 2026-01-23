@@ -120,16 +120,16 @@ To use the project scaffolding system, follow these steps:
 
 ## Recent Activity
 
-*   **2026-01-12**: Major Architectural Refactor: Decoupled meta-repo dependency from ecosystem projects.
-    *   Implemented `scaffold_cli.py apply` for automated project standalone conversion.
-    *   Redefined AI roles in `AGENTS.md`: Floor Manager as Primary File Operator, Workers for Logic/Code only.
-    *   Successfully migrated 3 canary projects (`project-tracker`, `tax-organizer`, `analyze-youtube-videos`) to standalone mode.
-    *   Archived obsolete prompts and reports to improve documentation hygiene.
-*   **2026-01-11**: Self-Learning Projects: Reframed skills library as flexible pattern (per-project, shared, or both). Added `learning-loop-pattern.md`. Created `staged-prompt-engineering` skill. Live-tested learning loop capture from project-tracker.
-*   **2026-01-09**: Skills library integration and QUICKSTART.md workflow improvements.
-*   **2026-01-07 14:30**: Industrial Hardening & Portability: Refactored all subprocess calls for safety, enforced atomic writes, and achieved 100% template portability by scrubbing absolute paths.
-*   **2026-01-07 11:30**: Ecosystem Governance v1.2: Refined `pre_review_scan.sh` and DNA tests
-
+- 2026-01-22: chore: Finalize project scaffolding and ecosystem synchronization
+- 2026-01-16: feat: Integrate agent-skills-library discovery into project kickoff
+- 2026-01-14: Update scaffolding ecosystem: standardize templates and enhance governance documentation
+- 2026-01-14: Add Doppler secrets management and fix DNA defects
+- 2026-01-12: Apply project scaffolding: standalone scripts and version metadata
+- 2026-01-12: Merge pull request #9 from eriksjaastad/claude/code-review-recommendations-HVRym
+- 2026-01-12: docs: add systematic code review based on documented recommendations
+- 2026-01-12: Update AGENTS.md role mandates and archive knowledge transfer prompts
+- 2026-01-11: Archive code review integration prompts and add validation updates
+- 2026-01-11: docs: add Raw Output Limitation pattern to LOCAL_MODEL_LEARNINGS
 ## Contributing
 
 We welcome contributions to the project scaffolding system!  Please see the `CONTRIBUTING.md` file for guidelines on how to contribute. (File to be created)
