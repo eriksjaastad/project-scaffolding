@@ -395,16 +395,16 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
                 template_full_path = scaffold_root / template_path
                 if template_full_path.exists():
                     existing_content = file_path.read_text()
-                if SCAFFOLD_MARKER in existing_content:
-                    console.print(f"  ✅ {filename} - template already appended, ensuring substitution...")
-                    if not dry_run:
-                        # Even if already appended, we want to ensure placeholders are substituted
-                        # This handles cases where previous runs failed to substitute
-                        substituted_content = _substitute_placeholders(existing_content, context, str(file_path))
-                        if substituted_content != existing_content:
-                            file_path.write_text(substituted_content)
-                    _update_file_references(file_path, dry_run)
-                else:
+                    if SCAFFOLD_MARKER in existing_content:
+                        console.print(f"  ✅ {filename} - template already appended, ensuring substitution...")
+                        if not dry_run:
+                            # Even if already appended, we want to ensure placeholders are substituted
+                            # This handles cases where previous runs failed to substitute
+                            substituted_content = _substitute_placeholders(existing_content, context, str(file_path))
+                            if substituted_content != existing_content:
+                                file_path.write_text(substituted_content)
+                        _update_file_references(file_path, dry_run)
+                    else:
                         console.print(f"  📝 Appending template to {filename}...")
                         if not dry_run:
                             template_content = template_full_path.read_text()
