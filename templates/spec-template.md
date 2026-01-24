@@ -35,7 +35,7 @@
 - **Reject if:** Hardcoded machine-specific paths (e.g., `[USER_HOME]/...`).
 - **Reject if:** API keys or secrets in plain text or code comments.
 - **Reject if:** Function length > 40 lines without architectural justification.
-- **Enforce:** [[CODE_QUALITY_STANDARDS.md]] and [[AGENTS.md]] protocols.
+- **Enforce:** `CODE_QUALITY_STANDARDS.md` and `AGENTS.md` protocols.
 
 ## 6. TECHNICAL DEBT & "KNOWNS"
 *What are we ignoring for now?*
@@ -45,12 +45,10 @@
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[architecture_patterns]] - architecture
-- [[dashboard_architecture]] - dashboard/UI
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[hypocrisy_methodology]] - bias detection
-- [[hypocrisynow/README]] - Hypocrisy Now
+**Project-Specific References:**
+- Add links to project-specific architecture, patterns, and guides here
+
+**Universal Resources:**
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md)
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md)
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md)

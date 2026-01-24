@@ -389,9 +389,9 @@ created: {{DATE}}
 - `#domain/[meta|trading|image|etc]` — Subject domain
 - `#status/[active|archived]` — Current state
 
-### Wikilinks
-- Use `[[document-name]]` for cross-references
-- Link to `[[00_Index_{{PROJECT_NAME}}]]` for project documentation hubs
+### Documentation Links
+- Use standard markdown links: `[Document Name](path/to/document.md)`
+- Link to the project index file: `00_Index_*.md`
 
 ---
 
@@ -409,17 +409,20 @@ created: {{DATE}}
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[trustworthy_ai_report]] - AI safety
-- [[architecture_patterns]] - architecture
-- [[cost_management]] - cost management
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[orchestration_patterns]] - orchestration
-- [[security_patterns]] - security
-- [[session_documentation]] - session notes
-- [[testing_strategy]] - testing/QA
-- [[agent-skills-library/README]] - Agent Skills
+### Project Documentation
+These documents are copied to each project during scaffolding:
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - Anti-patterns to avoid in code reviews
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - Lessons learned from working with local AI models
+- [Reviews and Governance Protocol](Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Full audit checklist and evidence requirements
+
+### Pattern Library
+Located in `patterns/` directory of project-scaffolding:
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - Multi-agent workflow patterns
+- [Safety Systems](patterns/safety-systems.md) - Data protection and security patterns
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - Cost-effective AI usage
+- [Learning Loop Pattern](patterns/learning-loop-pattern.md) - Reinforcement learning cycles
+
+### Ecosystem Resources
+Cross-project resources (relative paths from project root):
+- [Agent Skills Library](../agent-skills-library/README.md) - Reusable AI instructions
+- [Project Scaffolding](../project-scaffolding/README.md) - This scaffolding system
