@@ -6,6 +6,7 @@ import os
 import re
 from pathlib import Path
 from typing import List, Dict
+from scaffold.constants import PROTECTED_PROJECTS
 
 def get_projects_root() -> Path:
     root = os.getenv("PROJECTS_ROOT")
@@ -23,6 +24,9 @@ def audit_projects() -> Dict[str, List[str]]:
 
     for project_dir in projects_root.iterdir():
         if not project_dir.is_dir() or project_dir.name.startswith((".", "_")):
+            continue
+        
+        if project_dir.name in PROTECTED_PROJECTS:
             continue
         
         project_issues = []
