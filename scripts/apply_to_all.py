@@ -5,6 +5,7 @@ Run 'scaffold apply' on all projects to fix missing files and placeholders.
 import os
 import subprocess
 from pathlib import Path
+from scaffold.constants import PROTECTED_PROJECTS
 
 def get_projects_root() -> Path:
     root = os.getenv("PROJECTS_ROOT")
@@ -17,15 +18,13 @@ def apply_scaffolding_to_all() -> None:
     scaffolding_root = Path(__file__).parent.parent
     cli_script = scaffolding_root / "scaffold_cli.py"
     
-    skip_dirs = {"ai-journal", "writing", "plugin-duplicate-detection", "plugin-find-names-chrome", "project-scaffolding"}
-    
     print(f"Applying scaffolding to all projects in {projects_root}...\n")
     
     for project_dir in projects_root.iterdir():
         if not project_dir.is_dir() or project_dir.name.startswith((".", "_")):
             continue
             
-        if project_dir.name in skip_dirs:
+        if project_dir.name in PROTECTED_PROJECTS:
             print(f"⏭️  Skipping protected/scaffolding project: {project_dir.name}")
             continue
             

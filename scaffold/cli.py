@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from rich.console import Console
 
 from scaffold.alerts import send_discord_alert
+from scaffold.constants import PROTECTED_PROJECTS
 
 # from scaffold.review import ReviewConfig, create_orchestrator
 
@@ -294,7 +295,6 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
         scaffold apply project-tracker
     """
     # 0. Protection Check
-    PROTECTED_PROJECTS = {"ai-journal", "writing", "plugin-duplicate-detection", "plugin-find-names-chrome"}
     if project_name in PROTECTED_PROJECTS:
         console.print(f"[bold red]ERROR: {project_name} is a PROTECTED PROJECT.[/bold red]")
         console.print("[red]These projects are on the 'Do Not Touch' list and cannot be scaffolded or modified by automatic services.[/red]")

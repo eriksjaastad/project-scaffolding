@@ -21,6 +21,7 @@ from typing import List, Tuple
 import re
 from scaffold.utils import safe_slug
 from scaffold.alerts import send_discord_alert
+from scaffold.constants import PROTECTED_PROJECTS
 
 # Configuration
 PROJECTS_ROOT_ENV = os.getenv("PROJECTS_ROOT")
@@ -31,7 +32,7 @@ else:
     PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
 REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
-SKIP_DIRS = {"writing", "ai-journal", "plugin-duplicate-detection", "plugin-find-names-chrome"}
+SKIP_DIRS = PROTECTED_PROJECTS
 
 # Mandatory files and directories
 MANDATORY_FILES = [

@@ -4,6 +4,7 @@ Clean template garbage from files that have both real content and appended templ
 """
 import os
 from pathlib import Path
+from scaffold.constants import PROTECTED_PROJECTS
 
 def get_projects_root() -> Path:
     root = os.getenv("PROJECTS_ROOT")
@@ -21,6 +22,9 @@ def clean_projects() -> None:
     
     for project_dir in projects_root.iterdir():
         if not project_dir.is_dir() or project_dir.name.startswith((".", "_")):
+            continue
+            
+        if project_dir.name in PROTECTED_PROJECTS:
             continue
             
         for root, dirs, files in os.walk(project_dir):
