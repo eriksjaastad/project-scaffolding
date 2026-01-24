@@ -702,25 +702,19 @@ Before starting execution:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[database_schema]] - database design
-- [[database_setup]] - database
-- [[discord_integration]] - Discord
-- [[error_handling_patterns]] - error handling
-- [[prompt_engineering_guide]] - prompt engineering
-- [[trading_backtesting_guide]] - backtesting
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[deployment_patterns]] - deployment
-- [[orchestration_patterns]] - orchestration
-- [[performance_optimization]] - performance
-- [[project_planning]] - planning/roadmap
-- [[security_patterns]] - security
-- [[testing_strategy]] - testing/QA
-- [[threejs_visualization]] - 3D visualization
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[trading-copilot/README]] - Trading Copilot
+**Universal Patterns & Guides:**
+- [Tiered AI Sprint Planning Pattern](../patterns/tiered-ai-sprint-planning.md) - Cost-effective AI usage
+- [AI Team Orchestration](../patterns/ai-team-orchestration.md) - Multi-agent workflows
+- [Safety Systems](../patterns/safety-systems.md) - Data protection patterns
+- [AI Model Cost Comparison](../Documents/reference/MODEL_COST_COMPARISON.md) - Model pricing and recommendations
+
+**Project Structure:**
+- [Project Structure Standards](../Documents/PROJECT_STRUCTURE_STANDARDS.md) - Directory conventions
+- [Code Quality Standards](../Documents/CODE_QUALITY_STANDARDS.md) - Coding standards
+
+**Cross-Project Resources:**
+- [Project Scaffolding](../project-scaffolding/README.md) - This scaffolding system
+- [Agent Skills Library](../agent-skills-library/README.md) - Reusable AI instructions
+
+**Project-Specific:**
+- Add links to your project's architecture, database schema, and integration docs here

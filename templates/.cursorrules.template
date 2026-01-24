@@ -120,7 +120,7 @@ python ./scripts/validate_project.py [project-name]
 - **Ecosystem Constitution:** `AGENTS.md`
 - **Review Protocol:** `./Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
 - **Code Review Pattern:** `./Documents/patterns/code-review-standard.md`
-- **Project Index:** `[[00_Index_[project-name]]]`
+- **Project Index:** `00_Index_*.md` (see project root)
 - [Add project-specific references]
 
 ---
