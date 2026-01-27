@@ -10,7 +10,6 @@ Run with: pytest tests/test_security.py -v
 import pytest
 from pathlib import Path
 import tempfile
-import shutil
 from unittest.mock import patch, MagicMock
 
 
@@ -41,10 +40,9 @@ class TestPathTraversal:
         """Test that safe_slug enforces base_path boundary"""
         from scaffold.review import safe_slug
 
-        base = Path(tempfile.gettempdir()) / "test_base"
-        base.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
 
-        try:
             # This should work - stays within base
             result = safe_slug("normal_name", base_path=base)
             target = (base / result).resolve()
@@ -54,9 +52,6 @@ class TestPathTraversal:
             result = safe_slug("../../etc/passwd", base_path=base)
             # After sanitization, it becomes "etc_passwd" which is safe
             assert result == "etc_passwd"
-
-        finally:
-            shutil.rmtree(base, ignore_errors=True)
 
     def test_safe_slug_handles_null_bytes(self):
         """Test that null bytes are handled"""
