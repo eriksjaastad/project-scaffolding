@@ -148,7 +148,6 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [agentsync/](agentsync/README.md) | 4 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
 | [patterns/](patterns/) | 15 | No description available. |
-| [prompts/](prompts/) | 0 | No description available. |
 | [scaffold/](scaffold/) | 6 | No description available. |
 
 ### Files
@@ -223,9 +222,6 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [patterns/scaffolding-as-dependency.md](patterns/scaffolding-as-dependency.md) | Scaffolding as Dependency (DRAFT) |
 | [patterns/ssot-via-yaml.md](patterns/ssot-via-yaml.md) | Pattern: Single Source of Truth (SSOT) via YAML |
 | [patterns/tiered-ai-sprint-planning.md](patterns/tiered-ai-sprint-planning.md) | Tiered AI Sprint Planning |
-| [prompts/active/document_review/architecture.md](prompts/active/document_review/architecture.md) | You are an **architecture-focused purist reviewer** with expertise in system design, software archit... |
-| [prompts/active/document_review/performance.md](prompts/active/document_review/performance.md) | You are a **performance-focused critical reviewer** with expertise in scalability, database optimiza... |
-| [prompts/active/document_review/security.md](prompts/active/document_review/security.md) | You are a **security-focused skeptical reviewer** with expertise in application security, authentica... |
 | [pyproject.toml](pyproject.toml) | No description available. |
 | [pytest.ini](pytest.ini) | No description available. |
 | [requirements.txt](requirements.txt) | No description available. |

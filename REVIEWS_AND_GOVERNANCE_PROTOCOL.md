@@ -194,7 +194,6 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 | **H8** | **Hardening**| No unbounded recursive globs (`**/*.py`) | Grep for `.glob("**` patterns, verify bounded or cached |
 | **H9** | **Hardening**| Exception handling around filesystem iterators | Verify `iterdir()`, `glob()` wrapped in try/except |
 | **R1** | **Reviews** | **Active Review Location** | Must be in project root: `CODE_REVIEW_{MODEL}_{VERSION}.md` |
-| **R2** | **Reviews** | **Review Archival** | Previous versions MUST be moved to `Documents/archives/reviews/` |
 | **S1** | **Scaling** | Context ceiling strategy (Map-Reduce/RAG) | Document the architectural ceiling |
 | **S2** | **Scaling** | Memory/OOM guards for unbounded processing | Verify size-aware batching logic |
 

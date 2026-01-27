@@ -410,6 +410,4 @@ Don't force it. Let patterns emerge naturally.
 ## Development Resources
 - [[project-tracker/data/WARDEN_LOG.yaml|WARDEN_LOG.yaml]]
 - [scripts/warden_audit.py|warden_audit.py](scripts/warden_audit.py|warden_audit.py)
-- [prompts/active/document_review/performance.md|performance.md](prompts/active/document_review/performance.md|performance.md)
-- [prompts/active/document_review/security.md|security.md](prompts/active/document_review/security.md|security.md)
 - [scaffold/__init__.py|__init__.py](scaffold/__init__.py|__init__.py)
