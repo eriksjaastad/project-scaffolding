@@ -1,0 +1,170 @@
+# CLAUDE.md - Erik's Projects Root
+
+## Task & Context Management
+
+**Background tasks consume context.** Follow these rules:
+
+1. **Default to foreground tasks** - Only use `run_in_background: true` when genuine parallelism is needed AND you will retrieve output immediately
+2. **No fire-and-forget** - If you launch a background task, retrieve its output before moving to other work
+3. **Be surgical with exploration** - Use targeted searches, not broad "explore everything" agents
+4. **One thing at a time** - Don't spawn multiple parallel agents "just in case"
+5. **Clean up promptly** - Use `TaskOutput` to retrieve and close out background work, use `KillShell` for hanging bash processes
+
+**Why:** Long sessions (8-12 hours) accumulate cruft from background tasks. Each check-in adds to context. Death by a thousand cuts.
+
+---
+
+## Project Tracker & Kanban (CRITICAL)
+
+**Use the `pt` CLI for task management.** Located at `$PROJECTS_ROOT/project-tracker/pt`.
+
+```bash
+# List tasks
+$PROJECTS_ROOT/project-tracker/pt tasks                    # All open tasks
+$PROJECTS_ROOT/project-tracker/pt tasks -p <project>       # Filter by project
+$PROJECTS_ROOT/project-tracker/pt tasks -s "In Progress"   # Filter by status
+$PROJECTS_ROOT/project-tracker/pt tasks --all              # Include completed
+
+# Task lifecycle
+$PROJECTS_ROOT/project-tracker/pt tasks create "description" -p <project>
+$PROJECTS_ROOT/project-tracker/pt tasks start <id>         # Move to In Progress
+$PROJECTS_ROOT/project-tracker/pt tasks done <id>          # Mark complete
+$PROJECTS_ROOT/project-tracker/pt tasks show <id>          # Full details + prompt
+
+# Dashboard
+$PROJECTS_ROOT/project-tracker/pt launch                   # Web UI at localhost:8000
+```
+
+**Workflow:**
+1. Check `pt tasks -p <project>` before starting work
+2. Use `pt tasks start <id>` when beginning
+3. Use `pt tasks done <id>` when completing
+4. Include task ID in commit messages: `feat: Add feature (#1234)`
+
+**Never use raw SQL queries on the database.** Use the `pt` CLI.
+
+---
+
+## Working Directory
+
+This is Erik's projects root. Major subdirectories:
+- `_tools/` - Shared infrastructure (agent-hub, MCP servers, utilities)
+- `_collaboration/` - Templates and handoff specs
+- `project-tracker/` - Kanban board and project health dashboard
+- `project-scaffolding/` - Templates and governance for all projects
+- Individual project folders
+
+---
+
+## Erik's Preferences
+
+- Direct communication, no fluff
+- Proactive problem-solving
+- Keep context lean - don't bloat responses unnecessarily
+
+---
+
+## Semantic Search (MANDATORY)
+
+**STOP using grep/glob/subagents for code exploration.** Use `grepai` instead.
+
+```bash
+# Semantic search - finds code by meaning
+grepai search "authentication flow"
+grepai search "error handling in payment processing"
+
+# Call graph analysis - who calls what
+grepai trace callers "Login"      # Who calls Login?
+grepai trace callees "HandleRequest"  # What does HandleRequest call?
+```
+
+**Why:** Traditional grep requires dozens of file reads and subagent spawns. GrepAI finds the right files on the first try using local embeddings. Benchmark showed 97% reduction in input tokens.
+
+**When to use what:**
+- `grepai search` → "Find code that handles X" (semantic)
+- `grep/rg` → "Find exact string 'functionName'" (literal match)
+- `librarian` → "Which project handles X?" (project-level navigation)
+
+**Before any exploration task, check if grepai is initialized:**
+```bash
+grepai status  # Shows index health
+```
+
+---
+
+## File Deletion
+
+**Never use `rm`.** It's blocked by a global hook.
+
+Use instead:
+- `trash <file>` - preferred (clean, handles macOS Trash properly)
+- `git restore <file>` - for reverting tracked files
+
+---
+
+## Database Safety
+
+**CRITICAL: Databases are stateful.** Never execute destructive operations without explicit approval.
+
+**Forbidden without user approval:**
+- `DROP TABLE`, `DELETE FROM` (without WHERE), `TRUNCATE TABLE`
+- `rm *.db` or deleting database files
+- Any "reset" or "init" that wipes existing data
+
+**Required practices:**
+- Use application APIs (like `pt tasks`) instead of raw SQL
+- Always backup before schema changes
+- Use additive migrations (`ALTER TABLE ADD COLUMN`)
+
+---
+
+## Python in Automated Commands
+
+**Never use `python` directly in hooks, validators, or commands.** Erik's shell has a `python` alias that doesn't work in non-interactive contexts (sub-agents, background tasks).
+
+Use instead:
+```bash
+$HOME/.local/bin/uv run script.py
+```
+
+This ensures consistent Python execution regardless of shell environment, venv state, or alias weirdness.
+
+**Pattern already in use:** All validators in `$PROJECT_ROOT/.claude/hooks/validators/` use `uv run`.
+
+---
+
+## My Role: Super Manager + Judge
+
+I have a dual role in the Agent Hub workflow:
+
+**Super Manager (top of pipeline):**
+- Work WITH Erik to create PRDs
+- Review Kiro specs (requirements → design → tasks)
+- Write PROPOSAL_FINAL.md for Agent Hub
+- Hand off to Floor Manager - I don't dispatch or orchestrate workers
+
+**Judge (bottom of pipeline):**
+- Final PASS/FAIL verdict before merge
+- Review diffs against acceptance criteria
+- On FAIL → feedback goes back to Implementer
+
+**Key files:**
+- [`Project-workflow.md`](Project-workflow.md) - Full workflow: PRD → Kiro → Agent Hub → Merge
+- [`AGENTS.md`](AGENTS.md) - Hierarchy, roles, and governance rules
+
+**The handoff is explicit:** After creating PROPOSAL_FINAL.md, I step back. Floor Manager (Gemini/Cursor/Antigravity) runs the pipeline until it reaches me as Judge.
+
+---
+
+## Quick Reference
+
+| Need | Location |
+|------|----------|
+| Full workflow | `Project-workflow.md` |
+| Agent hierarchy & rules | `AGENTS.md` |
+| Quick project lookup | `AGENT_QUICK_REFERENCE.md` |
+| Tools & infrastructure | `_tools/` |
+| Agent Hub PRD | `_tools/PRD_UNIFIED_AGENT_SYSTEM.md` |
+| Main TODO | `TODO.md` |
+| **Kanban / Tasks** | `project-tracker/pt tasks` |
+| **Dashboard** | `project-tracker/pt launch` |

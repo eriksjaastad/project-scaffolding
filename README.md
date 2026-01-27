@@ -293,6 +293,38 @@ A **template repository** that gives every new project:
 
 ---
 
+## CRITICAL: Source Files for `scaffold apply`
+
+**DO NOT MOVE THESE FILES.** The `scaffold apply` command copies these files to target projects. Moving them breaks the CLI.
+
+### Root-Level Source Files (DO NOT MOVE)
+
+| File | Copied To | Purpose |
+|------|-----------|---------|
+| `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` | `Documents/` | Code review and governance protocol |
+| `scripts/warden_audit.py` | `scripts/` | Security audit script |
+| `scripts/validate_project.py` | `scripts/` | Project validation script |
+| `patterns/code-review-standard.md` | `Documents/patterns/` | Code review checklist |
+| `patterns/learning-loop-pattern.md` | `Documents/patterns/` | Learning loop documentation |
+
+### Template Directory (templates/)
+
+| Template | Creates | Purpose |
+|----------|---------|---------|
+| `templates/AGENTS.md.template` | `AGENTS.md` | Agent hierarchy and rules |
+| `templates/CLAUDE.md.template` | `CLAUDE.md` | Claude-specific instructions |
+| `templates/TODO.md.template` | `TODO.md` | Task tracking format |
+| `templates/README.md.template` | `README.md` | Project readme |
+| `templates/.agentsync/rules/*.md` | `.agentsync/rules/` | Modular agent rules |
+
+### If You Need to Reorganize
+
+1. **Update `scaffold/cli.py`** - Change the source paths in `scripts_to_copy` and `docs_to_copy`
+2. **Test with dry-run** - `python scaffold_cli.py apply some-project --dry-run`
+3. **Verify no "Source not found" errors**
+
+---
+
 ## Structure
 
 ```
@@ -300,31 +332,37 @@ project-scaffolding/
 ├── README.md                    ← You are here
 ├── .cursorrules                 ← Project rules for this meta-project
 │
-├── patterns/                    ← Documented patterns (proven & emerging)
-│   ├── safety-systems.md        ← Data protection patterns ✅
-│   ├── development-philosophy.md ← Development principles ✅
-│   ├── tiered-ai-sprint-planning.md ← Cost-effective AI usage ✅
-│   └── learning-loop-pattern.md ← Reinforcement learning cycles ✅
+├── REVIEWS_AND_GOVERNANCE_PROTOCOL.md  ← ⚠️ SOURCE FILE - scaffold apply copies this
 │
-├── templates/                   ← Reusable starting points
-│   ├── Documents/               ← Documentation structure template ✅
-│   │   ├── README.md            ← Index and usage guide
-│   │   ├── ARCHITECTURE.md      ← Architecture, operations
-│   │   ├── guides/              ← How-to documents
-│   │   ├── reference/           ← Standards, knowledge base
-│   │   ├── safety/              ← Safety systems
-│   │   └── archives/            ← Historical docs with retention
-│   ├── .cursorrules.template    ← Project rules template ✅
-│   ├── CLAUDE.md.template       ← AI instructions template ✅
-│   └── TIERED_SPRINT_PLANNER.md ← Sprint planning template ✅
+├── scripts/                     ← ⚠️ SOURCE FILES - scaffold apply copies these
+│   ├── warden_audit.py          ← Security audit (copied to projects)
+│   └── validate_project.py      ← Project validation (copied to projects)
 │
-├── examples/                    ← Real examples from source projects
-│   └── (Coming soon - extracted from battle-tested projects)
+├── patterns/                    ← ⚠️ SOURCE FILES - scaffold apply copies these
+│   ├── safety-systems.md        ← Data protection patterns
+│   ├── development-philosophy.md ← Development principles
+│   ├── code-review-standard.md  ← Copied to projects/Documents/patterns/
+│   ├── learning-loop-pattern.md ← Copied to projects/Documents/patterns/
+│   └── tiered-ai-sprint-planning.md ← Cost-effective AI usage
 │
-└── Documents/                        ← Meta-documentation
-    ├── PATTERN_ANALYSIS.md      ← Pattern extraction analysis ✅
-    ├── USAGE_GUIDE.md           ← How to use this scaffolding ✅
-    └── PROJECT_KICKOFF_GUIDE.md ← Starting new projects guide ✅
+├── templates/                   ← Template sources for scaffold apply
+│   ├── root/                    ← Templates for projects root (sync-root command)
+│   ├── .agentsync/rules/        ← Agent rules templates
+│   ├── Documents/               ← Documentation structure template
+│   ├── AGENTS.md.template       ← Agent hierarchy template
+│   ├── CLAUDE.md.template       ← AI instructions template
+│   ├── TODO.md.template         ← Task format template
+│   └── README.md.template       ← Project readme template
+│
+├── scaffold/                    ← CLI source code
+│   └── cli.py                   ← The scaffold command implementation
+│
+├── agentsync/                   ← Rules sync to IDE configs
+│   └── sync_rules.py            ← Syncs .agentsync/rules to CLAUDE.md, etc.
+│
+└── Documents/                   ← Meta-documentation (NOT copied to projects)
+    ├── This folder is for project-scaffolding's OWN docs
+    └── Don't confuse with templates/Documents/ which IS copied
 ```
 
 ---
