@@ -1,0 +1,102 @@
+# Scan Configuration - Single source of truth for ecosystem scanning
+# Used by: graph_builder.py, librarian.py, scaffold/constants.py,
+#          audit_all_projects.py, validate_project.py, update_cursorrules.py
+
+# Directories to skip during scanning
+skip_dirs:
+  # Package/build artifacts
+  - node_modules
+  - venv
+  - .venv
+  - __pycache__
+  - .git
+  - .pytest_cache
+  - .ruff_cache
+  - .mypy_cache
+  - dist
+  - build
+  - .next
+
+  # Trash and archives
+  - _trash
+  - trash
+  - archives
+  - _inbox
+  - archive
+
+  # Generated/temporary
+  - logs
+  - reports
+  - temp
+  - tmp
+  - cursor_history
+  - data
+
+  # Implementation details (not navigation targets)
+  - tests
+  - __tests__
+  - htmlcov
+  - scripts
+  - src
+  - internal
+  - cmd
+  - benchmarks
+  - templates
+
+  # Config directories
+  - config
+  - configs
+
+  # Handoff directories
+  - _handoff
+
+  # Project-specific junk
+  - comedy-vault
+  - ai_journal_audit_toolkit
+
+  # Deprecated
+  - gsd
+
+# Files to skip (boilerplate that exists in every project)
+skip_files:
+  - package.json
+  - package-lock.json
+  - __init__.py
+  - warden_audit.py
+  - CLAUDE.md
+  - mcp_config.json
+  - registry-entry.json
+  - agent_hooks.json
+  - skill.json
+
+# File patterns to skip
+skip_patterns:
+  - "tsconfig*"    # TypeScript configs
+  - "*.d.ts"       # TypeScript declarations
+
+# Projects to completely IGNORE (don't scan, don't modify, don't touch)
+# These are not part of the development ecosystem
+ignore_projects:
+  - writing           # Personal writing - not code
+  - fci-plugins       # Chrome extensions - not code we navigate
+
+# Projects that can be scanned/read but should NEVER be modified
+# Scaffolding, automated cleanup, and other tools should not touch these
+protected_projects:
+  - project-scaffolding  # Scaffolding should not scaffold itself
+  - _tools               # Infrastructure tools - modify manually
+  - ai-journal           # Journal entries are precious
+  - __Knowledge          # Obsidian knowledge base
+
+# File extensions to scan
+scan_extensions:
+  .md: markdown
+  .py: python
+  .ts: typescript
+  .tsx: typescript
+  .js: javascript
+  .jsx: javascript
+  .go: go
+  .json: config
+  .yaml: config
+  .yml: config

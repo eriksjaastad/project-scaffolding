@@ -144,10 +144,8 @@ pip install -r requirements.txt
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[orchestration_patterns]] - orchestration
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

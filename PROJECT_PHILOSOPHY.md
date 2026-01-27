@@ -159,23 +159,11 @@ Don't force it. Let it grow organically.
 
 ## Related Documentation
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_setup]] - database
-- [[image_processing_guide]] - image processing
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
-- [[hypocrisy_methodology]] - bias detection
-- [[orchestration_patterns]] - orchestration
-- [[project_planning]] - planning/roadmap
-- [[sales_strategy]] - sales/business
-- [[testing_strategy]] - testing/QA
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[image-workflow/README]] - Image Workflow
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
+- [hypocrisynow/README](../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [image-workflow/README](../ai-model-scratch-build/README.md) - Image Workflow
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

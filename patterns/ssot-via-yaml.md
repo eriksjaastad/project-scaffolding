@@ -71,12 +71,8 @@ projects:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_schema]] - database design
-- [[database_setup]] - database
-- [[case_studies]] - examples
-- [[security_patterns]] - security
-- [[project-tracker/README]] - Project Tracker
-- [[trading-copilot/README]] - Trading Copilot
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Safety Systems](patterns/safety-systems.md) - security
+- [project-tracker/README](../../ai-model-scratch-build/README.md) - Project Tracker
+- [trading-copilot/README](../../ai-model-scratch-build/README.md) - Trading Copilot

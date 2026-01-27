@@ -266,15 +266,11 @@ When reviewing a pattern, ask:
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PATTERN_MANAGEMENT]] - patterns
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[discord_integration]] - Discord
-- [[queue_processing_guide]] - queue/workflow
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [PATTERN_MANAGEMENT](PATTERN_MANAGEMENT.md) - patterns
+- [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
+- [cortana-personal-ai/README](../../../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../../../ai-model-scratch-build/README.md) - Image Workflow
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

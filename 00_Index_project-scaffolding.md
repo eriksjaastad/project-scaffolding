@@ -114,7 +114,7 @@ To use the project scaffolding system, follow these steps:
 
 **Tags:** #map/project #p/project-scaffolding  
 **Status:** #status/production #status/hardened  
-**Audit Evidence:** [[REVIEW.md]] (Comprehensive Hardening Audit)  
+**Audit Evidence:** [REVIEW.md](REVIEW.md) (Comprehensive Hardening Audit)  
 **Last Major Update:** January 2026 (actively maintained)  
 **Priority:** #mission-critical (multiplier effect on all projects)
 
@@ -140,110 +140,95 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 
 <!-- LIBRARIAN-INDEX-START -->
 
-### File Index
+### Subdirectories
+
+| Directory | Files | Description |
+| :--- | :---: | :--- |
+| [Documents/](Documents/README.md) | 8 | *Auto-generated index. Last updated: 2026-01-24* |
+| [_cursorrules_backups/](_cursorrules_backups/) | 1 | No description available. |
+| [examples/](examples/) | 0 | No description available. |
+| [patterns/](patterns/) | 15 | No description available. |
+| [prompts/](prompts/) | 0 | No description available. |
+| [scaffold/](scaffold/) | 6 | No description available. |
+
+### Files
 
 | File | Description |
 | :--- | :--- |
-| [[AGENTS.md]] | > The single source of truth for hierarchy, workflow, and AI collaboration philosophy. |
-| [[CLAUDE.md]] | 🛑 READ AGENTS.md FIRST |
-| [[CODE_REVIEW_CLAUDE_v1.md]] | Code Review: Project Scaffolding |
-| [[Documents/CODE_QUALITY_STANDARDS.md]] | Code Quality Standards |
-| [[Documents/PROJECT_INDEXING_SYSTEM.md]] | Project Indexing System |
-| [[Documents/PROJECT_KICKOFF_GUIDE.md]] | Project Kickoff Guide |
-| [[Documents/PROJECT_STRUCTURE_STANDARDS.md]] | Project Structure Standards |
-| [[Documents/README.md]] | Project Documentation |
-| [[Documents/TODO_FORMAT_STANDARD.md]] | TODO.md Format Standard |
-| [[Documents/guides/AUDIT_ASSEMBLY_LINE.md]] | 🏭 The Audit Assembly Line (V2.1) |
-| [[Documents/guides/CODE_REVIEW_PROMPT.md]] | Code Review Prompt: Project Scaffolding System |
-| [[Documents/guides/DEEPSEEK_SETUP.md]] | DeepSeek Setup Guide |
-| [[Documents/guides/FREE_CREDITS_GUIDE.md]] | AWS Activate & Google Cloud Credits - Quick Guide |
-| [[Documents/guides/REPOMIX_USAGE.md]] | You’re right—pandering is the opposite of progress. In engineering, "You're exactly right" is often ... |
-| [[Documents/guides/USAGE_GUIDE.md]] | Project Scaffolding - Usage Guide |
-| [[Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md]] | Global Rules Injection - Design Document |
-| [[Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md]] | Knowledge Cycle Discussion |
-| [[Documents/planning/README.md]] | Planning Directory Overview |
-| [[Documents/planning/SCAFFOLDING_SIMPLIFICATION_PLAN.md]] | Scaffolding Simplification Plan |
-| [[Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md]] | Ollama MCP Enhancement: Retry & Escalation Tracking |
-| [[Documents/planning/pre_commit_hook/PRE_COMMIT_HOOK_PROMPTS_INDEX.md]] | Pre-Commit Hook: Worker Task Prompts |
-| [[Documents/planning/pre_commit_hook/PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md]] | Worker Task: Create Pre-Commit Hook |
-| [[Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md]] | Claude Code Hooks and Sub-Agents |
-| [[Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md]] | Code Review Anti-Patterns Database |
-| [[Documents/reference/DOCUMENTATION_HYGIENE.md]] | Documentation Hygiene |
-| [[Documents/reference/DOPPLER_MIGRATION_PLAN.md]] | Doppler Migration Strategy |
-| [[Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md]] | Doppler Secrets Management Guide |
-| [[Documents/reference/LOCAL_MODEL_LEARNINGS.md]] | Local Model Learnings |
-| [[Documents/reference/MODEL_COST_COMPARISON.md]] | AI Model Cost Comparison (December 2025) |
-| [[Documents/reference/PATTERN_ANALYSIS.md]] | Pattern Analysis - Extracted from Source Projects |
-| [[Documents/reference/PATTERN_MANAGEMENT.md]] | Pattern Management System |
-| [[Documents/reference/REVIEW_SYSTEM_DESIGN.md]] | Review System Design & Recommendations |
-| [[Documents/reports/trustworthy_ai_report.md]] | Making AI Trustworthy Enough for Production Infrastructure Work |
-| [[EXTERNAL_RESOURCES.md]] | External Resources & Services |
-| [[EXTERNAL_RESOURCES.yaml]] | No description available. |
-| [[PROJECT_PHILOSOPHY.md]] | Project Philosophy |
-| [[QUICKSTART.md]] | Project Scaffolding - Quick Start |
-| [[README.md]] | Project Scaffolding |
-| [[REVIEWS_AND_GOVERNANCE_PROTOCOL.md]] | 🛡️ Ecosystem Governance & Review Protocol (v1.2) |
-| [[TODO.md]] | > **Purpose:** Current actionable tasks for project-scaffolding |
-| [[_cursorrules_backups/manifest.json]] | No description available. |
-| [[local-ai-integration.md]] | What LM Studio gives you |
-| [[patterns/ai-team-orchestration.md]] | AI Team Orchestration Pattern |
-| [[patterns/api-key-management.md]] | API Key Management Pattern |
-| [[patterns/automation-reliability.md]] | Automation Reliability Patterns |
-| [[patterns/code-review-standard.md]] | Code Review Standardization |
-| [[patterns/cursor-configuration.md]] | Cursor Configuration Best Practices |
-| [[patterns/development-philosophy.md]] | Development Philosophy Patterns |
-| [[patterns/discord-webhooks-per-project.md]] | Discord Webhooks: One Channel Per Project |
-| [[patterns/foundation-documents-first.md]] | Foundation Documents First |
-| [[patterns/learning-loop-pattern.md]] | Learning Loop Pattern |
-| [[patterns/local-ai-integration.md]] | Local AI Integration Guide |
-| [[patterns/project-vs-tool-requirements.md]] | Project vs Tool Requirements |
-| [[patterns/safety-systems.md]] | Safety Systems Patterns |
-| [[patterns/scaffolding-as-dependency.md]] | Scaffolding as Dependency (DRAFT) |
-| [[patterns/ssot-via-yaml.md]] | Pattern: Single Source of Truth (SSOT) via YAML |
-| [[patterns/tiered-ai-sprint-planning.md]] | Tiered AI Sprint Planning |
-| [[prompts/active/document_review/architecture.md]] | You are an **architecture-focused purist reviewer** with expertise in system design, software archit... |
-| [[prompts/active/document_review/performance.md]] | You are a **performance-focused critical reviewer** with expertise in scalability, database optimiza... |
-| [[prompts/active/document_review/security.md]] | You are a **security-focused skeptical reviewer** with expertise in application security, authentica... |
-| [[pytest.ini]] | No description available. |
-| [[requirements.txt]] | No description available. |
-| [[scaffold/__init__.py]] | Project Scaffolding - Automated Multi-AI Review & Build System |
-| [[scaffold/cli.py]] | CLI for Project Scaffolding automation system |
-| [[scaffold/review.py]] | Multi-AI Review Orchestrator |
-| [[scaffold/utils.py]] | No description available. |
-| [[scaffold-20-projects-prompt.md]] | Scaffold 20 Projects Prompt |
-| [[scaffold_cli.py]] | No description available. |
-| [[scripts/00_Index_scripts.md]] | Scripts Index |
-| [[scripts/archive_reviews.py]] | No description available. |
-| [[scripts/compare_models.py]] | No description available. |
-| [[scripts/mark_scaffolded_files.py]] | No description available. |
-| [[scripts/migrate_docs_to_documents.py]] | No description available. |
-| [[scripts/pre_review_scan.sh]] | Mandatory pre-review scan for project-scaffolding |
-| [[scripts/reindex_projects.py]] | No description available. |
-| [[scripts/test_deepseek.py]] | No description available. |
-| [[scripts/update_cursorrules.py]] | No description available. |
-| [[scripts/validate_external_resources.py]] | No description available. |
-| [[scripts/validate_project.py]] | No description available. |
-| [[scripts/warden_audit.py]] | No description available. |
-| [[spec.md]] | **Document Type:** System Specification (Auditor-Generated) |
-| [[templates/00_Index.md.template]] | No description available. |
-| [[templates/AGENTS.md.template]] | No description available. |
-| [[templates/CLAUDE.md.template]] | No description available. |
-| [[templates/CODE_REVIEW.md.template]] | No description available. |
-| [[templates/Documents/README.md]] | Documentation Template Directory |
-| [[templates/README.md.template]] | No description available. |
-| [[templates/TIERED_SPRINT_PLANNER.md]] | Tiered Sprint Planner Template |
-| [[templates/TODO.md.template]] | No description available. |
-| [[templates/claude-code/README.md]] | Claude Code Templates |
-| [[templates/spec-template.md]] | PROJECT SPEC: [Project Name] |
-| [[templates/test-coverage/README.md]] | Test Coverage Templates |
-| [[templates/test-coverage/coveragerc.template]] | No description available. |
-| [[templates/test-coverage/run_coverage.py]] | No description available. |
-| [[tests/README.md]] | Tests for Project Scaffolding |
-| [[tests/test_review.py]] | Tests for review orchestrator (DeepSeek + Ollama integration) |
-| [[tests/test_scripts_follow_standards.py]] | Test that scripts follow CODE_QUALITY_STANDARDS.md |
-| [[tests/test_security.py]] | Security-focused adversarial tests - The Dark Territory |
-| [[tests/test_smoke.py]] | Quick smoke tests - run these first! |
-| [[tests/test_update_cursorrules.py]] | Tests for update_cursorrules.py - Global Rules Injection script. |
-| [[validation_report.txt]] | No description available. |
+| [AGENTS.md](AGENTS.md) | > The single source of truth for hierarchy, workflow, and AI collaboration philosophy. |
+| [CLAUDE.md](CLAUDE.md) | 🛑 READ AGENTS.md FIRST |
+| [CODE_REVIEW_CLAUDE_v1.md](CODE_REVIEW_CLAUDE_v1.md) | Code Review: Project Scaffolding |
+| [Documents/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md](Documents/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md) | Antigravity (Google's AI IDE) employs a sophisticated multi-tier orchestration model that balances s... |
+| [Documents/CODE_QUALITY_STANDARDS.md](Documents/CODE_QUALITY_STANDARDS.md) | Code Quality Standards |
+| [Documents/GOLD_STANDARD_DEFINITION.md](Documents/GOLD_STANDARD_DEFINITION.md) | What "Production Ready" means in this ecosystem. |
+| [Documents/PROJECT_INDEXING_SYSTEM.md](Documents/PROJECT_INDEXING_SYSTEM.md) | Project Indexing System |
+| [Documents/PROJECT_KICKOFF_GUIDE.md](Documents/PROJECT_KICKOFF_GUIDE.md) | Project Kickoff Guide |
+| [Documents/PROJECT_STRUCTURE_STANDARDS.md](Documents/PROJECT_STRUCTURE_STANDARDS.md) | Project Structure Standards |
+| [Documents/README.md](Documents/README.md) | Project Documentation |
+| [Documents/TODO_FORMAT_STANDARD.md](Documents/TODO_FORMAT_STANDARD.md) | TODO.md Format Standard |
+| [Documents/guides/AUDIT_ASSEMBLY_LINE.md](Documents/guides/AUDIT_ASSEMBLY_LINE.md) | 🏭 The Audit Assembly Line (V2.1) |
+| [Documents/guides/CODE_REVIEW_PROMPT.md](Documents/guides/CODE_REVIEW_PROMPT.md) | Code Review Prompt: Project Scaffolding System |
+| [Documents/guides/DEEPSEEK_SETUP.md](Documents/guides/DEEPSEEK_SETUP.md) | DeepSeek Setup Guide |
+| [Documents/guides/FREE_CREDITS_GUIDE.md](Documents/guides/FREE_CREDITS_GUIDE.md) | AWS Activate & Google Cloud Credits - Quick Guide |
+| [Documents/guides/REPOMIX_USAGE.md](Documents/guides/REPOMIX_USAGE.md) | You’re right—pandering is the opposite of progress. In engineering, "You're exactly right" is often ... |
+| [Documents/guides/USAGE_GUIDE.md](Documents/guides/USAGE_GUIDE.md) | Project Scaffolding - Usage Guide |
+| [Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md](Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md) | Global Rules Injection - Design Document |
+| [Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md](Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md) | Knowledge Cycle Discussion |
+| [Documents/planning/README.md](Documents/planning/README.md) | Planning Directory Overview |
+| [Documents/planning/SCAFFOLDING_SIMPLIFICATION_PLAN.md](Documents/planning/SCAFFOLDING_SIMPLIFICATION_PLAN.md) | Scaffolding Simplification Plan |
+| [Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md](Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md) | Ollama MCP Enhancement: Retry & Escalation Tracking |
+| [Documents/planning/pre_commit_hook/PRE_COMMIT_HOOK_PROMPTS_INDEX.md](Documents/planning/pre_commit_hook/PRE_COMMIT_HOOK_PROMPTS_INDEX.md) | Pre-Commit Hook: Worker Task Prompts |
+| [Documents/planning/pre_commit_hook/PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md](Documents/planning/pre_commit_hook/PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md) | Worker Task: Create Pre-Commit Hook |
+| [Documents/reference/AGENT_CONFIG_SYNC.md](Documents/reference/AGENT_CONFIG_SYNC.md) | > **Single Source of Truth:** `.agentsync/rules/*.md` files are the only files you edit. All IDE con... |
+| [Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md](Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md) | Claude Code Hooks and Sub-Agents |
+| [Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) | Code Review Anti-Patterns Database |
+| [Documents/reference/DOCUMENTATION_HYGIENE.md](Documents/reference/DOCUMENTATION_HYGIENE.md) | Documentation Hygiene |
+| [Documents/reference/DOPPLER_MIGRATION_PLAN.md](Documents/reference/DOPPLER_MIGRATION_PLAN.md) | Doppler Migration Strategy |
+| [Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) | Doppler Secrets Management Guide |
+| [Documents/reference/LOCAL_MODEL_LEARNINGS.md](Documents/reference/LOCAL_MODEL_LEARNINGS.md) | Local Model Learnings |
+| [Documents/reference/MODEL_COST_COMPARISON.md](Documents/reference/MODEL_COST_COMPARISON.md) | AI Model Cost Comparison (December 2025) |
+| [Documents/reference/PATTERN_ANALYSIS.md](Documents/reference/PATTERN_ANALYSIS.md) | Pattern Analysis - Extracted from Source Projects |
+| [Documents/reference/PATTERN_MANAGEMENT.md](Documents/reference/PATTERN_MANAGEMENT.md) | Pattern Management System |
+| [Documents/reference/REVIEW_SYSTEM_DESIGN.md](Documents/reference/REVIEW_SYSTEM_DESIGN.md) | Review System Design & Recommendations |
+| [EXTERNAL_RESOURCES.md](EXTERNAL_RESOURCES.md) | External Resources & Services |
+| [EXTERNAL_RESOURCES.yaml](EXTERNAL_RESOURCES.yaml) | No description available. |
+| [PROJECT_PHILOSOPHY.md](PROJECT_PHILOSOPHY.md) | Project Philosophy |
+| [QUICKSTART.md](QUICKSTART.md) | Project Scaffolding - Quick Start |
+| [README.md](README.md) | Project Scaffolding |
+| [REVIEWS_AND_GOVERNANCE_PROTOCOL.md](REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | 🛡️ Ecosystem Governance & Review Protocol (v1.2) |
+| [TODO.md](TODO.md) | > **Purpose:** Current actionable tasks for project-scaffolding |
+| [_cursorrules_backups/manifest.json](_cursorrules_backups/manifest.json) | No description available. |
+| [local-ai-integration.md](local-ai-integration.md) | What LM Studio gives you |
+| [passing_projects.txt](passing_projects.txt) | No description available. |
+| [patterns/ai-team-orchestration.md](patterns/ai-team-orchestration.md) | AI Team Orchestration Pattern |
+| [patterns/api-key-management.md](patterns/api-key-management.md) | API Key Management Pattern |
+| [patterns/automation-reliability.md](patterns/automation-reliability.md) | Automation Reliability Patterns |
+| [patterns/code-review-standard.md](patterns/code-review-standard.md) | Code Review Standardization |
+| [patterns/cursor-configuration.md](patterns/cursor-configuration.md) | Cursor Configuration Best Practices |
+| [patterns/development-philosophy.md](patterns/development-philosophy.md) | Development Philosophy Patterns |
+| [patterns/discord-webhooks-per-project.md](patterns/discord-webhooks-per-project.md) | Discord Webhooks: One Channel Per Project |
+| [patterns/foundation-documents-first.md](patterns/foundation-documents-first.md) | Foundation Documents First |
+| [patterns/learning-loop-pattern.md](patterns/learning-loop-pattern.md) | Learning Loop Pattern |
+| [patterns/local-ai-integration.md](patterns/local-ai-integration.md) | Local AI Integration Guide |
+| [patterns/project-vs-tool-requirements.md](patterns/project-vs-tool-requirements.md) | Project vs Tool Requirements |
+| [patterns/safety-systems.md](patterns/safety-systems.md) | Safety Systems Patterns |
+| [patterns/scaffolding-as-dependency.md](patterns/scaffolding-as-dependency.md) | Scaffolding as Dependency (DRAFT) |
+| [patterns/ssot-via-yaml.md](patterns/ssot-via-yaml.md) | Pattern: Single Source of Truth (SSOT) via YAML |
+| [patterns/tiered-ai-sprint-planning.md](patterns/tiered-ai-sprint-planning.md) | Tiered AI Sprint Planning |
+| [prompts/active/document_review/architecture.md](prompts/active/document_review/architecture.md) | You are an **architecture-focused purist reviewer** with expertise in system design, software archit... |
+| [prompts/active/document_review/performance.md](prompts/active/document_review/performance.md) | You are a **performance-focused critical reviewer** with expertise in scalability, database optimiza... |
+| [prompts/active/document_review/security.md](prompts/active/document_review/security.md) | You are a **security-focused skeptical reviewer** with expertise in application security, authentica... |
+| [pytest.ini](pytest.ini) | No description available. |
+| [requirements.txt](requirements.txt) | No description available. |
+| [scaffold/__init__.py](scaffold/__init__.py) | Project Scaffolding - Automated Multi-AI Review & Build System |
+| [scaffold/alerts.py](scaffold/alerts.py) | No description available. |
+| [scaffold/cli.py](scaffold/cli.py) | CLI for Project Scaffolding automation system |
+| [scaffold/constants.py](scaffold/constants.py) | Centralized constants for the project scaffolding system. |
+| [scaffold/review.py](scaffold/review.py) | Multi-AI Review Orchestrator |
+| [scaffold/utils.py](scaffold/utils.py) | No description available. |
+| [scaffold-20-projects-prompt.md](scaffold-20-projects-prompt.md) | Scaffold 20 Projects Prompt |
+| [scaffold_cli.py](scaffold_cli.py) | No description available. |
+| [spec.md](spec.md) | **Document Type:** System Specification (Auditor-Generated) |
+| [validation_report.txt](validation_report.txt) | No description available. |
 
 <!-- LIBRARIAN-INDEX-END -->

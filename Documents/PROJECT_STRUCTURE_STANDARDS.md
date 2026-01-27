@@ -36,7 +36,7 @@ project-name/
 - ✅ **Virtual environment in root:** `venv/` at top level (see [[VENV_LOCATION_STANDARD]])
 - ✅ **Scripts in scripts/:** All executable code in `scripts/`
 - ✅ **Data isolated:** `data/` for all data files
-- ✅ **Documentation clear:** `Documents/` for detailed docs (see [[DOCUMENTATION_HYGIENE]])
+- ✅ **Documentation clear:** `Documents/` for detailed docs (see [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md))
 
 ### Web Projects (React/Next.js)
 
@@ -80,7 +80,7 @@ project-name/
 
 ```
 Documents/
-├── README.md               # Docs index (Grand Central Station) - See [[DOCUMENTATION_HYGIENE]]
+├── README.md               # Docs index (Grand Central Station) - See [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md)
 ├── ARCHITECTURE.md         # Core Architecture (at root of Documents/)
 ├── OPERATIONS.md           # Core Operations (at root of Documents/)
 ├── DATA_MODEL.md           # Core Data Model (at root of Documents/)
@@ -106,7 +106,7 @@ Code reviews are critical for maintaining quality. **All** reviews **MUST** adhe
 
 - [ ] Active code review exists in project root (follows `CODE_REVIEW_{REVIEWER}_{VERSION}.md` naming)
 - [ ] Previous reviews archived in `Documents/archives/reviews/`
-- [ ] All reviews include a **Definition of Done (DoD)** - See [[CODE_REVIEW_PROMPT]]
+- [ ] All reviews include a **Definition of Done (DoD)** - See [CODE_REVIEW_PROMPT](../../ai-usage-billing-tracker/CODE_REVIEW_PROMPT.md)
 - [ ] Review IDs present in frontmatter for traceability - See [[WARDEN_LOG]]
 
 ---
@@ -119,23 +119,15 @@ Code reviews are critical for maintaining quality. **All** reviews **MUST** adhe
 - [ ] **`AGENTS.md`** - Universal source of truth for AI agents (DoD, Tech Stack).
 - [ ] **`CLAUDE.md`** - Project-specific AI instructions.
 - [ ] **`.cursorrules`** - Behavioral configuration for Cursor AI.
-- [ ] **`TODO.md`** - Task tracking following [[TODO_FORMAT_STANDARD]].
+- [ ] **`TODO.md`** - Task tracking following [TODO_FORMAT_STANDARD](TODO_FORMAT_STANDARD.md).
 - [ ] **`Documents/`** directory - Centralized documentation following this standard.
 
 ---
 
-*See also: [[PROJECT_KICKOFF_GUIDE]] for new projects and [[CODE_QUALITY_STANDARDS]] for quality rules.*
+*See also: [PROJECT_KICKOFF_GUIDE](PROJECT_KICKOFF_GUIDE.md) for new projects and [CODE_QUALITY_STANDARDS](CODE_QUALITY_STANDARDS.md) for quality rules.*
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[cloud_gpu_setup]] - cloud GPU
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_schema]] - database design
-- [[adult_business_compliance]] - adult industry
-- [[ai_model_comparison]] - AI models
-- [[database_setup]] - database
-- [[deployment_patterns]] - deployment
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models

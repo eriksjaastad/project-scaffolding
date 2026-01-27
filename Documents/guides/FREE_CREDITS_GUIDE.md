@@ -166,10 +166,7 @@ A: Yes! They're being very aggressive with AI startups:
 
 ## Related Documentation
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[ai_model_comparison]] - AI models
-- [[portfolio_content]] - portfolio/career
-- [[research_methodology]] - research
-- [[testing_strategy]] - testing/QA
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models

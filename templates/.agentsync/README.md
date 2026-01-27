@@ -45,5 +45,5 @@ root: true               # Mark as overview/root file
 ## Manual Sync
 
 ```bash
-uv run $TOOLS_ROOT/agentsync/sync_rules.py $(basename $(pwd))
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py $(basename $(pwd))
 ```

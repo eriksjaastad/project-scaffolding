@@ -580,24 +580,15 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool
 
 ## Related Documentation
 
-- [[CODE_QUALITY_STANDARDS]] - code standards
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_setup]] - database
-- [[discord_integration]] - Discord
-- [[error_handling_patterns]] - error handling
-- [[prompt_engineering_guide]] - prompt engineering
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[deployment_patterns]] - deployment
-- [[orchestration_patterns]] - orchestration
-- [[performance_optimization]] - performance
-- [[sales_strategy]] - sales/business
-- [[security_patterns]] - security
-- [[audit-agent/README]] - Audit Agent
-- [[project-scaffolding/README]] - Project Scaffolding
+- [CODE_QUALITY_STANDARDS](Documents/CODE_QUALITY_STANDARDS.md) - code standards
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [Safety Systems](patterns/safety-systems.md) - security
+- [audit-agent/README](../ai-model-scratch-build/README.md) - Audit Agent
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

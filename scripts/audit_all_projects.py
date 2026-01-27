@@ -1,26 +1,43 @@
 #!/usr/bin/env python3
 """
 Audit all projects for unfilled template placeholders.
+
+Reads configuration from scan_config.yaml (single source of truth).
 """
 import os
 import re
 from pathlib import Path
 from typing import List, Dict
+
+import yaml
+
 from scaffold.constants import PROTECTED_PROJECTS
 
+# Load config from shared YAML file
+PROJECTS_ROOT = Path(os.getenv("PROJECTS_ROOT", Path.home() / "projects"))
+CONFIG_PATH = PROJECTS_ROOT / "project-scaffolding" / "config" / "scan_config.yaml"
+
+
+def _load_config() -> dict:
+    """Load scan configuration from YAML file."""
+    if CONFIG_PATH.exists():
+        with open(CONFIG_PATH) as f:
+            return yaml.safe_load(f)
+    return {}
+
+
+_config = _load_config()
+SKIP_DIRS = set(_config.get("skip_dirs", []))
+
+
 def get_projects_root() -> Path:
-    root = os.getenv("PROJECTS_ROOT")
-    if not root:
-        # Fallback to standard layout if env var not set
-        return Path(__file__).parent.parent.parent
-    return Path(root)
+    return PROJECTS_ROOT
+
 
 def audit_projects() -> Dict[str, List[str]]:
     projects_root = get_projects_root()
     placeholder_pattern = re.compile(r"\{\{[A-Z0-9_]+\}\}|\{[a-z0-9_]+\}")
     damage_report = {}
-
-    skip_dirs = {".git", "venv", ".venv", "__pycache__", "node_modules", "_trash", "archives"}
 
     for project_dir in projects_root.iterdir():
         if not project_dir.is_dir() or project_dir.name.startswith((".", "_")):
@@ -31,7 +48,7 @@ def audit_projects() -> Dict[str, List[str]]:
         
         project_issues = []
         for root, dirs, files in os.walk(project_dir):
-            dirs[:] = [d for d in dirs if d not in skip_dirs and not d.startswith(".")]
+            dirs[:] = [d for d in dirs if d not in SKIP_DIRS and not d.startswith(".")]
             
             for file in files:
                 if not file.endswith((".md", ".py", ".sh", ".js", ".ts")):

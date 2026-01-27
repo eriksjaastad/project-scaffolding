@@ -30,9 +30,9 @@ def apply_scaffolding_to_all() -> None:
             
         print(f"🚀 Applying to {project_dir.name}...")
         try:
-            # We use the full path to the python executable and the script
+            # Use uv run for consistent Python environment
             subprocess.run(
-                ["python3", str(cli_script), "apply", project_dir.name, "--force"],
+                ["uv", "run", str(cli_script), "apply", project_dir.name],
                 check=True,
                 capture_output=True,
                 text=True

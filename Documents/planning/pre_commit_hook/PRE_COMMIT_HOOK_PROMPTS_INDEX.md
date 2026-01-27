@@ -27,28 +27,28 @@
 
 ## Floor Manager Instructions
 
-1. **This is a [[learning-loop-pattern]] test** - Pay extra attention to whether the new prompt sections help
+1. **This is a [learning-loop-pattern](../../../../writing/Documents/patterns/learning-loop-pattern.md) test** - Pay extra attention to whether the new prompt sections help
 2. **Use the new template structure** - Prompt includes Downstream Harm Estimate and Learnings Applied
-3. **After completion (success or failure):** Document in [[LOCAL_MODEL_LEARNINGS]]
+3. **After completion (success or failure):** Document in [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md)
 4. **If failure:** Ask "Was this preventable?" and update Learning Debt Tracker if applicable
 
 ---
 
 ## Context Files Workers May Need
 
-- `scripts/warden_audit.py` (the script the hook will call). See [[REVIEWS_AND_GOVERNANCE_PROTOCOL]].
-- Existing `.git/hooks/` directory structure. See [[PROJECT_STRUCTURE_STANDARDS]].
+- `scripts/warden_audit.py` (the script the hook will call). See [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md).
+- Existing `.git/hooks/` directory structure. See [PROJECT_STRUCTURE_STANDARDS](../../PROJECT_STRUCTURE_STANDARDS.md).
 
 ---
 
 ## Related Documentation
-- [[learning-loop-pattern]] - Pattern for autonomous learning.
-- [[LOCAL_MODEL_LEARNINGS]] - Institutional memory for local models.
-- [[PRE_COMMIT_PROMPT_1_HOOK_SCRIPT]] - The actual worker prompt.
+- [learning-loop-pattern](../../../../writing/Documents/patterns/learning-loop-pattern.md) - Pattern for autonomous learning.
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - Institutional memory for local models.
+- [PRE_COMMIT_PROMPT_1_HOOK_SCRIPT](PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md) - The actual worker prompt.
 
 ---
 
-- [[prompt_engineering_guide]] - prompt engineering
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
 ## Final Verification
 
 ```bash
@@ -73,9 +73,9 @@ rm test_bad.py
 
 **Ready to hand off to Workers**
 
-- [[learning-loop-pattern]] - Pattern for autonomous learning.
-- [[LOCAL_MODEL_LEARNINGS]] - Institutional memory for local models.
-- [[PRE_COMMIT_PROMPT_1_HOOK_SCRIPT]] - The actual worker prompt.
+- [learning-loop-pattern](../../../../writing/Documents/patterns/learning-loop-pattern.md) - Pattern for autonomous learning.
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - Institutional memory for local models.
+- [PRE_COMMIT_PROMPT_1_HOOK_SCRIPT](PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md) - The actual worker prompt.
 
 ---
 

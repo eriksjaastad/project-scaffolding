@@ -20,8 +20,8 @@ cp /path/to/project-scaffolding/templates/test-coverage/run_coverage.py scripts/
 # Install requirements
 pip install pytest pytest-cov coverage
 
-# Run coverage
-doppler run -- python scripts/tests/run_coverage.py
+# Run coverage (use doppler run -- prefix only for legacy Doppler projects)
+python scripts/tests/run_coverage.py
 ```
 
 ## Customization
@@ -60,7 +60,5 @@ Coverage reports are generated in `scripts/tests/htmlcov/`:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[testing_strategy]] - testing/QA
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

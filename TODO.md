@@ -644,37 +644,22 @@ Deployed projects must be 100% self-contained:
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PATTERN_MANAGEMENT]] - patterns
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[trustworthy_ai_report]] - AI safety
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[trading_backtesting_guide]] - backtesting
-- [[adult_business_compliance]] - adult industry
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[recipe_system]] - recipe generation
-- [[research_methodology]] - research
-- [[security_patterns]] - security
-- [[session_documentation]] - session notes
-- [[testing_strategy]] - testing/QA
-- [[video_analysis_tools]] - video analysis
-- [[agent-skills-library/README]] - Agent Skills
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
-- [[tax-organizer/README]] - Tax Organizer
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [PATTERN_MANAGEMENT](Documents/reference/PATTERN_MANAGEMENT.md) - patterns
+- [PROJECT_KICKOFF_GUIDE](Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Trustworthy AI Report](Documents/reports/trustworthy_ai_report.md) - AI safety
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- [analyze-youtube-videos/README](../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../ai-model-scratch-build/README.md) - Image Workflow
+- [muffinpanrecipes/README](../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../ai-model-scratch-build/README.md) - Project Tracker
+- [tax-organizer/README](../ai-model-scratch-build/README.md) - Tax Organizer

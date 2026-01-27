@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+#
+# Pre-push hook: Run Warden safety audit before allowing push
+# This is a SECOND line of defense after pre-commit
+#
+# Why both pre-commit AND pre-push?
+# - pre-commit can be bypassed with --no-verify
+# - pre-push catches anything that slipped through
+# - Defense in depth: multiple layers of safety
+#
+# To skip in TRUE emergencies: git push --no-verify
+# WARNING: Skipping this means pushing potentially unsafe code!
+#
+
+set -euo pipefail
+
+echo ""
+echo "PRE-PUSH SAFETY CHECK"
+echo "---------------------"
+
+# Check if warden_audit.py exists (project has safety tooling)
+WARDEN_SCRIPT=""
+if [ -f "scripts/warden_audit.py" ]; then
+    WARDEN_SCRIPT="scripts/warden_audit.py"
+elif [ -f "warden_audit.py" ]; then
+    WARDEN_SCRIPT="warden_audit.py"
+fi
+
+if [ -n "$WARDEN_SCRIPT" ]; then
+    echo "Running Warden safety audit..."
+
+    # Try uv first, fall back to python3
+    if command -v uv &> /dev/null; then
+        uv run python "$WARDEN_SCRIPT" --root . --fast
+    else
+        python3 "$WARDEN_SCRIPT" --root . --fast
+    fi
+
+    WARDEN_EXIT=$?
+
+    if [ $WARDEN_EXIT -ne 0 ]; then
+        echo ""
+        echo "PUSH BLOCKED: Warden found safety violations"
+        echo ""
+        echo "The pre-commit hook should have caught this."
+        echo "If you bypassed pre-commit with --no-verify, FIX THE ISSUES."
+        echo ""
+        echo "To force push anyway (DANGEROUS): git push --no-verify"
+        echo "WARNING: This pushes potentially unsafe code to the remote!"
+        echo ""
+        exit 1
+    fi
+
+    echo "Warden audit passed."
+else
+    echo "No warden_audit.py found - skipping safety audit"
+    echo "(Consider adding safety tooling to this project)"
+fi
+
+# Check for common dangerous patterns in staged changes
+echo "Checking for dangerous patterns..."
+
+# Get the commits being pushed
+while read local_ref local_sha remote_ref remote_sha; do
+    if [ "$local_sha" = "$(printf '0%.0s' {1..40})" ]; then
+        # Deleting branch, skip
+        continue
+    fi
+
+    if [ "$remote_sha" = "$(printf '0%.0s' {1..40})" ]; then
+        # New branch, check all commits
+        range="$local_sha"
+    else
+        range="$remote_sha..$local_sha"
+    fi
+
+    # Check for rm -rf in committed files
+    if git diff "$range" 2>/dev/null | grep -E '^\+.*\brm\s+-rf\b' > /dev/null; then
+        echo ""
+        echo "WARNING: Found 'rm -rf' in changes being pushed"
+        echo "Please verify this is intentional and safe."
+    fi
+
+    # Check for shutil.rmtree (dangerous recursive delete)
+    if git diff "$range" 2>/dev/null | grep -E '^\+.*\brmtree\b' > /dev/null; then
+        echo ""
+        echo "PUSH BLOCKED: Found 'rmtree' (shutil.rmtree) in changes"
+        echo "Use send2trash instead for safe deletion."
+        echo "See: AGENTS.md 'Trash, Don't Delete' rule"
+        echo ""
+        exit 1
+    fi
+
+    # Check for hardcoded secrets patterns
+    if git diff "$range" 2>/dev/null | grep -E '^\+.*(api_key|secret|password)\s*=\s*["\x27][^"\x27]{8,}' > /dev/null; then
+        echo ""
+        echo "PUSH BLOCKED: Possible hardcoded secrets detected"
+        echo "Found patterns that look like hardcoded credentials."
+        echo "Use environment variables or .env files instead."
+        echo ""
+        exit 1
+    fi
+done
+
+echo ""
+echo "Pre-push checks passed. Proceeding with push."
+echo ""
+
+exit 0

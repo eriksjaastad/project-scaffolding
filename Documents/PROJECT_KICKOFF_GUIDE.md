@@ -17,7 +17,7 @@ You can use the automated `apply` command to bootstrap your project:
 doppler run -- ./venv/bin/python scaffold_cli.py apply my-new-project
 ```
 
-This will copy the core scripts, docs, and update references automatically. See [[PROJECT_STRUCTURE_STANDARDS]] for the expected result.
+This will copy the core scripts, docs, and update references automatically. See [PROJECT_STRUCTURE_STANDARDS](PROJECT_STRUCTURE_STANDARDS.md) for the expected result.
 
 ### Step 2: Customize Templates (Critical)
 
@@ -37,7 +37,7 @@ This will copy the core scripts, docs, and update references automatically. See 
 - Add project-specific safety rules. See [[CURSOR_RULES_BEST_PRACTICES]].
 
 **Edit `Documents/README.md`:**
-- Update links and descriptions. See [[DOCUMENTATION_HYGIENE]].
+- Update links and descriptions. See [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md).
 
 ### Step 3: Create Project Index (MANDATORY)
 
@@ -49,7 +49,7 @@ cp "$SCAFFOLDING/templates/00_Index.md.template" \
    "./00_Index_$(basename "$NEW_PROJECT").md"
 ```
 
-**See:** [[PROJECT_INDEXING_SYSTEM]] for the complete guide.
+**See:** [PROJECT_INDEXING_SYSTEM](PROJECT_INDEXING_SYSTEM.md) for the complete guide.
 
 ### Step 4: Discover Relevant Skills (RECOMMENDED)
 
@@ -84,7 +84,7 @@ python $PROJECTS_ROOT/agent-skills-library/scripts/detect_skill_candidates.py
 
 Do not follow the old Phase 1-4 instructions previously found in this document. Instead, use the single source of truth located in the projects root:
 
-👉 **[[Project-workflow]]** (`/Users/eriksjaastad/projects/Project-workflow.md`)
+👉 **[Project Workflow](../Project-workflow.md)** (`/Users/eriksjaastad/projects/Project-workflow.md`)
 
 This workflow covers:
 1. **Strategy** (PRD)
@@ -102,8 +102,8 @@ This workflow covers:
 - [ ] Copy templates from scaffolding (`scaffold_cli.py apply`)
 - [ ] Customize `.cursorrules`
 - [ ] Customize `CLAUDE.md`
-- [ ] Create Project Index ([[PROJECT_INDEXING_SYSTEM]])
-- [ ] **Follow Unified Workflow:** Start at Phase 1 in [[Project-workflow]]
+- [ ] Create Project Index ([PROJECT_INDEXING_SYSTEM](PROJECT_INDEXING_SYSTEM.md))
+- [ ] **Follow Unified Workflow:** Start at Phase 1 in [Project Workflow](../Project-workflow.md)
 
 ---
 
@@ -111,10 +111,8 @@ This workflow covers:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[architecture_patterns]] - architecture
-- [[prompt_engineering_guide]] - prompt engineering
-- [[ai_model_comparison]] - AI models
-- [[project_planning]] - planning/roadmap
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [PROJECT_KICKOFF_GUIDE](PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

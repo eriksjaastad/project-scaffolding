@@ -839,16 +839,10 @@ Safety systems without scar stories.
 
 ## Related Documentation
 
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[trustworthy_ai_report]] - AI safety
-- [[ai_training_methodology]] - AI training
-- [[cost_management]] - cost management
-- [[database_setup]] - database
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[performance_optimization]] - performance
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[trading-copilot/README]] - Trading Copilot
+- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Trustworthy AI Report](Documents/reports/trustworthy_ai_report.md) - AI safety
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../../ai-model-scratch-build/README.md) - Image Workflow
+- [trading-copilot/README](../../ai-model-scratch-build/README.md) - Trading Copilot

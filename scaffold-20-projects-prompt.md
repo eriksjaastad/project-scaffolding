@@ -139,37 +139,27 @@ When done, fill in this summary:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[billing_workflows]] - billing/payments
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[adult_business_compliance]] - adult industry
-- [[ai_model_comparison]] - AI models
-- [[cortana_architecture]] - Cortana AI
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [[holoscape_architecture]] - Holoscape
-- [[portfolio_content]] - portfolio/career
-- [[video_analysis_tools]] - video analysis
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[audit-agent/README]] - Audit Agent
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[country-ai-futures-tracker/README]] - Country AI Futures
-- [[flo-fi/README]] - Flo-Fi
-- [[holoscape/README]] - Holoscape
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[image-workflow/README]] - Image Workflow
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[national-cattle-brands/README]] - Cattle Brands
-- [[portfolio-ai/README]] - Portfolio AI
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
-- [[smart-invoice-workflow/README]] - Smart Invoice
-- [[synth-insight-labs/README]] - Synth Insight Labs
-- [[tax-organizer/README]] - Tax Organizer
-- [[trading-copilot/README]] - Trading Copilot
-- [[van-build/README]] - Van Build
-- [[hypocrisy_methodology]] - bias detection
-- [[recipe_system]] - recipe generation
+- [3d-pose-factory/README](../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [ai-usage-billing-tracker/README](../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [analyze-youtube-videos/README](../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [audit-agent/README](../ai-model-scratch-build/README.md) - Audit Agent
+- [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
+- [country-ai-futures-tracker/README](../ai-model-scratch-build/README.md) - Country AI Futures
+- [flo-fi/README](../ai-model-scratch-build/README.md) - Flo-Fi
+- [holoscape/README](../ai-model-scratch-build/README.md) - Holoscape
+- [hypocrisynow/README](../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [image-workflow/README](../ai-model-scratch-build/README.md) - Image Workflow
+- [muffinpanrecipes/README](../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [national-cattle-brands/README](../ai-model-scratch-build/README.md) - Cattle Brands
+- [portfolio-ai/README](../ai-model-scratch-build/README.md) - Portfolio AI
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../ai-model-scratch-build/README.md) - Project Tracker
+- [smart-invoice-workflow/README](../ai-model-scratch-build/README.md) - Smart Invoice
+- [synth-insight-labs/README](../ai-model-scratch-build/README.md) - Synth Insight Labs
+- [tax-organizer/README](../ai-model-scratch-build/README.md) - Tax Organizer
+- [trading-copilot/README](../ai-model-scratch-build/README.md) - Trading Copilot
+- [van-build/README](../ai-model-scratch-build/README.md) - Van Build

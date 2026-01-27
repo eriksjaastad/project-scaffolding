@@ -777,30 +777,16 @@ Orchestrate complex project launches by separating AI agents into specialized ro
 
 ## Related Documentation
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_setup]] - database
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[adult_business_compliance]] - adult industry
-- [[ai_model_comparison]] - AI models
-- [[cortana_architecture]] - Cortana AI
-- [[performance_optimization]] - performance
-- [[project_planning]] - planning/roadmap
-- [[recipe_system]] - recipe generation
-- [[sales_strategy]] - sales/business
-- [[security_patterns]] - security
-- [[session_documentation]] - session notes
-- [[testing_strategy]] - testing/QA
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[trading-copilot/README]] - Trading Copilot
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [3d-pose-factory/README](../../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../../ai-model-scratch-build/README.md) - Image Workflow
+- [muffinpanrecipes/README](../../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [trading-copilot/README](../../ai-model-scratch-build/README.md) - Trading Copilot
