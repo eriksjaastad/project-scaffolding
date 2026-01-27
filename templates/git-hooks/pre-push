@@ -82,13 +82,27 @@ while read local_ref local_sha remote_ref remote_sha; do
     fi
 
     # Check for shutil.rmtree (dangerous recursive delete)
-    if git diff "$range" 2>/dev/null | grep -E '^\+.*\brmtree\b' > /dev/null; then
-        echo ""
-        echo "PUSH BLOCKED: Found 'rmtree' (shutil.rmtree) in changes"
-        echo "Use send2trash instead for safe deletion."
-        echo "See: AGENTS.md 'Trash, Don't Delete' rule"
-        echo ""
-        exit 1
+    # Only block actual usage patterns like rmtree( or shutil.rmtree
+    # Exclude: validation scripts, documentation, string literals describing patterns
+    RMTREE_MATCHES=$(git diff "$range" 2>/dev/null | grep -E '^\+.*\brmtree\s*\(' || true)
+    
+    if [ -n "$RMTREE_MATCHES" ]; then
+        # Filter out known validation scripts and pattern definitions
+        REAL_USAGE=$(echo "$RMTREE_MATCHES" | grep -v 'warden_audit\|validate_project\|dangerous.*patterns\|# .*rmtree\|".*rmtree\|'"'"'.*rmtree' || true)
+        
+        if [ -n "$REAL_USAGE" ]; then
+            echo ""
+            echo "PUSH BLOCKED: Found 'rmtree()' call in changes"
+            echo "Use send2trash instead for safe deletion."
+            echo "See: AGENTS.md 'Trash, Don't Delete' rule"
+            echo ""
+            echo "Matches found:"
+            echo "$REAL_USAGE"
+            echo ""
+            exit 1
+        else
+            echo "  ℹ️  Found 'rmtree' in validation/documentation (allowed)"
+        fi
     fi
 
     # Check for hardcoded secrets patterns
