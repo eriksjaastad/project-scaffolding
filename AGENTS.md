@@ -1,3 +1,4 @@
+
 <!-- SCAFFOLD:START - Do not edit between markers -->
 # AGENTS.md - Ecosystem Constitution (SSOT)
 
@@ -430,8 +431,6 @@ Cross-project resources (relative paths from project root):
 - [Project Scaffolding](../project-scaffolding/README.md) - This scaffolding system
 
 <!-- SCAFFOLD:END - Custom content below is preserved -->
-
-
 # AGENTS.md - Ecosystem Constitution (SSOT)
 
 > The single source of truth for hierarchy, workflow, and AI collaboration philosophy.

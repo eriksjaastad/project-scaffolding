@@ -1,3 +1,4 @@
+
 <!-- SCAFFOLD:START - Do not edit between markers -->
 # project-scaffolding
 
@@ -23,7 +24,6 @@ See the `Documents/` directory for detailed documentation.
 - **Status:** #status/active
 
 <!-- SCAFFOLD:END - Custom content below is preserved -->
-
 # Project Scaffolding
 
 > *The meta-project: Extracting patterns from experiments to build better projects faster.*
