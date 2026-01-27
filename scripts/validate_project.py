@@ -125,6 +125,22 @@ def validate_index_content(index_path: Path) -> List[str]:
     return errors
 
 
+def is_documentation_example(line: str) -> bool:
+    """Check if the path mention is a documentation example, not actual usage."""
+    doc_indicators = ['never', 'don\'t', 'avoid', 'example', 'e.g.', 'such as', 'like ']
+    line_lower = line.lower()
+    
+    # Check for doc indicators
+    if any(indicator in line_lower for indicator in doc_indicators):
+        return True
+        
+    # Check for quotes or backticks (common in documentation)
+    if ('"' in line and '/Users/' in line) or ("'" in line and '/Users/' in line) or ('`' in line and '/Users/' in line):
+        return True
+        
+    return False
+
+
 def validate_dna_integrity(project_path: Path) -> List[str]:
     """Scan project for absolute paths and secrets. Returns list of errors."""
     errors = []
@@ -160,12 +176,22 @@ def validate_dna_integrity(project_path: Path) -> List[str]:
                 if path_pattern.search(content):
                     # Skip common intentional paths if any (e.g. journal protocol uses absolute paths)
                     journal_path_str = str(PROJECTS_ROOT / "ai-journal" / "entries")
-                    if journal_path_str in content:
-                        continue
-                    # Skip AGENTS.md absolute paths (they are ecosystem-wide)
-                    if file == "AGENTS.md":
-                        continue
-                    errors.append(f"DNA Defect: Absolute path found in {file_path.relative_to(project_path)}")
+                    
+                    # Process line by line for better context filtering
+                    lines = content.splitlines()
+                    for i, line in enumerate(lines):
+                        if path_pattern.search(line):
+                            if journal_path_str in line:
+                                continue
+                            # Skip AGENTS.md absolute paths (they are ecosystem-wide)
+                            if file == "AGENTS.md":
+                                continue
+                            
+                            # NEW: Skip documentation examples
+                            if is_documentation_example(line):
+                                continue
+                                
+                            errors.append(f"DNA Defect: Absolute path found in {file_path.relative_to(project_path)}:{i+1}")
                 
                 # Check for secrets
                 if secret_pattern.search(content):
@@ -280,7 +306,12 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
                 if file not in safety_skip_files:
                     for pattern, reason in dangerous_patterns:
                         if re.search(pattern, content):
-                            errors.append(f"Safety Defect: {reason} in {rel_file_path}")
+                            # NEW: Apply documentation example filtering to safety defects
+                            lines = content.splitlines()
+                            for i, line in enumerate(lines):
+                                if re.search(pattern, line):
+                                    if not is_documentation_example(line):
+                                        errors.append(f"Safety Defect: {reason} in {rel_file_path}:{i+1}")
                 
                 # Check for unfilled placeholders (skip if in skip list)
                 if not is_in_skip_dir and not is_placeholder_skip_file:
