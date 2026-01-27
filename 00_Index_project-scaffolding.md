@@ -144,8 +144,8 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 
 | Directory | Files | Description |
 | :--- | :---: | :--- |
-| [Documents/](Documents/README.md) | 8 | *Auto-generated index. Last updated: 2026-01-24* |
-| [_cursorrules_backups/](_cursorrules_backups/) | 1 | No description available. |
+| [Documents/](Documents/README.md) | 13 | *Auto-generated index. Last updated: 2026-01-24* |
+| [agentsync/](agentsync/README.md) | 4 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
 | [patterns/](patterns/) | 15 | No description available. |
 | [prompts/](prompts/) | 0 | No description available. |
@@ -156,15 +156,20 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | File | Description |
 | :--- | :--- |
 | [AGENTS.md](AGENTS.md) | > The single source of truth for hierarchy, workflow, and AI collaboration philosophy. |
+| [CHANGELOG.md](CHANGELOG.md) | All notable changes to project-scaffolding will be documented in this file. |
 | [CLAUDE.md](CLAUDE.md) | 🛑 READ AGENTS.md FIRST |
-| [CODE_REVIEW_CLAUDE_v1.md](CODE_REVIEW_CLAUDE_v1.md) | Code Review: Project Scaffolding |
+| [DECISIONS.md](DECISIONS.md) | > *Documenting WHY we made decisions, not just WHAT we built.* |
 | [Documents/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md](Documents/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md) | Antigravity (Google's AI IDE) employs a sophisticated multi-tier orchestration model that balances s... |
+| [Documents/BACKUP_AUDIT.md](Documents/BACKUP_AUDIT.md) | **Generated:** 2026-01-27 |
 | [Documents/CODE_QUALITY_STANDARDS.md](Documents/CODE_QUALITY_STANDARDS.md) | Code Quality Standards |
+| [Documents/EXTERNAL_RESOURCES.md](Documents/EXTERNAL_RESOURCES.md) | > **Purpose:** Track which external services, APIs, and resources are used across all projects |
 | [Documents/GOLD_STANDARD_DEFINITION.md](Documents/GOLD_STANDARD_DEFINITION.md) | What "Production Ready" means in this ecosystem. |
 | [Documents/PROJECT_INDEXING_SYSTEM.md](Documents/PROJECT_INDEXING_SYSTEM.md) | Project Indexing System |
 | [Documents/PROJECT_KICKOFF_GUIDE.md](Documents/PROJECT_KICKOFF_GUIDE.md) | Project Kickoff Guide |
+| [Documents/PROJECT_PHILOSOPHY.md](Documents/PROJECT_PHILOSOPHY.md) | > *"We're explorers. We're finding cool ways to collect data, interpret data, and look for patterns.... |
 | [Documents/PROJECT_STRUCTURE_STANDARDS.md](Documents/PROJECT_STRUCTURE_STANDARDS.md) | Project Structure Standards |
 | [Documents/README.md](Documents/README.md) | Project Documentation |
+| [Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md](Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | **Date:** 2026-01-24 |
 | [Documents/TODO_FORMAT_STANDARD.md](Documents/TODO_FORMAT_STANDARD.md) | TODO.md Format Standard |
 | [Documents/guides/AUDIT_ASSEMBLY_LINE.md](Documents/guides/AUDIT_ASSEMBLY_LINE.md) | 🏭 The Audit Assembly Line (V2.1) |
 | [Documents/guides/CODE_REVIEW_PROMPT.md](Documents/guides/CODE_REVIEW_PROMPT.md) | Code Review Prompt: Project Scaffolding System |
@@ -172,6 +177,8 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/guides/FREE_CREDITS_GUIDE.md](Documents/guides/FREE_CREDITS_GUIDE.md) | AWS Activate & Google Cloud Credits - Quick Guide |
 | [Documents/guides/REPOMIX_USAGE.md](Documents/guides/REPOMIX_USAGE.md) | You’re right—pandering is the opposite of progress. In engineering, "You're exactly right" is often ... |
 | [Documents/guides/USAGE_GUIDE.md](Documents/guides/USAGE_GUIDE.md) | Project Scaffolding - Usage Guide |
+| [Documents/patterns/code-review-standard.md](Documents/patterns/code-review-standard.md) | **Status:** Proven Pattern |
+| [Documents/patterns/learning-loop-pattern.md](Documents/patterns/learning-loop-pattern.md) | > **Purpose:** Guide for creating reinforcement learning cycles in any project |
 | [Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md](Documents/planning/GLOBAL_RULES_INJECTION_DESIGN.md) | Global Rules Injection - Design Document |
 | [Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md](Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md) | Knowledge Cycle Discussion |
 | [Documents/planning/README.md](Documents/planning/README.md) | Planning Directory Overview |
@@ -190,16 +197,17 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/reference/PATTERN_ANALYSIS.md](Documents/reference/PATTERN_ANALYSIS.md) | Pattern Analysis - Extracted from Source Projects |
 | [Documents/reference/PATTERN_MANAGEMENT.md](Documents/reference/PATTERN_MANAGEMENT.md) | Pattern Management System |
 | [Documents/reference/REVIEW_SYSTEM_DESIGN.md](Documents/reference/REVIEW_SYSTEM_DESIGN.md) | Review System Design & Recommendations |
-| [EXTERNAL_RESOURCES.md](EXTERNAL_RESOURCES.md) | External Resources & Services |
+| [Documents/reference/SILENT_FAILURES_AUDIT.md](Documents/reference/SILENT_FAILURES_AUDIT.md) | **Created:** 2026-01-23 |
+| [Documents/reference/SPEC_2026-01-08.md](Documents/reference/SPEC_2026-01-08.md) | **Document Type:** System Specification (Auditor-Generated) |
 | [EXTERNAL_RESOURCES.yaml](EXTERNAL_RESOURCES.yaml) | No description available. |
-| [PROJECT_PHILOSOPHY.md](PROJECT_PHILOSOPHY.md) | Project Philosophy |
+| [PRD.md](PRD.md) | The Erik Sjaastad project ecosystem consists of 30+ projects that need to follow consistent standard... |
 | [QUICKSTART.md](QUICKSTART.md) | Project Scaffolding - Quick Start |
 | [README.md](README.md) | Project Scaffolding |
-| [REVIEWS_AND_GOVERNANCE_PROTOCOL.md](REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | 🛡️ Ecosystem Governance & Review Protocol (v1.2) |
 | [TODO.md](TODO.md) | > **Purpose:** Current actionable tasks for project-scaffolding |
-| [_cursorrules_backups/manifest.json](_cursorrules_backups/manifest.json) | No description available. |
-| [local-ai-integration.md](local-ai-integration.md) | What LM Studio gives you |
-| [passing_projects.txt](passing_projects.txt) | No description available. |
+| [agentsync/README.md](agentsync/README.md) | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
+| [agentsync/migrate_agents_md.py](agentsync/migrate_agents_md.py) | No description available. |
+| [agentsync/sync_mcp.py](agentsync/sync_mcp.py) | No description available. |
+| [agentsync/sync_rules.py](agentsync/sync_rules.py) | No description available. |
 | [patterns/ai-team-orchestration.md](patterns/ai-team-orchestration.md) | AI Team Orchestration Pattern |
 | [patterns/api-key-management.md](patterns/api-key-management.md) | API Key Management Pattern |
 | [patterns/automation-reliability.md](patterns/automation-reliability.md) | Automation Reliability Patterns |
@@ -218,6 +226,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [prompts/active/document_review/architecture.md](prompts/active/document_review/architecture.md) | You are an **architecture-focused purist reviewer** with expertise in system design, software archit... |
 | [prompts/active/document_review/performance.md](prompts/active/document_review/performance.md) | You are a **performance-focused critical reviewer** with expertise in scalability, database optimiza... |
 | [prompts/active/document_review/security.md](prompts/active/document_review/security.md) | You are a **security-focused skeptical reviewer** with expertise in application security, authentica... |
+| [pyproject.toml](pyproject.toml) | No description available. |
 | [pytest.ini](pytest.ini) | No description available. |
 | [requirements.txt](requirements.txt) | No description available. |
 | [scaffold/__init__.py](scaffold/__init__.py) | Project Scaffolding - Automated Multi-AI Review & Build System |
@@ -226,10 +235,8 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [scaffold/constants.py](scaffold/constants.py) | Centralized constants for the project scaffolding system. |
 | [scaffold/review.py](scaffold/review.py) | Multi-AI Review Orchestrator |
 | [scaffold/utils.py](scaffold/utils.py) | No description available. |
-| [scaffold-20-projects-prompt.md](scaffold-20-projects-prompt.md) | Scaffold 20 Projects Prompt |
 | [scaffold_cli.py](scaffold_cli.py) | No description available. |
-| [spec.md](spec.md) | **Document Type:** System Specification (Auditor-Generated) |
-| [validation_report.txt](validation_report.txt) | No description available. |
+| [uv.lock](uv.lock) | No description available. |
 
 <!-- LIBRARIAN-INDEX-END -->
 

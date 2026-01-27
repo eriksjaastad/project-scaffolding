@@ -933,6 +933,85 @@ def _verify_references(target_dir: Path) -> None:
         console.print("\n[red]Verification failed: $SCAFFOLDING references remain.[/red]")
 
 
+@cli.command("sync-root")
+@click.option("--dry-run", is_flag=True, help="Preview changes without writing anything")
+def sync_root(dry_run: bool) -> None:
+    """
+    Sync root-level ecosystem files (CLAUDE.md, etc.) from templates.
+    
+    This updates the projects root directory with the latest templates.
+    Unlike 'apply' which works on individual projects, this updates the
+    ecosystem-wide root files.
+    
+    Example:
+        scaffold sync-root
+        scaffold sync-root --dry-run
+    """
+    scaffold_root = Path(__file__).parent.parent
+    root_templates = scaffold_root / "templates" / "root"
+    
+    # Detect projects root (parent of project-scaffolding)
+    projects_root = scaffold_root.parent
+    
+    console.print(f"\n[bold]Syncing root-level files to {projects_root}...[/bold]\n")
+    if dry_run:
+        console.print("[yellow]DRY RUN: No changes will be made.[/yellow]\n")
+    
+    if not root_templates.exists():
+        console.print(f"[red]Error: Root templates directory not found: {root_templates}[/red]")
+        return
+    
+    # Files to sync from templates/root/
+    templates = list(root_templates.glob("*.template"))
+    
+    if not templates:
+        console.print("[yellow]No root templates found in templates/root/[/yellow]")
+        return
+    
+    for template_path in templates:
+        # Determine output filename (strip .template suffix)
+        out_name = template_path.name
+        if out_name.endswith(".template"):
+            out_name = out_name[:-9]
+        
+        target_path = projects_root / out_name
+        template_content = template_path.read_text()
+        
+        if target_path.exists():
+            existing_content = target_path.read_text()
+            
+            # Create backup before overwriting
+            if not dry_run:
+                backup_path = target_path.with_suffix(target_path.suffix + ".backup")
+                backup_path.write_text(existing_content)
+                console.print(f"  [yellow]💾 Backed up {out_name} → {backup_path.name}[/yellow]")
+            
+            console.print(f"  [green]✅ Updated {out_name}[/green]")
+            if not dry_run:
+                target_path.write_text(template_content)
+        else:
+            console.print(f"  [green]✅ Created {out_name}[/green]")
+            if not dry_run:
+                target_path.write_text(template_content)
+    
+    # Add version tracking
+    version_file = projects_root / ".root-sync-version"
+    current_version = get_version()
+    
+    if not dry_run:
+        import json
+        version_data = {
+            "synced_version": current_version,
+            "synced_at": datetime.now().isoformat()
+        }
+        version_file.write_text(json.dumps(version_data, indent=2))
+        console.print(f"  [green]✅ Updated {version_file.name}[/green]")
+    else:
+        console.print(f"  [cyan]Would update {version_file.name}[/cyan]")
+    
+    console.print(f"\n[bold green]✅ Root sync complete (version {current_version})[/bold green]\n")
+
+
 def _load_review_configs(
     prompt_dir: Path,
     openai_key: Optional[str],
