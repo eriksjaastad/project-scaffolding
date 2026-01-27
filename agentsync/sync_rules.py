@@ -29,10 +29,12 @@ Usage:
 """
 
 import argparse
+import json
 import os
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +45,47 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCAFFOLDING_ROOT = SCRIPT_DIR.parent
 PROJECTS_ROOT = SCAFFOLDING_ROOT.parent
+
+
+def get_rules_version() -> str:
+    """Read rules version from templates/.agentsync/RULES_VERSION."""
+    try:
+        rules_version_path = SCAFFOLDING_ROOT / "templates" / ".agentsync" / "RULES_VERSION"
+        if rules_version_path.exists():
+            return rules_version_path.read_text().strip()
+    except Exception:
+        pass
+    return "0.0.0"
+
+
+def get_project_rules_version(project_path: Path) -> str:
+    """Read project's current rules_version from .scaffolding-version."""
+    version_file = project_path / ".scaffolding-version"
+    if version_file.exists():
+        try:
+            data = json.loads(version_file.read_text())
+            return data.get("rules_version", "0.0.0")
+        except Exception:
+            pass
+    return "0.0.0"
+
+
+def update_rules_version(project_path: Path, new_version: str):
+    """Update rules_version in .scaffolding-version after successful sync."""
+    version_file = project_path / ".scaffolding-version"
+    try:
+        if version_file.exists():
+            data = json.loads(version_file.read_text())
+        else:
+            data = {}
+        
+        data["rules_version"] = new_version
+        data["rules_synced_at"] = datetime.now().isoformat()
+        
+        version_file.write_text(json.dumps(data, indent=2))
+        print(f"  ✅ Updated rules_version to {new_version} in .scaffolding-version")
+    except Exception as e:
+        print(f"  ⚠️  Failed to update .scaffolding-version: {e}")
 
 
 # Markers for auto-generated sections (content outside these is preserved)
@@ -212,6 +255,17 @@ def sync_project(project_name: str, stage_changes: bool = False, dry_run: bool =
 
     print(f"\n{'[DRY RUN] ' if dry_run else ''}Syncing {project_name}...")
 
+    # Version comparison
+    current_rules_version = get_rules_version()
+    project_rules_version = get_project_rules_version(project_path)
+
+    if project_rules_version < current_rules_version:
+        print(f"  ⚠️  Updating rules from {project_rules_version} to {current_rules_version}")
+    elif project_rules_version > current_rules_version:
+        print(f"  ⚠️  Warning: Project has newer rules version ({project_rules_version}) than this CLI ({current_rules_version})")
+    else:
+        print(f"  ℹ️  Rules already at version {current_rules_version}")
+
     # Load rules
     rules = load_rules(project_path)
     if not rules:
@@ -302,6 +356,10 @@ def sync_project(project_name: str, stage_changes: bool = False, dry_run: bool =
     if not updated_files and not dry_run:
         print(f"  All files already up to date")
 
+    # Update version metadata
+    if not dry_run:
+        update_rules_version(project_path, current_rules_version)
+
     return True
 
 
@@ -326,8 +384,13 @@ def main():
     parser.add_argument("--stage", action="store_true", help="Git add changed files")
     parser.add_argument("--dry-run", action="store_true", help="Preview changes without writing")
     parser.add_argument("--list", action="store_true", help="List projects with .agentsync/")
+    parser.add_argument("--version", action="store_true", help="Show current rules version")
 
     args = parser.parse_args()
+
+    if args.version:
+        print(f"Agentsync Rules Version: {get_rules_version()}")
+        return
 
     if args.list:
         projects = find_agentsync_projects()
