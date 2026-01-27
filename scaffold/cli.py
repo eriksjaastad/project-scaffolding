@@ -721,6 +721,39 @@ def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
         console.print("  ✅ No mandatory placeholders found")
 
 
+def _migrate_index(index_path: Path, context: Dict[str, str], dry_run: bool) -> None:
+    """Ensure Index file has all required sections."""
+    if not index_path.exists():
+        return
+
+    content = index_path.read_text()
+    modified = False
+    
+    # 1. Check tags in frontmatter
+    if "map/project" not in content:
+        console.print(f"  🔄 Adding map/project tag to {index_path.name}...")
+        if not dry_run:
+            # Simple insertion after 'tags:'
+            content = re.sub(r"(tags:\s*\n)", r"\1    - map/project\n", content)
+            modified = True
+
+    # 2. Check for required sections
+    required_sections = [
+        ("## Key Components", "\n## Key Components\n- **Component 1**: Description\n- **Component 2**: Description\n"),
+        ("## Status", "\n## Status\nCurrent status and next steps.\n")
+    ]
+    
+    for section_title, template in required_sections:
+        if section_title not in content:
+            console.print(f"  🔄 Adding {section_title} section to {index_path.name}...")
+            if not dry_run:
+                content = content.rstrip() + "\n" + template
+                modified = True
+    
+    if modified and not dry_run:
+        index_path.write_text(content)
+
+
 def _copy_file(src: Path, dst: Path, dry_run: bool) -> None:
     if not src.exists():
         console.print(f"  [red]error[/red] Source not found: {src}")
@@ -832,9 +865,15 @@ def _add_version_metadata(target_dir: Path, dry_run: bool) -> None:
     current_version = get_version()
     rules_version = get_rules_version()
     today = datetime.now().strftime("%Y-%m-%d")
+    
+    # Context for migration
+    context = {"DATE": today} # Minimal context for now
 
     if index_files:
         for index_file in index_files:
+            # NEW: Migrate index to include required sections
+            _migrate_index(index_file, context, dry_run)
+            
             content = index_file.read_text()
             if "scaffolding_version:" in content:
                 # Update existing version
