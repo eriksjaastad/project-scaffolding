@@ -57,7 +57,7 @@ Files are concatenated in filename order (00-, 01-, etc.) when generating IDE co
 
 ### The Sync Script
 
-**Location:** `_tools/agentsync/sync_rules.py`
+**Location:** `project-scaffolding/agentsync/sync_rules.py`
 
 **What it does:**
 1. Reads all `.md` files from `.agentsync/rules/` (sorted by filename)
@@ -69,16 +69,16 @@ Files are concatenated in filename order (00-, 01-, etc.) when generating IDE co
 **Manual usage:**
 ```bash
 # Sync a specific project
-uv run _tools/agentsync/sync_rules.py my-project
+uv run project-scaffolding/agentsync/sync_rules.py my-project
 
 # Sync all projects
-uv run _tools/agentsync/sync_rules.py --all
+uv run project-scaffolding/agentsync/sync_rules.py --all
 
 # Sync and stage changes (for pre-commit hook)
-uv run _tools/agentsync/sync_rules.py my-project --stage
+uv run project-scaffolding/agentsync/sync_rules.py my-project --stage
 
 # Dry run (preview changes)
-uv run _tools/agentsync/sync_rules.py my-project --dry-run
+uv run project-scaffolding/agentsync/sync_rules.py my-project --dry-run
 ```
 
 ### Auto-Sync Triggers
@@ -144,7 +144,7 @@ Each generated file includes a header identifying it as auto-generated:
 # CLAUDE.md - my-project
 
 <!-- AUTO-GENERATED from .agentsync/rules/ - Do not edit directly -->
-<!-- Run: uv run $TOOLS_ROOT/agentsync/sync_rules.py my-project -->
+<!-- Run: uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py my-project -->
 
 [concatenated rules content]
 
@@ -155,7 +155,7 @@ Each generated file includes a header identifying it as auto-generated:
 ```
 # Cursor Rules for my-project
 # AUTO-GENERATED from .agentsync/rules/ - Do not edit directly
-# Run: uv run $TOOLS_ROOT/agentsync/sync_rules.py my-project
+# Run: uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py my-project
 
 [concatenated rules content]
 
@@ -167,7 +167,7 @@ Each generated file includes a header identifying it as auto-generated:
 # Antigravity Rules for my-project
 
 <!-- AUTO-GENERATED from .agentsync/rules/ - Do not edit directly -->
-<!-- Run: uv run $TOOLS_ROOT/agentsync/sync_rules.py my-project -->
+<!-- Run: uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py my-project -->
 
 [concatenated rules content]
 
@@ -204,7 +204,7 @@ When scaffolding a new project:
 
 1. Run `/scaffold` which creates `.agentsync/` directory with template rules
 2. Edit the rule files to customize for your project
-3. Run sync: `uv run _tools/agentsync/sync_rules.py my-project`
+3. Run sync: `uv run project-scaffolding/agentsync/sync_rules.py my-project`
 
 ---
 
@@ -223,7 +223,7 @@ MCP configurations are also synced from a central location:
 
 **Sync command:**
 ```bash
-uv run _tools/agentsync/sync_mcp.py
+uv run project-scaffolding/agentsync/sync_mcp.py
 ```
 
 ---
@@ -234,14 +234,14 @@ uv run _tools/agentsync/sync_mcp.py
 
 Run the sync manually:
 ```bash
-uv run _tools/agentsync/sync_rules.py my-project
+uv run project-scaffolding/agentsync/sync_rules.py my-project
 ```
 
 ### Project doesn't have .agentsync/ directory
 
 Migrate from old AGENTS.md format:
 ```bash
-uv run _tools/agentsync/migrate_agents_md.py my-project
+uv run project-scaffolding/agentsync/migrate_agents_md.py my-project
 ```
 
 ### Claude hook isn't triggering
@@ -295,9 +295,9 @@ The sync script creates `.agent//` automatically. If it doesn't exist after sync
 
 | File | Purpose |
 |------|---------|
-| `_tools/agentsync/sync_rules.py` | Rules sync script |
-| `_tools/agentsync/sync_mcp.py` | MCP config sync script |
-| `_tools/agentsync/migrate_agents_md.py` | Migration from AGENTS.md |
+| `project-scaffolding/agentsync/sync_rules.py` | Rules sync script |
+| `project-scaffolding/agentsync/sync_mcp.py` | MCP config sync script |
+| `project-scaffolding/agentsync/migrate_agents_md.py` | Migration from AGENTS.md |
 | `_configs/mcp/servers.json` | Master MCP server definitions |
 | `.claude/hooks/validators/agent-sync-on-write.py` | Claude real-time hook |
 | `.claude/hooks/validators/agent-sync-check.py` | Pre-commit sync hook |

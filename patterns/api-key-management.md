@@ -539,18 +539,11 @@ When starting a new project:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[billing_workflows]] - billing/payments
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[queue_processing_guide]] - queue/workflow
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
-- [[security_patterns]] - security
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[trading-copilot/README]] - Trading Copilot
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Safety Systems](patterns/safety-systems.md) - security
+- [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../../ai-model-scratch-build/README.md) - Image Workflow
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [trading-copilot/README](../../ai-model-scratch-build/README.md) - Trading Copilot

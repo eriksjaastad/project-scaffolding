@@ -14,7 +14,7 @@
 ### 2. The Super Manager (Strategy & Context)
 - **Role:** Strategic Planner and Prompt Engineer
 - **Scope:** Cross-project context and task planning
-- **Current Model:** [Gemini 3 Flash / Claude / as needed]
+- **Current Model:** Claude or Gemini (as available)
 - **Constraint:** **STRICTLY PROHIBITED** from writing code or using tools
 - **Mandate:**
   - Drafts prompts and **[ACCEPTANCE CRITERIA]** for Workers
@@ -24,7 +24,7 @@
 
 ### 3. The Floor Manager (QA, Messenger & File Operator)
 - **Role:** Orchestrator, Quality Assurance Lead, Context Bridge, Draft Gatekeeper, and Primary File Operator.
-- **Current Model:** [Gemini 3 Flash / Claude / as needed]
+- **Current Model:** Claude or Gemini (as available)
 - **Tools:** Ollama MCP (`ollama_run`, `ollama_run_many`), Shell tool, File tools, Draft Gate.
 - **Constraint:** **STRICTLY PROHIBITED** from generating logic or writing code.
 - **Mandate:**

@@ -78,11 +78,8 @@ CI pipelines must be "Honest." A pipeline that exits with code 0 while skipping 
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[prompt_engineering_guide]] - prompt engineering
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[security_patterns]] - security
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

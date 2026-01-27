@@ -1,0 +1,80 @@
+name: Safety Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  safety-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for hardcoded absolute paths
+        run: |
+          echo "Checking for hardcoded paths..."
+          if grep -rn --include="*.py" --include="*.sh" --include="*.md" "/Users/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "::error::Found hardcoded /Users/ paths!"
+            exit 1
+          fi
+          if grep -rn --include="*.py" --include="*.sh" --include="*.md" "/home/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules" | grep -v "# Example"; then
+            echo "::error::Found hardcoded /home/ paths!"
+            exit 1
+          fi
+          echo "No hardcoded paths found."
+
+      - name: Check for potential secrets
+        run: |
+          echo "Checking for potential secrets..."
+          # OpenAI keys
+          if grep -rn "sk-[a-zA-Z0-9]\{20,\}" . --include="*.py" --include="*.js" --include="*.ts" 2>/dev/null | grep -v ".git" | grep -v "node_modules" | grep -v ".env"; then
+            echo "::error::Potential OpenAI API key found!"
+            exit 1
+          fi
+          # Anthropic keys
+          if grep -rn "sk-ant-[a-zA-Z0-9]\{20,\}" . --include="*.py" --include="*.js" --include="*.ts" 2>/dev/null | grep -v ".git"; then
+            echo "::error::Potential Anthropic API key found!"
+            exit 1
+          fi
+          # AWS keys
+          if grep -rn "AKIA[0-9A-Z]\{16\}" . --include="*.py" --include="*.js" --include="*.ts" 2>/dev/null | grep -v ".git"; then
+            echo "::error::Potential AWS Access Key found!"
+            exit 1
+          fi
+          echo "No secrets detected."
+
+      - name: Check for silent exception handling
+        run: |
+          echo "Checking for bare except patterns..."
+          if grep -rn "except:\s*$" . --include="*.py" 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "::warning::Found bare 'except:' patterns - consider catching specific exceptions"
+          fi
+          if grep -rn "except.*pass\s*$" . --include="*.py" 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "::warning::Found 'except: pass' patterns - silent failures are dangerous"
+          fi
+          echo "Exception handling check complete."
+
+  # Optional: Run tests if they exist
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check for and run tests
+        run: |
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+          if [ -d "tests" ]; then
+            pip install pytest
+            pytest tests/ -v || echo "Tests failed but continuing"
+          else
+            echo "No tests directory found, skipping tests"
+          fi

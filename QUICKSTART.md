@@ -686,22 +686,15 @@ Common issues:
 
 ## Related Documentation
 
-- [[CODE_QUALITY_STANDARDS]] - code standards
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[orchestration_patterns]] - orchestration
-- [[performance_optimization]] - performance
-- [[research_methodology]] - research
-- [[security_patterns]] - security
-- [[agent-skills-library/README]] - Agent Skills
-- [[project-scaffolding/README]] - Project Scaffolding
+- [CODE_QUALITY_STANDARDS](Documents/CODE_QUALITY_STANDARDS.md) - code standards
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [PROJECT_KICKOFF_GUIDE](Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [Safety Systems](patterns/safety-systems.md) - security
+- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

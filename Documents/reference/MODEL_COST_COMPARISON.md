@@ -235,15 +235,9 @@
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[portfolio_content]] - portfolio/career
-- [[research_methodology]] - research
-- [[testing_strategy]] - testing/QA
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

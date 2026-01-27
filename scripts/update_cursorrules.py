@@ -1,3 +1,8 @@
+"""
+Update .cursorrules files with safety rules section.
+
+Reads configuration from scan_config.yaml (single source of truth).
+"""
 import argparse
 import logging
 import pathlib
@@ -5,6 +10,8 @@ import sys
 import shutil
 import json
 from datetime import datetime
+
+from scaffold.constants import PROTECTED_PROJECTS
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
@@ -23,7 +30,8 @@ SAFETY_RULES_SECTION = '''
 - ALWAYS log errors with context (file path, operation attempted, error message).
 '''
 
-SKIP_DIRS = {"writing", "ai-journal", "plugin-duplicate-detection", "plugin-find-names-chrome"}
+# Use PROTECTED_PROJECTS from constants (reads from scan_config.yaml)
+SKIP_DIRS = PROTECTED_PROJECTS
 
 def parse_projects_filter(projects_arg: str | None) -> set | None:
     """Parse comma-separated project names into a set."""

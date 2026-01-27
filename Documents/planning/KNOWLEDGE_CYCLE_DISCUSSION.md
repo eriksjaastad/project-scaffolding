@@ -206,16 +206,16 @@ Erik wants something "fuzzy" - organic and automatic. But AI systems often need 
 ## Next Steps
 
 - [x] Decide on template vs. scaffold vs. framework terminology → Using "prompt template" with embedded operational sections
-- [x] Define where operational rules live → Embedded in [[AGENTS]] prompt template (Downstream Harm Estimate, Learnings Applied sections)
-- [x] Create the first "compiled" prompt scaffold with today's learnings → Done: [[AGENTS]] updated
+- [x] Define where operational rules live → Embedded in [AGENTS](../../../AGENTS.md) prompt template (Downstream Harm Estimate, Learnings Applied sections)
+- [x] Create the first "compiled" prompt scaffold with today's learnings → Done: [AGENTS](../../../AGENTS.md) updated
 - [ ] Test on next Worker task to see if it works
 - [ ] Document what we learn from that test
-- [x] Create Learning Loop Pattern → [[learning-loop-pattern]]
-- [x] Add Learning Debt Tracker → [[LOCAL_MODEL_LEARNINGS]]
+- [x] Create Learning Loop Pattern → [learning-loop-pattern](../../../writing/Documents/patterns/learning-loop-pattern.md)
+- [x] Add Learning Debt Tracker → [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md)
 
 ---
 
-*See also: [[PROJECT_STRUCTURE_STANDARDS]], [[DOPPLER_SECRETS_MANAGEMENT]], and [[CODE_QUALITY_STANDARDS]].*
+*See also: [PROJECT_STRUCTURE_STANDARDS](../PROJECT_STRUCTURE_STANDARDS.md), [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md), and [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md).*
 ---
 
 ## Update: January 10, 2026 (Night) - Breakthrough via Society Parallel
@@ -257,7 +257,6 @@ This moves us past Stuck Point 5 (Fuzzy vs Explicit) by:
 
 ## Related Documentation
 
-- [[cost_management]] - cost management
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models

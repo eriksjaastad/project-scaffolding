@@ -60,6 +60,40 @@ Agents can query the knowledge graph before falling back to grep/glob:
 - ALWAYS use retry logic and cost tracking for API calls
 
 
+## 📋 TASK MANAGEMENT (KANBAN BOARD)
+
+All projects share a centralized task tracker at `$PROJECTS_ROOT/project-tracker`.
+
+### Natural Language → Action
+When Erik says any of these, **create a task on the Kanban board**:
+- "add a to-do item" / "add a task"
+- "let's track this" / "remind me to..."
+- "we should..." / "don't forget to..."
+
+**Action:** `pt tasks create "..."` (auto-detects project from cwd)
+
+### CLI Quick Reference
+```bash
+# List open tasks:
+pt tasks                          # All projects
+pt tasks -p <project>             # Specific project (or auto-detects from cwd)
+
+# Create (auto-detects project from current directory):
+pt tasks create "description"
+pt tasks create "urgent" --priority High -s "To Do"
+
+# Workflow:
+pt tasks start <id>               # Move to In Progress
+pt tasks done <id>                # Mark complete
+pt tasks update <id> -s "To Do"   # Change status
+```
+
+### Agent Workflow
+1. **Before work:** `pt tasks` to see what's pending (auto-filters when in project dir)
+2. **Starting:** `pt tasks start <id>`
+3. **Completing:** `pt tasks done <id>`
+
+
 ## 📔 JOURNAL ENTRY PROTOCOL (UNIVERSAL)
 
 **Location:** `{PROJECTS_ROOT}/ai-journal/entries/YYYY/`
@@ -126,8 +160,8 @@ Every `.md` file should include:
 - `#status/[active|archived]` — Current state
 
 ### Wikilinks
-- Use `[[document-name]]` for cross-references
-- Link to `[[00_Index_project-name]]` for project documentation hubs
+- Use `[document name](path/to/document.md)` for cross-references
+- Link to ``00_Index_*.md`` for project documentation hubs
 
 
 *This is the ecosystem constitution. Let it evolve as we learn.*

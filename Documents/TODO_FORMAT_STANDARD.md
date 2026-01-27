@@ -601,26 +601,14 @@ See: `project-scaffolding/TODO.md` for focused sprint format
 
 ## Related Documentation
 
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_setup]] - database
-- [[discord_integration]] - Discord
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[performance_optimization]] - performance
-- [[project_planning]] - planning/roadmap
-- [[security_patterns]] - security
-- [[session_documentation]] - session notes
-- [[testing_strategy]] - testing/QA
-- [[video_analysis_tools]] - video analysis
-- [[agent-skills-library/README]] - Agent Skills
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
+- [PROJECT_KICKOFF_GUIDE](PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- [analyze-youtube-videos/README](../../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../../ai-model-scratch-build/README.md) - Project Tracker

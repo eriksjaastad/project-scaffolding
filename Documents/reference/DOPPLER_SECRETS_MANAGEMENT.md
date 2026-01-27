@@ -1,31 +1,75 @@
 # Doppler Secrets Management Guide
 
-> **Status:** Production (as of January 2026)  
-> **Scope:** 8 projects migrated, ecosystem-wide standard
+> **Status:** 10/10 projects (FREE TIER FULL - Jan 2026)
+> **New projects:** Must use local `.env` files
+
+---
+
+## ⚠️ Doppler at Capacity
+
+The free tier limit (10 projects) has been reached. **New projects cannot use Doppler.**
+
+For new projects:
+- Use local `.env` files with `python-dotenv`
+- Load secrets via `load_dotenv()` at script entry
 
 ---
 
 ## 🎯 Overview
 
-**Doppler** is the centralized secrets management system for the ecosystem. It replaces local `.env` files with cloud-based secret storage.
-
-This is a core component of our safety stack, as documented in the [[trustworthy_ai_report]].
+**Doppler** is used for secrets management in 10 legacy projects. It provides cloud-based secret storage with CLI injection.
 
 ---
 
-## 🚀 How to Use Doppler
+## ✅ Projects Using Doppler (10)
 
-Instead of relying on a local `.env` file, prefix your commands with `doppler run --`.
-
-For new projects started via the [[PROJECT_KICKOFF_GUIDE]], add Doppler from the start.
+| Project | Configs |
+|---------|---------|
+| `3d-pose-factory` | 6 |
+| `ai-usage-billing-tracker` | 4 |
+| `analyze-youtube-videos` | 4 |
+| `cortana-personal-ai` | 4 |
+| `holoscape` | 5 |
+| `hypocrisynow` | 4 |
+| `muffinpanrecipes` | 4 |
+| `project-scaffolding` | 4 |
+| `smart-invoice-workflow` | 4 |
+| `trading-copilot` | 4 |
 
 ---
 
-## 📝 Best Practices
+## 🚀 Using Doppler (Legacy Projects Only)
 
-### 1. Never Commit `.env` Files
+For projects already in Doppler, prefix commands with `doppler run --`:
 
-Always ensure your `.gitignore` follows the [[PROJECT_STRUCTURE_STANDARDS]] to exclude environment files.
+```bash
+cd project-name
+doppler run -- python script.py
+```
+
+### Common Commands
+
+```bash
+doppler secrets              # View all secrets
+doppler secrets set KEY=val  # Update a secret
+doppler setup                # Check/configure project
+```
+
+---
+
+## 📝 New Projects: Use .env
+
+```python
+# At top of script
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+api_key = os.getenv("API_KEY")
+```
+
+### .gitignore
 
 ```gitignore
 .env
@@ -34,10 +78,18 @@ Always ensure your `.gitignore` follows the [[PROJECT_STRUCTURE_STANDARDS]] to e
 ```
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] for security rules and [[LOCAL_MODEL_LEARNINGS]] for troubleshooting Doppler-related AI behavior.*
+
+## 🔄 Rollback (If Needed)
+
+All Doppler projects have `.env.doppler-backup` files:
+
+```bash
+mv .env.doppler-backup .env
+```
+
+---
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[case_studies]] - examples
-- [[security_patterns]] - security
+- [Safety Systems](../patterns/safety-systems.md) - security
+- [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) - security rules

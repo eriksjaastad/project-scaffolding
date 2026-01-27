@@ -421,29 +421,16 @@ Updated `project-scaffolding/README.md` to reference the Doppler guide in "Essen
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[database_setup]] - database
-- [[queue_processing_guide]] - queue/workflow
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
 - [[holoscape_architecture]] - Holoscape
-- [[research_methodology]] - research
-- [[security_patterns]] - security
-- [[testing_strategy]] - testing/QA
-- [[video_analysis_tools]] - video analysis
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[holoscape/README]] - Holoscape
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[smart-invoice-workflow/README]] - Smart Invoice
-- [[trading-copilot/README]] - Trading Copilot
-- [[hypocrisy_methodology]] - bias detection
-- [[recipe_system]] - recipe generation
+- [Safety Systems](patterns/safety-systems.md) - security
+- [3d-pose-factory/README](../../../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [ai-usage-billing-tracker/README](../../../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [analyze-youtube-videos/README](../../../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [cortana-personal-ai/README](../../../ai-model-scratch-build/README.md) - Cortana AI
+- [holoscape/README](../../../ai-model-scratch-build/README.md) - Holoscape
+- [hypocrisynow/README](../../../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [muffinpanrecipes/README](../../../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [smart-invoice-workflow/README](../../../ai-model-scratch-build/README.md) - Smart Invoice
+- [trading-copilot/README](../../../ai-model-scratch-build/README.md) - Trading Copilot

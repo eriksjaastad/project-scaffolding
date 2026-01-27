@@ -243,9 +243,71 @@ See: `agent-skills-library/playbooks/staged-prompt-engineering/` for templates.
 
 ---
 
+## 🤖 AI-FIRST DEVELOPMENT
+
+When building tools, CLIs, or interfaces that AI agents will use as the primary consumer:
+
+### Output Design
+- **Use plain `print()`, not Rich/console libraries** — Rich respects terminal width and wraps text. AI receives the wrapped output as if it were the actual data. Plain print() streams bytes unchanged.
+- **Never truncate data** — AI can process full text. Truncation like `text[:50] + "..."` destroys information.
+- **No column width constraints** — AI doesn't render CSS. Width limits only hurt readability.
+- **Single-line records** — One item per line with pipe delimiters. Easy to parse, no ambiguity.
+
+### Interaction Design
+- **Auto-detect context** — Infer project from cwd, user from environment. Reduce required flags.
+- **Show what was acted on** — "Done: Fix the login bug" not "Task #123 marked done". AI needs to verify the right thing happened.
+- **Full error messages** — Don't abbreviate. Include file paths, line numbers, stack traces.
+
+### The Principle
+AI is the primary user; humans are secondary. Design for machine consumption first. Humans can always add formatting layers on top, but AI cannot recover truncated or wrapped data.
+
+### Anti-patterns to Avoid
+- Rich tables (wrap at terminal width)
+- `max_width` or column constraints
+- Truncation with ellipsis
+- Fancy spinners/progress bars (noise in output)
+- Color codes without plain-text fallback (some AI contexts strip ANSI)
+
+---
+
+## 📋 TASK MANAGEMENT (KANBAN BOARD)
+
+All projects share a centralized task tracker at `$PROJECTS_ROOT/project-tracker`.
+
+### Natural Language → Action
+When Erik says any of these, **create a task on the Kanban board**:
+- "add a to-do item" / "add a task"
+- "let's track this" / "remind me to..."
+- "we should..." / "don't forget to..."
+
+**Action:** `pt tasks create "..."` (auto-detects project from cwd)
+
+### CLI Quick Reference
+```bash
+# List open tasks:
+pt tasks                          # All projects
+pt tasks -p <project>             # Specific project (or auto-detects from cwd)
+
+# Create (auto-detects project from current directory):
+pt tasks create "description"
+pt tasks create "urgent" --priority High -s "To Do"
+
+# Workflow:
+pt tasks start <id>               # Move to In Progress
+pt tasks done <id>                # Mark complete
+pt tasks update <id> -s "To Do"   # Change status
+```
+
+### Agent Workflow
+1. **Before work:** `pt tasks` to see what's pending (auto-filters when in project dir)
+2. **Starting:** `pt tasks start <id>`
+3. **Completing:** `pt tasks done <id>`
+
+---
+
 ## 🛡️ Safety & File Operations (UNIVERSAL)
 - **Trash, Don't Delete:** NEVER use `rm` or permanent deletion.
-- ALWAYS use `send2trash` (Python) or move files to a `.trash/` directory.
+- ALWAYS use `send2trash` (Python) or `Trash` command (CLI/Bash).
 
 > **Industry Context:** These safety rules align with production AI patterns (tool whitelisting, per-step safety assessment). See [Documents/reports/trustworthy_ai_report.md](Documents/reports/trustworthy_ai_report.md) for how major companies implement multi-agent safety systems.
 
@@ -394,8 +456,8 @@ created: YYYY-MM-DD
 - `#status/[active|archived]` — Current state
 
 ### Wikilinks
-- Use `[[document-name]]` for cross-references
-- Link to `[[00_Index_project-name]]` for project documentation hubs
+- Use `[document name](path/to/document.md)` for cross-references
+- Link to ``00_Index_*.md`` for project documentation hubs
 
 ---
 
@@ -413,18 +475,14 @@ created: YYYY-MM-DD
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[trustworthy_ai_report]] - AI safety
-- [[architecture_patterns]] - architecture
-- [[cost_management]] - cost management
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[orchestration_patterns]] - orchestration
-- [[security_patterns]] - security
-- [[session_documentation]] - session notes
-- [[testing_strategy]] - testing/QA
-- [[agent-skills-library/README]] - Agent Skills
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Trustworthy AI Report](Documents/reports/trustworthy_ai_report.md) - AI safety
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [Safety Systems](patterns/safety-systems.md) - security
+- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
 

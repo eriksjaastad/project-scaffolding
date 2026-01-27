@@ -60,6 +60,4 @@ If you paste (1) the model name LM Studio shows when the server is running, and 
 
 ## Related Documentation
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[dashboard_architecture]] - dashboard/UI
-- [[case_studies]] - examples
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI

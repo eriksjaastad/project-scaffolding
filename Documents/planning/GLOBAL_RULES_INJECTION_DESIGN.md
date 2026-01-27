@@ -12,7 +12,7 @@
 We need to ensure all projects have consistent safety rules in their `.cursorrules` files. Some projects (like [[hypocrisynow]]) already have them, others don't. This script will:
 
 1. Scan all projects for `.cursorrules` files
-2. Check if safety rules exist. See [[PROJECT_STRUCTURE_STANDARDS]].
+2. Check if safety rules exist. See [PROJECT_STRUCTURE_STANDARDS](../PROJECT_STRUCTURE_STANDARDS.md).
 3. Inject them if missing (or update if outdated)
 4. Backup everything first
 5. Support dry-run and canary deployment
@@ -225,13 +225,13 @@ These will need .cursorrules created from template. That's a separate task (not 
 ```bash
 python scripts/update_cursorrules.py --dry-run
 ```
-Review output, verify no surprises. See [[PROJECT_STRUCTURE_STANDARDS]].
+Review output, verify no surprises. See [PROJECT_STRUCTURE_STANDARDS](../PROJECT_STRUCTURE_STANDARDS.md).
 
 ### Phase 2: Canary Deployment (After Erik Approval)
 ```bash
 python scripts/update_cursorrules.py --execute --projects "project-tracker,ai-journal,analyze-youtube-videos"
 ```
-Wait 24-48 hours. Monitor for issues. See [[REVIEWS_AND_GOVERNANCE_PROTOCOL]].
+Wait 24-48 hours. Monitor for issues. See [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md).
 
 ### Phase 3: Full Rollout (After Canary Success)
 ```bash
@@ -276,37 +276,25 @@ git diff  # Should show reverted changes
 
 ## Related Documentation
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[adult_business_compliance]] - adult industry
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
 - [[backup_strategies]] - backup/recovery
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
 - [[holoscape_architecture]] - Holoscape
-- [[video_analysis_tools]] - video analysis
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[audit-agent/README]] - Audit Agent
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[holoscape/README]] - Holoscape
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[image-workflow/README]] - Image Workflow
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
-- [[tax-organizer/README]] - Tax Organizer
-- [[trading-copilot/README]] - Trading Copilot
-- [[hypocrisy_methodology]] - bias detection
-- [[recipe_system]] - recipe generation
+- [3d-pose-factory/README](../../../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [ai-usage-billing-tracker/README](../../../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [analyze-youtube-videos/README](../../../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [audit-agent/README](../../../ai-model-scratch-build/README.md) - Audit Agent
+- [cortana-personal-ai/README](../../../ai-model-scratch-build/README.md) - Cortana AI
+- [holoscape/README](../../../ai-model-scratch-build/README.md) - Holoscape
+- [hypocrisynow/README](../../../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [image-workflow/README](../../../ai-model-scratch-build/README.md) - Image Workflow
+- [muffinpanrecipes/README](../../../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../../../ai-model-scratch-build/README.md) - Project Tracker
+- [tax-organizer/README](../../../ai-model-scratch-build/README.md) - Tax Organizer
+- [trading-copilot/README](../../../ai-model-scratch-build/README.md) - Trading Copilot
 
 ## Risk Assessment
 
@@ -341,97 +329,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -468,22 +370,15 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -517,97 +412,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -644,28 +453,185 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[adult_business_compliance]] - adult industry
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
 - [[backup_strategies]] - backup/recovery
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
 - [[holoscape_architecture]] - Holoscape
-- [[video_analysis_tools]] - video analysis
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -699,97 +665,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -826,22 +706,15 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -875,97 +748,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -1002,41 +789,198 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[adult_business_compliance]] - adult industry
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
 - [[backup_strategies]] - backup/recovery
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
 - [[holoscape_architecture]] - Holoscape
-- [[video_analysis_tools]] - video analysis
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[audit-agent/README]] - Audit Agent
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[holoscape/README]] - Holoscape
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[image-workflow/README]] - Image Workflow
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
-- [[tax-organizer/README]] - Tax Organizer
-- [[trading-copilot/README]] - Trading Copilot
+- [3d-pose-factory/README](../../../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [ai-usage-billing-tracker/README](../../../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [analyze-youtube-videos/README](../../../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [audit-agent/README](../../../ai-model-scratch-build/README.md) - Audit Agent
+- [cortana-personal-ai/README](../../../ai-model-scratch-build/README.md) - Cortana AI
+- [holoscape/README](../../../ai-model-scratch-build/README.md) - Holoscape
+- [hypocrisynow/README](../../../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [image-workflow/README](../../../ai-model-scratch-build/README.md) - Image Workflow
+- [muffinpanrecipes/README](../../../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../../../ai-model-scratch-build/README.md) - Project Tracker
+- [tax-organizer/README](../../../ai-model-scratch-build/README.md) - Tax Organizer
+- [trading-copilot/README](../../../ai-model-scratch-build/README.md) - Trading Copilot
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -1070,97 +1014,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -1197,22 +1055,15 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -1246,97 +1097,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -1373,28 +1138,185 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[adult_business_compliance]] - adult industry
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
 - [[backup_strategies]] - backup/recovery
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
 - [[holoscape_architecture]] - Holoscape
-- [[video_analysis_tools]] - video analysis
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -1428,97 +1350,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
-
----
-
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
-| AI ignores new rules | Low | Low | Rules are additive, not replacing |
-| Rollback fails | Very Low | High | Backup manifest + git as fallback |
-| Wrong projects modified | Low | Medium | `--projects` flag for precision |
-
----
-
-## Erik's Decisions (Jan 10, 2026)
-
-1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
-
-2. **Monitoring period:** ✅ 48 hours
-
-3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
-
-4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
-
----
-
-## Philosophy Note
-
-> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
-
-**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
-
----
-
-**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
-
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
-
----
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -1555,22 +1391,15 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -1604,12 +1433,11 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
@@ -1646,16 +1474,16 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
 ## Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -1689,12 +1517,94 @@ git diff  # Should show reverted changes
 
 **Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
 
-- [[PROJECT_STRUCTURE_STANDARDS]] - Repository layout and safety rules.
-- [[REVIEWS_AND_GOVERNANCE_PROTOCOL]] - Audit and deployment standards.
-- [[DOPPLER_SECRETS_MANAGEMENT]] - Secrets handling for automation scripts.
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
 
 ---
-*See also: [[CODE_QUALITY_STANDARDS]] and [[PROJECT_KICKOFF_GUIDE]].*
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
+
+---
+
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+## Risk Assessment
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| Cursor can't parse modified .cursorrules | Low | Medium | Dry-run + canary first |
+| AI ignores new rules | Low | Low | Rules are additive, not replacing |
+| Rollback fails | Very Low | High | Backup manifest + git as fallback |
+| Wrong projects modified | Low | Medium | `--projects` flag for precision |
+
+---
+
+## Erik's Decisions (Jan 10, 2026)
+
+1. **Canary selection:** ✅ project-tracker, Tax Processing, analyze-youtube-videos
+
+2. **Monitoring period:** ✅ 48 hours
+
+3. **Root .cursorrules:** Leave separate. Super Manager rules are different - main rule is "no coding or touching files unless asked."
+
+4. **Missing .cursorrules:** ✅ Add `--create` flag to generate .cursorrules from template for projects that don't have one.
+
+---
+
+## Philosophy Note
+
+> "Safety is an evolution. Projects are never done - they're just at some point in their evolution. We should always be able to see what projects are checking all boxes, checking some boxes. A project doesn't grind to a halt if it hasn't been upgraded to the newest version, but we should know if it hasn't been upgraded."
+
+**Future idea:** Version the scaffolding like npm modules - deployable, upgradeable, trackable.
+
+---
+
+**Design Complete. Erik approved canary projects and 48-hour monitoring. Ready for implementation.**
+
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](../../REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Audit and deployment standards.
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - Secrets handling for automation scripts.
+
+---
+*See also: [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md) and [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md).*
 
 ---
 

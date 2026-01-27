@@ -344,13 +344,7 @@ build/
 
 ## Related Documentation
 
-- [[CODE_QUALITY_STANDARDS]] - code standards
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[database_setup]] - database
-- [[queue_processing_guide]] - queue/workflow
-- [[case_studies]] - examples
-- [[performance_optimization]] - performance
-- [[testing_strategy]] - testing/QA
-- [[image-workflow/README]] - Image Workflow
-- [[project-scaffolding/README]] - Project Scaffolding
+- [CODE_QUALITY_STANDARDS](../Documents/CODE_QUALITY_STANDARDS.md) - code standards
+- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [image-workflow/README](../../ai-model-scratch-build/README.md) - Image Workflow
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

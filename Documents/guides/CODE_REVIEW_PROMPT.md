@@ -211,23 +211,15 @@ Example:
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[orchestration_patterns]] - orchestration
-- [[performance_optimization]] - performance
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [cortana-personal-ai/README](../../../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../../../ai-model-scratch-build/README.md) - Image Workflow
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

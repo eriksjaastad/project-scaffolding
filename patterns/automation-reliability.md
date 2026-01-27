@@ -487,11 +487,8 @@ When setting up new automation:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[automation_patterns]] - automation
-- [[discord_integration]] - Discord
-- [[error_handling_patterns]] - error handling
-- [[ai_model_comparison]] - AI models
-- [[cortana_architecture]] - Cortana AI
-- [[testing_strategy]] - testing/QA
-- [[cortana-personal-ai/README]] - Cortana AI
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI

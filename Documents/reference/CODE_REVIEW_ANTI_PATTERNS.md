@@ -121,11 +121,8 @@ grep -E "^[^#].*>=[0-9]" requirements.txt | grep -v "~="
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[automation_patterns]] - automation
-- [[database_setup]] - database
-- [[error_handling_patterns]] - error handling
-- [[prompt_engineering_guide]] - prompt engineering
-- [[ai_model_comparison]] - AI models
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

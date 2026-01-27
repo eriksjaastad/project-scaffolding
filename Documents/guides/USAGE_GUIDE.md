@@ -130,7 +130,7 @@ project/
 
 Do not "vibe code" or build without a spec. Use the single source of truth in the projects root:
 
-👉 **[[Project-workflow]]** (`/Users/eriksjaastad/projects/Project-workflow.md`)
+👉 **[Project Workflow](../Project-workflow.md)** (`/Users/eriksjaastad/projects/Project-workflow.md`)
 
 This workflow ensures that:
 1. **Intent is captured** (PRD)
@@ -326,14 +326,9 @@ When you find patterns worth sharing:
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[cost_management]] - cost management
-- [[database_setup]] - database
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[testing_strategy]] - testing/QA
-- [[project-scaffolding/README]] - Project Scaffolding
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

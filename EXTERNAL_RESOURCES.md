@@ -156,24 +156,16 @@ Ask yourself:
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[automation_patterns]] - automation
-- [[cost_management]] - cost management
-- [[database_setup]] - database
-- [[discord_integration]] - Discord
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
-- [[security_patterns]] - security
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[image-workflow/README]] - Image Workflow
-- [[muffinpanrecipes/README]] - Muffin Pan Recipes
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[trading-copilot/README]] - Trading Copilot
-- [[recipe_system]] - recipe generation
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [3d-pose-factory/README](../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
+- [image-workflow/README](../ai-model-scratch-build/README.md) - Image Workflow
+- [muffinpanrecipes/README](../ai-model-scratch-build/README.md) - Muffin Pan Recipes
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [trading-copilot/README](../ai-model-scratch-build/README.md) - Trading Copilot

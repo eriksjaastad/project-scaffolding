@@ -1,25 +1,22 @@
-# [PROJECT_NAME]
+# {{PROJECT_NAME}}
 
-[Brief 2-3 sentence description of the project.]
+{{PROJECT_DESCRIPTION}}
 
 ## Quick Start
 
-### Installation
 ```bash
-# [Add installation steps here]
-```
+# Setup
+{{SETUP_COMMAND}}
 
-### Usage
-```bash
-# [Add usage steps here]
+# Run
+{{RUN_COMMAND}}
 ```
 
 ## Documentation
-See the `Documents/` directory for detailed documentation:
-- [Architecture Overview](Documents/ARCHITECTURE_OVERVIEW.md)
-- [Operations Guide](Documents/OPERATIONS_GUIDE.md)
+
+See the `Documents/` directory for detailed documentation.
 
 ## Status
-- **Current Phase:** [Phase Name]
-- **Status:** #status/active
 
+- **Current Phase:** {{PHASE}}
+- **Status:** #status/active

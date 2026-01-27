@@ -358,15 +358,9 @@ Result:
 
 ## Related Documentation
 
-- [[CODE_REVIEW_ANTI_PATTERNS]] - code review
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[architecture_patterns]] - architecture
-- [[billing_workflows]] - billing/payments
-- [[cost_management]] - cost management
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[performance_optimization]] - performance
-- [[security_patterns]] - security
-- [[testing_strategy]] - testing/QA
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
+- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [ai-usage-billing-tracker/README](../../ai-model-scratch-build/README.md) - AI Billing Tracker

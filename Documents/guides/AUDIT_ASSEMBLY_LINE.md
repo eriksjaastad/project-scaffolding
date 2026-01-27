@@ -22,7 +22,7 @@ The following domains are **Human-First Zones** and are strictly exempt from the
 **Execution:** Worker (Ollama / `qwen3:4b`)
 **Action:** Noise reduction, dependency extraction, and debt extraction.
 
-**See:** [[TODO_FORMAT_STANDARD]] for the expected debt tracking format.
+**See:** [TODO_FORMAT_STANDARD](../TODO_FORMAT_STANDARD.md) for the expected debt tracking format.
 
 **Prompt for Floor Manager:**
 > "Execute **Step 0 (Local Baseline)** for this project.
@@ -60,9 +60,9 @@ npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**,*
 ### 🚩 PHASE A: DNA & SECURITY (The "Warden" Pass)
 **Prompt for Reviewer:**
 > "Audit this project for DNA Security based on our Gold Standard.
-> 1. Find every absolute path (e.g., `[USER_HOME]/...` or `~/...`). These are critical failures. See [[PROJECT_STRUCTURE_STANDARDS]].
+> 1. Find every absolute path (e.g., `[USER_HOME]/...` or `~/...`). These are critical failures. See [PROJECT_STRUCTURE_STANDARDS](../PROJECT_STRUCTURE_STANDARDS.md).
 > 2. Search for hardcoded API keys, secrets, or plain-text credentials.
-> 3. **Doppler Readiness:** Flag every instance of `os.getenv` or `process.env`. These must be mapped to our central Doppler naming convention in the new Spec. See [[DOPPLER_SECRETS_MANAGEMENT]].
+> 3. **Doppler Readiness:** Flag every instance of `os.getenv` or `process.env`. These must be mapped to our central Doppler naming convention in the new Spec. See [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md).
 > 4. Check all user-input paths for `safe_slug()` and path traversal protection.
 > 5. List every violation as a 'P0 DNA DEFECT'."
 
@@ -79,7 +79,7 @@ npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**,*
 > "Compare the code against the `spec.md` we just generated.
 > 1. Does the code actually do what the Spec says it does?
 > 2. Is there 'Dead Code' or 'Feature Creep' that isn't in the Spec?
-> 3. Identify any logic that is 'too clever' and needs to be simplified for long-term maintenance. See [[CODE_QUALITY_STANDARDS]].
+> 3. Identify any logic that is 'too clever' and needs to be simplified for long-term maintenance. See [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md).
 > 4. Final Verdict: Grade the project from A to F based on its readiness for the Doppler/Hardened ecosystem."
 
 ## 🔨 STEP 4: Industrial Remediation (The Redemption)
@@ -123,7 +123,7 @@ Deliver these one-by-one to the Floor Manager.
 
 ---
 
-*See also: [[PROJECT_STRUCTURE_STANDARDS]], [[DOPPLER_SECRETS_MANAGEMENT]], [[CODE_QUALITY_STANDARDS]], and [[LOCAL_MODEL_LEARNINGS]].*
+*See also: [PROJECT_STRUCTURE_STANDARDS](../PROJECT_STRUCTURE_STANDARDS.md), [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md), [CODE_QUALITY_STANDARDS](../CODE_QUALITY_STANDARDS.md), and [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md).*
 
 ---
 
@@ -139,17 +139,11 @@ Deliver these one-by-one to the Floor Manager.
 
 ## Related Documentation
 
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[error_handling_patterns]] - error handling
-- [[prompt_engineering_guide]] - prompt engineering
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[project_planning]] - planning/roadmap
-- [[security_patterns]] - security
-- [[testing_strategy]] - testing/QA
-- [[video_analysis_tools]] - video analysis
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[audit-agent/README]] - Audit Agent
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Safety Systems](patterns/safety-systems.md) - security
+- [3d-pose-factory/README](../../../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [ai-usage-billing-tracker/README](../../../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [analyze-youtube-videos/README](../../../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [audit-agent/README](../../../ai-model-scratch-build/README.md) - Audit Agent

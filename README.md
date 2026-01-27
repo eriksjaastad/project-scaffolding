@@ -23,6 +23,53 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ---
 
+## Why Each Component Exists
+
+> *Because "what" without "why" leads to forgotten decisions and repeated mistakes.*
+
+### Core Components
+
+| Component | Why It Exists |
+|-----------|---------------|
+| **templates/** | Every new project was starting from scratch. We kept recreating the same files. Templates capture "what a well-structured project looks like" so we don't reinvent it each time. |
+| **agentsync/** | We use Claude, Cursor, and Antigravity simultaneously. Each reads different config files. Without sync, improvements to one agent's rules never reached the others. AgentSync makes one edit propagate everywhere. |
+| **scaffold/cli.py** | Copying templates manually was error-prone. The CLI ensures consistent setup: right files, right structure, right placeholders filled in. One command instead of 15 copy-pastes. |
+| **patterns/** | Hard-won lessons were getting lost. "Every safety system was a scar" - we kept re-learning the same lessons. Patterns document WHY we do things, not just how. |
+| **Documents/** | Project documentation was scattered or missing. This structure (guides/, reference/, safety/) gives every project the same organized home for docs. |
+
+### Why `.agentsync/rules/` Instead of Just AGENTS.md?
+
+**Historical context:** AGENTS.md was the original "agent constitution" - hierarchy, workflow, constraints. It worked well for a single file.
+
+**The problem:** As rules grew, AGENTS.md became a 500+ line monolith. Different sections applied to different IDEs. Maintaining one massive file was fragile.
+
+**The solution:** Split into modular files (`00-overview.md`, `01-workflow.md`, etc.) that can be:
+- Targeted to specific IDEs via YAML frontmatter
+- Edited independently without merge conflicts
+- Ordered by filename (00-, 01-, etc.)
+
+AGENTS.md template still exists for the "constitution" content. `.agentsync/rules/` handles the operational rules that get synced to IDE configs.
+
+### Why AGENTSYNC Markers?
+
+Generated files (CLAUDE.md, .cursorrules) use markers:
+```
+<!-- AGENTSYNC:START -->
+[synced content]
+<!-- AGENTSYNC:END -->
+[custom content preserved]
+```
+
+**Why:** Some projects need project-specific rules that don't belong in the shared templates. Markers let us sync universal rules while preserving custom additions. Re-running sync doesn't blow away your customizations.
+
+### Why Safe Zones?
+
+Certain projects (ai-journal, writing) are excluded from scaffolding and sync.
+
+**Why:** These are personal/sensitive projects where AI agents shouldn't be auto-modifying files. The "safe zone" pattern prevents accidental overwrites of content that matters differently than code.
+
+---
+
 ## Quick Start
 
 **See `QUICKSTART.md` for step-by-step checklists with copy-paste commands.**
@@ -38,6 +85,7 @@ NEW_PROJECT="$PROJECTS_ROOT/my-new-project"
 mkdir -p "$NEW_PROJECT" && cd "$NEW_PROJECT"
 cp -r "$SCAFFOLDING/templates/Documents" ./Documents
 cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+cp "$SCAFFOLDING/templates/DECISIONS.md.template" ./DECISIONS.md
 cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
 cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
 cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
@@ -55,6 +103,7 @@ export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 # Copy only what's missing
 [[ ! -f 00_Index_*.md ]] && cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $(pwd)).md"
 [[ ! -f AGENTS.md ]] && cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
+[[ ! -f DECISIONS.md ]] && cp "$SCAFFOLDING/templates/DECISIONS.md.template" ./DECISIONS.md
 [[ ! -f CLAUDE.md ]] && cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
 [[ ! -f .cursorrules ]] && cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
 [[ ! -d Documents ]] && cp -r "$SCAFFOLDING/templates/Documents" ./Documents
@@ -67,6 +116,7 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
 | Document | Purpose |
 |----------|---------|
 | `QUICKSTART.md` | Step-by-step checklists (new + existing projects) |
+| `DECISIONS.md` | Architectural decision log - document the "why" behind choices |
 | `Documents/PROJECT_KICKOFF_GUIDE.md` | Detailed planning workflow |
 | `Documents/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
 | `Documents/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
@@ -279,34 +329,23 @@ Don't force it. Let patterns emerge naturally.
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[cost_management]] - cost management
-- [[database_setup]] - database
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[ai_model_comparison]] - AI models
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[deployment_patterns]] - deployment
-- [[hypocrisy_methodology]] - bias detection
-- [[orchestration_patterns]] - orchestration
-- [[testing_strategy]] - testing/QA
-- [[agent-skills-library/README]] - Agent Skills
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[image-workflow/README]] - Image Workflow
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [PROJECT_KICKOFF_GUIDE](Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- [ai-usage-billing-tracker/README](../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
+- [hypocrisynow/README](../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [image-workflow/README](../ai-model-scratch-build/README.md) - Image Workflow
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../ai-model-scratch-build/README.md) - Project Tracker
 
 ## Development Resources
 - [[project-tracker/data/WARDEN_LOG.yaml|WARDEN_LOG.yaml]]
-- [[project-scaffolding/scripts/warden_audit.py|warden_audit.py]]
-- [[project-scaffolding/prompts/active/document_review/performance.md|performance.md]]
-- [[project-scaffolding/prompts/active/document_review/security.md|security.md]]
-- [[project-scaffolding/scaffold/__init__.py|__init__.py]]
+- [scripts/warden_audit.py|warden_audit.py](scripts/warden_audit.py|warden_audit.py)
+- [prompts/active/document_review/performance.md|performance.md](prompts/active/document_review/performance.md|performance.md)
+- [prompts/active/document_review/security.md|security.md](prompts/active/document_review/security.md|security.md)
+- [scaffold/__init__.py|__init__.py](scaffold/__init__.py|__init__.py)

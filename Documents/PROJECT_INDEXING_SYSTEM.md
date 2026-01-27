@@ -10,7 +10,6 @@ created: 2025-12-31
 
 # Project Indexing System
 
-**Purpose:** Automated project discovery and index file generation for Obsidian vault navigation.
 
 ---
 
@@ -429,38 +428,25 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 
 ## Related Documentation
 
-- [[DOPPLER_SECRETS_MANAGEMENT]] - secrets management
-- [[LOCAL_MODEL_LEARNINGS]] - local AI
-- [[PROJECT_KICKOFF_GUIDE]] - project setup
-- [[PROJECT_STRUCTURE_STANDARDS]] - project structure
-- [[architecture_patterns]] - architecture
-- [[automation_patterns]] - automation
-- [[billing_workflows]] - billing/payments
-- [[dashboard_architecture]] - dashboard/UI
-- [[error_handling_patterns]] - error handling
-- [[queue_processing_guide]] - queue/workflow
-- [[tax_documentation]] - tax/accounting
-- [[case_studies]] - examples
-- [[cortana_architecture]] - Cortana AI
-- [[portfolio_content]] - portfolio/career
-- [[testing_strategy]] - testing/QA
-- [[video_analysis_tools]] - video analysis
-- [[3d-pose-factory/README]] - 3D Pose Factory
-- [[agent-skills-library/README]] - Agent Skills
-- [[ai-usage-billing-tracker/README]] - AI Billing Tracker
-- [[analyze-youtube-videos/README]] - YouTube Analyzer
-- [[cortana-personal-ai/README]] - Cortana AI
-- [[country-ai-futures-tracker/README]] - Country AI Futures
-- [[flo-fi/README]] - Flo-Fi
-- [[hypocrisynow/README]] - Hypocrisy Now
-- [[image-workflow/README]] - Image Workflow
-- [[national-cattle-brands/README]] - Cattle Brands
-- [[portfolio-ai/README]] - Portfolio AI
-- [[project-scaffolding/README]] - Project Scaffolding
-- [[project-tracker/README]] - Project Tracker
-- [[smart-invoice-workflow/README]] - Smart Invoice
-- [[synth-insight-labs/README]] - Synth Insight Labs
-- [[tax-organizer/README]] - Tax Organizer
-- [[trading-copilot/README]] - Trading Copilot
-- [[van-build/README]] - Van Build
-- [[hypocrisy_methodology]] - bias detection
+- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
+- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
+- [PROJECT_KICKOFF_GUIDE](PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Automation Reliability](patterns/automation-reliability.md) - automation
+- [3d-pose-factory/README](../../ai-model-scratch-build/README.md) - 3D Pose Factory
+- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- [ai-usage-billing-tracker/README](../../ai-model-scratch-build/README.md) - AI Billing Tracker
+- [analyze-youtube-videos/README](../../ai-model-scratch-build/README.md) - YouTube Analyzer
+- [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
+- [country-ai-futures-tracker/README](../../ai-model-scratch-build/README.md) - Country AI Futures
+- [flo-fi/README](../../ai-model-scratch-build/README.md) - Flo-Fi
+- [hypocrisynow/README](../../ai-model-scratch-build/README.md) - Hypocrisy Now
+- [image-workflow/README](../../ai-model-scratch-build/README.md) - Image Workflow
+- [national-cattle-brands/README](../../ai-model-scratch-build/README.md) - Cattle Brands
+- [portfolio-ai/README](../../ai-model-scratch-build/README.md) - Portfolio AI
+- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [project-tracker/README](../../ai-model-scratch-build/README.md) - Project Tracker
+- [smart-invoice-workflow/README](../../ai-model-scratch-build/README.md) - Smart Invoice
+- [synth-insight-labs/README](../../ai-model-scratch-build/README.md) - Synth Insight Labs
+- [tax-organizer/README](../../ai-model-scratch-build/README.md) - Tax Organizer
+- [trading-copilot/README](../../ai-model-scratch-build/README.md) - Trading Copilot
+- [van-build/README](../../ai-model-scratch-build/README.md) - Van Build

@@ -282,11 +282,5 @@ That's how you get to "I can hand work off to an AI team and not worry" - throug
 
 ## Related Documentation
 
-- [[ai_training_methodology]] - AI training
-- [[cost_management]] - cost management
-- [[error_handling_patterns]] - error handling
-- [[adult_business_compliance]] - adult industry
-- [[case_studies]] - examples
-- [[performance_optimization]] - performance
-- [[research_methodology]] - research
-- [[project-tracker/README]] - Project Tracker
+- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [project-tracker/README](../../ai-model-scratch-build/README.md) - Project Tracker
