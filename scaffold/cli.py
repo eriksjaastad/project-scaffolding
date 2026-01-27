@@ -6,6 +6,7 @@ import asyncio
 import os
 import re
 import shutil
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Dict
@@ -55,6 +56,7 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "LANGUAGE_VERSION": "3.11+",
         "FRAMEWORKS": "None",
         "RUN_COMMAND": "python main.py",
+        "SETUP_COMMAND": "pip install -r requirements.txt",
         "TEST_COMMAND": "pytest",
         "MAIN_CODE_DIR": "src",
         "CONSTRAINTS": "None",
@@ -112,6 +114,140 @@ def _substitute_placeholders(content: str, context: Dict[str, str], filename: st
     content = single_pattern.sub(replace_single, content)
     
     return content
+
+
+def _copy_agentsync_rules(
+    template_dir: Path,
+    target_dir: Path,
+    context: Dict[str, str],
+    dry_run: bool = False,
+) -> List[str]:
+    """
+    Copy .agentsync/rules/ templates to target project with placeholder substitution.
+
+    Args:
+        template_dir: Path to project-scaffolding templates directory
+        target_dir: Path to target project root
+        context: Variables for placeholder substitution
+        dry_run: Preview changes without writing
+
+    Returns:
+        List of actions taken (for logging)
+    """
+    actions = []
+
+    agentsync_src = template_dir / ".agentsync" / "rules"
+    agentsync_dst = target_dir / ".agentsync" / "rules"
+
+    if not agentsync_src.exists():
+        actions.append(f"[yellow]⚠️  No .agentsync/rules/ templates found at {agentsync_src}[/yellow]")
+        return actions
+
+    # Create target directory structure
+    if not dry_run:
+        agentsync_dst.mkdir(parents=True, exist_ok=True)
+    actions.append(f"[dim]📁 Ensuring {agentsync_dst} exists[/dim]")
+
+    # Find all template files
+    templates = list(agentsync_src.glob("*.md.template")) + list(agentsync_src.glob("*.md"))
+
+    for template_path in templates:
+        # Determine output filename (strip .template suffix if present)
+        out_name = template_path.name
+        if out_name.endswith(".template"):
+            out_name = out_name[:-9]  # Remove ".template"
+
+        out_path = agentsync_dst / out_name
+
+        # Read template and substitute placeholders
+        template_content = template_path.read_text()
+        try:
+            substituted = _substitute_placeholders(template_content, context, template_path.name)
+        except click.ClickException as e:
+            actions.append(f"[red]❌ Error processing {template_path.name}: {e}[/red]")
+            continue
+
+        if dry_run:
+            action = "Would update" if out_path.exists() else "Would create"
+            actions.append(f"[cyan]📝 {action} {out_path} (from {template_path.name})[/cyan]")
+        else:
+            # Backup existing file before overwriting
+            if out_path.exists():
+                backup_path = out_path.with_suffix(out_path.suffix + ".backup")
+                shutil.copy2(out_path, backup_path)
+                actions.append(f"[yellow]💾 Backed up {out_path.name} → {backup_path.name}[/yellow]")
+
+            out_path.write_text(substituted)
+            action = "Updated" if out_path.exists() else "Created"
+            actions.append(f"[green]✅ {action} {out_path}[/green]")
+
+    return actions
+
+
+def _run_agentsync(
+    project_name: str,
+    dry_run: bool = False,
+) -> tuple[bool, List[str]]:
+    """
+    Run agentsync to sync .agentsync/rules/ to IDE configs.
+
+    Args:
+        project_name: Name of the project to sync
+        dry_run: Preview without running
+
+    Returns:
+        Tuple of (success, list of log messages)
+    """
+    actions = []
+
+    # AgentSync lives in project-scaffolding/agentsync/ (same repo as this CLI)
+    agentsync_script = Path(__file__).parent.parent / "agentsync" / "sync_rules.py"
+
+    if not agentsync_script.exists():
+        actions.append(f"[yellow]⚠️  AgentSync not found at {agentsync_script}[/yellow]")
+        actions.append("[yellow]   Skipping agentsync (IDE configs won't be updated)[/yellow]")
+        return False, actions
+
+    if dry_run:
+        actions.append(f"[cyan]🔄 Would run: uv run {agentsync_script} {project_name}[/cyan]")
+        return True, actions
+
+    # Run agentsync
+    actions.append(f"[blue]🔄 Running agentsync for {project_name}...[/blue]")
+
+    try:
+        # Use uv run to ensure consistent Python environment
+        result = subprocess.run(
+            ["uv", "run", str(agentsync_script), project_name],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+
+        if result.returncode == 0:
+            actions.append("[green]✅ AgentSync completed successfully[/green]")
+            if result.stdout.strip():
+                for line in result.stdout.strip().split("\n"):
+                    actions.append(f"[dim]   {line}[/dim]")
+            return True, actions
+        else:
+            actions.append(f"[red]❌ AgentSync failed (exit code {result.returncode})[/red]")
+            if result.stderr.strip():
+                for line in result.stderr.strip().split("\n"):
+                    actions.append(f"[red]   {line}[/red]")
+            return False, actions
+
+    except subprocess.TimeoutExpired:
+        actions.append("[red]❌ AgentSync timed out after 60 seconds[/red]")
+        return False, actions
+    except FileNotFoundError:
+        actions.append("[yellow]⚠️  'uv' command not found - skipping agentsync[/yellow]")
+        actions.append("[yellow]   Install uv or run agentsync manually[/yellow]")
+        return False, actions
+    except Exception as e:
+        actions.append(f"[red]❌ AgentSync error: {e}[/red]")
+        return False, actions
 
 
 @click.group()
@@ -284,10 +420,9 @@ def review(
 
 @cli.command()
 @click.argument("project_name")
-@click.option("--dry-run", is_flag=True, help="Print what would happen, don't change anything")
-@click.option("--force", is_flag=True, help="Overwrite existing files (make .backup first)")
+@click.option("--dry-run", is_flag=True, help="Preview changes without writing anything")
 @click.option("--verify-only", is_flag=True, help="Just check for $SCAFFOLDING refs, no copies")
-def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> None:
+def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     """
     Apply scaffolding to a target project to make it standalone.
     
@@ -346,11 +481,11 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
     for script in scripts_to_copy:
         src = scaffold_root / script
         dst = target_dir / script
-        _copy_file(src, dst, dry_run, force)
+        _copy_file(src, dst, dry_run)
 
     # Special case: pre_review_scan.sh
     pre_review_src = target_dir / "scripts/pre_review_scan.sh"
-    _create_pre_review_scan(pre_review_src, project_name, dry_run, force)
+    _create_pre_review_scan(pre_review_src, project_name, dry_run)
 
     # 3. Copy docs
     console.print("\n[bold]Copying docs...[/bold]")
@@ -366,81 +501,133 @@ def apply(project_name: str, dry_run: bool, force: bool, verify_only: bool) -> N
         dst = target_dir / dst_rel
         if not dry_run:
             dst.parent.mkdir(parents=True, exist_ok=True)
-        _copy_file(src, dst, dry_run, force)
+        _copy_file(src, dst, dry_run)
 
-    # 4. Update/append templates OR create from template if missing
+    # 4. Copy .agentsync/rules/ templates
+    console.print("\n[bold]Copying .agentsync/rules/...[/bold]")
+    context = _get_context(project_name)
+    agentsync_actions = _copy_agentsync_rules(
+        template_dir=scaffold_root / "templates",
+        target_dir=target_dir,
+        context=context,
+        dry_run=dry_run,
+    )
+    for action in agentsync_actions:
+        console.print(f"  {action}")
+
+    # 5. Run agentsync to sync rules to IDE configs
+    console.print("\n[bold]Running agentsync...[/bold]")
+    agentsync_success, agentsync_logs = _run_agentsync(
+        project_name=project_name,
+        dry_run=dry_run,
+    )
+    for log in agentsync_logs:
+        console.print(f"  {log}")
+
+    # 6. Update templates with npm-like marker pattern
+    # NOTE: CLAUDE.md and .cursorrules are managed by AgentSync (step 5)
+    # Do NOT add templates for them here - it causes duplication
     console.print("\n[bold]Updating/creating from templates...[/bold]")
 
-    # Marker to detect if template was already appended
-    SCAFFOLD_MARKER = "<!-- project-scaffolding template appended -->"
+    # Markers for scaffold-owned sections (content outside these is preserved)
+    # This follows the same pattern as agentsync for consistency
+    SCAFFOLD_START = "<!-- SCAFFOLD:START - Do not edit between markers -->"
+    SCAFFOLD_END = "<!-- SCAFFOLD:END - Custom content below is preserved -->"
 
     # Map files to their templates (None means no template available)
+    # IMPORTANT: CLAUDE.md and .cursorrules are managed by AgentSync, not here
     files_with_templates = {
         "AGENTS.md": "templates/AGENTS.md.template",
-        "CLAUDE.md": "templates/CLAUDE.md.template",
+        "DECISIONS.md": "templates/DECISIONS.md.template",
         "TODO.md": "templates/TODO.md.template",
         "README.md": "templates/README.md.template",
-        ".cursorrules": "templates/.cursorrules.template",
         ".cursorignore": "templates/.cursorignore.template",
         ".gitignore": "templates/.gitignore.template",
     }
 
-    context = _get_context(project_name)
-
     for filename, template_path in files_with_templates.items():
         file_path = target_dir / filename
+        template_full_path = scaffold_root / template_path if template_path else None
+
+        if template_full_path and not template_full_path.exists():
+            console.print(f"  [yellow]⚠️  Template not found for {filename}[/yellow]")
+            continue
+
         if file_path.exists():
             if template_path:
-                # File exists AND template available - append template if not already done
-                template_full_path = scaffold_root / template_path
-                if template_full_path.exists():
-                    existing_content = file_path.read_text()
-                    if SCAFFOLD_MARKER in existing_content:
-                        console.print(f"  ✅ {filename} - template already appended, ensuring substitution...")
+                existing_content = file_path.read_text()
+                template_content = template_full_path.read_text()
+
+                # Perform substitution on template content
+                substituted_template = _substitute_placeholders(template_content, context, str(template_path))
+
+                # Check if file has our markers (npm-like update between markers)
+                if SCAFFOLD_START in existing_content and SCAFFOLD_END in existing_content:
+                    # UPDATE mode: Replace content between markers, preserve content outside
+                    console.print(f"  🔄 Updating {filename} (between markers)...")
+                    if not dry_run:
+                        # Extract content before START marker
+                        start_idx = existing_content.find(SCAFFOLD_START)
+                        content_before = existing_content[:start_idx].rstrip()
+
+                        # Extract content after END marker
+                        end_idx = existing_content.find(SCAFFOLD_END)
+                        content_after = existing_content[end_idx + len(SCAFFOLD_END):].lstrip('\n')
+
+                        # Build new content: before + markers + template + after
+                        new_content = f"{content_before}\n{SCAFFOLD_START}\n{substituted_template}\n{SCAFFOLD_END}"
+                        if content_after:
+                            new_content += f"\n{content_after}"
+
+                        file_path.write_text(new_content)
+                    _update_file_references(file_path, dry_run)
+                else:
+                    # Check for old-style marker to migrate
+                    OLD_MARKER = "<!-- project-scaffolding template appended -->"
+                    if OLD_MARKER in existing_content:
+                        # MIGRATION mode: Convert old marker format to new
+                        console.print(f"  🔄 Migrating {filename} to marker-based format...")
                         if not dry_run:
-                            # Even if already appended, we want to ensure placeholders are substituted
-                            # This handles cases where previous runs failed to substitute
-                            substituted_content = _substitute_placeholders(existing_content, context, str(file_path))
-                            if substituted_content != existing_content:
-                                file_path.write_text(substituted_content)
+                            # Remove old marker and content after it
+                            old_idx = existing_content.find(OLD_MARKER)
+                            preserved_content = existing_content[:old_idx].rstrip()
+
+                            # Build new content with proper markers
+                            new_content = f"{SCAFFOLD_START}\n{substituted_template}\n{SCAFFOLD_END}\n\n{preserved_content}"
+                            file_path.write_text(new_content)
                         _update_file_references(file_path, dry_run)
                     else:
-                        console.print(f"  📝 Appending template to {filename}...")
+                        # ADD mode: File exists without markers - add them (existing content becomes custom)
+                        console.print(f"  📝 Adding markers to {filename} (preserving existing as custom)...")
                         if not dry_run:
-                            template_content = template_full_path.read_text()
-                            # Perform substitution on template content before appending
-                            substituted_template = _substitute_placeholders(template_content, context, str(template_path))
-                            appended_content = f"{existing_content}\n\n{SCAFFOLD_MARKER}\n\n{substituted_template}"
-                            file_path.write_text(appended_content)
+                            # Existing content becomes "custom content" after END marker
+                            new_content = f"{SCAFFOLD_START}\n{substituted_template}\n{SCAFFOLD_END}\n\n{existing_content}"
+                            file_path.write_text(new_content)
                         _update_file_references(file_path, dry_run)
             else:
                 # File exists but no template - just update references
                 _update_file_references(file_path, dry_run)
         elif template_path:
-            # File missing but template available - create from template
-            template_full_path = scaffold_root / template_path
-            if template_full_path.exists():
-                console.print(f"  📝 Creating {filename} from template...")
-                if not dry_run:
-                    template_content = template_full_path.read_text()
-                    # Perform substitution
-                    substituted_content = _substitute_placeholders(template_content, context, str(template_path))
-                    # Add marker so future runs know this was scaffolded
-                    content_with_marker = f"{SCAFFOLD_MARKER}\n\n{substituted_content}"
-                    file_path.write_text(content_with_marker)
-                    # Also update references in the newly created file
-                    _update_file_references(file_path, dry_run=False)
-            else:
-                console.print(f"  [yellow]⚠️  Template not found for {filename}[/yellow]")
+            # File missing but template available - create from template with markers
+            console.print(f"  📝 Creating {filename} from template...")
+            if not dry_run:
+                template_content = template_full_path.read_text()
+                # Perform substitution
+                substituted_content = _substitute_placeholders(template_content, context, str(template_path))
+                # Create with markers so future runs can update
+                content_with_markers = f"{SCAFFOLD_START}\n{substituted_content}\n{SCAFFOLD_END}"
+                file_path.write_text(content_with_markers)
+                # Also update references in the newly created file
+                _update_file_references(file_path, dry_run=False)
         else:
             # No template available
             console.print(f"  ⏭️  Skipped {filename} (not found, no template)")
 
-    # 5. Add version metadata
+    # 7. Add version metadata
     console.print("\n[bold]Adding version metadata...[/bold]")
     _add_version_metadata(target_dir, dry_run)
 
-    # 6. Final verification
+    # 8. Final verification
     console.print("\n[bold]Verifying...[/bold]")
     _verify_references(target_dir)
     _verify_no_placeholders(target_dir, project_name)
@@ -488,26 +675,22 @@ def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
         console.print("  ✅ No mandatory placeholders found")
 
 
-def _copy_file(src: Path, dst: Path, dry_run: bool, force: bool) -> None:
+def _copy_file(src: Path, dst: Path, dry_run: bool) -> None:
     if not src.exists():
         console.print(f"  [red]error[/red] Source not found: {src}")
         return
 
-    if dst.exists() and not force:
-        console.print(f"  ⏭️  Skipped {dst.name} (already exists)")
-        return
-
-    action = "Copying" if not dst.exists() else "Overwriting"
+    action = "Copying" if not dst.exists() else "Updating"
     console.print(f"  {action} {dst.name}...")
 
     if not dry_run:
-        if dst.exists() and force:
+        if dst.exists():
             backup = dst.with_suffix(dst.suffix + ".backup")
             shutil.copy2(dst, backup)
         shutil.copy2(src, dst)
 
 
-def _create_pre_review_scan(dst: Path, project_name: str, dry_run: bool, force: bool) -> None:
+def _create_pre_review_scan(dst: Path, project_name: str, dry_run: bool) -> None:
     template = """#!/bin/bash
 # pre_review_scan.sh - Run before code reviews or commits
 # Usage: ./scripts/pre_review_scan.sh
@@ -544,16 +727,12 @@ else
 fi
 """
     content = template.replace("{project_name}", project_name)
-    
-    if dst.exists() and not force:
-        console.print("  ⏭️  Skipped pre_review_scan.sh (already exists)")
-        return
 
-    action = "Creating" if not dst.exists() else "Overwriting"
+    action = "Creating" if not dst.exists() else "Updating"
     console.print(f"  {action} pre_review_scan.sh...")
 
     if not dry_run:
-        if dst.exists() and force:
+        if dst.exists():
             backup = dst.with_suffix(dst.suffix + ".backup")
             dst.rename(backup)
         dst.write_text(content)

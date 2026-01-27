@@ -12,21 +12,21 @@
 
 ## 2. CORE REQUIREMENTS (The "Must-Haves")
 *If these aren't met, the project is a failure.*
-- [ ] **Infrastructure:** Must use Doppler for all secrets (No local .env files).
+- [ ] **Infrastructure:** Secrets in `.env` file (Doppler is at capacity - 10/10 projects).
 - [ ] **Portability:** Zero absolute paths. Must run from any directory via `PROJECTS_ROOT` anchor.
 - [ ] **Reliability:** No silent failures (`except: pass` is a critical rejection).
 - [ ] **Context Optimized:** Must be Repo-Mix compatible for "Stranger's Reviews" (Claude Web).
 
 ## 3. DATA ARCHITECTURE (The Shape of Things)
 *Describe the 'Source of Truth' for data.*
-- **Secrets:** Managed via Doppler (Project: [X], Config: [dev/prod]).
+- **Secrets:** Local `.env` file (loaded via `python-dotenv`). See `DOPPLER_QUICK_REF.md` for legacy projects.
 - **Reasoning:** Local-First (Ollama: DeepSeek-R1) for code logic.
 - **Storage:** [e.g., Local NDJSON / YAML / SQLite].
 
 ## 4. EXECUTION & CLI LOGIC
 *Standard ecosystem entry points (Replacing npm/web bias).*
 1. **Bootstrap:** `source venv/bin/activate`
-2. **Secrets Injection:** `doppler run -- [command]`
+2. **Secrets Injection:** Loaded via `load_dotenv()` (or `doppler run --` for legacy projects)
 3. **Primary Run:** `python scripts/[main_script].py`
 4. **Validation:** `pytest` (Standard 100% pass requirement).
 
