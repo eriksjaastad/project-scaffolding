@@ -7,9 +7,15 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Dict
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 import click
 from dotenv import load_dotenv
@@ -17,6 +23,20 @@ from rich.console import Console
 
 from scaffold.alerts import send_discord_alert
 from scaffold.constants import PROTECTED_PROJECTS
+
+
+def get_version() -> str:
+    """Read version from pyproject.toml."""
+    try:
+        pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
+        if pyproject_path.exists():
+            with open(pyproject_path, "rb") as f:
+                data = tomllib.load(f)
+                return data.get("project", {}).get("version", "0.1.0")
+    except Exception:
+        pass
+    return "0.1.0"
+
 
 # from scaffold.review import ReviewConfig, create_orchestrator
 
@@ -251,7 +271,7 @@ def _run_agentsync(
 
 
 @click.group()
-@click.version_option(version="0.1.0")
+@click.version_option(version=get_version())
 def cli() -> None:
     """Project Scaffolding - Automated Multi-AI Review & Build System"""
     pass
@@ -461,6 +481,32 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     console.print(f"\n[bold]Applying scaffolding to {project_name}...[/bold]\n")
     if dry_run:
         console.print("[yellow]DRY RUN: No changes will be made.[/yellow]\n")
+
+    # Check for existing version
+    version_file = target_dir / ".scaffolding-version"
+    current_version = get_version()
+    rules_version = get_rules_version()
+    if version_file.exists():
+        try:
+            import json
+            data = json.loads(version_file.read_text())
+            old_version = data.get("scaffolding_version", "0.0.0")
+            old_rules_version = data.get("rules_version", "0.0.0")
+            
+            if old_version < current_version:
+                console.print(f"[yellow]⚠️  Updating project from scaffolding version {old_version} to {current_version}[/yellow]")
+            elif old_version > current_version:
+                console.print(f"[red]⚠️  Warning: Project has newer scaffolding version ({old_version}) than this CLI ({current_version})[/red]")
+            
+            if old_rules_version < rules_version:
+                console.print(f"[yellow]⚠️  Updating project from rules version {old_rules_version} to {rules_version}[/yellow]")
+            elif old_rules_version > rules_version:
+                console.print(f"[red]⚠️  Warning: Project has newer rules version ({old_rules_version}) than this CLI ({rules_version})[/red]")
+                
+            if old_version == current_version and old_rules_version == rules_version:
+                console.print(f"[blue]ℹ️  Project is already at version {current_version} (rules: {rules_version})[/blue]")
+        except Exception:
+            pass
 
     # 1. Verification Only mode
     if verify_only:
@@ -680,6 +726,11 @@ def _copy_file(src: Path, dst: Path, dry_run: bool) -> None:
         console.print(f"  [red]error[/red] Source not found: {src}")
         return
 
+    # Skip if source and destination are the same file
+    if src.resolve() == dst.resolve():
+        console.print(f"  [blue]ℹ️  Skipping {dst.name} (source and destination are the same)[/blue]")
+        return
+
     action = "Copying" if not dst.exists() else "Updating"
     console.print(f"  {action} {dst.name}...")
 
@@ -763,25 +814,60 @@ def _update_file_references(file_path: Path, dry_run: bool) -> None:
         console.print(f"  ✅ {file_path.name} - 0 replacements (already clean)")
 
 
-def _add_version_metadata(target_dir: Path, dry_run: bool) -> None:
-    index_files = list(target_dir.glob("00_Index_*.md"))
-    if not index_files:
-        console.print("  [yellow]⏭️  Skipped version metadata (no 00_Index_*.md found)[/yellow]")
-        return
+def get_rules_version() -> str:
+    """Read rules version from templates/.agentsync/RULES_VERSION."""
+    try:
+        rules_version_path = Path(__file__).parent.parent / "templates" / ".agentsync" / "RULES_VERSION"
+        if rules_version_path.exists():
+            return rules_version_path.read_text().strip()
+    except Exception:
+        pass
+    return "1.0.0"
 
-    for index_file in index_files:
-        content = index_file.read_text()
-        if "scaffolding_version:" in content:
-            console.print(f"  ⏭️  Skipped {index_file.name} (version already present)")
-            continue
-            
-        today = datetime.now().strftime("%Y-%m-%d")
-        metadata = f"\nscaffolding_version: 1.0.0\nscaffolding_date: {today}\n"
-        
-        console.print(f"  ✅ Added to {index_file.name}")
-        if not dry_run:
-            with open(index_file, "a") as f:
-                f.write(metadata)
+
+def _add_version_metadata(target_dir: Path, dry_run: bool) -> None:
+    """Add version metadata to 00_Index and create .scaffolding-version file."""
+    # 1. Update 00_Index
+    index_files = list(target_dir.glob("00_Index_*.md"))
+    current_version = get_version()
+    rules_version = get_rules_version()
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    if index_files:
+        for index_file in index_files:
+            content = index_file.read_text()
+            if "scaffolding_version:" in content:
+                # Update existing version
+                new_content = re.sub(r"scaffolding_version: .*", f"scaffolding_version: {current_version}", content)
+                new_content = re.sub(r"scaffolding_date: .*", f"scaffolding_date: {today}", new_content)
+                if new_content != content:
+                    console.print(f"  ✅ Updated version in {index_file.name}")
+                    if not dry_run:
+                        index_file.write_text(new_content)
+            else:
+                # Add new version metadata
+                metadata = f"\nscaffolding_version: {current_version}\nscaffolding_date: {today}\n"
+                console.print(f"  ✅ Added version to {index_file.name}")
+                if not dry_run:
+                    with open(index_file, "a") as f:
+                        f.write(metadata)
+    else:
+        console.print("  [yellow]⏭️  Skipped 00_Index version metadata (no 00_Index_*.md found)[/yellow]")
+
+    # 2. Create .scaffolding-version JSON file
+    version_file = target_dir / ".scaffolding-version"
+    version_data = {
+        "scaffolding_version": current_version,
+        "applied_at": datetime.now().isoformat(),
+        "rules_version": rules_version
+    }
+    
+    if dry_run:
+        console.print(f"  [cyan]Would create {version_file.name} with version {current_version} and rules {rules_version}[/cyan]")
+    else:
+        import json
+        version_file.write_text(json.dumps(version_data, indent=2))
+        console.print(f"  ✅ Created {version_file.name}")
 
 
 def _verify_references(target_dir: Path) -> None:

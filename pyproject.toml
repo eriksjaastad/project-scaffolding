@@ -1,0 +1,21 @@
+[project]
+name = "project-scaffolding"
+version = "1.0.0"
+description = "Project scaffolding templates and CLI"
+authors = [
+    {name = "Erik Sjaastad"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click",
+    "rich",
+    "python-dotenv",
+    "pyyaml",
+]
+
+[project.scripts]
+scaffold = "scaffold.cli:cli"
+
+[tool.setuptools]
+packages = ["scaffold"]

@@ -83,7 +83,6 @@ ignore_projects:
 # Projects that can be scanned/read but should NEVER be modified
 # Scaffolding, automated cleanup, and other tools should not touch these
 protected_projects:
-  - project-scaffolding  # Scaffolding should not scaffold itself
   - _tools               # Infrastructure tools - modify manually
   - ai-journal           # Journal entries are precious
   - __Knowledge          # Obsidian knowledge base

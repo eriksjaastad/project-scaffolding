@@ -1,3 +1,29 @@
+<!-- SCAFFOLD:START - Do not edit between markers -->
+# project-scaffolding
+
+Brief description of the project's purpose
+
+## Quick Start
+
+```bash
+# Setup
+pip install -r requirements.txt
+
+# Run
+python main.py
+```
+
+## Documentation
+
+See the `Documents/` directory for detailed documentation.
+
+## Status
+
+- **Current Phase:** Foundation
+- **Status:** #status/active
+
+<!-- SCAFFOLD:END - Custom content below is preserved -->
+
 # Project Scaffolding
 
 > *The meta-project: Extracting patterns from experiments to build better projects faster.*
@@ -83,12 +109,12 @@ NEW_PROJECT="$PROJECTS_ROOT/my-new-project"
 
 # Create project and copy templates
 mkdir -p "$NEW_PROJECT" && cd "$NEW_PROJECT"
-cp -r "$SCAFFOLDING/templates/Documents" ./Documents
-cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
-cp "$SCAFFOLDING/templates/DECISIONS.md.template" ./DECISIONS.md
-cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
-cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
-cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
+cp -r "./templates/Documents" ./Documents
+cp "./templates/AGENTS.md.template" ./AGENTS.md
+cp "./templates/DECISIONS.md.template" ./DECISIONS.md
+cp "./templates/CLAUDE.md.template" ./CLAUDE.md
+cp "./templates/.cursorrules-template" ./.cursorrules
+cp "./templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
 git init
 ```
 
@@ -101,12 +127,12 @@ cd /path/to/existing-project
 export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 
 # Copy only what's missing
-[[ ! -f 00_Index_*.md ]] && cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $(pwd)).md"
-[[ ! -f AGENTS.md ]] && cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
-[[ ! -f DECISIONS.md ]] && cp "$SCAFFOLDING/templates/DECISIONS.md.template" ./DECISIONS.md
-[[ ! -f CLAUDE.md ]] && cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
-[[ ! -f .cursorrules ]] && cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
-[[ ! -d Documents ]] && cp -r "$SCAFFOLDING/templates/Documents" ./Documents
+[[ ! -f 00_Index_*.md ]] && cp "./templates/00_Index.md.template" "./00_Index_$(basename $(pwd)).md"
+[[ ! -f AGENTS.md ]] && cp "./templates/AGENTS.md.template" ./AGENTS.md
+[[ ! -f DECISIONS.md ]] && cp "./templates/DECISIONS.md.template" ./DECISIONS.md
+[[ ! -f CLAUDE.md ]] && cp "./templates/CLAUDE.md.template" ./CLAUDE.md
+[[ ! -f .cursorrules ]] && cp "./templates/.cursorrules-template" ./.cursorrules
+[[ ! -d Documents ]] && cp -r "./templates/Documents" ./Documents
 ```
 
 Then customize for your project. See `QUICKSTART.md` for the full checklist.

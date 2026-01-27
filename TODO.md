@@ -1,3 +1,72 @@
+<!-- SCAFFOLD:START - Do not edit between markers -->
+# project-scaffolding - TODO
+
+**Last Updated:** 2026-01-27
+**Project Status:** Active
+**Current Phase:** Foundation
+
+---
+
+## Current State
+
+### What's Working
+<!-- List what's operational and tested -->
+
+### What's Missing
+<!-- Honest assessment of gaps -->
+
+### Blockers & Dependencies
+<!-- What's stopping progress? -->
+
+---
+
+## Completed Tasks
+
+### Phase 1: Initial Setup (2026-01-27)
+- [x] Project scaffolded
+- [x] Basic structure created
+
+---
+
+## Pending Tasks
+
+### Phase 0: Industrial Hardening (Gate 0)
+- [ ] **Dependency Pinning:** Replace `>=` with `~=` or `==` in `requirements.txt`
+- [ ] **DNA Check:** Verify zero machine-specific absolute paths remain in codebase
+- [ ] **Error Audit:** Replace `except: pass` with explicit logging
+- [ ] **Subprocess Audit:** Ensure all CLI calls have `check=True` and `timeout`
+
+### Critical
+<!-- High-priority, blocking other work -->
+
+### High Priority
+<!-- Important but not blocking -->
+
+### Medium Priority
+<!-- Nice to have, can wait -->
+
+---
+
+## Success Criteria
+
+### Foundation Complete When:
+- [ ] Define measurable criteria here
+
+---
+
+## Notes
+
+### Technical Stack
+- **Language:** Python 3.11+
+- **Framework:** None
+
+---
+
+*Template Version: 2.0*
+*Source: project-scaffolding/templates/TODO.md.template*
+
+<!-- SCAFFOLD:END - Custom content below is preserved -->
+
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding
@@ -138,7 +207,7 @@ Before implementing, let's understand how professional tools handle this:
 
 **When removing `$SCAFFOLDING` references, use relative paths:**
 - ✅ **Correct:** `python ./scripts/warden_audit.py`
-- ❌ **Wrong:** `python $SCAFFOLDING/scripts/warden_audit.py` (runtime dependency)
+- ❌ **Wrong:** `python ./scripts/warden_audit.py` (runtime dependency)
 - ❌ **Wrong:** `python $PROJECT/scripts/warden_audit.py` (unnecessary variable)
 
 **Why relative paths:**
