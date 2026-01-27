@@ -1,3 +1,4 @@
+
 <!-- SCAFFOLD:START - Do not edit between markers -->
 # Virtual environments
 venv/
@@ -29,7 +30,6 @@ Thumbs.db
 
 
 <!-- SCAFFOLD:END - Custom content below is preserved -->
-
 # Project Scaffolding - Environment Setup
 
 # Virtual environment

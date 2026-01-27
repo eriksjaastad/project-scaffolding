@@ -1,3 +1,4 @@
+
 <!-- SCAFFOLD:START - Do not edit between markers -->
 # project-scaffolding - TODO
 
@@ -66,7 +67,6 @@
 *Source: project-scaffolding/templates/TODO.md.template*
 
 <!-- SCAFFOLD:END - Custom content below is preserved -->
-
 # Project Scaffolding - TODO
 
 > **Purpose:** Current actionable tasks for project-scaffolding

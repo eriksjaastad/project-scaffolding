@@ -1,3 +1,4 @@
+
 <!-- SCAFFOLD:START - Do not edit between markers -->
 # Architectural Decisions - project-scaffolding
 
@@ -77,7 +78,6 @@ Decisions we haven't made yet but need to:
 *Last updated: 2026-01-27*
 
 <!-- SCAFFOLD:END - Custom content below is preserved -->
-
 # Architectural Decisions
 
 > *Documenting WHY we made decisions, not just WHAT we built.*
