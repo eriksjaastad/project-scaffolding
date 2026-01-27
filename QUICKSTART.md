@@ -262,7 +262,6 @@ doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(p
 
 - **Full Protocol:** `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
 - **Pattern Documentation:** `$SCAFFOLDING/patterns/code-review-standard.md`
-- **Review Prompts:** `$SCAFFOLDING/prompts/active/document_review/` (architecture, security, performance)
 - **Multi-AI Orchestrator:** `$SCAFFOLDING/scaffold/review.py` (supports OpenAI, Anthropic, DeepSeek, Ollama)
 
 **Key principle:** The review system is centralized in `project-scaffolding` to maintain consistency across all your projects. Projects reference and use it via `$SCAFFOLDING` commands.

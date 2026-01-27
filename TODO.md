@@ -697,15 +697,17 @@ Deployed projects must be 100% self-contained:
 
 ---
 
-## 🗑️ Deleted/Archived
+## 🗑️ Deleted
 
-**Archived (Documents/archives/):**
-- Original 1353-line TODO (brain dump)
-- Historical planning docs (Option C build plan, system walkthrough, etc.)
+**Policy (2026-01-27):** NO archiving. NO prompt directories. NO "save for later" patterns. 
+- Prompts are one-off. Delete them.
+- Old docs that aren't needed? Delete them.
+- Git has history. Use it.
 
-**Reason:** Claude Code review identified "documentation about automation" not "automation"
-
-**Archive Reference:** See `Documents/archives/planning/planning-notes-dec-2025.md` for historical brain dumps
+**What was removed:**
+- `prompts/` directory (contained review prompts we never used)
+- `.archive/` directory (empty cruft)
+- All references to "archive your prompts" or "save reviews to Documents/archives/"
 
 ---
 
