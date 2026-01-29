@@ -1,13 +1,35 @@
-# .agentsync Directory
+# .agentsync - Rule Synchronization System
 
-This directory contains the source of truth for agent configurations.
+Auto-generates `CLAUDE.md`, `.cursorrules`, and `.agent/rules/instructions.md` from rules/*.md files.
 
-## Structure
-
-Edit files in `rules/` - they will be synced to CLAUDE.md, .cursorrules, and .agent/rules/agents.md.
-
-## Manual Sync
+## Quick Reference
 
 ```bash
-uv run $TOOLS_ROOT/agentsync/sync_rules.py project-scaffolding
+# Sync this project
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py project-name
+
+# Sync all projects
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py --all
+
+# Preview changes
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py project-name --dry-run
 ```
+
+## Rules Organization
+
+Edit files in `rules/` - they will be synced to IDE config files in filename order:
+- `00_*.md` appears first
+- `01_*.md` appears second  
+- etc.
+
+## Full Documentation
+
+**📖 [AGENTSYNC_SYSTEM.md](../Documents/reference/AGENTSYNC_SYSTEM.md)** - Comprehensive guide covering:
+1. What is .agentsync?
+2. Directory structure
+3. How sync_rules.py works
+4. Rules file organization
+5. Detecting manual edits
+6. Resolving conflicts
+7. Best practices
+8. Troubleshootingscaffolding
