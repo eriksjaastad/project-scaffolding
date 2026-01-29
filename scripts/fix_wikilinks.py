@@ -56,9 +56,9 @@ UNIVERSAL_REPLACEMENTS = [
     (r'\[\[README\.md\]\]', '[README.md](README.md)'),
     
     # Project-level documents (generic patterns)
-    (r'\[\[ARCHITECTURAL_DECISIONS\]\]', '[Architectural Decisions](Documents/core/ARCHITECTURAL_DECISIONS.md)'),
-    (r'\[\[RECIPE_SCHEMA\]\]', '[Recipe Schema](Documents/core/RECIPE_SCHEMA.md)'),
-    (r'\[\[IMAGE_STYLE_GUIDE\]\]', '[Image Style Guide](Documents/core/IMAGE_STYLE_GUIDE.md)'),
+    (r'\[\[ARCHITECTURAL_DECISIONS\]\]', '[Architectural Decisions](Documents/ARCHITECTURAL_DECISIONS.md)'),
+    (r'\[\[RECIPE_SCHEMA\]\]', '[Recipe Schema](Documents/RECIPE_SCHEMA.md)'),
+    (r'\[\[IMAGE_STYLE_GUIDE\]\]', '[Image Style Guide](Documents/IMAGE_STYLE_GUIDE.md)'),
     
     # Index file references - convert to plain text (can't predict project name)
     (r'\[\[00_Index_[^\]]+\]\]', '`00_Index_*.md`'),
