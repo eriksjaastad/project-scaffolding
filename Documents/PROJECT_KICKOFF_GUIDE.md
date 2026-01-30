@@ -84,7 +84,7 @@ python $PROJECTS_ROOT/agent-skills-library/scripts/detect_skill_candidates.py
 
 Do not follow the old Phase 1-4 instructions previously found in this document. Instead, use the single source of truth located in the projects root:
 
-👉 **[Project Workflow](../Project-workflow.md)** (`/Users/eriksjaastad/projects/Project-workflow.md`)
+👉 **[Project Workflow](../../Project-workflow.md)** (`/Users/eriksjaastad/projects/Project-workflow.md`)
 
 This workflow covers:
 1. **Strategy** (PRD)
@@ -103,7 +103,7 @@ This workflow covers:
 - [ ] Customize `.cursorrules`
 - [ ] Customize `CLAUDE.md`
 - [ ] Create Project Index ([PROJECT_INDEXING_SYSTEM](PROJECT_INDEXING_SYSTEM.md))
-- [ ] **Follow Unified Workflow:** Start at Phase 1 in [Project Workflow](../Project-workflow.md)
+- [ ] **Follow Unified Workflow:** Start at Phase 1 in [Project Workflow](../../Project-workflow.md)
 
 ---
 

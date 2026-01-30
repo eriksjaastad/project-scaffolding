@@ -130,7 +130,7 @@ project/
 
 Do not "vibe code" or build without a spec. Use the single source of truth in the projects root:
 
-👉 **[Project Workflow](../Project-workflow.md)** (`/Users/eriksjaastad/projects/Project-workflow.md`)
+👉 **[Project Workflow](../../../Project-workflow.md)** (`/Users/eriksjaastad/projects/Project-workflow.md`)
 
 This workflow ensures that:
 1. **Intent is captured** (PRD)

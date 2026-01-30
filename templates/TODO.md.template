@@ -61,5 +61,13 @@
 
 ---
 
-*Template Version: 2.0*
+## Workflow Protocol
+- [ ] Start: `./pt tasks start <id>`
+- [ ] Complete work
+- [ ] Report: "Work complete. Awaiting Conductor sign-off."
+- [ ] FORBIDDEN: `./pt tasks done` (Conductor only)
+
+---
+
+*Template Version: 2.1*
 *Source: project-scaffolding/templates/TODO.md.template*

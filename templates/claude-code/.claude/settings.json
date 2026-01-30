@@ -13,9 +13,28 @@
       "Edit"
     ],
     "deny": [
-      "Bash(rm:*)",                                                        
-      "Bash(sudo rm:*)",                                                   
-      "Bash(sudo:rm *)"
+      "Bash(rm *)",
+      "Bash(rm:*)",
+      "Bash(*rm *)",
+      "Bash(*rm:*)",
+      "Bash(* rm *)",
+      "Bash(unlink *)",
+      "Bash(unlink:*)",
+      "Bash(shred *)",
+      "Bash(shred:*)",
+      "Bash(sudo *)",
+      "Bash(sudo:*)",
+      "Shell(rm *)",
+      "Shell(rm:*)",
+      "Shell(*rm *)",
+      "Shell(*rm:*)",
+      "Shell(* rm *)",
+      "Shell(unlink *)",
+      "Shell(unlink:*)",
+      "Shell(shred *)",
+      "Shell(shred:*)",
+      "Shell(sudo *)",
+      "Shell(sudo:*)"
     ]
   },
   "hooks": {}
