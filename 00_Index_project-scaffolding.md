@@ -144,7 +144,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 
 | Directory | Files | Description |
 | :--- | :---: | :--- |
-| [Documents/](Documents/README.md) | 13 | *Auto-generated index. Last updated: 2026-01-24* |
+| [Documents/](Documents/README.md) | 11 | *Auto-generated index. Last updated: 2026-01-24* |
 | [agentsync/](agentsync/README.md) | 4 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
 | [patterns/](patterns/) | 15 | No description available. |
@@ -168,7 +168,6 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/PROJECT_PHILOSOPHY.md](Documents/PROJECT_PHILOSOPHY.md) | > *"We're explorers. We're finding cool ways to collect data, interpret data, and look for patterns.... |
 | [Documents/PROJECT_STRUCTURE_STANDARDS.md](Documents/PROJECT_STRUCTURE_STANDARDS.md) | Project Structure Standards |
 | [Documents/README.md](Documents/README.md) | Project Documentation |
-| [Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md](Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | **Date:** 2026-01-24 |
 | [Documents/TODO_FORMAT_STANDARD.md](Documents/TODO_FORMAT_STANDARD.md) | TODO.md Format Standard |
 | [Documents/guides/AUDIT_ASSEMBLY_LINE.md](Documents/guides/AUDIT_ASSEMBLY_LINE.md) | 🏭 The Audit Assembly Line (V2.1) |
 | [Documents/guides/CODE_REVIEW_PROMPT.md](Documents/guides/CODE_REVIEW_PROMPT.md) | Code Review Prompt: Project Scaffolding System |
@@ -185,6 +184,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md](Documents/planning/ollama_mcp_enhancement/OLLAMA_MCP_RETRY_ESCALATION_SPEC.md) | Ollama MCP Enhancement: Retry & Escalation Tracking |
 | [Documents/planning/pre_commit_hook/PRE_COMMIT_HOOK_PROMPTS_INDEX.md](Documents/planning/pre_commit_hook/PRE_COMMIT_HOOK_PROMPTS_INDEX.md) | Pre-Commit Hook: Worker Task Prompts |
 | [Documents/planning/pre_commit_hook/PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md](Documents/planning/pre_commit_hook/PRE_COMMIT_PROMPT_1_HOOK_SCRIPT.md) | Worker Task: Create Pre-Commit Hook |
+| [Documents/reference/AGENTSYNC_SYSTEM.md](Documents/reference/AGENTSYNC_SYSTEM.md) | **Version:** 1.0 |
 | [Documents/reference/AGENT_CONFIG_SYNC.md](Documents/reference/AGENT_CONFIG_SYNC.md) | > **Single Source of Truth:** `.agentsync/rules/*.md` files are the only files you edit. All IDE con... |
 | [Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md](Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md) | Claude Code Hooks and Sub-Agents |
 | [Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) | Code Review Anti-Patterns Database |
@@ -202,6 +202,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [PRD.md](PRD.md) | The Erik Sjaastad project ecosystem consists of 30+ projects that need to follow consistent standard... |
 | [QUICKSTART.md](QUICKSTART.md) | Project Scaffolding - Quick Start |
 | [README.md](README.md) | Project Scaffolding |
+| [REVIEWS_AND_GOVERNANCE_PROTOCOL.md](REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | **Date:** 2026-01-27 |
 | [TODO.md](TODO.md) | > **Purpose:** Current actionable tasks for project-scaffolding |
 | [agentsync/README.md](agentsync/README.md) | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [agentsync/migrate_agents_md.py](agentsync/migrate_agents_md.py) | No description available. |

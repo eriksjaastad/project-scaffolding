@@ -5,6 +5,30 @@
 
 ---
 
+## 🛡️ UNIVERSAL GOVERNANCE RULES
+
+### 1. The "Trash, Don't Delete" Policy
+- **Rule:** NEVER use `rm`, `unlink`, or `shred`. Permanent deletion is forbidden.
+- **Enforcement:** Use `trash <file>` (CLI) or `send2trash` (Python).
+- **No workarounds:** Do not use `find -delete` or other indirect deletion methods.
+- **Why:** Allows recovery from accidental deletions.
+- **If trash is missing:** STOP and ask the user.
+
+### 2. DNA Integrity (Portability)
+- **Rule:** NO hardcoded absolute paths (e.g., `/Users/erik/...`).
+- **Enforcement:** Use relative paths or environment variables.
+
+### 3. Security Sentinel
+- **Rule:** NEVER hard-code API keys or secrets.
+- **Enforcement:** Use project-specific `.env` files and `os.getenv()`.
+
+### 4. No Hook Bypass
+- **Rule:** NEVER use `--no-verify` or `-n` with git commit or push.
+- **Why:** Pre-commit hooks exist to catch security issues and code quality problems. Bypassing them defeats the entire safety system.
+- **Enforcement:** Fix the issue, don't bypass the hook.
+
+---
+
 ## 🏛️ SYSTEM ARCHITECTURE: THE HIERARCHY
 
 ### 1. The Conductor (Erik)
