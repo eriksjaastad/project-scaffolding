@@ -316,6 +316,11 @@ def sync_project(project_name: str, stage_changes: bool = False, dry_run: bool =
                 if preserved_before and not preserved_before.endswith(file_header.strip()):
                     content_before = preserved_before
                 content_after = preserved_after
+            else:
+                # File exists but has NO markers (first-time sync)
+                # Preserve ALL existing content below the new AGENTSYNC:END marker
+                content_after = existing.strip()
+                print(f"  Note: {output_path.name} exists without markers — preserving existing content below AGENTSYNC:END")
 
         # Build full content
         parts = [content_before, "", auto_section]
