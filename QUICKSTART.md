@@ -16,47 +16,24 @@
 
 ## New Project Checklist
 
-### Prerequisites
-
-```bash
-# Set your scaffolding path (add to ~/.zshrc for permanence)
-export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
-```
-
----
-
-### Phase 1: Create Structure (5 minutes)
+### Phase 1: Bootstrap (2 minutes)
 
 ```bash
 # 1. Create and enter your project directory
-NEW_PROJECT="$PROJECTS_ROOT/my-new-project"
-mkdir -p "$NEW_PROJECT"
-cd "$NEW_PROJECT"
+mkdir -p "$PROJECTS_ROOT/my-new-project" && cd "$PROJECTS_ROOT/my-new-project"
 
-# 2. Initialize git (needed for governance hooks)
+# 2. Initialize git and apply scaffolding
 git init
+uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-project"
 
-# 3. Copy templates
-cp -r "$SCAFFOLDING/templates/Documents" ./Documents
-cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
-cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
-cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
-cp "$SCAFFOLDING/templates/README.md.template" ./README.md
-cp "$SCAFFOLDING/templates/.gitignore" ./.gitignore
-cp "$SCAFFOLDING/templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
-
-# 4. Generate IDE configs from AGENTS.md (creates .cursorrules, CLAUDE.md, .agent/rules/)
-$HOME/.local/bin/uv run "$SCAFFOLDING/scripts/sync_agent_configs.py" "$(basename $NEW_PROJECT)"
-
-# 5. Install governance hooks (secrets scanning, path checking, auto-sync)
+# 3. Install governance hooks
 "$PROJECTS_ROOT/_tools/governance/install-hooks.sh" .
 ```
 
 **Checklist:**
 - [ ] Project directory created
 - [ ] Git initialized
-- [ ] Templates copied from scaffolding
-- [ ] IDE configs generated via sync script
+- [ ] Scaffolding applied via `scaffold_cli.py apply`
 - [ ] Governance hooks installed
 
 ---
@@ -93,7 +70,7 @@ Edit each file and replace the placeholders:
 - [ ] Set `{run_command}` and `{test_command}`
 - [ ] Add project-specific constraints
 - [ ] Update Definition of Done checklist
-- [ ] Run sync: `$HOME/.local/bin/uv run $SCAFFOLDING/scripts/sync_agent_configs.py $(basename $(pwd))`
+- [ ] Run sync: `uv run "$PROJECTS_ROOT/project-scaffolding/scripts/sync_agent_configs.py" "$(basename $(pwd))"`
 
 #### 2.3 CLAUDE.md (Auto-Generated)
 
@@ -182,7 +159,7 @@ Once your project is set up, use the scaffolding's validation and review infrast
 
 **Command:**
 ```bash
-doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+uv run "$PROJECTS_ROOT/project-scaffolding/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **What it checks:**
@@ -214,7 +191,7 @@ When you're ready for architectural review, security audit, or performance analy
 **Step 1: Create review request**
 ```bash
 # Use the template
-cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
+cp "$PROJECTS_ROOT/project-scaffolding/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 
 # Edit CODE_REVIEW_REQUEST.md:
 # - Fill out "Definition of Done" section (what makes this code "done"?)
@@ -224,19 +201,18 @@ cp "$SCAFFOLDING/templates/CODE_REVIEW.md.template" ./CODE_REVIEW_REQUEST.md
 
 **Step 2: Run multi-AI review**
 ```bash
-cd "$SCAFFOLDING"
-source venv/bin/activate
-doppler run -- python scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
+cd "$PROJECTS_ROOT/project-scaffolding"
+uv run scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_REQUEST.md --round 1
 ```
 
 **Step 3: Review results**
-- Reviews saved to: `$SCAFFOLDING/review_outputs/round_1/CODE_REVIEW_*.md`
+- Reviews saved to: `$PROJECTS_ROOT/project-scaffolding/review_outputs/round_1/CODE_REVIEW_*.md`
 - Cost summary: `$SCAFFOLDING/review_outputs/round_1/COST_SUMMARY.json`
 
 **Step 4: Archive in your project**
 ```bash
 # Copy the most relevant review to your project
-cp "$SCAFFOLDING/review_outputs/round_1/CODE_REVIEW_CLAUDE_SONNET.md" \
+cp "$PROJECTS_ROOT/project-scaffolding/review_outputs/round_1/CODE_REVIEW_CLAUDE_SONNET.md" \
    ./Documents/archives/reviews/
 ```
 
@@ -248,10 +224,10 @@ Run validation periodically as you build:
 
 ```bash
 # Quick check (< 1 second)
-doppler run -- python "$SCAFFOLDING/scripts/warden_audit.py" --root . --fast
+uv run "$PROJECTS_ROOT/project-scaffolding/scripts/warden_audit.py" --root . --fast
 
 # Full validation
-doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(pwd))"
+uv run "$PROJECTS_ROOT/project-scaffolding/scripts/validate_project.py" "$(basename $(pwd))"
 ```
 
 **Best practice:** Validate before major commits or before requesting code reviews.
@@ -260,11 +236,11 @@ doppler run -- python "$SCAFFOLDING/scripts/validate_project.py" "$(basename $(p
 
 #### Learn More About Code Review System
 
-- **Full Protocol:** `$SCAFFOLDING/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
-- **Pattern Documentation:** `$SCAFFOLDING/patterns/code-review-standard.md`
-- **Multi-AI Orchestrator:** `$SCAFFOLDING/scaffold/review.py` (supports OpenAI, Anthropic, DeepSeek, Ollama)
+- **Full Protocol:** `$PROJECTS_ROOT/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
+- **Pattern Documentation:** `$PROJECTS_ROOT/project-scaffolding/patterns/code-review-standard.md`
+- **Multi-AI Orchestrator:** `$PROJECTS_ROOT/project-scaffolding/scaffold/review.py` (supports OpenAI, Anthropic, DeepSeek, Ollama)
 
-**Key principle:** The review system is centralized in `project-scaffolding` to maintain consistency across all your projects. Projects reference and use it via `$SCAFFOLDING` commands.
+**Key principle:** The review system is centralized in `project-scaffolding` to maintain consistency across all your projects. Projects reference and use it via absolute path commands.
 
 ---
 
@@ -455,29 +431,13 @@ ls -la AGENTS.md CLAUDE.md .cursorrules 00_Index_*.md 2>/dev/null
 
 **Only after approval. Make changes one category at a time.**
 
-**Step 5.1: Add missing scaffolding files**
+**Step 5.1: Apply missing scaffolding via CLI**
 
 ```bash
-# Set scaffolding path
-export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
-
-# Project Index (MANDATORY if missing)
-[[ ! -f 00_Index_*.md ]] && \
-  cp "$SCAFFOLDING/templates/00_Index.md.template" \
-  "./00_Index_$(basename $(pwd)).md"
-
-# AI collaboration files (if missing)
-[[ ! -f AGENTS.md ]] && cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
-[[ ! -f CLAUDE.md ]] && cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
-[[ ! -f .cursorrules ]] && cp "$SCAFFOLDING/templates/.cursorrules-template" ./.cursorrules
-[[ ! -f .cursorignore ]] && cp "$SCAFFOLDING/templates/.cursorignore.template" ./.cursorignore
-
-# Documentation structure (if missing AND approved)
-[[ ! -d Documents ]] && cp -r "$SCAFFOLDING/templates/Documents" ./Documents
-
-# Task tracking (if missing)
-[[ ! -f TODO.md ]] && cp "$SCAFFOLDING/templates/TODO.md.template" ./TODO.md
-```bash
+# Apply scaffolding to the current project
+# This will add missing files and update existing ones with markers
+uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "$(basename $(pwd))"
+```
 
 **Step 5.2: Customize each file for the project**
 
@@ -620,19 +580,18 @@ See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
 
 ### Validate a Project
 ```bash
-python "$SCAFFOLDING/scripts/validate_project.py" /path/to/project
+uv run "$PROJECTS_ROOT/project-scaffolding/scripts/validate_project.py" /path/to/project
 ```bash
 
 ### Run Multi-AI Review
 ```bash
-cd "$SCAFFOLDING"
-source venv/bin/activate
-python scaffold_cli.py review --type document --input /path/to/doc.md --round 1
+cd "$PROJECTS_ROOT/project-scaffolding"
+uv run scaffold_cli.py review --type document --input /path/to/doc.md --round 1
 ```bash
 
 ### Archive Old Reviews
 ```bash
-python "$SCAFFOLDING/scripts/archive_reviews.py" /path/to/project
+uv run "$PROJECTS_ROOT/project-scaffolding/scripts/archive_reviews.py" /path/to/project
 ```bash
 
 ---
@@ -643,8 +602,7 @@ python "$SCAFFOLDING/scripts/archive_reviews.py" /path/to/project
 
 Add to your `~/.zshrc`:
 ```bash
-export PROJECTS_ROOT="/Users/yourusername/projects"
-export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
+export PROJECTS_ROOT="/Users/eriksjaastad/projects"
 ```
 
 ### "Validation is failing"

@@ -38,7 +38,7 @@
 
 - [ ] **Code Provided:** Worker provides complete bash script for pre-commit hook
 - [ ] **Shebang:** Starts with `#!/usr/bin/env bash`
-- [ ] **Calls Warden:** Script runs `python scripts/warden_audit.py --root . --fast`
+- [ ] **Calls Warden:** Script runs `uv run python scripts/warden_audit.py --root . --fast`
 - [ ] **Exit Code Logic:** Passes through Warden's exit code (0 = success, 1 = failure)
 - [ ] **Skip Flag:** Mentions `--no-verify` git flag in comments
 - [ ] **Output:** Shows what Warden found before blocking/allowing
@@ -65,7 +65,7 @@ echo "================================"
 
 # Run warden in fast mode
 # Exit code 0 = clean, exit code 1 = violations found
-doppler run -- python scripts/warden_audit.py --root . --fast
+uv run python scripts/warden_audit.py --root . --fast
 
 WARDEN_EXIT=$?
 

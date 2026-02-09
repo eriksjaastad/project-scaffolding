@@ -379,7 +379,7 @@ If something goes catastrophically wrong:
 3. **Uninstall Doppler (Nuclear Option):**
    ```bash
    brew uninstall doppler
-   rm -rf ~/.doppler
+   trash ~/.doppler
    ```
 
 **Data Safety:** Doppler keeps secrets in their cloud dashboard. Even if we rollback locally, secrets remain accessible via web UI.

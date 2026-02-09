@@ -37,7 +37,7 @@
 # FIXED - self-sufficient
 cd "../../cortana-personal-ai"
 export $(grep -v '^#' .env | xargs)
-doppler run -- ./venv/bin/python scripts/core/daily_update.py
+doppler run -- uv run python scripts/core/daily_update.py
 ```
 
 ---
@@ -76,8 +76,8 @@ cd "/path/to/project"
 # Load THIS project's environment
 export $(grep -v '^#' .env | xargs)
 
-# Use THIS project's venv
-doppler run -- ./venv/bin/python scripts/my_script.py
+# Use THIS project's dependencies via uv
+uv run python scripts/my_script.py
 ```
 
 **Anti-pattern (what broke Cortana):**
@@ -86,7 +86,7 @@ doppler run -- ./venv/bin/python scripts/my_script.py
 #!/bin/bash
 # BAD - depends on external project
 source "/path/to/OTHER_PROJECT/venv/bin/activate"  # <-- External dependency!
-doppler run -- python scripts/my_script.py
+uv run python scripts/my_script.py
 ```
 
 ### Checklist
@@ -314,7 +314,7 @@ trap 'echo "ERROR on line $LINENO"; exit 1' ERR
 # Now your script will FAIL LOUDLY instead of silently continuing
 cd "/path/to/project"
 export $(grep -v '^#' .env | xargs)
-doppler run -- ./venv/bin/python scripts/my_script.py
+uv run python scripts/my_script.py
 ```
 
 **Why this matters (the Cortana failure):**
@@ -322,7 +322,7 @@ doppler run -- ./venv/bin/python scripts/my_script.py
 Without `set -e`, this happens:
 ```bash
 source "/nonexistent/venv/bin/activate"  # Fails silently
-doppler run -- python scripts/daily_update.py           # Never runs, no error shown
+uv run python scripts/daily_update.py           # Never runs, no error shown
 # Script "succeeds" but did nothing
 ```
 

@@ -8,16 +8,22 @@
 
 ## Quick Start: "I'm Starting a New Project"
 
-### Step 1: Copy the Bones
+### Step 1: Bootstrap the Project
 
 You can use the automated `apply` command to bootstrap your project:
 
 ```bash
-# In project-scaffolding directory
-doppler run -- ./venv/bin/python scaffold_cli.py apply my-new-project
+# 1. Create and enter your project directory
+mkdir -p "$PROJECTS_ROOT/my-new-project" && cd "$PROJECTS_ROOT/my-new-project"
+
+# 2. Initialize git (needed for governance hooks)
+git init
+
+# 3. Apply automated scaffolding
+uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-project"
 ```
 
-This will copy the core scripts, docs, and update references automatically. See [PROJECT_STRUCTURE_STANDARDS](PROJECT_STRUCTURE_STANDARDS.md) for the expected result.
+See [PROJECT_STRUCTURE_STANDARDS](PROJECT_STRUCTURE_STANDARDS.md) for the expected result.
 
 ### Step 2: Customize Templates (Critical)
 
@@ -39,15 +45,16 @@ This will copy the core scripts, docs, and update references automatically. See 
 **Edit `Documents/README.md`:**
 - Update links and descriptions. See [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md).
 
-### Step 3: Create Project Index (MANDATORY)
+### Step 3: Verify Project Index (MANDATORY)
 
 **This is required. No project goes forward without this.**
 
-```bash
-# Copy template
-cp "$SCAFFOLDING/templates/00_Index.md.template" \
-   "./00_Index_$(basename "$NEW_PROJECT").md"
-```
+The automated `scaffold_cli.py apply` command already created a project index for you at `00_Index_[ProjectName].md`.
+
+**You must now:**
+1.  **Review the index file** and fill in the 3-sentence summary.
+2.  **Update the key components** list if needed.
+3.  **Verify the tags** are correct.
 
 **See:** [PROJECT_INDEXING_SYSTEM](PROJECT_INDEXING_SYSTEM.md) for the complete guide.
 

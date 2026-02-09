@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.11"
-# dependencies = []
+# dependencies = ["send2trash"]
 # ///
 
 """
@@ -13,6 +13,7 @@ Usage:
   uv run migrate_agents_md.py project-name           # Migrate specific project
   uv run migrate_agents_md.py --all                  # Migrate all projects
   uv run migrate_agents_md.py project-name --dry-run # Preview migration
+  uv run migrate_agents_md.py project-name --cleanup # Cleanup migration artifacts
 """
 
 import argparse
@@ -20,6 +21,8 @@ import os
 import re
 import sys
 from pathlib import Path
+
+import send2trash
 
 
 # Self-locate
@@ -154,7 +157,57 @@ uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py {project_name}
     return True
 
 
-def find_projects_with_agents_md() -> list[str]:
+def cleanup_migration_artifacts(project_name: str, dry_run: bool = False) -> bool:
+    """Remove migration artifact 00-full-content.md if real rule files exist.
+    
+    The 00-full-content.md file was created during initial migration as a temporary
+    placeholder. Once sync_rules.py creates the real rule files (01-workflow.md, etc.),
+    the artifact should be removed.
+    
+    Returns True if cleanup succeeded or was not needed, False on error.
+    """
+    projects_root = get_projects_root()
+    project_path = projects_root / project_name
+    
+    if not project_path.exists():
+        print(f"  Error: Project not found: {project_path}", file=sys.stderr)
+        return False
+    
+    # Check safe zones
+    if project_name in SAFE_ZONES:
+        print(f"  Skipping {project_name}: Protected safe zone")
+        return True
+    
+    rules_dir = project_path / ".agentsync" / "rules"
+    if not rules_dir.exists():
+        print(f"  Skipping {project_name}: No .agentsync/rules/ directory")
+        return True
+    
+    # Check if 00-full-content.md exists
+    artifact_file = rules_dir / "00-full-content.md"
+    if not artifact_file.exists():
+        print(f"  {project_name}: Already clean (no 00-full-content.md)")
+        return True
+    
+    # Check if other real rule files exist (01-*, 02-*, etc.)
+    other_rules = [f for f in rules_dir.glob("*.md") if f.name != "00-full-content.md"]
+    
+    if not other_rules:
+        print(f"  {project_name}: Keeping 00-full-content.md (no synced rules yet)")
+        return True
+    
+    # Migration is complete - safe to remove artifact
+    if dry_run:
+        print(f"  [DRY RUN] Would remove: {artifact_file.relative_to(project_path)}")
+        return True
+    
+    try:
+        send2trash.send2trash(str(artifact_file))
+        print(f"  Cleaned up: {artifact_file.relative_to(project_path)} (migration artifact)")
+        return True
+    except Exception as e:
+        print(f"  Error: Failed to clean up {artifact_file}: {e}", file=sys.stderr)
+        return False
     """Find all projects with AGENTS.md files."""
     projects_root = get_projects_root()
     projects = []
@@ -174,6 +227,7 @@ def main():
     parser.add_argument("--all", action="store_true", help="Migrate all projects")
     parser.add_argument("--dry-run", action="store_true", help="Preview migration without changes")
     parser.add_argument("--list", action="store_true", help="List projects with AGENTS.md")
+    parser.add_argument("--cleanup", action="store_true", help="Clean up migration artifacts without re-migrating")
 
     args = parser.parse_args()
 
@@ -184,6 +238,27 @@ def main():
             agentsync = get_projects_root() / p / ".agentsync" / "rules"
             status = "already migrated" if agentsync.exists() else "needs migration"
             print(f"  {p}: {status}")
+        return
+
+    if args.cleanup:
+        if args.all:
+            projects = find_projects_with_agents_md()
+            if not projects:
+                print("No projects with AGENTS.md found")
+                return
+            print(f"Cleaning up migration artifacts in {len(projects)} project(s)...")
+            success = True
+            for project in projects:
+                if not cleanup_migration_artifacts(project, dry_run=args.dry_run):
+                    success = False
+            if not success:
+                sys.exit(1)
+        elif args.project:
+            if not cleanup_migration_artifacts(args.project, dry_run=args.dry_run):
+                sys.exit(1)
+        else:
+            print("Cleanup requires either --all or a project name")
+            sys.exit(1)
         return
 
     if args.all:

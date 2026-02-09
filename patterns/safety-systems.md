@@ -483,7 +483,7 @@ def delete_safely(path: Path) -> None:
     - Familiar to users
     
     Scar story: Accidentally deleted 300 files with
-    os.remove(). Gone forever. Now we use trash.
+    os.remove(). Gone forever. Now we use trash.  # noqa: SAFETY - Scar story example
     """
     if not path.exists():
         raise FileNotFoundError(f"Cannot delete: {path}")

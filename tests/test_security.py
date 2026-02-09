@@ -424,7 +424,7 @@ def function_{i}():
 import os
 
 def cleanup():
-    os.remove('temp.txt')  # Should be P0
+    os.remove('temp.txt')  # Should be P0  # noqa: SAFETY - Test fixture
 """)
 
             issues = check_dangerous_functions(project)
@@ -451,7 +451,7 @@ def cleanup():
 import os
 
 def test_cleanup():
-    os.remove('fixture.txt')  # Should be P2 (acceptable in tests)
+    os.remove('fixture.txt')  # Should be P2 (acceptable in tests)  # noqa: SAFETY - Test fixture
 """)
 
             issues = check_dangerous_functions(project)
@@ -510,7 +510,7 @@ tags: #type/code
                 # Create file with issue
                 (project_dir / "bad.py").write_text("""
 import os
-os.unlink('temp.txt')
+os.unlink('temp.txt')  # noqa: SAFETY - Test fixture
 """)
 
             # Run audit (should find 2 projects, 2 issues)
@@ -542,7 +542,7 @@ tags: #type/code
 import os
 
 def test_cleanup():
-    os.remove('temp.txt')  # P2 warning
+    os.remove('temp.txt')  # P2 warning  # noqa: SAFETY - Test fixture
 """)
 
             # Run audit - should pass (P2 doesn't fail)

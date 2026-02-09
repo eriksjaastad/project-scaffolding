@@ -30,28 +30,27 @@ This scaffolding provides:
 
 ### Step 1: Initialize Project Structure
 
-You can use the CLI to apply the scaffolding structure to an existing project:
+The fastest way to start is using the automated CLI:
 
 ```bash
-# In project-scaffolding directory
-doppler run -- ./venv/bin/python scaffold_cli.py apply my-new-project
+# 1. Create and enter your project directory
+NEW_PROJECT_NAME="my-new-project"
+mkdir -p "$PROJECTS_ROOT/$NEW_PROJECT_NAME"
+cd "$PROJECTS_ROOT/$NEW_PROJECT_NAME"
+
+# 2. Initialize git (needed for governance hooks)
+git init
+
+# 3. Apply automated scaffolding
+# This replaces manual copying and handles placeholder substitution automatically.
+uv run "$SCAFFOLDING/scaffold_cli.py" apply "$NEW_PROJECT_NAME"
 ```
 
-Or copy the bones manually:
-
-```bash
-# In your new project directory
-NEW_PROJECT="PROJECTS_ROOT/my-new-project"
-SCAFFOLDING="PROJECTS_ROOT/project-scaffolding"
-
-cd "$NEW_PROJECT"
-
-# 1. Copy structure
-cp -r "$SCAFFOLDING/templates/Documents" ./Documents
-cp "$SCAFFOLDING/templates/CLAUDE.md.template" ./CLAUDE.md
-cp "$SCAFFOLDING/templates/AGENTS.md.template" ./AGENTS.md
-cp "$SCAFFOLDING/templates/.cursorrules.template" ./.cursorrules
-```
+**Why use the CLI?**
+- **Automatic Substitution**: Fills in `{{PROJECT_NAME}}`, `{{DATE}}`, etc.
+- **Marker-Based Updates**: Adds markers so we can update scaffolding later without overwriting your custom code.
+- **AgentSync Integration**: Automatically generates `.cursorrules` and `CLAUDE.md` from modular rules.
+- **Version Tracking**: Creates a `.scaffolding-version` file for the project.
 
 ### Step 2: Customize for Your Project
 

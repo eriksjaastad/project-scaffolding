@@ -144,7 +144,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 
 | Directory | Files | Description |
 | :--- | :---: | :--- |
-| [Documents/](Documents/README.md) | 11 | *Auto-generated index. Last updated: 2026-01-24* |
+| [Documents/](Documents/README.md) | 10 | *Auto-generated index. Last updated: 2026-01-24* |
 | [agentsync/](agentsync/README.md) | 4 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
 | [patterns/](patterns/) | 15 | No description available. |
@@ -157,6 +157,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [AGENTS.md](AGENTS.md) | > The single source of truth for hierarchy, workflow, and AI collaboration philosophy. |
 | [CHANGELOG.md](CHANGELOG.md) | All notable changes to project-scaffolding will be documented in this file. |
 | [CLAUDE.md](CLAUDE.md) | 🛑 READ AGENTS.md FIRST |
+| [CONTINUAL_LEARNING_ARCHITECTURE.md](CONTINUAL_LEARNING_ARCHITECTURE.md) | > **Status:** Research & Planning |
 | [DECISIONS.md](DECISIONS.md) | > *Documenting WHY we made decisions, not just WHAT we built.* |
 | [Documents/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md](Documents/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md) | Antigravity (Google's AI IDE) employs a sophisticated multi-tier orchestration model that balances s... |
 | [Documents/BACKUP_AUDIT.md](Documents/BACKUP_AUDIT.md) | **Generated:** 2026-01-27 |
@@ -168,7 +169,6 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/PROJECT_PHILOSOPHY.md](Documents/PROJECT_PHILOSOPHY.md) | > *"We're explorers. We're finding cool ways to collect data, interpret data, and look for patterns.... |
 | [Documents/PROJECT_STRUCTURE_STANDARDS.md](Documents/PROJECT_STRUCTURE_STANDARDS.md) | Project Structure Standards |
 | [Documents/README.md](Documents/README.md) | Project Documentation |
-| [Documents/TODO_FORMAT_STANDARD.md](Documents/TODO_FORMAT_STANDARD.md) | TODO.md Format Standard |
 | [Documents/guides/AUDIT_ASSEMBLY_LINE.md](Documents/guides/AUDIT_ASSEMBLY_LINE.md) | 🏭 The Audit Assembly Line (V2.1) |
 | [Documents/guides/CODE_REVIEW_PROMPT.md](Documents/guides/CODE_REVIEW_PROMPT.md) | Code Review Prompt: Project Scaffolding System |
 | [Documents/guides/DEEPSEEK_SETUP.md](Documents/guides/DEEPSEEK_SETUP.md) | DeepSeek Setup Guide |
@@ -191,6 +191,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/reference/DOCUMENTATION_HYGIENE.md](Documents/reference/DOCUMENTATION_HYGIENE.md) | Documentation Hygiene |
 | [Documents/reference/DOPPLER_MIGRATION_PLAN.md](Documents/reference/DOPPLER_MIGRATION_PLAN.md) | Doppler Migration Strategy |
 | [Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) | Doppler Secrets Management Guide |
+| [Documents/reference/LEARNINGS.md](Documents/reference/LEARNINGS.md) | > **Purpose:** Captured knowledge from project work. Newest entries at top. |
 | [Documents/reference/LOCAL_MODEL_LEARNINGS.md](Documents/reference/LOCAL_MODEL_LEARNINGS.md) | Local Model Learnings |
 | [Documents/reference/MODEL_COST_COMPARISON.md](Documents/reference/MODEL_COST_COMPARISON.md) | AI Model Cost Comparison (December 2025) |
 | [Documents/reference/PATTERN_ANALYSIS.md](Documents/reference/PATTERN_ANALYSIS.md) | Pattern Analysis - Extracted from Source Projects |
@@ -203,7 +204,6 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [QUICKSTART.md](QUICKSTART.md) | Project Scaffolding - Quick Start |
 | [README.md](README.md) | Project Scaffolding |
 | [REVIEWS_AND_GOVERNANCE_PROTOCOL.md](REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | **Date:** 2026-01-27 |
-| [TODO.md](TODO.md) | > **Purpose:** Current actionable tasks for project-scaffolding |
 | [agentsync/README.md](agentsync/README.md) | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [agentsync/migrate_agents_md.py](agentsync/migrate_agents_md.py) | No description available. |
 | [agentsync/sync_mcp.py](agentsync/sync_mcp.py) | No description available. |

@@ -585,7 +585,6 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     files_with_templates = {
         "AGENTS.md": "templates/AGENTS.md.template",
         "DECISIONS.md": "templates/DECISIONS.md.template",
-        "TODO.md": "templates/TODO.md.template",
         "README.md": "templates/README.md.template",
         ".cursorignore": "templates/.cursorignore.template",
         ".gitignore": "templates/.gitignore.template",
@@ -684,7 +683,7 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
 
 def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
     """Verify that no mandatory {{VAR}} placeholders remain in scaffolded files."""
-    files_to_check = ["AGENTS.md", "CLAUDE.md", "TODO.md", "README.md", ".cursorrules"]
+    files_to_check = ["AGENTS.md", "CLAUDE.md", "README.md", ".cursorrules"]
     found_any = False
     
     # Mandatory variables that SHOULD NOT remain in scaffolded files
