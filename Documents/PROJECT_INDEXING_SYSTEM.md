@@ -153,80 +153,28 @@ def generate_index(project_path: Path) -> str:
 
 ### 1. New Project Template
 
-**Location:** `templates/00_Index.md.template`
+The project index is automatically created when you run the scaffolding CLI:
 
-```markdown
----
-tags:
-  - map/project
-  - p/PROJECT_NAME_HERE
-  - type/TYPE_HERE  # ai-agent, pipeline, webapp, etc.
-  - domain/DOMAIN_HERE  # image-processing, finance, etc.
-  - status/active
-  - tech/TECH_HERE  # python, typescript, etc.
-created: YYYY-MM-DD
----
-
-# PROJECT_NAME_HERE
-
-[Sentence 1: What this project does.] [Sentence 2: Key technologies and approach.] [Sentence 3: Current status and next steps.]
-
-## Key Components
-
-### Main Components
-- `src/` - Core source code
-  - Main application files
-  - Business logic
-
-### Documentation
-- `Documents/` - Project documentation
-  - Architecture
-  - Usage guides
-
-### Configuration
-- Config files
-- Environment setup
-
-## Status
-
-**Tags:** #map/project #p/PROJECT_NAME_HERE
-**Status:** #status/active
-**Last Major Update:** [DATE]
 ```bash
+uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "[ProjectName]"
+```
+
+This uses the template at `templates/00_Index.md.template` and handles all initial placeholder substitution.
 
 ### 2. Project Kickoff Checklist
 
 **Add to:** `Documents/PROJECT_KICKOFF_GUIDE.md`
 
-```markdown
-## Step 5: Create Project Index (NEW!)
-
-After initial project setup, create the index file:
-
-1. **Copy template**
+1. **Run automated scaffolding**
    ```bash
-   cp templates/00_Index.md.template \
-      "00_Index_[ProjectName].md"
+   uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "[ProjectName]"
    ```
 
 2. **Fill in details**
-   - Project name (H1 title)
-   - 3-sentence summary
-   - Key components list
-   - Update all tags
-
-3. **Place in project root**
-   ```bash
-   mv "00_Index_[ProjectName].md" \
-      $PROJECTS_ROOT/[ProjectName]/
-   ```
-
-4. **Commit to Git**
-   ```bash
-   git add "00_Index_[ProjectName].md"
-   git commit -m "Add project index for Obsidian"
-   ```
-```bash
+   - Review the generated `00_Index_[ProjectName].md`
+   - Refine the 3-sentence summary
+   - List key components
+   - Update any project-specific tags
 
 ### 3. Maintenance Reminder
 

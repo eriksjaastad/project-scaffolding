@@ -26,7 +26,7 @@ See the `Documents/` directory for detailed documentation.
 <!-- SCAFFOLD:END - Custom content below is preserved -->
 # Project Scaffolding
 
-> *The meta-project: Extracting patterns from experiments to build better projects faster.*
+|> *The meta-project: Extracting patterns from experiments to build better projects faster.*
 
 ---
 
@@ -51,7 +51,7 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 
 ## Why Each Component Exists
 
-> *Because "what" without "why" leads to forgotten decisions and repeated mistakes.*
+|> *Because "what" without "why" leads to forgotten decisions and repeated mistakes.*
 
 ### Core Components
 
@@ -100,22 +100,13 @@ Certain projects (ai-journal, writing) are excluded from scaffolding and sync.
 
 **See `QUICKSTART.md` for step-by-step checklists with copy-paste commands.**
 
-### Starting a New Project (5-minute version)
+### Starting a New Project (2-minute version)
 
 ```bash
-# Set your paths
-export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
-NEW_PROJECT="$PROJECTS_ROOT/my-new-project"
-
-# Create project and copy templates
-mkdir -p "$NEW_PROJECT" && cd "$NEW_PROJECT"
-cp -r "./templates/Documents" ./Documents
-cp "./templates/AGENTS.md.template" ./AGENTS.md
-cp "./templates/DECISIONS.md.template" ./DECISIONS.md
-cp "./templates/CLAUDE.md.template" ./CLAUDE.md
-cp "./templates/.cursorrules-template" ./.cursorrules
-cp "./templates/00_Index.md.template" "./00_Index_$(basename $NEW_PROJECT).md"
+# 1. Create project and apply automated scaffolding
+mkdir -p "$PROJECTS_ROOT/my-new-project" && cd "$PROJECTS_ROOT/my-new-project"
 git init
+uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-project"
 ```
 
 Then customize the templates (especially the `00_Index_*.md` - it's MANDATORY).
@@ -124,15 +115,9 @@ Then customize the templates (especially the `00_Index_*.md` - it's MANDATORY).
 
 ```bash
 cd /path/to/existing-project
-export SCAFFOLDING="$PROJECTS_ROOT/project-scaffolding"
 
-# Copy only what's missing
-[[ ! -f 00_Index_*.md ]] && cp "./templates/00_Index.md.template" "./00_Index_$(basename $(pwd)).md"
-[[ ! -f AGENTS.md ]] && cp "./templates/AGENTS.md.template" ./AGENTS.md
-[[ ! -f DECISIONS.md ]] && cp "./templates/DECISIONS.md.template" ./DECISIONS.md
-[[ ! -f CLAUDE.md ]] && cp "./templates/CLAUDE.md.template" ./CLAUDE.md
-[[ ! -f .cursorrules ]] && cp "./templates/.cursorrules-template" ./.cursorrules
-[[ ! -d Documents ]] && cp -r "./templates/Documents" ./Documents
+# Apply scaffolding via CLI
+uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "$(basename $(pwd))"
 ```
 
 Then customize for your project. See `QUICKSTART.md` for the full checklist.
@@ -383,8 +368,8 @@ Don't force it. Let patterns emerge naturally.
 
 - **Now - Month 2:** Pattern collection phase
 - **Month 3:** First consolidation (group patterns into categories)
-- **Month 4:** Extract templates from proven patterns
-- **Month 6:** Consider creating the actual `project-scaffolding-template` repo
+- Month 4: Extract templates from proven patterns
+- Month 6: Consider creating the actual `project-scaffolding-template` repo
 
 ---
 

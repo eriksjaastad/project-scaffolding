@@ -29,8 +29,8 @@ What "Production Ready" means in this ecosystem.
 
 ```bash
 # From project root
-python scripts/warden_audit.py --root . --fast
-python scripts/validate_project.py "$(basename $(pwd))"
+uv run python scripts/warden_audit.py --root . --fast
+uv run python scripts/validate_project.py "$(basename $(pwd))"
 ```
 
 Both must pass for Gold Standard status.

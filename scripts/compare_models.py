@@ -172,7 +172,7 @@ def compare_results(results: list) -> None:
 
 if __name__ == "__main__":
     if "--help" in sys.argv or "-h" in sys.argv:
-        logger.info("Usage: python3 scripts/compare_models.py")
+        logger.info("Usage: uv run python scripts/compare_models.py")
         logger.info("Requires SCAFFOLDING_DEEPSEEK_KEY environment variable.")
         sys.exit(0)
     

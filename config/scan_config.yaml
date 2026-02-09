@@ -79,6 +79,8 @@ skip_patterns:
 ignore_projects:
   - writing           # Personal writing - not code
   - fci-plugins       # Chrome extensions - not code we navigate
+  - openclaw          # External project - do not track
+  - nanoclaw          # External project - do not track
 
 # Projects that can be scanned/read but should NEVER be modified
 # Scaffolding, automated cleanup, and other tools should not touch these

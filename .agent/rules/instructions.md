@@ -648,7 +648,7 @@ Databases contain accumulated work that cannot be recreated. One careless comman
 1. `DROP TABLE` - Destroys table and all data
 2. `DELETE FROM table` (without WHERE) - Deletes all rows
 3. `TRUNCATE TABLE` - Empties entire table
-4. `rm *.db` or `rm *.sqlite` - Deletes database file
+4. `trash *.db` or `trash *.sqlite` - Deletes database file (use trash, not rm)
 5. Recreating tables that contain data
 6. Any "reset", "init", or "recreate" that would wipe existing data
 

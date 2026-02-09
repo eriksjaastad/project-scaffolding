@@ -66,7 +66,7 @@ cp /tmp/test_bad.py ./test_bad.py
 git add test_bad.py
 git commit -m "test"
 # Expected: Commit blocked, warden shows P0 violation
-rm test_bad.py
+trash test_bad.py
 ```
 
 ---
@@ -96,7 +96,7 @@ cp /tmp/test_bad.py ./test_bad.py
 git add test_bad.py
 git commit -m "test"
 # Expected: Commit blocked, warden shows P0 violation
-rm test_bad.py
+trash test_bad.py
 ```
 
 ---

@@ -90,7 +90,7 @@ Make it production-ready.
 
 if __name__ == "__main__":
     if "--help" in sys.argv or "-h" in sys.argv:
-        print("Usage: python3 scripts/test_deepseek.py")
+        print("Usage: uv run python scripts/test_deepseek.py")
         print("Requires SCAFFOLDING_DEEPSEEK_KEY environment variable.")
         sys.exit(0)
     success = test_deepseek()
