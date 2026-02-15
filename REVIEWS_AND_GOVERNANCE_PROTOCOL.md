@@ -136,6 +136,23 @@ Filesystem operations that scale with codebase size must be bounded:
     - Limit depth: `item.glob("*/*.py")` (one level deep)
 *   **Sanity Checks for Zero Results:** If a scanner expects to find items (e.g., projects in PROJECTS_ROOT) and finds zero, emit a WARNING. Don't silently proceed with destructive operations.
 
+### 9. End-to-End Data Flow Trace (E2E-TRACE)
+Every code review involving a pipeline, message bus, or cross-boundary call MUST include at least one concrete end-to-end trace before approval.
+
+**What this means:** Pick a representative input (e.g., `draft_read("pyproject.toml")` dispatched to an external project) and walk it through every layer — from the entry point where it's constructed, through serialization, across process/service boundaries, through deserialization, into the handler, and back out. Document what happens to the data at each hop.
+
+**Why:** Static inspection of individual functions catches local bugs. It does not catch architectural omissions — cases where a value is never propagated, a field doesn't exist in a struct, or a path gets silently truncated at a boundary. These bugs are invisible when you review files in isolation. They only become visible when you follow one piece of data through the entire system.
+
+**The check:**
+*   Identify the critical data path for the change under review
+*   Trace at least one concrete value from origin to destination across all layers
+*   At each boundary, verify: Is the value passed? Is it the right type? Is it transformed correctly? Can it be lost or silently defaulted?
+*   Document the trace (even as a one-line-per-hop summary in the review)
+
+**Anti-pattern this prevents:** Reviewing `dispatch_task.py` and saying "looks fine," reviewing `loop.go` and saying "looks fine," reviewing `types.go` and saying "looks fine" — while none of them pass `project_root` and the system silently does the wrong thing. Each file looks correct in isolation. The bug lives in the gaps between them.
+
+**Origin:** 2026-02-15. A `bufio.Scanner` with a 64KB default buffer silently dropped 242KB review prompts. `dispatch_task.py`, `hooks.py`, and `handler.go` each passed individual review. The broken pipe only appeared when data actually flowed end-to-end.
+
 ---
 
 ## 🏛️ Part 4: Scalability Analysis
@@ -193,6 +210,7 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 | **H7** | **Hardening**| No unrequested auto-cleanup/delete logic | Grep for DELETE/drop patterns, verify authorization |
 | **H8** | **Hardening**| No unbounded recursive globs (`**/*.py`) | Grep for `.glob("**` patterns, verify bounded or cached |
 | **H9** | **Hardening**| Exception handling around filesystem iterators | Verify `iterdir()`, `glob()` wrapped in try/except |
+| **H10** | **Hardening**| E2E data flow trace for cross-boundary changes | Document one concrete value traced through all layers |
 | **R1** | **Reviews** | **Active Review Location** | Must be in project root: `CODE_REVIEW_{MODEL}_{VERSION}.md` |
 | **S1** | **Scaling** | Context ceiling strategy (Map-Reduce/RAG) | Document the architectural ceiling |
 | **S2** | **Scaling** | Memory/OOM guards for unbounded processing | Verify size-aware batching logic |
