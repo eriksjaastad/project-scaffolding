@@ -145,9 +145,9 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | Directory | Files | Description |
 | :--- | :---: | :--- |
 | [Documents/](Documents/README.md) | 10 | *Auto-generated index. Last updated: 2026-01-24* |
-| [agentsync/](agentsync/README.md) | 4 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
+| [agentsync/](agentsync/README.md) | 5 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
-| [patterns/](patterns/) | 15 | No description available. |
+| [patterns/](patterns/) | 14 | No description available. |
 | [scaffold/](scaffold/) | 6 | No description available. |
 
 ### Files
@@ -206,13 +206,13 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [REVIEWS_AND_GOVERNANCE_PROTOCOL.md](REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | **Date:** 2026-01-27 |
 | [agentsync/README.md](agentsync/README.md) | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [agentsync/migrate_agents_md.py](agentsync/migrate_agents_md.py) | No description available. |
+| [agentsync/sync_governance.py](agentsync/sync_governance.py) | No description available. |
 | [agentsync/sync_mcp.py](agentsync/sync_mcp.py) | No description available. |
 | [agentsync/sync_rules.py](agentsync/sync_rules.py) | No description available. |
 | [patterns/ai-team-orchestration.md](patterns/ai-team-orchestration.md) | AI Team Orchestration Pattern |
 | [patterns/api-key-management.md](patterns/api-key-management.md) | API Key Management Pattern |
 | [patterns/automation-reliability.md](patterns/automation-reliability.md) | Automation Reliability Patterns |
 | [patterns/code-review-standard.md](patterns/code-review-standard.md) | Code Review Standardization |
-| [patterns/cursor-configuration.md](patterns/cursor-configuration.md) | Cursor Configuration Best Practices |
 | [patterns/development-philosophy.md](patterns/development-philosophy.md) | Development Philosophy Patterns |
 | [patterns/discord-webhooks-per-project.md](patterns/discord-webhooks-per-project.md) | Discord Webhooks: One Channel Per Project |
 | [patterns/foundation-documents-first.md](patterns/foundation-documents-first.md) | Foundation Documents First |

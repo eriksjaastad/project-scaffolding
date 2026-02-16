@@ -1,6 +1,6 @@
 # .agentsync - Rule Synchronization System
 
-Auto-generates `CLAUDE.md`, `.cursorrules`, and `.agent/rules/instructions.md` from rules/*.md files.
+Auto-generates `CLAUDE.md` from rules/*.md files.
 
 ## Quick Reference
 

@@ -4,7 +4,7 @@
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-01-07"
+  last_updated: "2026-02-14"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # PROJECT SERVICE USAGE
@@ -152,6 +152,37 @@ projects:
         cost: 0
     notes: "100% local, no external services"
 
+  smart-invoice-workflow:
+    monthly_cost: 16
+    credential_file: ".env"
+    services:
+      - name: Make.com
+        purpose: "Google OAuth proxy, Sheets/Gmail automation, daily scheduling"
+        type: automation
+        env_var: "SIW_MAKE_API_KEY"
+        cost: 16
+        plan: "Pro (10K ops/month)"
+        notes: "Standard for any project needing Google Workspace integration. Sidesteps Google OAuth verification (4-6 week process)."
+      - name: Auth0
+        purpose: "User authentication (email/password, magic link)"
+        type: auth
+        env_var: "SIW_AUTH0_CLIENT_ID"
+        cost: 0
+        plan: "Free (up to 7,500 MAU)"
+        notes: "Standard auth provider for all SaaS projects. Erik has prior experience."
+      - name: Vercel
+        purpose: "Hosting (FastAPI serverless)"
+        type: hosting
+        env_var: "SIW_VERCEL_TOKEN"
+        cost: 0
+        plan: "Free tier"
+      - name: Stripe
+        purpose: "Payment processing"
+        type: payments
+        env_var: "SIW_STRIPE_SECRET_KEY"
+        cost: 0
+        notes: "2.9% + 30¢ per transaction"
+
   muffinpanrecipes:
     monthly_cost: 12
     credential_file: ".env"
@@ -184,7 +215,17 @@ services_by_function:
   
   hosting:
     - Railway (Python cron jobs + Postgres)
-  
+    - Vercel (serverless, static sites)
+
+  auth:
+    - Auth0 (standard for SaaS — email/password, magic link, OAuth)
+
+  automation:
+    - Make.com (standard for Google Workspace integration — sidesteps OAuth verification)
+
+  payments:
+    - Stripe (standard for SaaS billing)
+
   storage:
     - Cloudflare R2 (S3-compatible)
     - Google Drive (via rclone)
@@ -222,9 +263,9 @@ api_key_pattern:
 
 # COST SUMMARY
 cost_summary:
-  infrastructure: 5  # Railway
+  infrastructure: 21  # Railway ($5) + Make.com Pro ($16)
   ai_apis: 18  # Variable 15-20
-  total_known: 23  # $20-25/month
+  total_known: 39  # ~$35-40/month
   total_unknown: 0  # Need audits for some projects
 
 # REJECTED/UNUSED SERVICES

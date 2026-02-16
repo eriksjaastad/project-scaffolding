@@ -101,3 +101,10 @@ scan_extensions:
   .json: config
   .yaml: config
   .yml: config
+  .sh: shell
+  .bash: shell
+  .zsh: shell
+  .sql: sql
+  .toml: config
+  Makefile: config
+  Dockerfile: config
