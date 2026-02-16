@@ -1,0 +1,46 @@
+# Model Tier Mappings
+# ===================
+# Maps task complexity to appropriate model tiers
+
+model_tiers:
+  local:
+    description: "7b models for simple, fast tasks"
+    models:
+      - "qwen2.5-coder:7b"
+      - "llama3.2:7b"
+    use_cases:
+      - "Simple healthcheck parsing"
+      - "Template file comparison"
+      - "Basic code formatting"
+    max_tokens: 4096
+    cost_per_1k_tokens: 0  # Local models are free
+    
+  mini:
+    description: "14b models for medium complexity"
+    models:
+      - "qwen2.5-coder:14b"
+      - "coding:current"  # Alias to current coding model
+    use_cases:
+      - "Code review"
+      - "Template drift analysis"
+      - "Simple bug fixes"
+    max_tokens: 8192
+    cost_per_1k_tokens: 0  # Local models are free
+    
+  big:
+    description: "32b+ models for complex reasoning"
+    models:
+      - "qwen2.5-coder:32b-instruct-q3_K_L"
+      - "deepseek-r1:32b"
+    use_cases:
+      - "Complex refactoring"
+      - "Architecture decisions"
+      - "Multi-file changes"
+    max_tokens: 16384
+    cost_per_1k_tokens: 0  # Local models are free
+
+# Escalation rules: when to upgrade to a bigger model
+escalation:
+  retry_with_bigger_model_after_failures: 2
+  max_model_tier: "big"
+  fallback_to_human_after_tier: "big"

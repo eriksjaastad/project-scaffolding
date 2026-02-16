@@ -1,0 +1,22 @@
+# Tier Definitions
+# =================
+# Defines monitoring frequency for each tier
+
+tiers:
+  1:
+    name: "Critical"
+    frequency: "hourly"
+    description: "Critical infrastructure - monitored every hour"
+    max_downtime_minutes: 60
+    
+  2:
+    name: "Standard"
+    frequency: "daily"
+    description: "Standard projects - monitored daily"
+    max_downtime_minutes: 1440  # 24 hours
+    
+  3:
+    name: "Low Priority"
+    frequency: "weekly"
+    description: "Low priority projects - monitored weekly"
+    max_downtime_minutes: 10080  # 7 days

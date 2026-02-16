@@ -1,0 +1,52 @@
+# Example Project Override Configuration
+# ======================================
+# Place this file in your project root as `.autonomous-loops.yaml`
+
+# Override global tier (1=hourly, 2=daily, 3=weekly)
+tier: 1
+
+# Set autonomy level for this project
+# Options: report, fix_safe, fix_full
+autonomy_level: "fix_safe"
+
+# Custom healthcheck command
+healthcheck_cmd: "pytest tests/ -v"
+
+# Commands to run for automated fixes
+commands_to_run:
+  - "ruff check --fix ."
+  - "pytest tests/"
+
+# Paths that Patch-Bot is allowed to edit
+allowed_paths:
+  - "scripts/"
+  - "tests/"
+  - "src/"
+
+# Paths that are strictly off-limits
+forbidden_paths:
+  - ".env"
+  - "data/"
+  - "secrets/"
+
+# Custom cron job monitoring
+cron_jobs:
+  daily_backup:
+    schedule: "0 2 * * *"
+    command: "./scripts/backup.sh"
+    max_age_hours: 26  # Alert if not run in 26 hours
+
+# Template drift settings
+template_drift:
+  ignore_files:
+    - "README.md"  # Project-specific README
+    - "CUSTOM_CONFIG.yaml"
+  
+  auto_fix_enabled: true
+  only_fix_marked_blocks: true
+
+# Escalation overrides
+escalation:
+  notify_on_p0: true
+  notify_on_p1: false
+  max_retries: 5
