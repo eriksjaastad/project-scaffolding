@@ -1,0 +1,57 @@
+# Escalation Rules
+# ================
+# Defines when to escalate to human intervention
+
+cost_control:
+  max_cost_per_loop_run:
+    janitor: 0  # Free (local models only)
+    librarian: 0  # Free (local models only)
+    patch_bot: 0  # Free (local models only)
+  
+  max_tokens_per_loop_run:
+    janitor: 50000
+    librarian: 100000
+    patch_bot: 200000
+
+retry_limits:
+  max_retries_per_task: 3
+  backoff_strategy: "exponential"  # exponential, linear, fixed
+  initial_delay_seconds: 60
+  max_delay_seconds: 3600
+
+human_escalation_triggers:
+  # Janitor escalation
+  janitor:
+    - condition: "healthcheck_fails_3_times"
+      severity: "P0"
+      action: "create_card_and_notify"
+    - condition: "cron_not_run_24h"
+      severity: "P1"
+      action: "create_card"
+  
+  # Librarian escalation
+  librarian:
+    - condition: "drift_outside_marked_blocks"
+      severity: "P1"
+      action: "create_card_no_autofix"
+    - condition: "immutable_file_changed"
+      severity: "P0"
+      action: "create_card_and_notify"
+  
+  # Patch-Bot escalation
+  patch_bot:
+    - condition: "fix_fails_3_times"
+      severity: "P1"
+      action: "create_card_for_human"
+    - condition: "tests_fail_after_fix"
+      severity: "P0"
+      action: "rollback_and_notify"
+    - condition: "cost_exceeds_threshold"
+      severity: "P1"
+      action: "pause_and_notify"
+
+hard_stop_conditions:
+  - "database_corruption_detected"
+  - "security_vulnerability_introduced"
+  - "production_deployment_affected"
+  - "data_loss_risk"

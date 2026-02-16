@@ -1,0 +1,47 @@
+# Loop Schedules
+# ==============
+# Defines when each autonomous loop runs
+
+loops:
+  janitor:
+    name: "Janitor - Health Monitoring"
+    description: "Monitors project health, checks cron freshness, runs healthchecks"
+    schedule_by_tier:
+      1: "0 * * * *"  # Every hour
+      2: "0 9 * * *"  # Daily at 9 AM
+      3: "0 9 * * 1"  # Weekly on Monday at 9 AM
+    operations:
+      - check_healthcheck_cmd
+      - check_cron_freshness
+      - detect_dependency_risks
+      - create_cards_for_issues
+    autonomy: "report_only"  # Never makes changes, only creates cards
+    
+  librarian:
+    name: "Librarian - Template Drift Detection"
+    description: "Detects drift from canonical templates, validates immutable files"
+    schedule_by_tier:
+      1: "0 */6 * * *"  # Every 6 hours
+      2: "0 10 * * *"   # Daily at 10 AM
+      3: "0 10 * * 2"   # Weekly on Tuesday at 10 AM
+    operations:
+      - detect_template_drift
+      - validate_immutable_files
+      - check_extendable_markers
+      - create_drift_cards
+      - auto_fix_safe_changes  # Only if autonomy_level >= fix_safe
+    autonomy: "fix_safe"  # Can auto-fix within marked blocks
+    
+  patch_bot:
+    name: "Patch-Bot - Bounded Automated Fixes"
+    description: "Executes bounded automated fixes for READY_FOR_PATCH cards"
+    schedule_by_tier:
+      1: "*/30 * * * *"  # Every 30 minutes
+      2: "0 */2 * * *"   # Every 2 hours
+      3: "0 11 * * *"    # Daily at 11 AM
+    operations:
+      - scan_ready_for_patch_cards
+      - validate_card_contract
+      - execute_deterministic_workflow
+      - create_pr_if_successful
+    autonomy: "fix_full"  # Can make changes within allowed_paths
