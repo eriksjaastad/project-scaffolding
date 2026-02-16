@@ -55,6 +55,7 @@ class JanitorLoop:
                 # Run health checks
                 issues = []
                 issues.extend(self._check_healthcheck(project))
+                issues.extend(self._check_application_heartbeat(project))
                 issues.extend(self._check_cron_freshness(project))
                 issues.extend(self._check_dependencies(project))
                 
@@ -90,6 +91,20 @@ class JanitorLoop:
         # TODO: Actually run the healthcheck command
         # For now, just log that we would run it
         print(f"    Would run: {healthcheck_cmd}")
+        
+        return issues
+    
+    def _check_application_heartbeat(self, project: Dict) -> List[Dict]:
+        """Check if deployed application is responding (replaces Healthchecks.io)."""
+        issues = []
+        project_id = project["id"]
+        
+        # Check if project has a heartbeat URL configured
+        # This would be stored in project metadata or external_resources
+        # For now, we'll check common patterns
+        
+        # Example: Check if there's a deployed URL
+        # TODO: Read from EXTERNAL_RESOURCES.yaml or project metadata
         
         return issues
     
