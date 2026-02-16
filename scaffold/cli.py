@@ -75,9 +75,9 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "LANGUAGE": "Python",
         "LANGUAGE_VERSION": "3.11+",
         "FRAMEWORKS": "None",
-        "RUN_COMMAND": "python main.py",
+        "RUN_COMMAND": "uv run main.py",
         "SETUP_COMMAND": "pip install -r requirements.txt",
-        "TEST_COMMAND": "pytest",
+        "TEST_COMMAND": "uv run -m pytest",
         "MAIN_CODE_DIR": "src",
         "CONSTRAINTS": "None",
         "AI_STRATEGY": "Local-First",
@@ -1073,4 +1073,3 @@ def _load_review_configs(
 
 if __name__ == "__main__":
     cli()
-

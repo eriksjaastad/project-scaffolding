@@ -23,9 +23,17 @@ python ./scripts/validate_project.py project-scaffolding
 VALIDATE_EXIT=$?
 
 echo ""
+echo "3. Checking UV Policy Drift..."
+if uv run ./scripts/check_uv_policy_drift.py --root .; then
+    DRIFT_EXIT=0
+else
+    DRIFT_EXIT=$?
+fi
+
+echo ""
 echo "=== Scan Complete ==="
 
-if [ $WARDEN_EXIT -ne 0 ] || [ $VALIDATE_EXIT -ne 0 ]; then
+if [ $WARDEN_EXIT -ne 0 ] || [ $VALIDATE_EXIT -ne 0 ] || [ $DRIFT_EXIT -ne 0 ]; then
     echo "FAILED: One or more checks failed"
     exit 1
 else

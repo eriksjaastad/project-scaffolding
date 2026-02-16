@@ -14,6 +14,15 @@
 
 ---
 
+
+
+## UV Run-first Policy (Effective: February 2026)
+
+- New Python commands should use `uv run` (or a project-approved `uvrun` wrapper) for reproducible, tool-managed execution.
+- Do not mass-migrate existing `.env`/`venv`/Poetry/Pipenv workflows. Migrations require explicit approval and a tracked plan.
+- Legacy compatibility: Existing projects may keep their current runners; when adding new commands or touching scripts, prefer introducing `uv run` while leaving stable paths unchanged until migration is approved.
+
+---
 ## New Project Checklist
 
 ### Phase 1: Bootstrap (2 minutes)
@@ -99,6 +108,9 @@ After running sync, .cursorrules will contain your AGENTS.md content with a Curs
 ---
 
 ### Phase 3: Project Setup (5-10 minutes)
+
+> Note (UV Run-first): If you adopt the UV Run-first policy, you may skip creating a `venv` and running `pip install` for new commands. Use `uv run` instead. The `venv` example below remains allowed for legacy projects and must not be mass-migrated without explicit approval.
+
 
 ```bash
 # For Python projects
@@ -459,8 +471,8 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "$(basename $(
 
 **Run project tests (if they exist):**
 ```bash
-# Python
-pytest tests/ 2>/dev/null || python -m pytest 2>/dev/null
+# Python (UV Run-first)
+uv run -m pytest tests/ 2>/dev/null || uv run -m pytest 2>/dev/null
 
 # Node
 npm test 2>/dev/null
