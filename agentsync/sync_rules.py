@@ -109,13 +109,6 @@ TOOLS = {
         "section_header": "<!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->\n<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py {project_name} -->\n\n",
         "section_footer": "\n\n<!-- Source: .agentsync/rules/*.md -->\n",
     },
-    "cursor": {
-        "output": ".cursorrules",
-        "marker_style": "comment",
-        "file_header": "# Cursor Rules for {project_name}\n\n",
-        "section_header": "# To modify synced rules: Edit .agentsync/rules/*.md, then run:\n# uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py {project_name}\n\n",
-        "section_footer": "\n\n# Source: .agentsync/rules/*.md\n",
-    },
     "antigravity": {
         "output": ".agent/rules/instructions.md",
         "marker_style": "markdown",

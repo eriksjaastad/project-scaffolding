@@ -402,7 +402,7 @@ created: 2026-01-27
 
 - **Review Standards:** See `Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for the full audit checklist and evidence requirements
 - **Philosophy:** See `PROJECT_PHILOSOPHY.md` for the "why" behind the ecosystem
-- **Project-Specific Rules:** See each project's `_cursorrules` file
+- **Project-Specific Rules:** See each project's `CLAUDE.md` file for project-specific context and rules
 
 ---
 

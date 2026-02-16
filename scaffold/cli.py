@@ -571,7 +571,7 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
         console.print(f"  {log}")
 
     # 6. Update templates with npm-like marker pattern
-    # NOTE: CLAUDE.md and .cursorrules are managed by AgentSync (step 5)
+    # NOTE: CLAUDE.md is managed by AgentSync (step 5)
     # Do NOT add templates for them here - it causes duplication
     console.print("\n[bold]Updating/creating from templates...[/bold]")
 
@@ -581,12 +581,11 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     SCAFFOLD_END = "<!-- SCAFFOLD:END - Custom content below is preserved -->"
 
     # Map files to their templates (None means no template available)
-    # IMPORTANT: CLAUDE.md and .cursorrules are managed by AgentSync, not here
+    # IMPORTANT: CLAUDE.md is managed by AgentSync, not here
     files_with_templates = {
         "AGENTS.md": "templates/AGENTS.md.template",
         "DECISIONS.md": "templates/DECISIONS.md.template",
         "README.md": "templates/README.md.template",
-        ".cursorignore": "templates/.cursorignore.template",
         ".gitignore": "templates/.gitignore.template",
     }
 
@@ -683,7 +682,7 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
 
 def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
     """Verify that no mandatory {{VAR}} placeholders remain in scaffolded files."""
-    files_to_check = ["AGENTS.md", "CLAUDE.md", "README.md", ".cursorrules"]
+    files_to_check = ["AGENTS.md", "CLAUDE.md", "README.md"]
     found_any = False
     
     # Mandatory variables that SHOULD NOT remain in scaffolded files
@@ -909,7 +908,7 @@ def _add_version_metadata(target_dir: Path, dry_run: bool) -> None:
 
 
 def _verify_references(target_dir: Path) -> None:
-    files_to_check = ["AGENTS.md", "CLAUDE.md", ".cursorrules"]
+    files_to_check = ["AGENTS.md", "CLAUDE.md"]
     found_any = False
     
     for filename in files_to_check:
