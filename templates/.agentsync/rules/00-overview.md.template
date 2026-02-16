@@ -14,5 +14,6 @@ root: true
 
 ## Commands
 
-- **Run:** `{{RUN_COMMAND}}`
+- **Run:** `{{RUN_COMMAND}}`  
+  (Default uses `uv run`. Legacy runners remain acceptable if already established; prefer uv run for new commands.)
 - **Test:** `{{TEST_COMMAND}}`

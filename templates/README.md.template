@@ -5,10 +5,11 @@
 ## Quick Start
 
 ```bash
-# Setup
+# Setup (optional for new commands; UV Run-first)
+# For legacy projects, keep existing setup. For new work prefer uv-managed runs.
 {{SETUP_COMMAND}}
 
-# Run
+# Run (defaults to uv run)
 {{RUN_COMMAND}}
 ```
 

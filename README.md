@@ -42,6 +42,18 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 - Safer (data doesn't get lost)
 - More consistent across collaborators (AI and human)
 
+---
+
+## UV Run-first Policy (Effective: February 2026)
+
+- New Python commands should be executed with `uv run` (or a project-approved `uvrun` wrapper). This enforces tool-managed, reproducible environments without global installs.
+- Existing environment setups and `.env` usage are not to be mass-migrated. Do not change a project’s current `.env`/`venv`/Poetry/Pipenv workflow unless there is explicit approval and a tracked migration plan.
+- Legacy compatibility: Existing projects may continue using their established runners (e.g., `python`, `poetry run`, `pipenv run`, `make`). When you touch a legacy script or add a new command, prefer introducing `uv run` for the new work and leave the rest unchanged until an approved migration occurs.
+- Governance alignment: This standard aligns with AGENTS.md constraints (no global installs; prefer tool-managed environments; do not modify `.env` or `venv/`) and does not supersede secrets-management guidance (e.g., Doppler). Follow each project’s configured secrets workflow.
+
+---
+
+
 **What We DON'T Do:**
 - ❌ Cost tracking (that's `ai-usage-billing-tracker`'s job)
 - ❌ Project status monitoring (that's `project-tracker`'s job)
