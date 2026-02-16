@@ -11,6 +11,7 @@ import sqlite3
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
+import requests
 
 # Add project-tracker to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "project-tracker"))
@@ -99,12 +100,50 @@ class JanitorLoop:
         issues = []
         project_id = project["id"]
         
-        # Check if project has a heartbeat URL configured
-        # This would be stored in project metadata or external_resources
-        # For now, we'll check common patterns
+        # Define heartbeat URLs for projects with deployed apps
+        heartbeat_urls = {
+            "trading-copilot": "https://trading-copilot.up.railway.app/health",
+            "cortana-personal-ai": None,  # Local only, no deployed endpoint
+        }
         
-        # Example: Check if there's a deployed URL
-        # TODO: Read from EXTERNAL_RESOURCES.yaml or project metadata
+        # Skip if no heartbeat URL configured
+        if project_id not in heartbeat_urls or not heartbeat_urls[project_id]:
+            return issues
+        
+        url = heartbeat_urls[project_id]
+        
+        try:
+            response = requests.get(url, timeout=10)
+            
+            if response.status_code != 200:
+                issues.append({
+                    "severity": "P0",
+                    "title": f"Application heartbeat failed: {project_id}",
+                    "description": f"Health endpoint returned {response.status_code}",
+                    "url": url,
+                    "status_code": response.status_code
+                })
+        except requests.exceptions.Timeout:
+            issues.append({
+                "severity": "P0",
+                "title": f"Application heartbeat timeout: {project_id}",
+                "description": f"Health endpoint at {url} timed out after 10s",
+                "url": url
+            })
+        except requests.exceptions.ConnectionError:
+            issues.append({
+                "severity": "P0",
+                "title": f"Application unreachable: {project_id}",
+                "description": f"Could not connect to {url}",
+                "url": url
+            })
+        except Exception as e:
+            issues.append({
+                "severity": "P1",
+                "title": f"Heartbeat check error: {project_id}",
+                "description": f"Error checking {url}: {str(e)}",
+                "url": url
+            })
         
         return issues
     
