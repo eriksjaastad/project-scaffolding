@@ -103,7 +103,11 @@ class JanitorLoop:
         # Define heartbeat URLs for projects with deployed apps
         heartbeat_urls = {
             "trading-copilot": "https://trading-copilot.up.railway.app/health",
+            "smart-invoice-workflow": "https://smart-invoice-workflow.vercel.app/api/health",
+            "muffinpanrecipes": "https://muffinpanrecipes.com/api/health",
             "cortana-personal-ai": None,  # Local only, no deployed endpoint
+            "project-tracker": None,  # Local only
+            "image-workflow": None,  # Local only
         }
         
         # Skip if no heartbeat URL configured
