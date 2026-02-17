@@ -200,7 +200,7 @@ Investigate and resolve the issue detected by the Janitor loop.
         self.db.add_task(
             text=task_text,
             project_id=project_id,
-            status="TRIAGED",
+            status="To Do",
             priority="High" if severity == "P0" else "Medium",
             prompt=prompt,
             task_type="agent"
