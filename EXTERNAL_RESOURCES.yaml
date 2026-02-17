@@ -154,10 +154,16 @@ projects:
       - name: Make.com
         purpose: "Google OAuth proxy, Sheets/Gmail automation, daily scheduling"
         type: automation
-        env_var: "SIW_MAKE_API_KEY"
+        env_vars:
+          - "MAKE_API_TOKEN"
+          - "MAKE_API_URL"
+          - "MAKE_ORG_ID"
+          - "MAKE_TEAM_ID"
+          - "MAKE_SIW_SCENARIO_ID"
         cost: 16
         plan: "Pro (10K ops/month)"
-        notes: "Standard for any project needing Google Workspace integration. Sidesteps Google OAuth verification (4-6 week process)."
+        zone: "us2.make.com"
+        notes: "Standard for any project needing Google Workspace integration. Sidesteps Google OAuth verification (4-6 week process). API token created under Profile > API access."
       - name: Auth0
         purpose: "User authentication (email/password, magic link)"
         type: auth
@@ -168,9 +174,15 @@ projects:
       - name: Vercel
         purpose: "Hosting (FastAPI serverless)"
         type: hosting
-        env_var: "SIW_VERCEL_TOKEN"
+        env_vars:
+          - "VERCEL_TOKEN"
+          - "VERCEL_TEAM_ID"
+          - "VERCEL_PROJECT_ID"
         cost: 0
-        plan: "Free tier"
+        plan: "Hobby (free)"
+        project_id: "prj_BhSNJWvzEqXbU4z4y5PVIbuZNZbL"
+        team_id: "team_PJUqNMkyhhctGVPOgpjU8F3L"
+        region: "iad1"
       - name: Stripe
         purpose: "Payment processing"
         type: payments

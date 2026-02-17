@@ -120,16 +120,16 @@ To use the project scaffolding system, follow these steps:
 
 ## Recent Activity
 
-- 2026-01-22: chore: Finalize project scaffolding and ecosystem synchronization
-- 2026-01-16: feat: Integrate agent-skills-library discovery into project kickoff
-- 2026-01-14: Update scaffolding ecosystem: standardize templates and enhance governance documentation
-- 2026-01-14: Add Doppler secrets management and fix DNA defects
-- 2026-01-12: Apply project scaffolding: standalone scripts and version metadata
-- 2026-01-12: Merge pull request #9 from eriksjaastad/claude/code-review-recommendations-HVRym
-- 2026-01-12: docs: add systematic code review based on documented recommendations
-- 2026-01-12: Update AGENTS.md role mandates and archive knowledge transfer prompts
-- 2026-01-11: Archive code review integration prompts and add validation updates
-- 2026-01-11: docs: add Raw Output Limitation pattern to LOCAL_MODEL_LEARNINGS
+- 2026-02-16: feat: UV Run-first policy, AGENTS.md dedup, drift checker, smoke test fixes (#4843, #4844, #4845, #4846, #4847, #4854)
+- 2026-02-16: chore: snapshot project-scaffolding cleanup baseline
+- 2026-02-15: feat: add E2E-TRACE rule to governance protocol (H10)
+- 2026-02-15: feat: add governance doc sync tool
+- 2026-02-09: fix: Preserve existing content when syncing file without markers (#4756)
+- 2026-02-09: chore: Re-sync agentsync rules after 00-full-content.md cleanup (#4741)
+- 2026-02-09: fix: Add cleanup for migration artifact 00-full-content.md (#4763)
+- 2026-01-29: feat: Add code review checks script (#4622, #4623)
+- 2026-01-29: fix: Remove Documents/core/ references from wikilink replacements
+- 2026-01-28: docs: Add comprehensive .agentsync documentation
 ## Contributing
 
 We welcome contributions to the project scaffolding system!  Please see the `CONTRIBUTING.md` file for guidelines on how to contribute. (File to be created)
@@ -146,6 +146,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | :--- | :---: | :--- |
 | [Documents/](Documents/README.md) | 10 | *Auto-generated index. Last updated: 2026-01-24* |
 | [agentsync/](agentsync/README.md) | 5 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
+| [autonomous-loops/](autonomous-loops/README.md) | 8 | """ |
 | [examples/](examples/) | 0 | No description available. |
 | [patterns/](patterns/) | 14 | No description available. |
 | [scaffold/](scaffold/) | 6 | No description available. |
@@ -209,6 +210,15 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [agentsync/sync_governance.py](agentsync/sync_governance.py) | No description available. |
 | [agentsync/sync_mcp.py](agentsync/sync_mcp.py) | No description available. |
 | [agentsync/sync_rules.py](agentsync/sync_rules.py) | No description available. |
+| [autonomous-loops/ARCHITECTURE.md](autonomous-loops/ARCHITECTURE.md) | **Created:** 2026-02-16 |
+| [autonomous-loops/CRON_SCHEDULE.txt](autonomous-loops/CRON_SCHEDULE.txt) | No description available. |
+| [autonomous-loops/INSTALLATION.md](autonomous-loops/INSTALLATION.md) | The autonomous loops system provides continuous monitoring and maintenance for all projects: |
+| [autonomous-loops/README.md](autonomous-loops/README.md) | """ |
+| [autonomous-loops/config_loader.py](autonomous-loops/config_loader.py) | Configuration loader for autonomous loops. |
+| [autonomous-loops/examples/project-override.yaml](autonomous-loops/examples/project-override.yaml) | No description available. |
+| [autonomous-loops/janitor.py](autonomous-loops/janitor.py) | No description available. |
+| [autonomous-loops/librarian.py](autonomous-loops/librarian.py) | No description available. |
+| [autonomous-loops/patch_bot.py](autonomous-loops/patch_bot.py) | No description available. |
 | [patterns/ai-team-orchestration.md](patterns/ai-team-orchestration.md) | AI Team Orchestration Pattern |
 | [patterns/api-key-management.md](patterns/api-key-management.md) | API Key Management Pattern |
 | [patterns/automation-reliability.md](patterns/automation-reliability.md) | Automation Reliability Patterns |
