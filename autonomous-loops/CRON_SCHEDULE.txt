@@ -1,0 +1,11 @@
+# Autonomous Loops Cron Schedule
+# Install: crontab -e, then paste these lines
+
+# Janitor Loop - Every hour
+0 * * * * cd /Users/eriksjaastad/projects/project-scaffolding/autonomous-loops && /opt/homebrew/bin/python3 janitor.py >> /tmp/janitor.log 2>&1
+
+# Librarian Loop - Every 6 hours
+0 */6 * * * cd /Users/eriksjaastad/projects/project-scaffolding/autonomous-loops && /opt/homebrew/bin/python3 librarian.py >> /tmp/librarian.log 2>&1
+
+# Patch-Bot Loop - Every 30 minutes
+*/30 * * * * cd /Users/eriksjaastad/projects/project-scaffolding/autonomous-loops && /opt/homebrew/bin/python3 patch_bot.py >> /tmp/patch_bot.log 2>&1
