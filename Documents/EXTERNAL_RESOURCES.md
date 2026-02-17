@@ -88,7 +88,7 @@ Ask yourself:
 ### Monitoring/Notifications
 **What we have:**
 - Discord Webhooks (free, unlimited)
-- Healthchecks.io (cron job monitoring)
+- Autonomous Loops (Janitor, Librarian, Patch-Bot)
 
 ---
 

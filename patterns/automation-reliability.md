@@ -441,7 +441,7 @@ When setting up new automation:
 ### Monitoring
 - [ ] Discord webhook for success/failure notifications
 - [ ] Heartbeat file updated on success
-- [ ] Stale heartbeat check (optional: Healthchecks.io)
+- [ ] Autonomous Loops monitoring (Janitor checks application health)
 
 ### Documentation
 - [ ] Automation documented in project README
