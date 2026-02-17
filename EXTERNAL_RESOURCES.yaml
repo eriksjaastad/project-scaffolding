@@ -69,11 +69,6 @@ projects:
         type: notifications
         env_var: "TRADING_DISCORD_WEBHOOK_URL"
         cost: 0
-      - name: Healthchecks.io
-        purpose: "Cron job monitoring"
-        type: monitoring
-        env_var: "TRADING_HEALTHCHECKS_KEY"
-        cost: 0
 
   cortana-personal-ai:
     monthly_cost: 0.60
@@ -236,7 +231,7 @@ services_by_function:
   
   monitoring:
     - Discord Webhooks
-    - Healthchecks.io
+    - Autonomous Loops (Janitor)
   
   voice_to_text:
     - SuperWhisper (local)
