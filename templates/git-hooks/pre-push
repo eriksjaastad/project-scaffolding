@@ -88,7 +88,7 @@ while read local_ref local_sha remote_ref remote_sha; do
     
     if [ -n "$RMTREE_MATCHES" ]; then
         # Filter out known validation scripts and pattern definitions
-        REAL_USAGE=$(echo "$RMTREE_MATCHES" | grep -v 'warden_audit\|validate_project\|dangerous.*patterns\|# .*rmtree\|".*rmtree\|'"'"'.*rmtree' || true)
+        REAL_USAGE=$(echo "$RMTREE_MATCHES" | grep -v 'warden_audit\|validate_project\|dangerous.*patterns\|# .*rmtree\|".*rmtree\|'"'"'.*rmtree\|\.md:' || true)
         
         if [ -n "$REAL_USAGE" ]; then
             echo ""
