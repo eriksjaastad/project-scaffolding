@@ -34,6 +34,7 @@ import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import cast
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -65,10 +66,7 @@ def update_scaffolding_version(project_dir: Path, version: str):
     """Write governance_version and governance_synced_at to .scaffolding-version."""
     version_file = project_dir / ".scaffolding-version"
     try:
-        if version_file.exists():
-            data = json.loads(version_file.read_text())
-        else:
-            data = {}
+        data = cast(dict[str, str], json.loads(version_file.read_text())) if version_file.exists() else {}
 
         data["governance_version"] = version
         data["governance_synced_at"] = datetime.now().isoformat()
@@ -157,7 +155,7 @@ def main():
     if args.dry_run:
         print("DRY RUN — no files will be changed\n")
 
-    counts = {"updated": 0, "created": 0, "unchanged": 0}
+    counts: dict[str, int] = {"updated": 0, "created": 0, "unchanged": 0}
 
     for project_dir in projects:
         result = sync_project(project_dir, version, synced_content,
