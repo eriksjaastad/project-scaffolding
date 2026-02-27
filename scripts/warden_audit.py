@@ -4,6 +4,7 @@ import sys
 import subprocess
 import shutil
 from enum import Enum
+from typing import cast
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -37,7 +38,7 @@ def is_tier_1_project(index_path: pathlib.Path) -> bool:
             return True
 
         # 2. Check headers and list items in the first 50 lines
-        lines = content.split('\n')
+        lines = cast(list[str], content.split('\n'))
         for line in lines[:50]:
             line_strip = line.strip().lower()
             if not line_strip:
