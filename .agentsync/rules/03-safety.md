@@ -4,9 +4,24 @@ targets: ["*"]
 
 # Safety Rules
 
-## File Operations
+## 🚨 ABSOLUTE RULE: Trash, Don't Delete
+**NEVER use these commands:**
+- `rm` (any form: rm, rm -f, rm -r, rm -rf)
+- `unlink`
+- `shred`
+- `find -delete`
+- `os.remove()`, `os.unlink()`, `shutil.rmtree()` in Python
+- Any other permanent file deletion API
 
-- **Trash, Don't Delete:** NEVER use `rm` or permanent deletion
+**ALWAYS use these instead:**
+- `trash <file>` - CLI trash command
+- `send2trash` - Python library
+- `git restore <file>` - For tracked files you want to revert
+
+**Why:** Permanent deletion cannot be recovered. Trash can be recovered.
+**If trash command is not available:** STOP and ask the user. Do not find workarounds.
+
+## File Operations
 - Use `trash` CLI (preferred) or `send2trash` (Python)
 - Use `git restore` for reverting tracked files
 

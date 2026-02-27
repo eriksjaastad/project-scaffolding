@@ -1,8 +1,9 @@
-# PROJECT SPEC: [Project Name]
+# PROJECT SPEC: {{PROJECT_NAME}}
 **Status:** Draft / Approved / In-Audit
-**Architect:** Erik Sjaastad (The Conductor)
-**Super Manager:** Gemini 3 Flash (Strategic Advisor)
-**Primary Worker:** Local DeepSeek-R1 (Ollama)
+**Conductor:** Erik Sjaastad
+**Architect:** Claude Code CLI
+**Floor Manager:** [Antigravity / Gemini]
+**Workers:** [Local Ollama models / Sub-agents — depends on computer]
 
 ---
 
