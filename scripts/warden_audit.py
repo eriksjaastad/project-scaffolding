@@ -147,11 +147,11 @@ def check_dangerous_functions(project_root: pathlib.Path) -> list:
             with file_path.open('r') as f:
                 content = f.read()
 
-                # Hardcoded paths: P1 in code, P2 in markdown
-                for pattern in hardcoded_path_patterns:
-                    if pattern in content:
-                        severity = Severity.P1 if is_code_file else Severity.P2
-                        found_issues.append((file_path, pattern, severity))
+                # Hardcoded paths: only check code files — markdown docs use example paths legitimately
+                if is_code_file:
+                    for pattern in hardcoded_path_patterns:
+                        if pattern in content:
+                            found_issues.append((file_path, pattern, Severity.P1))
 
                 # Dangerous functions: only check code files
                 if is_code_file:
