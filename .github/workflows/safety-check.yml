@@ -12,18 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check for hardcoded absolute paths
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Warden safety audit
         run: |
-          echo "Checking for hardcoded paths..."
-          if grep -rn --include="*.py" --include="*.sh" "/Users/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
-            echo "::error::Found hardcoded /Users/ paths in code files!"
-            exit 1
-          fi
-          if grep -rn --include="*.py" --include="*.sh" "/home/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
-            echo "::error::Found hardcoded /home/ paths in code files!"
-            exit 1
-          fi
-          echo "No hardcoded paths found."
+          echo "Running Warden safety audit..."
+          python3 scripts/warden_audit.py --root .
 
       - name: Check for potential secrets
         run: |
