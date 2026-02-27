@@ -359,6 +359,45 @@ A **template repository** that gives every new project:
 
 ---
 
+## Trickle-Down Updates
+
+> **Rule:** Changes are made here first. Everything else is downstream.
+
+This project is the **canonical source of truth** for shared tooling across the ecosystem. When you fix a bug or improve a rule here, it needs to flow to all child projects.
+
+### What propagates automatically (AgentSync)
+
+| What | How | Command |
+|------|-----|---------|
+| `AGENTS.md` content | `sync_agents_md.py` | `uv run agentsync/sync_agents_md.py` |
+| IDE rules (CLAUDE.md, .agent/rules/) | `sync_rules.py` | `uv run agentsync/sync_rules.py` |
+| Governance protocol | `sync_governance.py` | `uv run agentsync/sync_governance.py` |
+| MCP configs | `sync_mcp.py` | `uv run agentsync/sync_mcp.py` |
+
+### What requires manual propagation
+
+These files are **copied once** at scaffold time — child projects own their own copy:
+
+| File | How to propagate a fix |
+|------|------------------------|
+| `scripts/warden_audit.py` | Re-run `scaffold apply <project>` or manually copy |
+| `scripts/validate_project.py` | Re-run `scaffold apply <project>` or manually copy |
+| `templates/git-hooks/pre-commit` | Re-run `install-hooks.sh` in each project |
+| `.github/workflows/safety-check.yml` | Each project manages its own GitHub Actions |
+
+### The Right Workflow
+
+1. **Fix or improve something** in this repo
+2. **Run the relevant agentsync script** if it's a synced file
+3. **Note in the commit message** if manual propagation is needed for copied script files
+4. Child projects pick up script updates next time they re-scaffold or you copy manually
+
+### Future: Making Script Updates Automatic
+
+An `agentsync/sync_scripts.py` could automate warden/validate propagation the same way governance is synced today. Not built yet — tracked as a future improvement.
+
+---
+
 ## Structure
 
 ```
