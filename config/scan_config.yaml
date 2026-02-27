@@ -81,6 +81,7 @@ ignore_projects:
   - fci-plugins       # Chrome extensions - not code we navigate
   - openclaw          # External project - do not track
   - nanoclaw          # External project - do not track
+  - github-repos      # Downloaded repos for study - not our code
 
 # Projects that can be scanned/read but should NEVER be modified
 # Scaffolding, automated cleanup, and other tools should not touch these

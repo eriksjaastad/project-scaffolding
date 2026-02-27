@@ -55,6 +55,7 @@ def _get_context(project_name: str) -> Dict[str, str]:
     return {
         "PROJECT_NAME": project_name,
         "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
+        "PROJECT_INTENT": "TODO: Define project intent (what is it for / what does success look like / how should that influence decisions)",
         "DATE": today,
         "STATUS": "Active",
         "PHASE": "Foundation",
@@ -84,6 +85,7 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "CONFIG_NAME": "default",
         "FILE_CONTENT": "",
         "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
+        "PROJECT_INTENT": "TODO: Define project intent (what is it for / what does success look like / how should that influence decisions)",
         "VENV_ACTIVATION": "source venv/bin/activate",
         "WAIT_TIME": "2",
         "CONSTRAINT_1": "None",
@@ -96,7 +98,7 @@ def _substitute_placeholders(content: str, context: Dict[str, str], filename: st
     
     # Mandatory variables that MUST exist in context if found in {{VAR}} format
     MANDATORY_VARS = {
-        "PROJECT_NAME", "PROJECT_DESCRIPTION", "DATE", "STATUS", "PHASE",
+        "PROJECT_NAME", "PROJECT_DESCRIPTION", "PROJECT_INTENT", "DATE", "STATUS", "PHASE",
         "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
         "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
         "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME", "DOC_PATH",
@@ -591,6 +593,7 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
 
     for filename, template_path in files_with_templates.items():
         file_path = target_dir / filename
+
         template_full_path = scaffold_root / template_path if template_path else None
 
         if template_full_path and not template_full_path.exists():
@@ -687,7 +690,7 @@ def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
     
     # Mandatory variables that SHOULD NOT remain in scaffolded files
     MANDATORY_VARS = {
-        "PROJECT_NAME", "PROJECT_DESCRIPTION", "DATE", "STATUS", "PHASE",
+        "PROJECT_NAME", "PROJECT_DESCRIPTION", "PROJECT_INTENT", "DATE", "STATUS", "PHASE",
         "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
         "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
         "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME", "DOC_PATH",
@@ -1069,6 +1072,277 @@ def _load_review_configs(
         ))
     
     return configs
+
+
+ENTRY_POINT_NAMES = {"main.py", "app.py", "server.py", "cli.py", "__main__.py", "manage.py"}
+
+
+def _scan_pyproject(project_dir: Path) -> dict:
+    """Extract project metadata from pyproject.toml."""
+    info = {"name": project_dir.name, "description": "", "run_cmd": "", "test_cmd": "", "deps": []}
+    pyproject = project_dir / "pyproject.toml"
+    if not pyproject.exists():
+        return info
+
+    with open(pyproject, "rb") as f:
+        data = tomllib.load(f)
+
+    proj = data.get("project", {})
+    info["name"] = proj.get("name", project_dir.name)
+    info["description"] = proj.get("description", "")
+    info["deps"] = [d.split(">")[0].split("<")[0].split("=")[0].split("[")[0].strip()
+                    for d in proj.get("dependencies", [])]
+
+    # Extract scripts for run command
+    scripts = proj.get("scripts", {})
+    if scripts:
+        first_script = next(iter(scripts))
+        info["run_cmd"] = first_script
+
+    # Check for test config
+    if "pytest" in str(data.get("tool", {})):
+        info["test_cmd"] = "uv run pytest"
+
+    return info
+
+
+def _scan_package_json(project_dir: Path) -> dict:
+    """Extract project metadata from package.json."""
+    import json as _json
+    info = {"name": project_dir.name, "description": "", "run_cmd": "", "test_cmd": "", "deps": []}
+    pkg = project_dir / "package.json"
+    if not pkg.exists():
+        return info
+
+    data = _json.loads(pkg.read_text())
+    info["name"] = data.get("name", project_dir.name)
+    info["description"] = data.get("description", "")
+    scripts = data.get("scripts", {})
+    if "start" in scripts:
+        info["run_cmd"] = "npm start"
+    if "dev" in scripts:
+        info["run_cmd"] = "npm run dev"
+    if "test" in scripts:
+        info["test_cmd"] = "npm test"
+    info["deps"] = list(data.get("dependencies", {}).keys())
+    return info
+
+
+def _scan_entry_points(project_dir: Path) -> list[str]:
+    """Find entry point files in a project."""
+    found = []
+    # Check root
+    for name in ENTRY_POINT_NAMES:
+        if (project_dir / name).exists():
+            found.append(name)
+    # Check src/ directory
+    src_dir = project_dir / "src"
+    if src_dir.is_dir():
+        for name in ENTRY_POINT_NAMES:
+            if (src_dir / name).exists():
+                found.append(f"src/{name}")
+        # Check src/*/  subdirs for __main__.py, app.py etc
+        for subdir in src_dir.iterdir():
+            if subdir.is_dir() and not subdir.name.startswith("."):
+                for name in ENTRY_POINT_NAMES:
+                    if (subdir / name).exists():
+                        found.append(f"src/{subdir.name}/{name}")
+    return found
+
+
+def _scan_internal_deps(project_dir: Path, projects_root: Path) -> list[str]:
+    """Find references to other internal projects."""
+    known_projects = set()
+    for p in projects_root.iterdir():
+        if p.is_dir() and not p.name.startswith(".") and not p.name.startswith("_"):
+            known_projects.add(p.name)
+
+    found = set()
+    # Check CLAUDE.md, pyproject.toml, and common config files for project references
+    files_to_scan = ["CLAUDE.md", "pyproject.toml", "package.json", "README.md"]
+    for fname in files_to_scan:
+        fpath = project_dir / fname
+        if fpath.exists():
+            content = fpath.read_text()
+            for proj_name in known_projects:
+                if proj_name != project_dir.name and proj_name in content:
+                    found.add(proj_name)
+    return sorted(found)
+
+
+def _llm_purpose(project_name: str, description: str, entry_points: list[str]) -> str:
+    """Ask local Ollama model for a one-line purpose. Returns empty string on failure."""
+    import json as _json
+    try:
+        prompt = (
+            f"Write exactly one sentence describing what the project '{project_name}' does. "
+            f"Known info: {description}. Entry points: {', '.join(entry_points) or 'unknown'}. "
+            f"Reply with ONLY the one sentence, no quotes, no preamble."
+        )
+        result = subprocess.run(
+            ["curl", "-s", "--max-time", "15", "http://localhost:11434/api/generate",
+             "-d", _json.dumps({"model": "coding:current", "prompt": prompt, "stream": False})],
+            capture_output=True, text=True, timeout=20,
+        )
+        if result.returncode == 0:
+            resp = _json.loads(result.stdout)
+            line = resp.get("response", "").strip().split("\n")[0].strip()
+            if 10 < len(line) < 200:
+                return line
+    except Exception:
+        pass
+    return ""
+
+
+def _build_manifest(project_dir: Path, projects_root: Path, refresh_purpose: bool = False) -> str:
+    """Build manifest content for a project by scanning its source files."""
+    # Try pyproject.toml first, fall back to package.json
+    info = _scan_pyproject(project_dir)
+    if not info["description"]:
+        pkg_info = _scan_package_json(project_dir)
+        if pkg_info["description"]:
+            info = pkg_info
+
+    entry_points = _scan_entry_points(project_dir)
+    internal_deps = _scan_internal_deps(project_dir, projects_root)
+
+    # Determine purpose: LLM if --refresh, else pyproject description
+    purpose = info["description"]
+    if refresh_purpose or not purpose:
+        llm_result = _llm_purpose(info["name"], info["description"], entry_points)
+        if llm_result:
+            purpose = llm_result
+
+    if not purpose:
+        purpose = "TODO: Add project description to pyproject.toml"
+
+    # Build commands section
+    commands = []
+    if info["run_cmd"]:
+        commands.append(info["run_cmd"])
+    if info["test_cmd"]:
+        commands.append(info["test_cmd"])
+    if not commands:
+        # Check for Makefile
+        if (project_dir / "Makefile").exists():
+            commands.append("make")
+
+    # Build entry points section
+    ep_lines = []
+    for ep in entry_points[:5]:  # Cap at 5
+        ep_lines.append(f"1. `{ep}`")
+    if not ep_lines:
+        ep_lines.append("1. `README.md` — Project overview")
+
+    # Build dependencies section
+    dep_lines = []
+    for dep in internal_deps:
+        dep_lines.append(f"- **{dep}**")
+    if not dep_lines:
+        dep_lines.append("- None detected")
+
+    # Assemble
+    auto_section = f"""**Purpose:** {purpose}
+
+**Status:** Active
+
+**Entry points:**
+{chr(10).join(ep_lines)}
+
+**Key commands:**
+```bash
+{chr(10).join(commands) if commands else "# No commands detected — check pyproject.toml or Makefile"}
+```
+
+**Dependencies (internal):**
+{chr(10).join(dep_lines)}
+
+**Last generated:** {datetime.now().strftime("%Y-%m-%d")}"""
+
+    return auto_section
+
+
+@cli.command("gen-manifest")
+@click.argument("project_name")
+@click.option("--refresh", is_flag=True, help="Re-run LLM call for Purpose line")
+@click.option("--dry-run", is_flag=True, help="Preview without writing")
+def gen_manifest(project_name: str, refresh: bool, dry_run: bool) -> None:
+    """Generate or update the auto-generated section of README.md by scanning source files.
+
+    Writes project purpose, entry points, commands, and dependencies between
+    MANIFEST:AUTO markers in README.md. Custom content outside markers is preserved.
+
+    Examples:
+        scaffold gen-manifest project-tracker
+        scaffold gen-manifest project-scaffolding --refresh
+        scaffold gen-manifest --all
+    """
+    scaffold_root = Path(__file__).parent.parent
+    projects_root = scaffold_root.parent
+
+    # Handle --all
+    if project_name == "--all":
+        targets = []
+        for p in sorted(projects_root.iterdir()):
+            if p.is_dir() and (p / ".scaffolding-version").exists():
+                targets.append(p)
+        if not targets:
+            console.print("[yellow]No scaffolded projects found.[/yellow]")
+            return
+        console.print(f"\n[bold]Generating manifests for {len(targets)} projects...[/bold]\n")
+        for target in targets:
+            _gen_manifest_for(target, projects_root, refresh, dry_run)
+        return
+
+    # Single project
+    target_dir = projects_root / project_name
+    if not target_dir.exists():
+        console.print(f"[red]Error: Project directory not found: {target_dir}[/red]")
+        return
+
+    _gen_manifest_for(target_dir, projects_root, refresh, dry_run)
+
+
+def _gen_manifest_for(target_dir: Path, projects_root: Path, refresh: bool, dry_run: bool) -> None:
+    """Generate auto-manifest section inside README.md for a single project."""
+    project_name = target_dir.name
+    readme_path = target_dir / "README.md"
+
+    console.print(f"  [bold]{project_name}[/bold]")
+
+    auto_content = _build_manifest(target_dir, projects_root, refresh_purpose=refresh)
+
+    auto_block = "\n".join([
+        "<!-- MANIFEST:AUTO:START — Auto-generated by `scaffold gen-manifest`. Do not edit this section. -->",
+        auto_content,
+        "<!-- MANIFEST:AUTO:END -->",
+    ])
+
+    if readme_path.exists():
+        existing = readme_path.read_text()
+        # Replace existing auto block if present
+        pattern = r"<!-- MANIFEST:AUTO:START.*?-->.*?<!-- MANIFEST:AUTO:END -->"
+        if re.search(pattern, existing, re.DOTALL):
+            output = re.sub(pattern, auto_block, existing, flags=re.DOTALL)
+        else:
+            # No auto block yet — inject after the first heading
+            heading_match = re.search(r"(^#[^\n]*\n)", existing, re.MULTILINE)
+            if heading_match:
+                insert_pos = heading_match.end()
+                output = existing[:insert_pos] + "\n" + auto_block + "\n\n" + existing[insert_pos:]
+            else:
+                # No heading — prepend
+                output = auto_block + "\n\n" + existing
+    else:
+        # No README at all — create one
+        output = f"# {project_name}\n\n{auto_block}\n"
+
+    if dry_run:
+        console.print(f"    [cyan]Would write README.md ({len(output)} chars)[/cyan]")
+        console.print(output)
+    else:
+        readme_path.write_text(output)
+        console.print(f"    [green]Wrote README.md[/green]")
 
 
 if __name__ == "__main__":

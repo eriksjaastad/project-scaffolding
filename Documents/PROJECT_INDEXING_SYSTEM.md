@@ -286,7 +286,7 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 
 ### Active Development (6 projects)
 - [x] hologram
-- [x] agent-skills-library
+- [x] Claude Code Skills (deployed to ~/.claude/skills/)
 - [x] automation-consulting
 - [x] country-ai-futures-tracker
 - [x] project-tracker
@@ -381,7 +381,7 @@ find $PROJECTS_ROOT -name "00_Index_*.md" \
 - [PROJECT_KICKOFF_GUIDE](PROJECT_KICKOFF_GUIDE.md) - project setup
 - [Automation Reliability](patterns/automation-reliability.md) - automation
 - [3d-pose-factory/README](../../ai-model-scratch-build/README.md) - 3D Pose Factory
-- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- Claude Code Skills (`~/.claude/skills/`) - Agent Capabilities
 - [ai-usage-billing-tracker/README](../../ai-model-scratch-build/README.md) - AI Billing Tracker
 - [analyze-youtube-videos/README](../../ai-model-scratch-build/README.md) - YouTube Analyzer
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI

@@ -145,8 +145,7 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | Directory | Files | Description |
 | :--- | :---: | :--- |
 | [Documents/](Documents/README.md) | 10 | *Auto-generated index. Last updated: 2026-01-24* |
-| [agentsync/](agentsync/README.md) | 5 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
-| [autonomous-loops/](autonomous-loops/README.md) | 8 | """ |
+| [agentsync/](agentsync/README.md) | 6 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
 | [patterns/](patterns/) | 14 | No description available. |
 | [scaffold/](scaffold/) | 6 | No description available. |
@@ -201,24 +200,17 @@ This project is licensed under the [MIT License](LICENSE). (License file to be c
 | [Documents/reference/SILENT_FAILURES_AUDIT.md](Documents/reference/SILENT_FAILURES_AUDIT.md) | **Created:** 2026-01-23 |
 | [Documents/reference/SPEC_2026-01-08.md](Documents/reference/SPEC_2026-01-08.md) | **Document Type:** System Specification (Auditor-Generated) |
 | [EXTERNAL_RESOURCES.yaml](EXTERNAL_RESOURCES.yaml) | No description available. |
+| [GEN_MANIFEST_USAGE.md](GEN_MANIFEST_USAGE.md) | Auto-generates project metadata (purpose, entry points, commands, dependencies) and writes it into t... |
 | [PRD.md](PRD.md) | The Erik Sjaastad project ecosystem consists of 30+ projects that need to follow consistent standard... |
 | [QUICKSTART.md](QUICKSTART.md) | Project Scaffolding - Quick Start |
 | [README.md](README.md) | Project Scaffolding |
 | [REVIEWS_AND_GOVERNANCE_PROTOCOL.md](REVIEWS_AND_GOVERNANCE_PROTOCOL.md) | **Date:** 2026-01-27 |
 | [agentsync/README.md](agentsync/README.md) | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [agentsync/migrate_agents_md.py](agentsync/migrate_agents_md.py) | No description available. |
+| [agentsync/sync_agents_md.py](agentsync/sync_agents_md.py) | No description available. |
 | [agentsync/sync_governance.py](agentsync/sync_governance.py) | No description available. |
 | [agentsync/sync_mcp.py](agentsync/sync_mcp.py) | No description available. |
 | [agentsync/sync_rules.py](agentsync/sync_rules.py) | No description available. |
-| [autonomous-loops/ARCHITECTURE.md](autonomous-loops/ARCHITECTURE.md) | **Created:** 2026-02-16 |
-| [autonomous-loops/CRON_SCHEDULE.txt](autonomous-loops/CRON_SCHEDULE.txt) | No description available. |
-| [autonomous-loops/INSTALLATION.md](autonomous-loops/INSTALLATION.md) | The autonomous loops system provides continuous monitoring and maintenance for all projects: |
-| [autonomous-loops/README.md](autonomous-loops/README.md) | """ |
-| [autonomous-loops/config_loader.py](autonomous-loops/config_loader.py) | Configuration loader for autonomous loops. |
-| [autonomous-loops/examples/project-override.yaml](autonomous-loops/examples/project-override.yaml) | No description available. |
-| [autonomous-loops/janitor.py](autonomous-loops/janitor.py) | No description available. |
-| [autonomous-loops/librarian.py](autonomous-loops/librarian.py) | No description available. |
-| [autonomous-loops/patch_bot.py](autonomous-loops/patch_bot.py) | No description available. |
 | [patterns/ai-team-orchestration.md](patterns/ai-team-orchestration.md) | AI Team Orchestration Pattern |
 | [patterns/api-key-management.md](patterns/api-key-management.md) | API Key Management Pattern |
 | [patterns/automation-reliability.md](patterns/automation-reliability.md) | Automation Reliability Patterns |

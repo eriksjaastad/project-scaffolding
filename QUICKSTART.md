@@ -569,7 +569,7 @@ This scaffolding promotes projects that improve over time. Skills (reusable AI i
 
 | Approach | Best For | Location |
 |----------|----------|----------|
-| **Shared library** | Cross-project patterns | `$PROJECTS_ROOT/agent-skills-library/` |
+| **Claude Code Skills** | Agent capabilities for Claude Code | `~/.claude/skills/` |
 | **Per-project** | Project-specific patterns | Within `.cursorrules` or `CLAUDE.md` |
 | **Both** | Mature ecosystems | Shared + project-specific |
 
@@ -665,5 +665,5 @@ Common issues:
 - [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [Safety Systems](patterns/safety-systems.md) - security
-- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
+- Claude Code Skills (`~/.claude/skills/`) - Agent Capabilities
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

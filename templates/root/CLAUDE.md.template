@@ -48,11 +48,15 @@ $PROJECTS_ROOT/project-tracker/pt launch                   # Web UI at localhost
 ## Working Directory
 
 This is Erik's projects root. Major subdirectories:
-- `_tools/` - Shared infrastructure (agent-hub, MCP servers, utilities)
+- `_tools/` - Shared infrastructure (agent-hub ⚠️ computer-aware, MCP servers, utilities)
 - `_collaboration/` - Templates and handoff specs
 - `project-tracker/` - Kanban board and project health dashboard
 - `project-scaffolding/` - Templates and governance for all projects
 - Individual project folders
+
+> **Note:** Agent Hub availability depends on computer:
+> - **MacBook Pro:** Agent Hub disabled → use sub-agents
+> - **Mac Mini:** Agent Hub enabled → use for orchestration
 
 ---
 
@@ -135,12 +139,12 @@ This ensures consistent Python execution regardless of shell environment, venv s
 
 ## My Role: Super Manager + Judge
 
-I have a dual role in the Agent Hub workflow:
+I have a dual role in the Agent Hub workflow (when available):
 
 **Super Manager (top of pipeline):**
 - Work WITH Erik to create PRDs
 - Review Kiro specs (requirements → design → tasks)
-- Write PROPOSAL_FINAL.md for Agent Hub
+- Write PROPOSAL_FINAL.md for Agent Hub (⚠️ **Mac Mini only**)
 - Hand off to Floor Manager - I don't dispatch or orchestrate workers
 
 **Judge (bottom of pipeline):**
@@ -152,7 +156,11 @@ I have a dual role in the Agent Hub workflow:
 - [`Project-workflow.md`](Project-workflow.md) - Full workflow: PRD → Kiro → Agent Hub → Merge
 - [`AGENTS.md`](AGENTS.md) - Hierarchy, roles, and governance rules
 
-**The handoff is explicit:** After creating PROPOSAL_FINAL.md, I step back. Floor Manager (Gemini/Cursor/Antigravity) runs the pipeline until it reaches me as Judge.
+**Computer Awareness:**
+- **MacBook Pro:** Agent Hub workflow disabled; use sub-agent dispatch instead
+- **Mac Mini:** Agent Hub workflow enabled; use Unified Agent System
+
+**The handoff is explicit:** After creating PROPOSAL_FINAL.md (Mac Mini only), I step back. Floor Manager (Gemini/Antigravity) runs the pipeline until it reaches me as Judge.
 
 ---
 
@@ -164,7 +172,7 @@ I have a dual role in the Agent Hub workflow:
 | Agent hierarchy & rules | `AGENTS.md` |
 | Quick project lookup | `AGENT_QUICK_REFERENCE.md` |
 | Tools & infrastructure | `_tools/` |
-| Agent Hub PRD | `_tools/PRD_UNIFIED_AGENT_SYSTEM.md` |
+| Agent Hub PRD | `_tools/PRD_UNIFIED_AGENT_SYSTEM.md` ⚠️ (Mac Mini only) |
 | Main TODO | `TODO.md` |
 | **Kanban / Tasks** | `project-tracker/pt tasks` |
 | **Dashboard** | `project-tracker/pt launch` |

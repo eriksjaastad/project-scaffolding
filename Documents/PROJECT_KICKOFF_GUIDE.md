@@ -60,28 +60,16 @@ The automated `scaffold_cli.py apply` command already created a project index fo
 
 ### Step 4: Discover Relevant Skills (RECOMMENDED)
 
-**Check the skills library for patterns that could help this project:**
+**Claude Code has 18 skills deployed to `~/.claude/skills/`.** They activate automatically based on conversation context.
 
-```bash
-# See what skills exist
-ls $PROJECTS_ROOT/agent-skills-library/playbooks/
+**Available skills by category:**
+- **Workflow:** `commit`, `pr`, `tasks`, `audit`, `judge`
+- **Planning:** `strategy`, `propose`, `trace`, `handoff`
+- **Review:** `security-sentinel`, `performance-oracle`, `test-strategist`
+- **Domain:** `make-com`, `financial-integrity-guard`, `tax-discovery-engine`
+- **Platform:** `platform-rules-expert`, `vercel-react-best-practices`, `youtube-channel-analysis`
 
-# Run detection to see which skills might be relevant
-python $PROJECTS_ROOT/agent-skills-library/scripts/detect_skill_candidates.py
-```
-
-**Ask the AI:**
-> "Review the skills in agent-skills-library/playbooks/ and recommend which ones would be useful for this project based on [project description]."
-
-**Then:**
-1. Add relevant skills to `00_Index_*.md` → "Skills Used" section
-2. Add skills to `AGENTS.md` → "Skills Library" section
-3. Update `agent-skills-library/SKILL_USAGE.md` to track adoption
-
-**Why this matters:**
-- Skills encode proven patterns - don't reinvent the wheel
-- Using skills in more projects helps promote them (🟡 → 🟢)
-- Feedback from real usage improves the skills for everyone
+Skills are triggered by conversation keywords — no manual activation needed.
 
 ---
 

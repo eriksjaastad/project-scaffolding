@@ -44,7 +44,6 @@ UNIVERSAL_REPLACEMENTS = [
     (r'\[\[discord_integration\]\]', '[Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md)'),
     
     # Cross-project references (relative to projects root)
-    (r'\[\[agent-skills-library/README\]\]', '[Agent Skills Library](../agent-skills-library/README.md)'),
     (r'\[\[project-scaffolding/README\]\]', '[Project Scaffolding](../project-scaffolding/README.md)'),
     
     # Projects root references (when in project, link up to root)
