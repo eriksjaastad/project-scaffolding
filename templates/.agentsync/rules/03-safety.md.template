@@ -10,7 +10,8 @@ targets: ["*"]
 - `unlink`
 - `shred`
 - `find -delete`
-- Any Python/Perl/Ruby file deletion
+- `os.remove()`, `os.unlink()`, `shutil.rmtree()` in Python
+- Any other permanent file deletion API
 
 **ALWAYS use these instead:**
 - `trash <file>` - CLI trash command

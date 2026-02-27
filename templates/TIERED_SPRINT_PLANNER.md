@@ -695,26 +695,7 @@ Before starting execution:
 
 ---
 
-*This template is part of the [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding) meta-project.*
+*This template is part of the project-scaffolding meta-project.*
 
-**Pattern Reference:** `../patterns/tiered-ai-sprint-planning.md`  
+**Pattern Reference:** `patterns/tiered-ai-sprint-planning.md`
 **Last Updated:** December 22, 2025
-
-## Related Documentation
-
-**Universal Patterns & Guides:**
-- [Tiered AI Sprint Planning Pattern](../patterns/tiered-ai-sprint-planning.md) - Cost-effective AI usage
-- [AI Team Orchestration](../patterns/ai-team-orchestration.md) - Multi-agent workflows
-- [Safety Systems](../patterns/safety-systems.md) - Data protection patterns
-- [AI Model Cost Comparison](../Documents/reference/MODEL_COST_COMPARISON.md) - Model pricing and recommendations
-
-**Project Structure:**
-- [Project Structure Standards](../Documents/PROJECT_STRUCTURE_STANDARDS.md) - Directory conventions
-- [Code Quality Standards](../Documents/CODE_QUALITY_STANDARDS.md) - Coding standards
-
-**Cross-Project Resources:**
-- [Project Scaffolding](../project-scaffolding/README.md) - This scaffolding system
-- [Agent Skills Library](../agent-skills-library/README.md) - Reusable AI instructions
-
-**Project-Specific:**
-- Add links to your project's architecture, database schema, and integration docs here

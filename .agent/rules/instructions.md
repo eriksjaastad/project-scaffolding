@@ -28,39 +28,43 @@ trigger: always_on
 
 ### 1. The Conductor (Erik)
 - **Role:** Human-in-the-Loop / Vision / Command
+- **Context:** Projects root (`$PROJECTS_ROOT/`) — moves in and out of projects
 - **Authority:** Final approval on all architecture, logic, and project direction
 
-### 2. The Super Manager (Strategy & Context)
-- **Role:** Strategic Planner and Prompt Engineer
-- **Constraint:** STRICTLY PROHIBITED from writing code or using tools
-- **Mandate:** Drafts prompts with acceptance criteria as checklists
+### 2. The Architect (Claude Code CLI)
+- **Role:** Strategic Planner — always Claude Code, always at the projects root level
+- **Context:** Sits with the Conductor at `$PROJECTS_ROOT/`, thinks across all projects
+- **Constraint:** **STRICTLY PROHIBITED** from writing code or using tools
+- **Mandate:** Drafts prompts with acceptance criteria checklists, does final Judge sign-off on completed work
 
-### 3. The Floor Manager (QA & Execution)
-- **Role:** Orchestrator, Quality Assurance Lead, File Operator
-- **Constraint:** STRICTLY PROHIBITED from generating logic or writing code
-- **Mandate:** Verify work against checklists, perform file operations
-- **Dispatch Protocol (MANDATORY):**
-  1. **FIRST:** Dispatch all coding tasks via Agent Hub: `$PROJECTS_ROOT/_tools/agent-hub/scripts/dispatch_task.py`
-  2. **IF Agent Hub fails** (timeout, model unavailable, error): Report the failure to the Conductor. Do NOT silently fall back.
-  3. **ONLY with explicit Conductor approval:** Use your own sub-agents or built-in tools as fallback.
-  4. **NEVER** write code yourself — not even one-liners, not even "simple" fixes.
-  5. You do NOT have standing permission to use your own sub-agents for code generation.
+### 3. The Floor Manager (Antigravity / Gemini)
+- **Role:** Project Orchestrator — one per project, lives at the project level
+- **Context:** Works inside a single project directory
+- **Constraint:** **STRICTLY PROHIBITED** from generating logic or writing code
+- **Mandate:**
+  1. Read Kanban tickets and their full prompts
+  2. Analyze the project and organize work (identify what can run in parallel)
+  3. Delegate tasks to Workers (sub-agents or local Ollama models)
+  4. Review Worker output against acceptance criteria
+  5. Move tasks to **Review** status when satisfied — The Architect does final sign-off
 
-### 4. The Workers (Local Models via Ollama)
-- **Role:** Primary Implementers of logic and code generation
-- **Mandate:** Generate code, report completion for inspection
+### 4. The Workers (Code Generators)
+- **Role:** Primary implementers of logic and code generation
+- **Mac Mini:** Workers are local Ollama models (DeepSeek-R1, Qwen, etc.)
+- **MacBook Pro:** Workers are sub-agents (Claude Haiku, Gemini Flash, GPT-mini, etc.)
+- **Mandate:** Generate code, report completion to Floor Manager for inspection
 
 ## Workflow Steps
 
-1. **Drafting:** Super Manager writes task prompt with acceptance criteria
-2. **Handoff:** Pass to Floor Manager
-3. **Dispatch:** Floor Manager dispatches to Worker via Agent Hub (`dispatch_task.py`). NOT via sub-agents.
-4. **Execution:** Worker generates code. Floor Manager performs file operations.
-5. **Inspection:** Floor Manager checks each acceptance criteria item
-6. **Loop/Correction:** If fail, send back to Worker (max 3 attempts)
-7. **Finalization:** Task marked complete after sign-off
+1. **Planning:** The Conductor and Architect discuss tickets and strategy at projects root
+2. **Delegation:** Architect drafts task prompts with **[ACCEPTANCE CRITERIA]** and hands to Floor Manager
+3. **Orchestration:** Floor Manager reads all tickets, plans parallel vs sequential work, dispatches to Workers
+4. **Execution:** Workers generate code. Floor Manager performs all file operations.
+5. **Inspection:** Floor Manager checks each acceptance criteria item, reviews diffs
+6. **Review:** Floor Manager moves task to **Review** status when satisfied
+7. **Sign-off:** The Architect gives final PASS/FAIL verdict before merge
 
-**CRITICAL:** Only Workers write code. Super Manager and Floor Manager never generate code. Floor Manager never uses its own sub-agents for code generation without Conductor approval.
+**CRITICAL:** Only Workers write code. The Architect and Floor Manager never generate code.
 
 # Universal Constraints
 
@@ -81,9 +85,24 @@ trigger: always_on
 
 # Safety Rules
 
-## File Operations
+## 🚨 ABSOLUTE RULE: Trash, Don't Delete
+**NEVER use these commands:**
+- `rm` (any form: rm, rm -f, rm -r, rm -rf)
+- `unlink`
+- `shred`
+- `find -delete`
+- `os.remove()`, `os.unlink()`, `shutil.rmtree()` in Python
+- Any other permanent file deletion API
 
-- **Trash, Don't Delete:** NEVER use `rm` or permanent deletion
+**ALWAYS use these instead:**
+- `trash <file>` - CLI trash command
+- `send2trash` - Python library
+- `git restore <file>` - For tracked files you want to revert
+
+**Why:** Permanent deletion cannot be recovered. Trash can be recovered.
+**If trash command is not available:** STOP and ask the user. Do not find workarounds.
+
+## File Operations
 - Use `trash` CLI (preferred) or `send2trash` (Python)
 - Use `git restore` for reverting tracked files
 
@@ -113,13 +132,13 @@ If Worker fails **3 times** on the same task:
 - **DNA Integrity**: Never use hardcoded absolute paths. Use relative paths or environment variables.
 
 ## Task Workflow
-- **State Management**: Use `./pt tasks start <id>` when beginning work and `./pt tasks done <id>` when finished.
+- **State Management**: Use `./pt tasks start <id>` when beginning work and `./pt tasks review <id>` when finished. Only the Super Manager marks tasks done.
 - **Context Awareness**: Use `./pt tasks show <id>` to read the full task prompt, including Overview, Execution, and Done Criteria.
 - **Traceability**: All major changes should be linked to a task ID in the project tracker.
 
 ## Communication
 - **Direct and Concise**: Avoid fluff in assistant responses.
-- **Proactive Planning**: Use `todo_write` to maintain a clear plan of action.
+- **Proactive Planning**: Maintain a clear plan of action before starting complex work.
 - **Soulful Journaling**: Log strategic decisions and detours in the AI Journal for future context.
 
 # Commit Message Task Linking
@@ -171,7 +190,7 @@ Databases contain accumulated work that cannot be recreated. One careless comman
 1. `DROP TABLE` - Destroys table and all data
 2. `DELETE FROM table` (without WHERE) - Deletes all rows
 3. `TRUNCATE TABLE` - Empties entire table
-4. `trash *.db` or `trash *.sqlite` - Deletes database file (use trash, not rm)
+4. `trash *.db` or `trash *.sqlite` without backup - Deletes database file unrecoverably
 5. Recreating tables that contain data
 6. Any "reset", "init", or "recreate" that would wipe existing data
 
@@ -203,12 +222,8 @@ sqlite3 database.db "SELECT COUNT(*) FROM table_name;"
 **DO:**
 1. Ask the user explicitly: "This will delete X rows. Proceed?"
 2. Create a backup first: `cp database.db database.db.backup`
-3. Export data: `./pt tasks export` (if available)
+3. Export data if possible
 4. Only then proceed with the reset
-
-## Why This Exists
-
-On 2026-01-27, an AI agent ran a migration that dropped the tasks table without backup, destroying 94 tasks. This rule exists to prevent that from ever happening again.
 
 ## Quick Reference
 

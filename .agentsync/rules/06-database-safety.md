@@ -15,7 +15,7 @@ Databases contain accumulated work that cannot be recreated. One careless comman
 1. `DROP TABLE` - Destroys table and all data
 2. `DELETE FROM table` (without WHERE) - Deletes all rows
 3. `TRUNCATE TABLE` - Empties entire table
-4. `trash *.db` or `trash *.sqlite` - Deletes database file (use trash, not rm)
+4. `trash *.db` or `trash *.sqlite` without backup - Deletes database file unrecoverably
 5. Recreating tables that contain data
 6. Any "reset", "init", or "recreate" that would wipe existing data
 
@@ -47,12 +47,8 @@ sqlite3 database.db "SELECT COUNT(*) FROM table_name;"
 **DO:**
 1. Ask the user explicitly: "This will delete X rows. Proceed?"
 2. Create a backup first: `cp database.db database.db.backup`
-3. Export data: `./pt tasks export` (if available)
+3. Export data if possible
 4. Only then proceed with the reset
-
-## Why This Exists
-
-On 2026-01-27, an AI agent ran a migration that dropped the tasks table without backup, destroying 94 tasks. This rule exists to prevent that from ever happening again.
 
 ## Quick Reference
 

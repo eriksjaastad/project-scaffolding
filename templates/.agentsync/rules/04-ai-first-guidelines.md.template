@@ -12,11 +12,11 @@
 - **DNA Integrity**: Never use hardcoded absolute paths. Use relative paths or environment variables.
 
 ## Task Workflow
-- **State Management**: Use `./pt tasks start <id>` when beginning work and `./pt tasks done <id>` when finished.
+- **State Management**: Use `./pt tasks start <id>` when beginning work and `./pt tasks review <id>` when finished. Only the Super Manager marks tasks done.
 - **Context Awareness**: Use `./pt tasks show <id>` to read the full task prompt, including Overview, Execution, and Done Criteria.
 - **Traceability**: All major changes should be linked to a task ID in the project tracker.
 
 ## Communication
 - **Direct and Concise**: Avoid fluff in assistant responses.
-- **Proactive Planning**: Use `todo_write` to maintain a clear plan of action.
+- **Proactive Planning**: Maintain a clear plan of action before starting complex work.
 - **Soulful Journaling**: Log strategic decisions and detours in the AI Journal for future context.
