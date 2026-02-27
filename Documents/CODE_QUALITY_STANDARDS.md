@@ -125,7 +125,7 @@ Every project MUST include a `.env.example` file. This file must be the "Documen
 If a project is cloned from GitHub without a `.env.example`, the developer has to guess which environment variables are needed. If the project uses absolute paths for things like `SKILLS_LIBRARY_PATH`, the project is "locked" to a specific machine.
 
 ### What to Do
-1. Create a `.env.example` with relative path defaults (e.g., `SKILLS_LIBRARY_PATH=$PROJECTS_ROOT/agent-skills-library`).
+# Skills are deployed to ~/.claude/skills/
 2. Include a `check_environment()` function in your `config.py` that verifies the presence of required variables and provides a "Human-Actionable" error message if they are missing.
 
 ---
@@ -144,6 +144,139 @@ If a project is cloned from GitHub without a `.env.example`, the developer has t
 
 ---
 
+## Rule #8: CLI Tool Design (The `pt` Gold Standard)
+
+### The Rule
+**All command-line tools MUST be designed for AI-first usage following the `pt` command pattern.**
+
+### Why This Exists (The "Watching AI Work" Lesson)
+By observing AI agents interact with our tools, we discovered they consistently:
+- Run `--help` on every command to understand usage
+- Struggle with rich formatting (colors, tables, progress bars)
+- Need structured output for parsing
+- Benefit from batch operations to reduce round-trips
+
+The `pt` command (project-tracker CLI) became our gold standard by addressing all these pain points.
+
+### Required Features
+
+#### 1. Comprehensive Help Documentation
+```bash
+# Every command and subcommand must have --help
+tool --help
+tool subcommand --help
+```
+
+**Why:** AI agents discover functionality through `--help`. If it's not documented there, it doesn't exist to them.
+
+#### 2. Plain Text Output by Default
+```bash
+# BAD: Rich formatting that AI can't parse
+✓ Task #1234 [████████░░] 80% Complete
+
+# GOOD: Plain text, single-line format
+#1234 | In Progress | High | Implement feature X
+```
+
+**Why:** Colors, progress bars, and tables break AI parsing. Use simple, consistent formats.
+
+#### 3. JSON Output Flag
+```bash
+# Always provide --json for structured data
+tool tasks list --json
+```
+
+**Why:** When AI needs to process output programmatically, JSON is the universal format.
+
+#### 4. Batch Operations
+```bash
+# BAD: Requires multiple commands
+tool tasks done 1
+tool tasks done 2
+tool tasks done 3
+
+# GOOD: Single command with multiple IDs
+tool tasks done 1 2 3
+```
+
+**Why:** Reduces round-trips and makes AI workflows more efficient.
+
+#### 5. Smart Auto-Detection
+```bash
+# Auto-detect context when possible
+cd my-project/
+tool tasks list  # Automatically filters to current project
+```
+
+**Why:** Reduces cognitive load and command verbosity.
+
+#### 6. Clear, Actionable Error Messages
+```bash
+# BAD: Cryptic error
+Error: Invalid input
+
+# GOOD: Actionable guidance
+Error: Task ID '999' not found.
+Available tasks: Run 'tool tasks list' to see all tasks.
+```
+
+**Why:** AI agents need to know what went wrong AND how to fix it.
+
+### CLI Design Checklist
+
+When building a new CLI tool, verify:
+
+- [ ] `--help` works on all commands and subcommands
+- [ ] Default output is plain text (no colors, no rich formatting)
+- [ ] `--json` flag available for structured output
+- [ ] Batch operations supported where applicable
+- [ ] Auto-detection of context (project, user, etc.)
+- [ ] Error messages include next steps
+- [ ] Single-line output format for lists
+- [ ] Consistent command structure (verb-noun pattern)
+
+### Example: The `pt` Command
+
+```bash
+# Help documentation
+pt --help
+pt tasks --help
+
+# Plain text list output
+pt tasks
+#4650 | To Do | Medium | Add global warning banner
+
+# JSON output
+pt tasks --json
+{"id": 4650, "status": "To Do", "priority": "Medium", ...}
+
+# Batch operations
+pt tasks done 4650 4651 4652
+
+# Auto-detection
+cd project-tracker/
+pt tasks  # Automatically shows project-tracker tasks
+
+# Clear errors
+pt tasks show 99999
+Error: Task #99999 not found.
+Run 'pt tasks' to see all available tasks.
+```
+
+### What This Means for Development
+
+**CLI = Command-Line Interface** - Any tool you run from the terminal (like `pt`, `git`, `ls`, etc.)
+
+When building tools that AI agents will use:
+1. Think about how AI will discover the tool (`--help`)
+2. Think about how AI will parse the output (plain text)
+3. Think about how AI will use it efficiently (batch operations)
+4. Think about how AI will recover from errors (clear messages)
+
+**The `pt` command is our reference implementation.** Study it when building new tools.
+
+---
+
 ## Code Quality Checklist
 *(Standard checks for every commit)*
 
@@ -153,9 +286,11 @@ If a project is cloned from GitHub without a `.env.example`, the developer has t
 - [ ] Input sanitization with `safe_slug()`
 - [ ] `.env.example` relative paths verified
 - [ ] Public functions typed
+- [ ] CLI tools follow `pt` gold standard (if applicable)
 
 ---
 
-**Version:** 1.2.2
+**Version:** 1.3.0
 **Established:** January 7, 2026
-**Trigger:** Scaffolding v2 review found pervasive portability and safety violations.
+**Updated:** February 22, 2026 - Added Rule #8 (CLI Tool Design)
+**Trigger:** Scaffolding v2 review found pervasive portability and safety violations. CLI standards added after `pt` command success.

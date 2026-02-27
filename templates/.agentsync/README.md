@@ -24,7 +24,6 @@ This directory contains the source of truth for agent configurations.
 
 The sync script generates:
 - `CLAUDE.md` - For Claude Code
-- `.cursorrules` - For Cursor IDE
 - `.agent/rules/instructions.md` - For Antigravity IDE
 
 **Do not edit the generated files directly.** Your changes will be overwritten.
@@ -37,7 +36,7 @@ Each rule file can have optional frontmatter:
 ---
 targets: ["*"]           # All tools (default)
 targets: ["claude"]      # Claude only
-targets: ["cursor", "antigravity"]  # Multiple tools
+targets: ["antigravity"] # Antigravity only
 root: true               # Mark as overview/root file
 ---
 ```

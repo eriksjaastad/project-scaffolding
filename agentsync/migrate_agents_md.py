@@ -106,7 +106,7 @@ def migrate_project(project_name: str, dry_run: bool = False) -> bool:
     # Check if it's an auto-generated file (from old sync)
     if "AUTO-GENERATED from AGENTS.md" in content or "Source of truth: AGENTS.md" in content:
         print(f"  Note: This appears to be an auto-generated file, looking for source...")
-        # This might be CLAUDE.md or .cursorrules, not the actual AGENTS.md
+        # This might be CLAUDE.md or .agent/rules/instructions.md, not the actual AGENTS.md
         # Skip these
 
     # Create .agentsync/rules/ directory
@@ -143,7 +143,7 @@ This directory contains the source of truth for agent configurations.
 
 ## Structure
 
-Edit files in `rules/` - they will be synced to CLAUDE.md, .cursorrules, and .agent/rules/agents.md.
+Edit files in `rules/` - they will be synced to CLAUDE.md and .agent/rules/instructions.md.
 
 ## Manual Sync
 

@@ -7,6 +7,13 @@ root: true
 
 > {{PROJECT_DESCRIPTION}}
 
+## Project Intent
+
+<!-- What is this project for? (product / client work / internal tool / learning exercise) -->
+<!-- What does success look like? (revenue / delivery / reliability / personal use) -->
+<!-- How should that influence decisions? (ship fast / be thorough / minimize effort) -->
+{{PROJECT_INTENT}}
+
 ## Tech Stack
 
 - **Language:** {{LANGUAGE}}

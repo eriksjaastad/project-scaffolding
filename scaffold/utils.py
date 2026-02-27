@@ -27,3 +27,51 @@ def safe_slug(text: str, base_path: Optional[Path] = None) -> str:
             raise ValueError("Security Alert: Path Traversal detected.")
 
     return slug
+
+
+def grepai_search(query: str, project: str | None = None, limit: int = 10) -> list[dict]:
+    """Wrapper around grepai search that logs every query to grepai-logs/.
+
+    Use this instead of calling grepai directly from Python scripts.
+    Never raises — logging failures are silently swallowed.
+    """
+    import json
+    import os
+    import subprocess
+    from datetime import datetime, timezone
+
+    if project is None:
+        project = Path.cwd().name
+
+    result = subprocess.run(
+        ["grepai", "search", query, "--json", "--limit", str(limit)],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+    results = []
+    try:
+        results = json.loads(result.stdout).get("results", [])
+    except (json.JSONDecodeError, AttributeError):
+        pass
+
+    try:
+        log_dir = (
+            Path(os.environ.get("PROJECTS_ROOT", Path.home() / "projects"))
+            / "_tools"
+            / "grepai-logs"
+        )
+        log_dir.mkdir(parents=True, exist_ok=True)
+        entry = {
+            "ts": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "project": project,
+            "query": query,
+            "results": [r["file"] for r in results],
+        }
+        with open(log_dir / "ai_search_log.jsonl", "a") as f:
+            f.write(json.dumps(entry) + "\n")
+    except Exception:
+        pass  # Never let logging break the actual search
+
+    return results

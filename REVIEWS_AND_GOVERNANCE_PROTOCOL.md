@@ -46,7 +46,7 @@ AI Architects focus on judgment-heavy tasks that automation misses:
 *Mandatory checks for projects transitioning from Prototype to Production.*
 
 ### 1. The "Data Clobber" Guard
-Reviewers must verify that any script writing to global or external paths (e.g., `agent-skills-library`) includes:
+Reviewers must verify that any script writing to global or external paths (e.g., `~/.claude/skills/`) includes:
 *   **Path Validation:** Explicit check that the destination directory exists and is valid.
 *   **Dry-Run Mandate:** A `--dry-run` flag that parses all logic but performs zero disk writes.
 *   **Safety Gate:** Refuse to write if the `target_path` is not explicitly validated against a whitelist of project roots.
@@ -160,6 +160,23 @@ Every code review involving a pipeline, message bus, or cross-boundary call MUST
 
 **Origin:** 2026-02-15. A `bufio.Scanner` with a 64KB default buffer silently dropped 242KB review prompts. `dispatch_task.py`, `hooks.py`, and `handler.go` each passed individual review. The broken pipe only appeared when data actually flowed end-to-end.
 
+### 10. PRD Traceability (Judge Must Verify Against Original)
+Every implementation must be verified against the **original PRD**, not just the compressed Proposal.
+
+**Why:** Requirements get lost in the PRD → Kiro breakdown → Proposal pipeline. A compressed Proposal that's "spec-compliant" can still miss requirements that existed in the original PRD. The Judge's job is to catch these drops.
+
+**The check:**
+*   Judge has access to the original `PRD.md` (source of truth)
+*   Judge compares implementation against **every requirement** in the original PRD
+*   For each PRD requirement, verify one of:
+    - **Implemented:** Code exists and is tested
+    - **DESCOPED:** Explicitly documented in Proposal/Tasks with valid reason
+    - **Deferred:** Moved to documented future task with rationale
+*   No requirement has vanished without documentation
+*   DESCOPED and deferred items are traced back to an explicit decision (not just missing)
+
+**Anti-pattern this prevents:** "The Proposal looks good, ship it" without checking if REQ-17 from the original PRD got lost in translation. Judges who only audit the Proposal miss drops that happened in the Kiro breakdown.
+
 ---
 
 ## 🏛️ Part 4: Scalability Analysis
@@ -221,6 +238,7 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 | **R1** | **Reviews** | **Active Review Location** | Must be in project root: `CODE_REVIEW_{MODEL}_{VERSION}.md` |
 | **S1** | **Scaling** | Context ceiling strategy (Map-Reduce/RAG) | Document the architectural ceiling |
 | **S2** | **Scaling** | Memory/OOM guards for unbounded processing | Verify size-aware batching logic |
+| **T5** | **Traceability** | Every PRD requirement accounted for (no silent drops) | List each requirement, status (Impl/Descoped/Deferred) |
 
 ---
 
@@ -236,14 +254,4 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 **Protocol Authorized by:** The Phase 5 Judge (Super Manager)
 **Strategic Alignment:** Infrastructure (Root)
 
-## Related Documentation
-
-- [Project Workflow](../Project-workflow.md) - master workflow at projects root
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
-- [Safety Systems](patterns/safety-systems.md) - security
-- [Agent Skills Library](../agent-skills-library/README.md) - Agent Skills
 

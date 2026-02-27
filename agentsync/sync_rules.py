@@ -12,7 +12,6 @@ Generates IDE-specific rule files from .agentsync/rules/*.md files.
 Source: project/.agentsync/rules/*.md
 Targets:
   - Claude Code: CLAUDE.md
-  - Cursor: .cursorrules
   - Antigravity: .agent/rules/instructions.md (with trigger: always_on frontmatter)
 
 Features:
@@ -146,7 +145,7 @@ def parse_frontmatter(content: str) -> tuple[dict[str, Any], str]:
             key, value = line.split(':', 1)
             key = key.strip()
             value = value.strip()
-            # Handle lists like ["claude", "cursor"]
+            # Handle lists like ["claude", "antigravity"]
             if value.startswith('[') and value.endswith(']'):
                 value = [v.strip().strip('"').strip("'") for v in value[1:-1].split(',')]
             elif value.lower() == 'true':

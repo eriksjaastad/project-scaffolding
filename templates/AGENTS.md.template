@@ -2,6 +2,7 @@
 
 > The single source of truth for hierarchy, workflow, and AI collaboration philosophy.
 > This document is universal across all projects.
+> **Start here:** Read `README.md` first. The auto-generated section at the top has this project's purpose, entry points, and key commands.
 
 ---
 
@@ -15,12 +16,32 @@
 - **If trash is missing:** STOP and ask the user.
 
 ### 2. DNA Integrity (Portability)
-- **Rule:** NO hardcoded absolute paths (e.g., `/Users/erik/...`).
+- **Rule:** NO hardcoded absolute paths (e.g., `/Users/userName/...`).
 - **Enforcement:** Use relative paths or environment variables.
+
+**Available Variables (use these instead of hardcoded paths):**
+
+*Template Substitution Variables* (in AGENTS.md.template, README.md.template, etc.):
+- `{{PROJECT_NAME}}` — Name of this project (e.g., "smart-invoice-workflow")
+- `{{PROJECT_DESCRIPTION}}` — Brief description of the project
+- All other `{{VARIABLE}}` placeholders in `_get_context()` in scaffold/cli.py
+
+*Environment Variables* (available at runtime in scripts and CLAUDE.md):
+- `$PROJECT_ROOT` — This project's root directory (single project, no trailing slash)
+- `$PROJECTS_ROOT` — Parent directory containing all projects (plural)
+- `$HOME` — User's home directory
+
+**Example:** Instead of `/Users/userName/projects/project-name/src/main.py`, use:
+- `$PROJECT_ROOT/src/main.py` (in scripts)
+- `../` for relative paths from within the project
+
+For templates, use: `{{PROJECT_NAME}}` will be replaced during scaffold apply.
 
 ### 3. Security Sentinel
 - **Rule:** NEVER hard-code API keys or secrets.
 - **Enforcement:** Use project-specific `.env` files and `os.getenv()`.
+- **Legacy Projects:** If your project uses Doppler (cloud secrets management), prefix commands with `doppler run --` (see [DOPPLER_SECRETS_MANAGEMENT.md](../Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md))
+- **New Projects:** Use local `.env` files with `python-dotenv` (Doppler free tier is at capacity)
 
 ### 4. No Hook Bypass
 - **Rule:** NEVER use `--no-verify` or `-n` with git commit or push.
@@ -177,6 +198,14 @@ Workers write to a sandbox. The Floor Manager reviews the diff and decides wheth
 
 **Implementation:** See `_tools/agent-hub/` for the Unified Agent System.
 
+> ⚠️ **Computer-Dependent Availability**
+> ```bash
+> # Check which computer this is running on:
+> scutil --get ComputerName
+> ```
+> - **MacBook Pro:** Agent Hub is **DISABLED** → Use sub-agents for task dispatch
+> - **Mac Mini:** Agent Hub is **ENABLED** → Use Agent Hub for Unified Agent System orchestration
+
 ---
 
 ## 🔌 MCP SERVER INFRASTRUCTURE
@@ -185,12 +214,14 @@ The agent ecosystem runs on MCP (Model Context Protocol) servers in `_tools/`:
 
 | Server | Purpose | Key Features |
 |--------|---------|--------------|
-| **agent-hub** | Core orchestration | SQLite message bus, LiteLLM routing, budget management, circuit breakers, graceful degradation |
+| **agent-hub** ⚠️ | Core orchestration (computer-aware) | **MacBook Pro:** DISABLED; **Mac Mini:** SQLite message bus, LiteLLM routing, budget management, circuit breakers, graceful degradation |
 | **librarian-mcp** | Knowledge queries | Wraps project-tracker's graph.json and tracker.db; natural language queries via `ask_librarian` |
 | **ollama-mcp** | Local model execution | Draft tools (`ollama_request_draft`, `ollama_write_draft`, etc.), model invocation |
 | **claude-mcp** | Agent communication | Message hub for cross-agent coordination |
 
 ### Agent-Hub Capabilities (Unified Agent System)
+
+> **⚠️ Availability:** Agent Hub is only available on Mac Mini. On MacBook Pro, use sub-agents instead.
 - **Message Bus:** SQLite-based ask/reply pattern for worker communication
 - **Model Routing:** LiteLLM integration with provider fallbacks (Ollama → Cloud)
 - **Budget Management:** Session and daily cost limits with automatic enforcement
@@ -248,7 +279,7 @@ When a feature requires 3+ prompts, use **Staged Prompt Engineering**:
 - Break work into **Individual Prompts** (5-10 min each) with built-in verification
 - End with a **Verification Prompt** that tests all components together
 
-See: `agent-skills-library/playbooks/staged-prompt-engineering/` for templates.
+Claude Code skills for workflow phases are deployed to `~/.claude/skills/` and activate automatically.
 
 ---
 
@@ -424,7 +455,7 @@ created: {{DATE}}
 
 - **Review Standards:** See `Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for the full audit checklist and evidence requirements
 - **Philosophy:** See `PROJECT_PHILOSOPHY.md` for the "why" behind the ecosystem
-- **Project-Specific Rules:** See each project's `_cursorrules` file
+- **Project-Specific Rules:** See each project's `.agentsync/rules/` or `CLAUDE.md` file
 
 ---
 
@@ -449,5 +480,5 @@ Located in `patterns/` directory of project-scaffolding:
 
 ### Ecosystem Resources
 Cross-project resources (relative paths from project root):
-- [Agent Skills Library](../agent-skills-library/README.md) - Reusable AI instructions
 - [Project Scaffolding](../project-scaffolding/README.md) - This scaffolding system
+- Claude Code Skills: `~/.claude/skills/` (18 skills, activate automatically)

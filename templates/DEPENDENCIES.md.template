@@ -1,0 +1,43 @@
+# Dependencies Check: [Feature Name]
+
+**Date:** YYYY-MM-DD
+**Proposal:** PROPOSAL_FINAL.md
+**Status:** READY / BLOCKED
+
+## Database Dependencies
+
+| Table/Collection | Status | Notes |
+|------------------|--------|-------|
+| `recipes` | ✓ Exists | — |
+| `recipe_reviews` | Create in Task 1 | Migration file included |
+
+## External Service Dependencies
+
+| Service | Status | Configuration Location |
+|---------|--------|------------------------|
+| SendGrid API | ✓ Configured | Doppler: `SENDGRID_API_KEY` |
+| Stripe | BLOCKED | Need API key from Erik |
+
+## File System Dependencies
+
+| Directory | Status | Notes |
+|-----------|--------|-------|
+| `data/exports/` | ✓ Exists | — |
+| `data/pending/` | Create in Task 1 | — |
+
+## Prerequisite Features
+
+| Feature | Status | Reference |
+|---------|--------|-----------|
+| User auth | ✓ Merged | PR #42 |
+| Admin dashboard | ✓ Merged | PR #38 |
+
+## Blockers
+
+| Blocker | Owner | ETA |
+|---------|-------|-----|
+| Stripe API key | Erik | 2026-01-25 |
+
+---
+
+**If any blocker exists, handoff DOES NOT PROCEED.**

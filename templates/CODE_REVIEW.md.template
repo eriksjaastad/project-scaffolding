@@ -9,7 +9,6 @@
 ## TIER 1: PROPAGATION SOURCES (Must Check First)
 
 ### Templates (Highest Blast Radius)
-- [ ] `templates/.cursorrules.template` - No hardcoded paths
 - [ ] `templates/CLAUDE.md.template` - No hardcoded paths
 - [ ] `templates/AGENTS.md.template` - No hardcoded paths
 - [ ] `templates/TODO.md.template` - No hardcoded paths
@@ -17,8 +16,7 @@
 
 ### Root Configs (Referenced by Projects)
 - [ ] `AGENTS.md` - No hardcoded paths, accurate constraints
-- [ ] `.cursorrules` - No hardcoded paths
-- [ ] `.cursorignore` - Appropriate exclusions
+- [ ] `.agent/rules/` - No hardcoded paths, accurate constraints
 
 ### Data Files (Used by Scripts)
 - [ ] `EXTERNAL_RESOURCES.yaml` - No hardcoded paths

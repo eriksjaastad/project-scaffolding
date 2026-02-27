@@ -8,12 +8,11 @@ Synchronizes AI instruction rules from a single source to multiple IDE-specific 
 
 **The Problem (January 2026):**
 
-We were using three AI coding assistants simultaneously: Claude Code, Cursor, and Antigravity (Gemini). Each reads a different config file:
+We were using two AI coding assistants simultaneously: Claude Code and Antigravity (Gemini). Each reads a different config file:
 
 | IDE | Config File |
 |-----|-------------|
 | Claude Code | `CLAUDE.md` |
-| Cursor | `.cursorrules` |
 | Antigravity | `.agent/rules/instructions.md` |
 
 When we discovered a great pattern (like the IndyDevDan video on self-validating agents with hooks), we'd implement it in Claude's rules... and then the other agents had no idea. We were building siloed knowledge.
@@ -39,7 +38,7 @@ AgentSync is infrastructure for setting up projects correctly. It's part of the 
 ```
 .agentsync/rules/                     Target Files
 ├── 00-overview.md          ─────►    CLAUDE.md (Claude Code)
-├── 01-workflow.md          ─────►    .cursorrules (Cursor)
+├── 01-workflow.md          ─────►    .agent/rules/instructions.md (Antigravity)
 ├── 02-constraints.md       ─────►    .agent/rules/instructions.md (Antigravity)
 └── 03-safety.md
 ```
@@ -51,7 +50,6 @@ AgentSync is infrastructure for setting up projects correctly. It's part of the 
 | IDE | Output File | How It Reads |
 |-----|-------------|--------------|
 | Claude Code | `CLAUDE.md` | Automatically reads project root |
-| Cursor | `.cursorrules` | Automatically reads project root |
 | Antigravity (Gemini) | `.agent/rules/instructions.md` | Uses `trigger: always_on` frontmatter |
 
 ### Antigravity Note
@@ -94,7 +92,6 @@ uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py --list
 | Location | IDE | Notes |
 |----------|-----|-------|
 | `~/.claude/claude_desktop_config.json` | Claude Desktop | |
-| `~/.cursor/mcp.json` | Cursor | |
 | `~/.antigravity/mcp_config.json` | Antigravity (standalone) | |
 | `~/.gemini/antigravity/mcp_config.json` | Antigravity (via Gemini) | May have different server names |
 
@@ -105,7 +102,7 @@ uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py --list
 AgentSync lives inside project-scaffolding. The `scaffold apply` command:
 
 1. Copies `.agentsync/rules/` templates with placeholder substitution
-2. Runs `sync_rules.py` to generate CLAUDE.md, .cursorrules, .agent/rules/instructions.md
+2. Runs `sync_rules.py` to generate CLAUDE.md and .agent/rules/instructions.md
 3. Appends project-specific content outside AGENTSYNC markers
 
 ## AGENTSYNC Markers
@@ -118,4 +115,141 @@ Generated files use markers to separate synced content from custom additions:
 <!-- AGENTSYNC:END -->
 
 [custom project-specific content below - preserved on re-sync]
+```
+
+---
+
+## Comprehensive Sync Script Documentation
+
+### sync_agents_md.py - AGENTS.md Template Sync
+
+Syncs `templates/AGENTS.md.template` to all projects' `AGENTS.md` files, preserving project-specific customizations.
+
+**Usage:**
+```bash
+# Sync all scaffolded projects
+uv run project-scaffolding/agentsync/sync_agents_md.py
+
+# Sync a single project
+uv run project-scaffolding/agentsync/sync_agents_md.py smart-invoice-workflow
+
+# Preview changes without applying
+uv run project-scaffolding/agentsync/sync_agents_md.py --dry-run
+
+# Sync and git add changed files
+uv run project-scaffolding/agentsync/sync_agents_md.py --stage
+
+# List projects that have AGENTS.md
+uv run project-scaffolding/agentsync/sync_agents_md.py --list
+```
+
+### sync_rules.py - IDE Configuration Sync
+
+Syncs `.agentsync/rules/` templates to IDE-specific rule files (CLAUDE.md, .agent/rules/instructions.md).
+
+**Usage:**
+```bash
+# Sync a single project
+uv run project-scaffolding/agentsync/sync_rules.py project-name
+
+# Sync all projects with .agentsync/
+uv run project-scaffolding/agentsync/sync_rules.py --all
+
+# Preview changes without applying
+uv run project-scaffolding/agentsync/sync_rules.py project-name --dry-run
+
+# Sync and git add changed files
+uv run project-scaffolding/agentsync/sync_rules.py project-name --stage
+
+# List all projects with .agentsync/ directories
+uv run project-scaffolding/agentsync/sync_rules.py --list
+```
+
+### sync_governance.py - Governance File Sync
+
+Syncs governance and review protocol files to all scaffolded projects.
+
+**Usage:**
+```bash
+# Sync all scaffolded projects
+uv run project-scaffolding/agentsync/sync_governance.py
+
+# Sync a single project
+uv run project-scaffolding/agentsync/sync_governance.py smart-invoice-workflow
+
+# Preview changes without applying
+uv run project-scaffolding/agentsync/sync_governance.py --dry-run
+
+# Sync and git add changed files
+uv run project-scaffolding/agentsync/sync_governance.py --stage
+```
+
+### sync_mcp.py - MCP Configuration Sync
+
+Syncs MCP (Model Context Protocol) server configurations to IDE-specific config files.
+
+**Usage:**
+```bash
+# Sync all tools (Claude, Antigravity, Gemini)
+uv run project-scaffolding/agentsync/sync_mcp.py
+
+# Sync a specific tool only
+uv run project-scaffolding/agentsync/sync_mcp.py claude
+uv run project-scaffolding/agentsync/sync_mcp.py antigravity
+
+# Preview changes without writing
+uv run project-scaffolding/agentsync/sync_mcp.py --dry-run
+```
+
+### scaffold apply - Full Scaffolding Application
+
+Applies complete scaffolding to a project: copies templates, runs all syncs, and generates IDE configs.
+
+**Usage:**
+```bash
+# Apply scaffolding to a new or existing project
+uv run project-scaffolding/scaffold_cli.py apply project-name
+
+# Preview what will be copied and synced
+uv run project-scaffolding/scaffold_cli.py apply project-name --dry-run
+
+# Only verify references without making changes
+uv run project-scaffolding/scaffold_cli.py apply project-name --verify-only
+```
+
+**What it does:**
+1. Copies scripts (`warden_audit.py`, `validate_project.py`)
+2. Copies documentation templates
+3. Copies `.agentsync/rules/` templates
+4. Runs `sync_rules.py` to generate IDE configs
+5. Updates AGENTS.md, README.md, DECISIONS.md from templates
+
+### Quick Reference: Common Workflows
+
+**Update AGENTS.md template and sync everywhere:**
+```bash
+# 1. Edit the template
+vim project-scaffolding/templates/AGENTS.md.template
+
+# 2. Sync to all projects (with preview)
+uv run project-scaffolding/agentsync/sync_agents_md.py --dry-run
+
+# 3. Apply for real
+uv run project-scaffolding/agentsync/sync_agents_md.py
+```
+
+**Update IDE rules and sync everywhere:**
+```bash
+# 1. Edit the rules in .agentsync/rules/
+vim project-scaffolding/templates/.agentsync/rules/00-overview.md
+
+# 2. Sync to all projects
+uv run project-scaffolding/agentsync/sync_rules.py --all
+```
+
+**Sync only what changed (with staging):**
+```bash
+# Sync and automatically git add changed files
+uv run project-scaffolding/agentsync/sync_agents_md.py --stage
+uv run project-scaffolding/agentsync/sync_rules.py --all --stage
 ```
