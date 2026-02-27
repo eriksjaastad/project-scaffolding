@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook: Run safety, linting, and type checks before allowing commits
+#
+# Checks (in order):
+#   1. Warden safety audit   — blocks on P0/P1 (dangerous patterns, hardcoded paths)
+#   2. Ruff lint check       — blocks on real linting errors (matches IDE Ruff)
+#   3. Pyright type check    — blocks on type errors only (matches IDE type checker)
+#
+# To skip in emergencies: git commit --no-verify
+#
+
+set -euo pipefail
+
+PASS=0
+FAIL=1
+
+# ── 1. Warden Safety Audit ──────────────────────────────────────────────────
+echo "Running Warden safety audit..."
+echo "================================"
+
+python3 scripts/warden_audit.py --root . --fast
+WARDEN_EXIT=$?
+
+if [ $WARDEN_EXIT -ne 0 ]; then
+    echo "================================"
+    echo "COMMIT BLOCKED: Warden found safety violations"
+    echo "Fix the issues above or use 'git commit --no-verify' to skip (emergency only)"
+    exit $FAIL
+fi
+
+echo "Warden audit passed."
+echo ""
+
+# ── 2. Ruff Lint Check ──────────────────────────────────────────────────────
+if command -v ruff &>/dev/null; then
+    echo "Running Ruff lint check..."
+    echo "================================"
+
+    # Only check staged Python files to keep it fast
+    STAGED_PY=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
+
+    if [ -n "$STAGED_PY" ]; then
+        if ! ruff check $STAGED_PY; then
+            echo "================================"
+            echo "COMMIT BLOCKED: Ruff found lint errors"
+            echo "Run 'ruff check --fix' to auto-fix, or 'git commit --no-verify' to skip"
+            exit $FAIL
+        fi
+        echo "Ruff passed."
+    else
+        echo "No Python files staged — skipping Ruff."
+    fi
+    echo ""
+else
+    echo "Ruff not found — skipping lint check. Install with: pip install ruff"
+    echo ""
+fi
+
+# ── 3. Pyright Type Check ───────────────────────────────────────────────────
+if command -v pyright &>/dev/null; then
+    echo "Running Pyright type check..."
+    echo "================================"
+
+    STAGED_PY=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
+
+    if [ -n "$STAGED_PY" ]; then
+        # --pythonversion matches your project, errors-only skips overly strict warnings
+        if ! pyright --pythonversion 3.11 $STAGED_PY 2>&1 | grep -E "^.*error:"; then
+            echo "Pyright passed."
+        else
+            echo "================================"
+            echo "COMMIT BLOCKED: Pyright found type errors"
+            echo "Fix the errors above or use 'git commit --no-verify' to skip"
+            exit $FAIL
+        fi
+    else
+        echo "No Python files staged — skipping Pyright."
+    fi
+    echo ""
+else
+    echo "Pyright not found — skipping type check. Install with: npm i -g pyright"
+    echo ""
+fi
+
+# ── All checks passed ───────────────────────────────────────────────────────
+echo "================================"
+echo "All checks passed. Proceeding with commit."
+exit $PASS
