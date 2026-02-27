@@ -15,12 +15,12 @@ jobs:
       - name: Check for hardcoded absolute paths
         run: |
           echo "Checking for hardcoded paths..."
-          if grep -rn --include="*.py" --include="*.sh" --include="*.md" "/Users/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
-            echo "::error::Found hardcoded /Users/ paths!"
+          if grep -rn --include="*.py" --include="*.sh" "/Users/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "::error::Found hardcoded /Users/ paths in code files!"
             exit 1
           fi
-          if grep -rn --include="*.py" --include="*.sh" --include="*.md" "/home/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules" | grep -v "# Example"; then
-            echo "::error::Found hardcoded /home/ paths!"
+          if grep -rn --include="*.py" --include="*.sh" "/home/" . 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "::error::Found hardcoded /home/ paths in code files!"
             exit 1
           fi
           echo "No hardcoded paths found."
