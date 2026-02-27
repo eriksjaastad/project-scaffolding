@@ -223,16 +223,16 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
         except Exception as e:
             logger.warning(f"Fast scan error: {e}")
     
-    # Check hardcoded paths: P1 in code files, P2 in markdown
+    # Check hardcoded paths: code files only — markdown docs use example paths legitimately
     for pattern in hardcoded_path_patterns:
         try:
             if grep_cmd == 'rg':
-                cmd = ['rg', '--type', 'py', '--type', 'sh', '--type', 'js', '--type', 'ts', '--type', 'md',
+                cmd = ['rg', '--type', 'py', '--type', 'sh', '--type', 'js', '--type', 'ts',
                        '--glob', '!.venv/', '--glob', '!venv/', '--glob', '!node_modules/',
                        '-l', pattern, str(project_root)]
             else:
                 cmd = ['grep', '-r', '-l',
-                       '--include=*.py', '--include=*.sh', '--include=*.js', '--include=*.ts', '--include=*.md',
+                       '--include=*.py', '--include=*.sh', '--include=*.js', '--include=*.ts',
                        '--exclude-dir=venv', '--exclude-dir=.venv', '--exclude-dir=node_modules',
                        pattern, str(project_root)]
 
@@ -244,9 +244,7 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
                         path_obj = pathlib.Path(file_path)
                         if path_obj.name == 'warden_audit.py' or path_obj.name == 'validate_project.py':
                             continue
-                        # P1 for code, P2 for markdown
-                        severity = Severity.P1 if path_obj.suffix in ['.py', '.sh', '.js', '.ts'] else Severity.P2
-                        found_issues.append((path_obj, pattern, severity))
+                        found_issues.append((path_obj, pattern, Severity.P1))
 
         except subprocess.TimeoutExpired:
             logger.warning(f"Fast scan timeout for pattern: {pattern}")
