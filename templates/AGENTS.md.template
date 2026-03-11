@@ -166,8 +166,8 @@ created: {{DATE}}
 
 ## 📖 RELATED DOCUMENTS
 
-- **Review Standards:** `Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
-- **Philosophy:** `PROJECT_PHILOSOPHY.md`
+- **Review Standards:** `.agent/rules/governance.md`
+- **Philosophy:** `.agent/rules/PROJECT_PHILOSOPHY.md`
 - **Project-Specific Rules:** `.agentsync/rules/` or `CLAUDE.md`
 
 ---

@@ -37,37 +37,43 @@
 - **Role:** Human-in-the-Loop / Vision / Command
 - **Authority:** Final approval on all architecture, logic, and project direction
 
-### 2. The Super Manager (Strategy & Context)
-- **Role:** Strategic Planner and Prompt Engineer
+### 2. The Architect (Claude Code CLI)
+- **Role:** Strategic Planner — always Claude Code, always at the projects root level
 - **Scope:** Cross-project context and task planning
-- **Current Model:** Claude or Gemini (as available)
+- **Current Model:** Claude (via Claude Code CLI)
 - **Constraint:** **STRICTLY PROHIBITED** from writing code or using tools
 - **Mandate:**
   - Drafts prompts and **[ACCEPTANCE CRITERIA]** for Workers
   - All criteria must be formatted as a **Checklist** (binary Pass/Fail)
-  - Assumes Local-First AI development by default
-  - Specifies use of Ollama MCP for local model orchestration
+  - Delegates execution to Floor Manager, does final Judge sign-off
 
-### 3. The Floor Manager (QA, Messenger & File Operator)
-- **Role:** Orchestrator, Quality Assurance Lead, Context Bridge, Draft Gatekeeper, and Primary File Operator.
-- **Current Model:** Claude or Gemini (as available)
-- **Tools:** Ollama MCP (`ollama_run`, `ollama_run_many`), Shell tool, File tools, Draft Gate.
+### 3. The Floor Manager (QA, Orchestrator & File Operator)
+- **Role:** Project Orchestrator, Quality Assurance Lead, and Primary File Operator.
+- **Current Model:** Claude Sonnet (Antigravity) or Gemini (as available)
+- **Tools:** Sub-agent spawning, Shell tool, File tools, Draft Gate.
 - **Constraint:** **STRICTLY PROHIBITED** from generating logic or writing code.
 - **Mandate:**
-  1. **Relay:** Pass Super Manager prompts to Workers via MCP.
-  2. **Execute File Ops:** Perform all file moves, copies, and shell commands as requested by the Conductor or as needed by the Worker's logic.
+  1. **Orchestrate:** Read Kanban tickets, plan parallel vs sequential work, dispatch to Workers.
+  2. **Execute File Ops:** Perform all file moves, copies, and shell commands as needed.
   3. **Context Bridge:** Provide necessary project context/files to Workers when requested.
   4. **Verify:** Inspect Worker output against the Checklist.
-  5. **Sign-Off:** Only mark tasks "Complete" after all checklist items pass.
-  6. **V4 - Draft Gate:** Review Worker draft submissions, run safety analysis, decide Accept/Reject/Escalate.
-- **Identity:** You are not a "sender"; you are a **Gatekeeper** and **Executor**. You must independently verify the Worker's code, review draft submissions for safety issues, and perform the physical file operations.
+  5. **Sign-Off:** Move tasks to **Review** when all checklist items pass. The Architect does final sign-off.
+  6. **Draft Gate:** Review Worker output, run safety analysis, decide Accept/Reject/Escalate.
+- **Identity:** You are not a "sender"; you are a **Gatekeeper** and **Executor**. You must independently verify the Worker's code, review submissions for safety issues, and perform the physical file operations.
 
-### 4. The Workers (Local Models via Ollama)
-- **Models:** DeepSeek-R1, Qwen 2.5, etc.
+### 4. The Workers (Low-cost Subagents)
 - **Role:** Primary Implementers of logic and code generation.
+- **How to determine which workers to use:**
+  ```bash
+  # Run this to check which machine you're on:
+  hostname
+  # "eriks-mac-mini" → use local Ollama models (Qwen, DeepSeek-R1, etc.)
+  # Anything else (e.g., "Eriks-MacBook-Pro") → use cloud subagents
+  ```
+- **On Mac Mini:** Local Ollama models (Qwen, DeepSeek-R1, etc.) via Ollama MCP or Agent Hub
+- **On Laptop/Cloud:** Low-cost cloud subagents (Claude Haiku, Gemini Flash, GPT-mini, etc.) via `browser_subagent` or equivalent
 - **Mandate:**
   - Read files and generate code/logic.
-  - **V4:** Write to sandbox drafts via draft tools (see V4 Sandbox Draft Pattern below).
   - Report "Task Complete" to Floor Manager for inspection.
 
 **Use Workers for:**
@@ -75,13 +81,12 @@
 - Code refactoring
 - Code review analysis
 - Text generation tasks
-- **V4:** File edits via sandbox drafts (gated by Floor Manager)
 
 **DO NOT use Workers for:**
-- Direct file operations (cp, mv, rm, chmod) - use draft tools instead
+- Direct file operations (cp, mv, rm, chmod)
 - Bash command execution
 - sed/grep operations
-- Writing outside the sandbox (`_handoff/drafts/`)
+- Strategic decisions (that's the Architect's job)
 
 - **Context Protocol:** If context is missing or a file is unknown, **STOP** and request the information from the Floor Manager. **DO NOT GUESS.**
 
@@ -106,45 +111,15 @@
 
 ---
 
-## 🔒 V4 SANDBOX DRAFT PATTERN
+## 🔒 WORKER EXECUTION PATTERNS
 
-**Added:** January 2026
-**Purpose:** Give Workers "hands" to edit files while maintaining safety guardrails.
+### On Laptop (Cloud Subagents)
+Floor Manager spawns a low-cost subagent (e.g., `browser_subagent` with Claude Haiku) to write code. The subagent has file write tools. Floor Manager reviews the output before moving to Review.
 
-### The Problem (Pre-V4)
+### On Mac Mini (Local Models via Agent Hub)
+Floor Manager dispatches tasks to local Ollama models via Agent Hub or Ollama MCP. Workers write to a sandbox draft. Floor Manager reviews the diff and decides whether to apply it.
 
-Workers could generate code but couldn't write files. The Floor Manager had to parse their output and apply changes manually - leading to ~15% parse failures and brittle workflows.
-
-### The Solution (V4)
-
-**Draft → Gate → Apply**
-
-Workers write to a sandbox. The Floor Manager reviews the diff and decides whether to apply it.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     V4 DRAFT WORKFLOW                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   Worker                    Floor Manager           Target   │
-│   ┌──────────┐             ┌──────────┐          ┌────────┐ │
-│   │ 1. Request│────────────▶│ Copy to  │          │        │ │
-│   │    Draft  │             │ sandbox  │          │        │ │
-│   │          │◀────────────│          │          │        │ │
-│   │ 2. Edit  │             │          │          │        │ │
-│   │    Draft │────────────▶│ Write to │          │        │ │
-│   │          │             │ sandbox  │          │        │ │
-│   │ 3. Submit│────────────▶│ GATE:    │          │        │ │
-│   │    Draft │             │ - Diff   │─────────▶│ Apply  │ │
-│   │          │             │ - Safety │          │        │ │
-│   │          │◀────────────│ - Decide │          │        │ │
-│   │└──────────┘  ACCEPTED   └──────────┘          └────────┘ │
-│                 REJECTED                                     │
-│                 ESCALATED                                    │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Draft Tools (ollama-mcp)
+### Draft → Gate → Apply (Mac Mini only)
 
 | Tool | Purpose |
 |------|---------|
@@ -152,15 +127,6 @@ Workers write to a sandbox. The Floor Manager reviews the diff and decides wheth
 | `ollama_write_draft` | Write/update draft in sandbox |
 | `ollama_read_draft` | Read current draft content |
 | `ollama_submit_draft` | Submit draft for review |
-
-### Security Layers
-
-| Layer | Protection |
-|-------|------------|
-| **Path Validation** | Only `_handoff/drafts/` is writable |
-| **Content Analysis** | Secrets, hardcoded paths, deletion ratio |
-| **Floor Manager Gate** | Diff review, conflict detection |
-| **Audit Trail** | All decisions logged, rollback capable |
 
 ### Gate Decisions
 
@@ -170,14 +136,12 @@ Workers write to a sandbox. The Floor Manager reviews the diff and decides wheth
 | **REJECT** | Security violation | Discard draft, log reason |
 | **ESCALATE** | Large change / uncertain | Alert Conductor for review |
 
-### Why This Matters
-
-- **Parse failure rate:** ~15% → ~0%
-- **Worker autonomy:** Can now complete file edits independently
-- **Safety maintained:** Floor Manager still gates all changes
-- **Audit trail:** Every decision logged for rollback
-
-**Implementation:** See `_tools/agent-hub/` for the Unified Agent System.
+### How to Tell Which Machine You're On
+```bash
+hostname
+# "eriks-mac-mini" → Ollama + Agent Hub + draft tools
+# Anything else → Cloud subagents (Haiku, Flash, GPT-mini)
+```
 
 ---
 
@@ -189,7 +153,7 @@ The agent ecosystem runs on MCP (Model Context Protocol) servers in `_tools/`:
 |--------|---------|--------------|
 | **agent-hub** | Core orchestration | SQLite message bus, LiteLLM routing, budget management, circuit breakers, graceful degradation |
 | **librarian-mcp** | Knowledge queries | Wraps project-tracker's graph.json and tracker.db; natural language queries via `ask_librarian` |
-| **ollama-mcp** | Local model execution | Draft tools (`ollama_request_draft`, `ollama_write_draft`, etc.), model invocation |
+| **ollama-mcp** | Local model execution (Mac Mini only) | Draft tools (`ollama_request_draft`, `ollama_write_draft`, etc.), model invocation |
 | **claude-mcp** | Agent communication | Message hub for cross-agent coordination |
 
 ### Agent-Hub Capabilities (Unified Agent System)
@@ -215,7 +179,7 @@ When the Super Manager generates a prompt for a Worker, it MUST follow this stru
 
 
 ### [TASK_TITLE]
-**Worker Model:** [DeepSeek-R1 / Qwen-2.5-Coder / etc.]
+**Worker Model:** [Haiku / GPT-mini / Gemini Flash / Qwen / DeepSeek-R1]
 **Objective:** [Brief 1-sentence goal]
 
 ### ⚠️ DOWNSTREAM HARM ESTIMATE
@@ -270,7 +234,7 @@ Claude Code skills for workflow phases are deployed to `~/.claude/skills/` and a
 - **Trash, Don't Delete:** NEVER use `rm` or permanent deletion.
 - ALWAYS use `send2trash` (Python) or move files to a `.trash/` directory.
 
-> **Industry Context:** These safety rules align with production AI patterns (tool whitelisting, per-step safety assessment). See [Documents/reports/trustworthy_ai_report.md](Documents/reports/trustworthy_ai_report.md) for how major companies implement multi-agent safety systems.
+> **Industry Context:** These safety rules align with production AI patterns (tool whitelisting, per-step safety assessment). See `.agent/rules/governance.md` for how major companies implement multi-agent safety systems.
 
 ---
 
@@ -424,9 +388,8 @@ created: {{DATE}}
 
 ## 📖 RELATED DOCUMENTS
 
-- **Review Standards:** See `Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for the full audit checklist and evidence requirements
-- **Philosophy:** See `PROJECT_PHILOSOPHY.md` for the "why" behind the ecosystem
-- **Project-Specific Rules:** See each project's `_cursorrules` file
+- **Review Standards:** See `.agent/rules/governance.md` for the full audit checklist and evidence requirements
+- **Philosophy:** See `.agent/rules/PROJECT_PHILOSOPHY.md` for the "why" behind the ecosystem
 
 ---
 
@@ -438,9 +401,9 @@ created: {{DATE}}
 
 ### Project Documentation
 These documents are copied to each project during scaffolding:
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - Anti-patterns to avoid in code reviews
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - Lessons learned from working with local AI models
-- [Reviews and Governance Protocol](Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md) - Full audit checklist and evidence requirements
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - Anti-patterns to avoid in code reviews
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - Lessons learned from working with local AI models
+- [Reviews and Governance Protocol](.agent/rules/governance.md) - Full audit checklist and evidence requirements
 
 ### Pattern Library
 Located in `patterns/` directory of project-scaffolding:

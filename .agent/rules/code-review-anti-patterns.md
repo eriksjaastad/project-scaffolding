@@ -10,14 +10,13 @@ This database tracks recurring defects found in the project-scaffolding ecosyste
 
 **Where to Look:**
 - `templates/*.template` files
-- `.cursorrules*`
 - `*.yaml` files
 - Scripts (`scripts/`, `scaffold/`)
 - `AGENTS.md`, `CLAUDE.md`
 
 **Scan Command:**
 ```bash
-grep -rn "/Users/" templates/ .cursorrules* *.yaml scripts/ scaffold/ AGENTS.md CLAUDE.md | grep -v "absolute paths (e.g.,"
+grep -rn "/Users/" templates/ *.yaml scripts/ scaffold/ AGENTS.md CLAUDE.md | grep -v "absolute paths (e.g.,"
 ```
 
 **Fix:**
@@ -121,8 +120,7 @@ grep -E "^[^#].*>=[0-9]" requirements.txt | grep -v "~="
 
 ## Related Documentation
 
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
 - [Automation Reliability](patterns/automation-reliability.md) - automation
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

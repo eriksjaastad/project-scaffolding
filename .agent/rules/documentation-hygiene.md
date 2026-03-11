@@ -27,7 +27,6 @@ Every project needs exactly these, as defined in the [PROJECT_STRUCTURE_STANDARD
 
 ## Adding to Project Scaffolding
 
-When scaffolding a new project via the [PROJECT_KICKOFF_GUIDE](../PROJECT_KICKOFF_GUIDE.md):
 
 1. Create only required docs.
 2. Set a 3-month review reminder.

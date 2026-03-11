@@ -108,40 +108,40 @@ Decisions we haven't made yet but need to:
 
 ### 2026-01-22: Create `.agentsync/rules/` directory structure
 
-**Context:** AGENTS.md was a 500+ line monolith. Different sections applied to different IDEs. Editing was fragile.
+**Context:** AGENTS.md was a 500+ line monolith. Different sections applied to different tools. Editing was fragile.
 
 **Decision:** Split agent rules into modular files in `.agentsync/rules/`.
 
 **Reasoning:**
 1. Modular files (00-overview.md, 01-workflow.md) can be edited independently
-2. YAML frontmatter allows targeting specific IDEs (`targets: ["claude", "cursor"]`)
+2. YAML frontmatter allows targeting specific tools (`targets: ["claude", "antigravity"]`)
 3. Filename ordering (00-, 01-) gives predictable concatenation
 4. Smaller files = fewer merge conflicts
 
 **Alternatives considered:**
-- Multiple AGENTS.md files: Rejected because IDE tools expect specific filenames
+- Multiple AGENTS.md files: Rejected because tools expect specific filenames
 - Single file with section markers: Rejected because still monolithic
 
 ---
 
 ### 2026-01 (early): Create AgentSync
 
-**Context:** Using three AI assistants (Claude Code, Cursor, Antigravity). Each reads a different config file. Improvements to one set of rules never reached the others.
+**Context:** Using multiple AI assistants (Claude Code, Antigravity). Each reads a different config file. Improvements to one set of rules never reached the others.
 
 **Inspiration:** IndyDevDan video on self-validating agents with Claude Code hooks. Great idea, but siloed to Claude.
 
-**Decision:** Build a sync system: single source of truth → generate all IDE configs.
+**Decision:** Build a sync system: single source of truth → generate all agent configs.
 
 **Reasoning:**
-1. Edit once, all IDEs benefit
-2. No more copy-paste drift between CLAUDE.md and .cursorrules
+1. Edit once, all agents benefit
+2. No more copy-paste drift between CLAUDE.md and .agent rules
 3. Hooks can auto-sync on file save (real-time) or pre-commit (batch)
 4. Preserves custom content outside AGENTSYNC markers
 
 **Alternatives considered:**
 - Manual copy-paste: Rejected because we kept forgetting to sync
-- Symlinks: Rejected because IDEs expect different formats/headers
-- IDE plugins: Rejected because we can't control all three IDEs' behavior
+- Symlinks: Rejected because tools expect different formats/headers
+- Plugin-based sync: Rejected because we can't control all assistants' behavior
 
 ---
 
@@ -168,8 +168,8 @@ Decisions we haven't made yet but need to:
 Multiple places to edit the same information = guaranteed drift. We repeatedly choose "one place to edit, auto-generate the rest."
 
 Examples:
-- `.agentsync/rules/` → CLAUDE.md, .cursorrules, .agent/rules/
-- `_configs/mcp/servers.json` → all IDE MCP configs
+- `.agentsync/rules/` → CLAUDE.md, .agent/rules/
+- `_configs/mcp/servers.json` → all agent MCP configs
 
 ### 2. Explicit Over Implicit
 
@@ -199,7 +199,7 @@ Generated files use markers (AGENTSYNC:START/END) so project-specific additions 
 
 **Tentative answer:** They serve different purposes:
 - AGENTS.md = "constitution" (hierarchy, philosophy, roles)
-- .agentsync/rules/ = "operational rules" (synced to IDE configs)
+- .agentsync/rules/ = "operational rules" (synced to agent configs)
 
 But this needs validation through usage.
 

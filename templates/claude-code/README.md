@@ -53,4 +53,4 @@ This directory contains templates for setting up Claude Code hooks and sub-agent
 
 ## Reference
 
-See `Documents/reference/CLAUDE_CODE_HOOKS_AND_SUBAGENTS.md` for full documentation.
+See `.agent/rules/claude-code-hooks.md` for full documentation.

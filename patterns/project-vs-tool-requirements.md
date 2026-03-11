@@ -46,7 +46,7 @@ project-name/
 ├── tests/             # Test suite
 │   └── test_*.py
 ├── .coveragerc        # Coverage configuration
-└── Documents/         # Extended documentation
+└── .agent/rules/         # Extended documentation
     ├── core/          # Architecture decisions
     └── archives/      # Historical records
 ```
@@ -167,7 +167,7 @@ When a tool grows substantial enough to be a project:
 - [ ] Add `00_Index_[name].md`
 - [ ] Add `.cursorrules` and `.cursorignore`
 - [ ] Expand test coverage
-- [ ] Create `Documents/` structure
+- [ ] Create `.agent/rules/` structure
 
 ### Demoting a Project to a Tool
 
@@ -213,7 +213,7 @@ project-tracker/
 │   └── conftest.py
 ├── dashboard/
 │   └── ...
-└── Documents/
+└── .agent/rules/
     ├── core/
     └── archives/
 ```
@@ -224,7 +224,7 @@ project-tracker/
 
 **Projects** are investments. They have roadmaps, they evolve, they need governance. The overhead pays off over time.
 
-**Tools** are utilities. They do one thing well. Overhead should be proportional to complexity. A 200-line script doesn't need a Documents/ directory.
+**Tools** are utilities. They do one thing well. Overhead should be proportional to complexity. A 200-line script doesn.t need an .agent/rules/ directory.
 
 **The line isn't always clear.** When in doubt:
 - If it has users beyond you → Project
@@ -238,8 +238,6 @@ project-tracker/
 
 ## Related Documentation
 
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
 - [project-tracker/README](../../ai-model-scratch-build/README.md) - Project Tracker

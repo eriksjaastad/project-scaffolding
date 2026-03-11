@@ -23,7 +23,7 @@ project-name/
 │   ├── script2.py
 │   └── utils/                # Script utilities
 ├── data/                      # Data files, databases
-├── Documents/                      # Documentation
+├── .agent/rules/                      # Documentation
 ├── templates/                 # Templates (if applicable)
 ├── tests/                     # Test files
 ├── requirements.txt           # Python dependencies
@@ -36,7 +36,7 @@ project-name/
 - ✅ **Virtual environment in root:** `venv/` at top level (see [[VENV_LOCATION_STANDARD]])
 - ✅ **Scripts in scripts/:** All executable code in `scripts/`
 - ✅ **Data isolated:** `data/` for all data files
-- ✅ **Documentation clear:** `Documents/` for detailed docs (see [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md))
+- ✅ **Documentation clear:** .agent/rules/ for detailed docs (see [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md))
 
 ### Web Projects (React/Next.js)
 
@@ -49,7 +49,7 @@ project-name/
 │   └── utils/
 ├── public/                   # Static assets
 ├── scripts/                  # Build scripts, utilities
-├── Documents/                     # Documentation
+├── .agent/rules/                     # Documentation
 ├── package.json              # Node dependencies
 ├── README.md
 ├── TODO.md
@@ -65,7 +65,7 @@ project-name/
 ├── frontend/                 # React frontend
 ├── scripts/                  # Deployment, utilities
 ├── data/                     # Databases, local data
-├── Documents/                     # Documentation
+├── .agent/rules/                     # Documentation
 ├── requirements.txt          # Python dependencies
 ├── README.md
 ├── TODO.md
@@ -79,11 +79,11 @@ project-name/
 **Standard docs layout:**
 
 ```
-Documents/
+.agent/rules/
 ├── README.md               # Docs index (Grand Central Station) - See [DOCUMENTATION_HYGIENE](reference/DOCUMENTATION_HYGIENE.md)
-├── ARCHITECTURE.md         # Core Architecture (at root of Documents/)
-├── OPERATIONS.md           # Core Operations (at root of Documents/)
-├── DATA_MODEL.md           # Core Data Model (at root of Documents/)
+├── ARCHITECTURE.md         # Core Architecture (at root of .agent/rules/)
+├── OPERATIONS.md           # Core Operations (at root of .agent/rules/)
+├── DATA_MODEL.md           # Core Data Model (at root of .agent/rules/)
 ├── guides/                 # How-to guides
 ├── reference/              # Reference docs
 ├── safety/                 # Safety systems
@@ -105,7 +105,7 @@ Documents/
 Code reviews are critical for maintaining quality. **All** reviews **MUST** adhere to the following:
 
 - [ ] Active code review exists in project root (follows `CODE_REVIEW_{REVIEWER}_{VERSION}.md` naming)
-- [ ] Previous reviews archived in `Documents/archives/reviews/`
+- [ ] Previous reviews archived in `.agent/rules/archives/reviews/`
 - [ ] All reviews include a **Definition of Done (DoD)** - See [CODE_REVIEW_PROMPT](../../ai-usage-billing-tracker/CODE_REVIEW_PROMPT.md)
 - [ ] Review IDs present in frontmatter for traceability - See [[WARDEN_LOG]]
 
@@ -118,16 +118,12 @@ Code reviews are critical for maintaining quality. **All** reviews **MUST** adhe
 - [ ] **`00_Index_[ProjectName].md`** - Obsidian index with status tags.
 - [ ] **`AGENTS.md`** - Universal source of truth for AI agents (DoD, Tech Stack).
 - [ ] **`CLAUDE.md`** - Project-specific AI instructions.
-- [ ] **`.cursorrules`** - Behavioral configuration for Cursor AI.
 - [ ] **`TODO.md`** - Task tracking following [TODO_FORMAT_STANDARD](TODO_FORMAT_STANDARD.md).
-- [ ] **`Documents/`** directory - Centralized documentation following this standard.
+- [ ] **.agent/rules/** directory - Centralized documentation following this standard.
 
 ---
 
-*See also: [PROJECT_KICKOFF_GUIDE](PROJECT_KICKOFF_GUIDE.md) for new projects and [CODE_QUALITY_STANDARDS](CODE_QUALITY_STANDARDS.md) for quality rules.*
 
 ## Related Documentation
 
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review

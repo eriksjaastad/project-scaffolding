@@ -29,14 +29,14 @@ import sys
 # Wikilink → Markdown Link conversion mapping
 UNIVERSAL_REPLACEMENTS = [
     # Universal documents that exist in scaffolded projects
-    (r'\[\[CODE_REVIEW_ANTI_PATTERNS\]\]', '[Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md)'),
-    (r'\[\[DOPPLER_SECRETS_MANAGEMENT\]\]', '[Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md)'),
-    (r'\[\[LOCAL_MODEL_LEARNINGS\]\]', '[Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md)'),
-    (r'\[\[trustworthy_ai_report\]\]', '[Trustworthy AI Report](Documents/reports/trustworthy_ai_report.md)'),
+    (r'\[\[CODE_REVIEW_ANTI_PATTERNS\]\]', '[Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md)'),
+    (r'\[\[DOPPLER_SECRETS_MANAGEMENT\]\]', '[Doppler Secrets Management](.agent/rules/doppler-secrets.md)'),
+    (r'\[\[LOCAL_MODEL_LEARNINGS\]\]', '[Local Model Learnings](.agent/rules/local-model-learnings.md)'),
+    (r'\[\[trustworthy_ai_report\]\]', '[Trustworthy AI Report](.agent/rules/governance.md)'),
     
     # Pattern mappings (actual file names)
-    (r'\[\[ai_model_comparison\]\]', '[AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md)'),
-    (r'\[\[cost_management\]\]', '[Cost Management](Documents/reference/MODEL_COST_COMPARISON.md)'),
+    (r'\[\[ai_model_comparison\]\]', '[AI Model Cost Comparison](../MODEL_HIERARCHY.md)'),
+    (r'\[\[cost_management\]\]', '[Cost Management](../MODEL_HIERARCHY.md)'),
     (r'\[\[orchestration_patterns\]\]', '[AI Team Orchestration](patterns/ai-team-orchestration.md)'),
     (r'\[\[security_patterns\]\]', '[Safety Systems](patterns/safety-systems.md)'),
     (r'\[\[prompt_engineering_guide\]\]', '[Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md)'),
@@ -55,9 +55,9 @@ UNIVERSAL_REPLACEMENTS = [
     (r'\[\[README\.md\]\]', '[README.md](README.md)'),
     
     # Project-level documents (generic patterns)
-    (r'\[\[ARCHITECTURAL_DECISIONS\]\]', '[Architectural Decisions](Documents/ARCHITECTURAL_DECISIONS.md)'),
-    (r'\[\[RECIPE_SCHEMA\]\]', '[Recipe Schema](Documents/RECIPE_SCHEMA.md)'),
-    (r'\[\[IMAGE_STYLE_GUIDE\]\]', '[Image Style Guide](Documents/IMAGE_STYLE_GUIDE.md)'),
+    (r'\[\[ARCHITECTURAL_DECISIONS\]\]', '[Architectural Decisions](DECISIONS.md)'),
+    (r'\[\[RECIPE_SCHEMA\]\]', '[Recipe Schema](docs/RECIPE_SCHEMA.md)'),
+    (r'\[\[IMAGE_STYLE_GUIDE\]\]', '[Image Style Guide](docs/IMAGE_STYLE_GUIDE.md)'),
     
     # Index file references - convert to plain text (can't predict project name)
     (r'\[\[00_Index_[^\]]+\]\]', '`00_Index_*.md`'),

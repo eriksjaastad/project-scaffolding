@@ -1,17 +1,36 @@
 # External Resources & Services
 # Purpose: Track which external services, APIs, and resources are used across all projects
-# Last Updated: 2026-01-06
+# Last Updated: 2026-03-10
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-02-14"
+  last_updated: "2026-03-10"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
+
+# ACCOUNT REGISTRY
+# Two accounts: personal (spudlogic) and business (synthinsightlabs)
+# When ready to formalize SIL as a business: new bank account → Stripe under SIL → migrate customer-facing services
+accounts:
+  spudlogic:
+    type: personal
+    email: "erik@spudlogic.com"
+    github: "eriksjaastad"
+    notes: "Personal account. Most services default here (legacy). GitHub, personal bank."
+  synthinsightlabs:
+    type: business
+    email: "admin@synthinsightlabs.com"
+    domain: "synthinsightlabs.com"
+    github: null
+    bank: null
+    llc: false
+    notes: "Future business entity. Has domain, email, Google Cloud Console. No bank account or LLC yet."
 
 # PROJECT SERVICE USAGE
 # This is the main data structure - parsed by project-tracker dashboard
 projects:
   project-scaffolding:
     monthly_cost: 5
+    account: spudlogic
     credential_file: ".env"
     services:
       - name: DeepSeek
@@ -35,8 +54,61 @@ projects:
         env_var: "SCAFFOLDING_ANTHROPIC_KEY"
         cost: 2
 
+  data-vault-factory:
+    monthly_cost: "Variable"
+    account: spudlogic
+    credential_file: "Doppler"
+    services:
+      - name: Doppler
+        purpose: "Secrets management"
+        type: security
+        cost: 0
+      - name: Firecrawl
+        purpose: "Web scraping API"
+        type: data
+        env_var: "DVF_FIRECRAWL_KEY"
+        cost: "Free Tier"
+      - name: Gumroad
+        purpose: "Sales infrastructure"
+        type: payments
+        env_var: "DVF_GUMROAD_TOKEN"
+        cost: 0
+      - name: Ghost
+        purpose: "Marketing/pSEO infrastructure"
+        type: cms
+        env_var: "DVF_GHOST_ADMIN_KEY"
+        cost: 0
+      - name: OpenAI
+        purpose: "gpt-4o-mini for production"
+        type: ai
+        env_var: "DVF_OPENAI_KEY"
+        cost: "Variable"
+      - name: Anthropic
+        purpose: "claude-3-5-haiku for production"
+        type: ai
+        env_var: "DVF_ANTHROPIC_KEY"
+        cost: "Variable"
+
+  holoscape:
+    monthly_cost: 0
+    account: spudlogic
+    credential_file: ".env"
+    services:
+      - name: OpenAI
+        purpose: "LLM Provider"
+        type: ai
+        env_var: "HOLOSCAPE_OPENAI_KEY"
+        cost: 0
+      - name: Anthropic
+        purpose: "LLM Provider"
+        type: ai
+        env_var: "HOLOSCAPE_ANTHROPIC_KEY"
+        cost: 0
+    notes: "Removed from Doppler March 2026"
+
   trading-copilot:
     monthly_cost: 12
+    account: spudlogic
     credential_file: ".env"
     services:
       - name: Railway
@@ -72,6 +144,7 @@ projects:
 
   cortana-personal-ai:
     monthly_cost: 0.60
+    account: spudlogic
     credential_file: ".env"
     services:
       - name: OpenAI
@@ -97,6 +170,7 @@ projects:
 
   image-workflow:
     monthly_cost: 10
+    account: spudlogic
     credential_file: ".env"
     services:
       - name: OpenAI
@@ -116,6 +190,7 @@ projects:
 
   3d-pose-factory:
     monthly_cost: 7
+    account: spudlogic
     credential_file: ".env"
     aliases: ["Image Generation", "Fat AI", "3D Renders", "Mission Control"]
     services:
@@ -136,6 +211,7 @@ projects:
 
   project-tracker:
     monthly_cost: 0
+    account: spudlogic
     services:
       - name: SQLite
         purpose: "Local database"
@@ -149,31 +225,45 @@ projects:
 
   smart-invoice-workflow:
     monthly_cost: 16
+    account: synthinsightlabs
     credential_file: ".env"
     services:
+      - name: Google Cloud Console
+        purpose: "OAuth credentials for Gmail + Drive MCP connectors"
+        type: cloud
+        account: "admin@synthinsightlabs.com"
+        url: "https://console.cloud.google.com/"
+        cost: 0
+        notes: "Synth Insight Labs project. Powers Claude Code MCP integrations (Gmail, Google Drive). Set up 2026-03-10."
       - name: Make.com
         purpose: "Google OAuth proxy, Sheets/Gmail automation, daily scheduling"
         type: automation
+        account: synthinsightlabs
         env_vars:
-          - "MAKE_API_TOKEN"
-          - "MAKE_API_URL"
-          - "MAKE_ORG_ID"
-          - "MAKE_TEAM_ID"
-          - "MAKE_SIW_SCENARIO_ID"
+          - "MAKE_DAILY_PROCESSING_WEBHOOK_URL"
+          - "MAKE_LIST_SHEETS_WEBHOOK_URL"
+          - "MAKE_VALIDATE_SHEET_WEBHOOK_URL"
+          - "MAKE_CREATE_TEMPLATE_WEBHOOK_URL"
+          - "X_MAKE_API_KEY"
         cost: 16
-        plan: "Pro (10K ops/month)"
+        plan: "Core (10K ops/month)"
         zone: "us2.make.com"
-        notes: "Standard for any project needing Google Workspace integration. Sidesteps Google OAuth verification (4-6 week process). API token created under Profile > API access."
+        connection_ids:
+          google_sheets: 7471828
+          gmail: 7471878
+          google_drive: 7506553
+        notes: "4 webhook scenarios. Edit in UI only — re-imports break module IDs."
       - name: Auth0
         purpose: "User authentication (email/password, magic link)"
         type: auth
+        account: synthinsightlabs
         env_var: "SIW_AUTH0_CLIENT_ID"
         cost: 0
         plan: "Free (up to 7,500 MAU)"
-        notes: "Standard auth provider for all SaaS projects. Erik has prior experience."
       - name: Vercel
         purpose: "Hosting (FastAPI serverless)"
         type: hosting
+        account: synthinsightlabs
         env_vars:
           - "VERCEL_TOKEN"
           - "VERCEL_TEAM_ID"
@@ -183,15 +273,32 @@ projects:
         project_id: "prj_BhSNJWvzEqXbU4z4y5PVIbuZNZbL"
         team_id: "team_PJUqNMkyhhctGVPOgpjU8F3L"
         region: "iad1"
+        url: "https://smart-invoice-workflow.vercel.app"
+      - name: Neon
+        purpose: "PostgreSQL database"
+        type: database
+        account: synthinsightlabs
+        env_var: "DATABASE_URL"
+        cost: 0
+        plan: "Free"
       - name: Stripe
         purpose: "Payment processing"
         type: payments
+        account: synthinsightlabs
         env_var: "SIW_STRIPE_SECRET_KEY"
         cost: 0
         notes: "2.9% + 30¢ per transaction"
+      - name: Resend
+        purpose: "Transactional email"
+        type: email
+        account: synthinsightlabs
+        env_var: "RESEND_API_KEY"
+        cost: 0
+        notes: "Chosen over SendGrid (couldn't log into SendGrid account)"
 
   muffinpanrecipes:
     monthly_cost: 12
+    account: spudlogic
     credential_file: ".env"
     services:
       - name: Vercel
@@ -210,6 +317,55 @@ projects:
         env_var: "MUFFIN_RUNPOD_API_KEY"
         cost: "Pay-per-use"
 
+  # Projects needing audit for service usage
+  hypocrisynow:
+    account: TODO (erik@spudlogic.com?)
+    notes: "Audit needed: check for database, hosting, or API usage."
+  
+  tax-organizer:
+    account: spudlogic
+    services:
+      - name: SQLite
+        type: database
+        cost: 0
+    notes: "Local project. Audit for any OCR or LLM API usage."
+
+  prospector:
+    account: TODO
+    notes: "Audit needed: check for web scraping or search API usage."
+
+  # Services signed up under synthinsightlabs but not yet assigned to a project
+  unassigned-synthinsightlabs:
+    account: synthinsightlabs
+    monthly_cost: 0
+    notes: "Services discovered in admin@synthinsightlabs.com inbox. Assign to projects as needed."
+    services:
+      - name: Twilio
+        purpose: "SMS/Voice API (possibly for WhatsApp experiment)"
+        type: communications
+        cost: 0
+        plan: "Free trial ($15 credit)"
+        signed_up: "2026-02-20"
+        notes: "Not currently used by any project. Evaluate or cancel."
+      - name: RSS.app
+        purpose: "RSS feed generation from websites"
+        type: data
+        cost: 0
+        signed_up: "2026-02-23"
+        notes: "Not currently used by any project. May be for market-research or news agent."
+      - name: Brave Search API
+        purpose: "Web search API"
+        type: data
+        cost: 0
+        signed_up: "2026-03-04"
+        notes: "Not currently used by any project. May be for data-vault-factory."
+      - name: Reddit
+        purpose: "Social media account"
+        type: social
+        cost: 0
+        signed_up: "2025-08-29"
+        notes: "SIL Reddit account. Not actively used."
+
 # SERVICES BY FUNCTION
 # Purpose: Prevent signing up for duplicate services
 services_by_function:
@@ -219,6 +375,22 @@ services_by_function:
     - Anthropic (Claude Opus 4, Sonnet 4, Haiku 3.5)
     - Google AI (Gemini 2.0/2.5 Flash)
     - xAI (Grok-3)
+  
+  search:
+    - Brave Search API (web search)
+
+  scraping:
+    - Firecrawl (AI-native scraping)
+    - RSS.app (RSS feed generation)
+
+  ecommerce:
+    - Gumroad (programmatic product sales)
+
+  cms:
+    - Ghost (Admin API for pSEO)
+
+  security:
+    - Doppler (secrets management)
   
   hosting:
     - Railway (Python cron jobs + Postgres)
@@ -237,12 +409,23 @@ services_by_function:
     - Cloudflare R2 (S3-compatible)
     - Google Drive (via rclone)
   
+  cloud_platforms:
+    - Google Cloud Console (OAuth, API credentials — admin@synthinsightlabs.com)
+
   databases:
     - PostgreSQL (Railway)
+    - PostgreSQL (Neon — smart-invoice-workflow)
     - SQLite (local)
+
+  email:
+    - Resend (transactional email)
   
+  communications:
+    - Twilio (SMS/Voice API — free trial, not active)
+
   monitoring:
     - Discord Webhooks
+    - Slack (OpenClaw agent communication)
     - Autonomous Loops (Janitor)
   
   voice_to_text:
@@ -277,7 +460,11 @@ cost_summary:
 
 # REJECTED/UNUSED SERVICES
 # Purpose: Don't re-sign up for things we already tried
-rejected_services: []
+rejected_services:
+  - name: SendGrid
+    reason: "Couldn't log into account. Replaced with Resend."
+  - name: WhatsApp (via Twilio)
+    reason: "Needs dedicated phone number. Google Voice doesn't work. Dropped for OpenClaw comms."
 
 cancelled_accounts: []
 
@@ -338,6 +525,8 @@ security:
 
 # RECENT DISCOVERIES
 recent_changes:
+  - date: "2026-03-10"
+    change: "Added account registry (spudlogic vs synthinsightlabs). Tagged all projects with account owner. Added unassigned SIL services (Twilio, RSS.app, Brave Search API, Reddit) discovered via Gmail audit."
   - date: "2026-01-06"
     change: "Implemented decentralized environment variable system with global template"
   - date: "2025-12-31"

@@ -50,6 +50,6 @@
 - Add links to project-specific architecture, patterns, and guides here
 
 **Universal Resources:**
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md)
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md)
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md)
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md)
+- [Local Model Learnings](.agent/rules/local-model-learnings.md)
+- [AI Model Cost Comparison](../MODEL_HIERARCHY.md)

@@ -4,7 +4,6 @@
 > **Source:** Extracted from battle-tested projects
 > **Last Updated:** December 21, 2025
 
-> **Industry Context:** These patterns align with production AI safety practices. See [Documents/reports/trustworthy_ai_report.md](../Documents/reports/trustworthy_ai_report.md) for how Google DeepMind, Anthropic, and Microsoft implement defense-in-depth safety systems.
 
 ---
 
@@ -839,10 +838,6 @@ Safety systems without scar stories.
 
 ## Related Documentation
 
-- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
-- [Trustworthy AI Report](Documents/reports/trustworthy_ai_report.md) - AI safety
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
 - [image-workflow/README](../../ai-model-scratch-build/README.md) - Image Workflow
 - [trading-copilot/README](../../ai-model-scratch-build/README.md) - Trading Copilot

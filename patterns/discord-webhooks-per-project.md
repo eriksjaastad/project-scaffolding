@@ -263,11 +263,7 @@ send_test_message()
 
 ## Related Documentation
 
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
-- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
 - [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [3d-pose-factory/README](../../ai-model-scratch-build/README.md) - 3D Pose Factory
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
 - [hypocrisynow/README](../../ai-model-scratch-build/README.md) - Hypocrisy Now

@@ -3,7 +3,6 @@ CLI for Project Scaffolding automation system
 """
 
 import asyncio
-import os
 import re
 import shutil
 import subprocess
@@ -55,7 +54,7 @@ def _get_context(project_name: str) -> Dict[str, str]:
     return {
         "PROJECT_NAME": project_name,
         "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
-        "PROJECT_INTENT": "TODO: Define project intent (what is it for / what does success look like / how should that influence decisions)",
+        "PROJECT_INTENT": "Define project intent (what is it for / what does success look like / how should that influence decisions)",
         "DATE": today,
         "STATUS": "Active",
         "PHASE": "Foundation",
@@ -72,7 +71,6 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "CRON_EXPRESSION": "0 0 * * *",
         "COMMAND": "python scripts/validate_project.py",
         "SERVICE_NAME": "GitHub",
-        "DOC_PATH": "Documents/README.md",
         "LANGUAGE": "Python",
         "LANGUAGE_VERSION": "3.11+",
         "FRAMEWORKS": "None",
@@ -84,8 +82,6 @@ def _get_context(project_name: str) -> Dict[str, str]:
         "AI_STRATEGY": "Local-First",
         "CONFIG_NAME": "default",
         "FILE_CONTENT": "",
-        "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
-        "PROJECT_INTENT": "TODO: Define project intent (what is it for / what does success look like / how should that influence decisions)",
         "VENV_ACTIVATION": "source venv/bin/activate",
         "WAIT_TIME": "2",
         "CONSTRAINT_1": "None",
@@ -101,7 +97,7 @@ def _substitute_placeholders(content: str, context: Dict[str, str], filename: st
         "PROJECT_NAME", "PROJECT_DESCRIPTION", "PROJECT_INTENT", "DATE", "STATUS", "PHASE",
         "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
         "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
-        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME", "DOC_PATH",
+        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME",
         "LANGUAGE", "LANGUAGE_VERSION", "FRAMEWORKS", "RUN_COMMAND",
         "TEST_COMMAND", "MAIN_CODE_DIR", "CONSTRAINTS", "AI_STRATEGY",
         "VENV_ACTIVATION", "WAIT_TIME"
@@ -211,7 +207,7 @@ def _run_agentsync(
     dry_run: bool = False,
 ) -> tuple[bool, List[str]]:
     """
-    Run agentsync to sync .agentsync/rules/ to IDE configs.
+    Run agentsync to sync .agentsync/rules/ to tool configs.
 
     Args:
         project_name: Name of the project to sync
@@ -227,7 +223,7 @@ def _run_agentsync(
 
     if not agentsync_script.exists():
         actions.append(f"[yellow]⚠️  AgentSync not found at {agentsync_script}[/yellow]")
-        actions.append("[yellow]   Skipping agentsync (IDE configs won't be updated)[/yellow]")
+        actions.append("[yellow]   Skipping agentsync (tool configs won't be updated)[/yellow]")
         return False, actions
 
     if dry_run:
@@ -389,7 +385,7 @@ def review(
         return
     
     # Import here to avoid dependency issues when running other commands
-    from scaffold.review import ReviewConfig, create_orchestrator
+    from scaffold.review import create_orchestrator
 
     # Load review configurations
     configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key, deepseek_key, ollama_model)
@@ -538,10 +534,10 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     # 3. Copy docs
     console.print("\n[bold]Copying docs...[/bold]")
     docs_to_copy = [
-        ("REVIEWS_AND_GOVERNANCE_PROTOCOL.md", "Documents/REVIEWS_AND_GOVERNANCE_PROTOCOL.md"),
-        ("patterns/code-review-standard.md", "Documents/patterns/code-review-standard.md"),
-        ("patterns/learning-loop-pattern.md", "Documents/patterns/learning-loop-pattern.md"),
-        ("Documents/reference/LOCAL_MODEL_LEARNINGS.md", "Documents/reference/LOCAL_MODEL_LEARNINGS.md")
+        (".agent/rules/governance.md", ".agent/rules/governance.md"),
+        (".agent/rules/code-review-standard.md", ".agent/rules/code-review-standard.md"),
+        (".agent/rules/learning-loop-pattern.md", ".agent/rules/learning-loop-pattern.md"),
+        (".agent/rules/local-model-learnings.md", ".agent/rules/local-model-learnings.md")
     ]
     
     for src_rel, dst_rel in docs_to_copy:
@@ -563,7 +559,7 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     for action in agentsync_actions:
         console.print(f"  {action}")
 
-    # 5. Run agentsync to sync rules to IDE configs
+    # 5. Run agentsync to sync rules to tool configs
     console.print("\n[bold]Running agentsync...[/bold]")
     agentsync_success, agentsync_logs = _run_agentsync(
         project_name=project_name,
@@ -693,7 +689,7 @@ def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
         "PROJECT_NAME", "PROJECT_DESCRIPTION", "PROJECT_INTENT", "DATE", "STATUS", "PHASE",
         "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
         "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
-        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME", "DOC_PATH",
+        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME",
         "LANGUAGE", "LANGUAGE_VERSION", "FRAMEWORKS", "RUN_COMMAND",
         "TEST_COMMAND", "MAIN_CODE_DIR", "CONSTRAINTS", "AI_STRATEGY",
         "VENV_ACTIVATION", "WAIT_TIME"
@@ -829,8 +825,6 @@ def _update_file_references(file_path: Path, dry_run: bool) -> None:
     
     replacements = [
         (r"\$SCAFFOLDING/scripts/", "./scripts/"),
-        (r"\$SCAFFOLDING/Documents/", "./Documents/"),
-        (r"\$SCAFFOLDING/patterns/", "./Documents/patterns/"),
         (r"\$SCAFFOLDING/", "./"),
     ]
     
@@ -1214,7 +1208,7 @@ def _build_manifest(project_dir: Path, projects_root: Path, refresh_purpose: boo
             purpose = llm_result
 
     if not purpose:
-        purpose = "TODO: Add project description to pyproject.toml"
+        purpose = "Add project description to pyproject.toml"
 
     # Build commands section
     commands = []
@@ -1342,7 +1336,7 @@ def _gen_manifest_for(target_dir: Path, projects_root: Path, refresh: bool, dry_
         console.print(output)
     else:
         readme_path.write_text(output)
-        console.print(f"    [green]Wrote README.md[/green]")
+        console.print("    [green]Wrote README.md[/green]")
 
 
 if __name__ == "__main__":

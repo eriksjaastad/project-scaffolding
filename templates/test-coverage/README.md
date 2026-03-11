@@ -60,5 +60,4 @@ Coverage reports are generated in `scripts/tests/htmlcov/`:
 
 ## Related Documentation
 
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

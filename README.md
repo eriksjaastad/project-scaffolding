@@ -49,56 +49,41 @@ Sync scripts are located in `agentsync/`. When you update templates in `project-
 
 **[See agentsync/README.md for complete usage, flags, and examples →](agentsync/README.md)**
 
-## Documentation
+## Common Mistakes to Avoid
 
-See the `Documents/` directory for detailed documentation.
-
-## Status
-
-- **Current Phase:** Foundation
-- **Status:** #status/active
-
-<!-- SCAFFOLD:END - Custom content below is preserved -->
-# Project Scaffolding
-
-|> *The meta-project: Extracting patterns from experiments to build better projects faster.*
+- **❌ Copying Everything:** Don't cargo-cult. Pick what fits. The `scaffold apply` CLI is preferred over manual copying.
+- **❌ Following Patterns Too Rigidly:** Patterns are guidelines, not laws. Abstract on the 3rd instance, not the 1st.
+- **❌ Building Safety Too Early:** "Every safety system was a scar" means wait for something to break before over-engineering a fix.
+- **❌ Skipping Documentation:** Even experiments need a README (what is this?) and CLAUDE.md (how to modify this?).
 
 ---
 
-## What This Is
+## Workflows & Guides
 
-This is the **scaffolding project** - a collection of patterns, principles, and templates extracted from building multiple deep projects.
-
-**Our Mission:** Help all projects get done quickly at the highest quality and at the lowest cost.
-
-**Not a framework.** Not rigid rules. Just battle-tested patterns that make future projects:
-- Faster to start
-- Easier to maintain  
-- Safer (data doesn't get lost)
-- More consistent across collaborators (AI and human)
+### Local Repomix Setup (Code Auditing)
+To pack your repository for AI analysis without leaking secrets:
+```bash
+npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**"
+```
+*Output: `repomix-output.xml`. Feed this to a 'Big Brain' model for architectural audits.*
 
 ---
 
-## UV Run-first Policy (Effective: February 2026)
+## Essential Reading
 
-- New Python commands should be executed with `uv run` (or a project-approved `uvrun` wrapper). This enforces tool-managed, reproducible environments without global installs.
-- Existing environment setups and `.env` usage are not to be mass-migrated. Do not change a project’s current `.env`/`venv`/Poetry/Pipenv workflow unless there is explicit approval and a tracked migration plan.
-- Legacy compatibility: Existing projects may continue using their established runners (e.g., `python`, `poetry run`, `pipenv run`, `make`). When you touch a legacy script or add a new command, prefer introducing `uv run` for the new work and leave the rest unchanged until an approved migration occurs.
-- Governance alignment: This standard aligns with AGENTS.md constraints (no global installs; prefer tool-managed environments; do not modify `.env` or `venv/`) and does not supersede secrets-management guidance (e.g., Doppler). Follow each project’s configured secrets workflow.
-
----
-
-
-**What We DON'T Do:**
-- ❌ Cost tracking (that's `ai-usage-billing-tracker`'s job)
-- ❌ Project status monitoring (that's `project-tracker`'s job)
-- ✅ We recommend patterns and build automation; others implement monitoring
+| Document | Purpose |
+|----------|---------|
+| `QUICKSTART.md` | Step-by-step checklists (new + existing projects) |
+| `DECISIONS.md` | Architectural decision log - document the "why" behind choices |
+| `.agent/rules/governance.md` | **MANDATORY** code review and governance protocol |
+| `.agent/rules/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
+| `.agent/rules/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
+| `.agent/rules/code-review-anti-patterns.md` | Anti-patterns to avoid in code reviews |
+| `.agent/rules/documentation-hygiene.md` | Standards for keeping docs clean |
 
 ---
 
-## Why Each Component Exists
-
-|> *Because "what" without "why" leads to forgotten decisions and repeated mistakes.*
+## Understanding This Scaffolding
 
 ### Core Components
 
@@ -108,7 +93,7 @@ This is the **scaffolding project** - a collection of patterns, principles, and 
 | **agentsync/** | We use Claude and Antigravity simultaneously. Each reads different config files. Without sync, improvements to one agent's rules never reached the others. AgentSync makes one edit propagate everywhere. |
 | **scaffold/cli.py** | Copying templates manually was error-prone. The CLI ensures consistent setup: right files, right structure, right placeholders filled in. One command instead of 15 copy-pastes. |
 | **patterns/** | Hard-won lessons were getting lost. "Every safety system was a scar" - we kept re-learning the same lessons. Patterns document WHY we do things, not just how. |
-| **Documents/** | Project documentation was scattered or missing. This structure (guides/, reference/, safety/) gives every project the same organized home for docs. |
+| **.agent/rules/** | Project rules and standards provided at scaffold time to ensure consistency and quality. |
 
 ### Why `.agentsync/rules/` Instead of Just AGENTS.md?
 
@@ -158,34 +143,11 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-projec
 
 Then customize the templates (especially the `00_Index_*.md` - it's MANDATORY).
 
-### Adding Scaffolding to an Existing Project
-
-```bash
-cd /path/to/existing-project
-
-# Apply scaffolding via CLI
-uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "$(basename $(pwd))"
-```
-
-Then customize for your project. See `QUICKSTART.md` for the full checklist.
-
-### Essential Reading
-
-| Document | Purpose |
-|----------|---------|
-| `QUICKSTART.md` | Step-by-step checklists (new + existing projects) |
-| `DECISIONS.md` | Architectural decision log - document the "why" behind choices |
-| `Documents/PROJECT_KICKOFF_GUIDE.md` | Detailed planning workflow |
-| `Documents/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
-| `Documents/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
-| `Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md` | Secrets management (replaces `.env` files) |
-| `Documents/reference/AGENT_CONFIG_SYNC.md` | **NEW:** Auto-sync AGENTS.md to all IDEs |
-
 ---
 
 ## Understanding This Scaffolding
 
-1. **Pattern Analysis** (`Documents/PATTERN_ANALYSIS.md`)
+1. **Pattern Analysis** (See `patterns/` directory)
    - See all identified patterns with confidence levels
    - Understand which are proven (🟢), emerging (🟡), or candidates (🔵)
 
@@ -225,14 +187,10 @@ Then customize for your project. See `QUICKSTART.md` for the full checklist.
 ### Managing Your Projects
 
 **Secrets Management (Doppler):**  
-As of January 2026, **8 core projects** use Doppler for centralized secrets management instead of local `.env` files. See `Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md` for:
-- Which projects are migrated
-- How to run projects with `doppler run --`
-- Rollback procedures if needed
-- Best practices for new projects
+As of January 2026, **8 core projects** use Doppler for centralized secrets management instead of local `.env` files.
 
 **External Resources:**  
-`EXTERNAL_RESOURCES.md` - Track which services/APIs each project uses
+`EXTERNAL_RESOURCES.yaml` - Track which services/APIs each project uses
 - Prevents "I got a bill but don't know which project" situations
 - Cost tracking across all projects
 - Credential locations documented
@@ -245,44 +203,16 @@ As of January 2026, **8 core projects** use Doppler for centralized secrets mana
 Patterns are being extracted from:
 
 1. **image-workflow** (2.5 months, battle-tested)
-   - Documentation structure
-   - Safety systems ("every safety system was a scar")
-   - Disaster recovery
-   - Session archives
-
 2. **Trading Co-Pilot** (3 weeks, Layer 1-3 complete)
-   - Railway + Postgres deployment
-   - Cron dispatcher pattern
-   - Fuzzy grading systems
-   - Multi-model comparison
-
 3. **Cortana Personal AI** (Layer 1 complete)
-   - Privacy-first architecture
-   - Daily automation via launchd
-   - Layer-by-layer development (incrementally useful)
-   - Local-first data with structured memory storage
-   - Cost-conscious AI usage (~$0.60/month)
-
 4. **Hypocrisy Now** (ongoing)
-   - RSS infrastructure
-   - Sentiment analysis
-   - Content aggregation
-
 5. **AI Journal** (ongoing)
-   - Documentation patterns
-   - Personal knowledge management
 
 ---
 
 ## Philosophy
 
-**Core document:** `PROJECT_PHILOSOPHY.md` (this directory)
-
-Key principles:
-- **We're explorers** - Building experiments, not products
-- **Data before decisions** - 30-60 days before judging
-- **Two-level game** - Domain patterns + Meta patterns (this project!)
-- **The scaffolding is the real product** - Learning how to build maintainable projects
+**Core document:** `.agent/rules/PROJECT_PHILOSOPHY.md`
 
 ---
 
@@ -290,40 +220,12 @@ Key principles:
 
 A **template repository** that gives every new project:
 
-1. **Standard structure** (`Documents/`, `.agent/rules/`, etc.)
+1. **Standard structure** (`.agent/rules/`, etc.)
 2. **Safety systems** (backups, disaster recovery, data integrity)
 3. **Testing approach** (what needs tests, what doesn't)
 4. **Deployment patterns** (Railway, .env, cron, databases)
-5. **Documentation templates** (README, ARCHITECTURE, SESSION_LOGS)
+5. **Documentation templates** (README, index file)
 6. **Decision frameworks** (when to build, consolidate, kill features)
-
----
-
-## Current Status
-
-**Phase:** Discovery & Pattern Collection → **Initial Extraction Complete! ✅**
-
-**What's Ready:**
-- ✅ **Pattern Analysis** - 20+ patterns identified and documented
-- ✅ **Templates** - Documentation structure, CLAUDE.md, .agent/rules/, Tiered Sprint Planner
-- ✅ **Safety Systems** - 6 proven patterns documented with code examples
-- ✅ **Development Philosophy** - 7 core principles extracted
-- ✅ **Tiered AI Sprint Planning** - Cost-effective AI usage pattern documented
-- ✅ **Project Kickoff Guide** - Complete walkthrough for starting new projects
-- ✅ **Usage Guide** - How to use this scaffolding in new projects
-- ✅ **External Resources Tracking** - System to prevent duplicate services and surprise bills
-
-**Ready for:**
-- ✅ Using templates in new projects
-- ✅ Following documented patterns
-- ✅ Contributing new patterns as they emerge
-- ✅ Extracting examples from source projects
-
-**Next phases:**
-- Month 2-3: Extract real examples from source projects
-- Month 3: Consolidate patterns into categories
-- Month 4: Refine templates based on usage
-- Month 6: Consider creating actual `project-scaffolding-template` repo
 
 ---
 
@@ -335,27 +237,8 @@ A **template repository** that gives every new project:
 
 | File | Copied To | Purpose |
 |------|-----------|---------|
-| `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` | `Documents/` | Code review and governance protocol |
 | `scripts/warden_audit.py` | `scripts/` | Security audit script |
 | `scripts/validate_project.py` | `scripts/` | Project validation script |
-| `patterns/code-review-standard.md` | `Documents/patterns/` | Code review checklist |
-| `patterns/learning-loop-pattern.md` | `Documents/patterns/` | Learning loop documentation |
-
-### Template Directory (templates/)
-
-| Template | Creates | Purpose |
-|----------|---------|---------|
-| `templates/AGENTS.md.template` | `AGENTS.md` | Agent hierarchy and rules |
-| `templates/CLAUDE.md.template` | `CLAUDE.md` | Claude-specific instructions |
-| `templates/TODO.md.template` | `TODO.md` | Task tracking format |
-| `templates/README.md.template` | `README.md` | Project readme |
-| `templates/.agentsync/rules/*.md` | `.agentsync/rules/` | Modular agent rules |
-
-### If You Need to Reorganize
-
-1. **Update `scaffold/cli.py`** - Change the source paths in `scripts_to_copy` and `docs_to_copy`
-2. **Test with dry-run** - `python scaffold_cli.py apply some-project --dry-run`
-3. **Verify no "Source not found" errors**
 
 ---
 
@@ -374,28 +257,6 @@ This project is the **canonical source of truth** for shared tooling across the 
 | Governance protocol | `sync_governance.py` | `uv run agentsync/sync_governance.py` |
 | MCP configs | `sync_mcp.py` | `uv run agentsync/sync_mcp.py` |
 
-### What requires manual propagation
-
-These files are **copied once** at scaffold time — child projects own their own copy:
-
-| File | How to propagate a fix |
-|------|------------------------|
-| `scripts/warden_audit.py` | Re-run `scaffold apply <project>` or manually copy |
-| `scripts/validate_project.py` | Re-run `scaffold apply <project>` or manually copy |
-| `templates/git-hooks/pre-commit` | Re-run `install-hooks.sh` in each project |
-| `.github/workflows/safety-check.yml` | Each project manages its own GitHub Actions |
-
-### The Right Workflow
-
-1. **Fix or improve something** in this repo
-2. **Run the relevant agentsync script** if it's a synced file
-3. **Note in the commit message** if manual propagation is needed for copied script files
-4. Child projects pick up script updates next time they re-scaffold or you copy manually
-
-### Future: Making Script Updates Automatic
-
-An `agentsync/sync_scripts.py` could automate warden/validate propagation the same way governance is synced today. Not built yet — tracked as a future improvement.
-
 ---
 
 ## Structure
@@ -403,9 +264,12 @@ An `agentsync/sync_scripts.py` could automate warden/validate propagation the sa
 ```
 project-scaffolding/
 ├── README.md                    ← You are here
-├── .cursorrules                 ← Project rules for this meta-project
+├── AGENTS.md                    ← Project rules for this meta-project
 │
-├── REVIEWS_AND_GOVERNANCE_PROTOCOL.md  ← ⚠️ SOURCE FILE - scaffold apply copies this
+├── .agent/rules/                ← ⚠️ SOURCE FILES - scaffold apply copies these
+│   ├── governance.md            ← Code review protocol
+│   ├── code-review-standard.md  ← Checklist
+│   └── ...
 │
 ├── scripts/                     ← ⚠️ SOURCE FILES - scaffold apply copies these
 │   ├── warden_audit.py          ← Security audit (copied to projects)
@@ -414,17 +278,13 @@ project-scaffolding/
 ├── patterns/                    ← ⚠️ SOURCE FILES - scaffold apply copies these
 │   ├── safety-systems.md        ← Data protection patterns
 │   ├── development-philosophy.md ← Development principles
-│   ├── code-review-standard.md  ← Copied to projects/Documents/patterns/
-│   ├── learning-loop-pattern.md ← Copied to projects/Documents/patterns/
 │   └── tiered-ai-sprint-planning.md ← Cost-effective AI usage
 │
 ├── templates/                   ← Template sources for scaffold apply
 │   ├── root/                    ← Templates for projects root (sync-root command)
 │   ├── .agentsync/rules/        ← Agent rules templates
-│   ├── Documents/               ← Documentation structure template
 │   ├── AGENTS.md.template       ← Agent hierarchy template
 │   ├── CLAUDE.md.template       ← AI instructions template
-│   ├── TODO.md.template         ← Task format template
 │   └── README.md.template       ← Project readme template
 │
 ├── scaffold/                    ← CLI source code
@@ -435,32 +295,7 @@ project-scaffolding/
 │   ├── sync_rules.py            ← Syncs .agentsync/rules/ to IDE configs
 │   ├── sync_governance.py       ← Syncs governance files
 │   └── sync_mcp.py              ← Syncs MCP configurations
-│
-└── Documents/                   ← Meta-documentation (NOT copied to projects)
-    ├── This folder is for project-scaffolding's OWN docs
-    └── Don't confuse with templates/Documents/ which IS copied
 ```
-
----
-
-## How to Contribute to This
-
-When working on any project, notice:
-1. **Patterns repeating** across 2+ projects (document it)
-2. **Decisions you wish you'd made earlier** (capture the framework)
-3. **Safety systems that saved you** (document why they exist)
-4. **Structures that make maintenance easier** (extract the pattern)
-
-Don't force it. Let patterns emerge naturally.
-
----
-
-## Timeline
-
-- **Now - Month 2:** Pattern collection phase
-- **Month 3:** First consolidation (group patterns into categories)
-- Month 4: Extract templates from proven patterns
-- Month 6: Consider creating the actual `project-scaffolding-template` repo
 
 ---
 
@@ -469,21 +304,13 @@ Don't force it. Let patterns emerge naturally.
 
 ## Related Documentation
 
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
-- [PROJECT_KICKOFF_GUIDE](Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
-- [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Google OAuth Admin Login](templates/claude-code/README.md)
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](.agent/rules/governance.md) - code review
+- [CODE_QUALITY_STANDARDS](.agent/rules/CODE_QUALITY_STANDARDS.md) - code standards
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
+- [Cost Management](../MODEL_HIERARCHY.md) - cost management
+- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
+- [Safety Systems](patterns/safety-systems.md) - security
 - Claude Code Skills (`~/.claude/skills/`) - Agent Capabilities
-- [ai-usage-billing-tracker/README](../ai-model-scratch-build/README.md) - AI Billing Tracker
-- [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
-- [hypocrisynow/README](../ai-model-scratch-build/README.md) - Hypocrisy Now
-- [image-workflow/README](../ai-model-scratch-build/README.md) - Image Workflow
-- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
-- [project-tracker/README](../ai-model-scratch-build/README.md) - Project Tracker
-
-## Development Resources
-- [[project-tracker/data/WARDEN_LOG.yaml|WARDEN_LOG.yaml]]
-- [scripts/warden_audit.py|warden_audit.py](scripts/warden_audit.py|warden_audit.py)
-- [scaffold/__init__.py|__init__.py](scaffold/__init__.py|__init__.py)
