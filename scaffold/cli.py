@@ -218,8 +218,11 @@ def _run_agentsync(
     """
     actions = []
 
-    # AgentSync lives in project-scaffolding/agentsync/ (same repo as this CLI)
-    agentsync_script = Path(__file__).parent.parent / "agentsync" / "sync_rules.py"
+    # AgentSync lives in project-scaffolding/agentsync/ (same repo as this CLI).
+    # During scaffold apply we intentionally run only the rules component here,
+    # because _add_version_metadata() overwrites .scaffolding-version later in
+    # the apply flow and would otherwise clobber AGENTS/governance sync metadata.
+    agentsync_script = Path(__file__).parent.parent / "agentsync" / "sync.py"
 
     if not agentsync_script.exists():
         actions.append(f"[yellow]⚠️  AgentSync not found at {agentsync_script}[/yellow]")
@@ -227,7 +230,9 @@ def _run_agentsync(
         return False, actions
 
     if dry_run:
-        actions.append(f"[cyan]🔄 Would run: uv run {agentsync_script} {project_name}[/cyan]")
+        actions.append(
+            f"[cyan]🔄 Would run: uv run {agentsync_script} {project_name} --components rules[/cyan]"
+        )
         return True, actions
 
     # Run agentsync
@@ -236,7 +241,7 @@ def _run_agentsync(
     try:
         # Use uv run to ensure consistent Python environment
         result = subprocess.run(
-            ["uv", "run", str(agentsync_script), project_name],
+            ["uv", "run", str(agentsync_script), project_name, "--components", "rules"],
             capture_output=True,
             text=True,
             timeout=60,

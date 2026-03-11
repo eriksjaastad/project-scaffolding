@@ -6,13 +6,13 @@ Auto-generates `CLAUDE.md` from rules/*.md files.
 
 ```bash
 # Sync this project
-uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py project-name
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py project-name
 
 # Sync all projects
-uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py --all
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py --all
 
 # Preview changes
-uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py project-name --dry-run
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py project-name --dry-run
 ```
 
 ## Rules Organization
@@ -27,7 +27,7 @@ Edit files in `rules/` - they will be synced to IDE config files in filename ord
 **📖 [AGENTSYNC_SYSTEM.md](README.md)** - Comprehensive guide covering:
 1. What is .agentsync?
 2. Directory structure
-3. How sync_rules.py works
+3. How sync.py works
 4. Rules file organization
 5. Detecting manual edits
 6. Resolving conflicts

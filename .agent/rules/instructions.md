@@ -6,7 +6,7 @@ trigger: always_on
 
 <!-- AGENTSYNC:START - Do not edit between markers -->
 <!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->
-<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py project-scaffolding -->
+<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py project-scaffolding -->
 
 # project-scaffolding
 

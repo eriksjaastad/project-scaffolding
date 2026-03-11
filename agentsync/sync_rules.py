@@ -22,9 +22,9 @@ Features:
   - Can stage changes for git (--stage flag)
 
 Usage:
-  uv run sync_rules.py project-name           # Sync specific project
-  uv run sync_rules.py --all                  # Sync all projects
-  uv run sync_rules.py project-name --stage   # Sync and git add
+  uv run sync.py project-name                 # Canonical project sync
+  uv run sync.py project-name --components rules
+  uv run sync_rules.py project-name           # Rules-only / backwards-compatible
 """
 
 import argparse
@@ -105,14 +105,14 @@ TOOLS = {
         "output": "CLAUDE.md",
         "marker_style": "markdown",
         "file_header": "# CLAUDE.md - {project_name}\n\n",
-        "section_header": "<!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->\n<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py {project_name} -->\n\n",
+        "section_header": "<!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->\n<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py {project_name} -->\n\n",
         "section_footer": "\n\n<!-- Source: .agentsync/rules/*.md -->\n",
     },
     "antigravity": {
         "output": ".agent/rules/instructions.md",
         "marker_style": "markdown",
         "file_header": "---\ntrigger: always_on\n---\n\n# Antigravity Rules for {project_name}\n\n",
-        "section_header": "<!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->\n<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py {project_name} -->\n\n",
+        "section_header": "<!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->\n<!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py {project_name} -->\n\n",
         "section_footer": "\n\n<!-- Source: .agentsync/rules/*.md -->\n",
     },
 }
@@ -325,7 +325,7 @@ def sync_project(project_name: str, stage_changes: bool = False, dry_run: bool =
         if dry_run:
             print(f"  Would write: {output_path.relative_to(project_path)}")
             if content_after:
-                print(f"    (preserving custom content after END marker)")
+                print("    (preserving custom content after END marker)")
             continue
 
         # Ensure parent directory exists
@@ -342,7 +342,7 @@ def sync_project(project_name: str, stage_changes: bool = False, dry_run: bool =
         updated_files.append(output_path)
         print(f"  Wrote: {output_path.relative_to(project_path)}")
         if content_after:
-            print(f"    (preserved custom content)")
+            print("    (preserved custom content)")
 
     # Stage changes if requested
     if stage_changes and updated_files and not dry_run:
@@ -351,7 +351,7 @@ def sync_project(project_name: str, stage_changes: bool = False, dry_run: bool =
         print(f"  Staged {len(updated_files)} file(s)")
 
     if not updated_files and not dry_run:
-        print(f"  All files already up to date")
+        print("  All files already up to date")
 
     # Update version metadata
     if not dry_run:
@@ -391,7 +391,7 @@ def main():
 
     if args.list:
         projects = find_agentsync_projects()
-        print(f"Projects with .agentsync/rules/:")
+        print("Projects with .agentsync/rules/:")
         for p in projects:
             print(f"  {p}")
         if not projects:
