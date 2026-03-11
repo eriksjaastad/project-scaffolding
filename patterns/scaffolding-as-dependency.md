@@ -295,6 +295,5 @@ A bulldozer:
 ## Related Documentation
 
 - [Automation Reliability](patterns/automation-reliability.md) - automation
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

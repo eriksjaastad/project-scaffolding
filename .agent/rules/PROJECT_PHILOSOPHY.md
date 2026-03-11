@@ -37,7 +37,7 @@ The meta patterns compound across all projects.
 **Domain:** File management, image processing, metadata handling  
 **Meta lessons:**
 - "Every safety system was a scar" — build protections after you learn what breaks
-- Documentation structure (`Documents/` with archives, guides, reference)
+- Documentation structure (`.agent/rules/` with archives, guides, reference)
 - Battle-tested patterns: FileTracker, disaster recovery, session summaries
 
 **Status:** Proven, waiting for work
@@ -160,8 +160,6 @@ Don't force it. Let it grow organically.
 ## Related Documentation
 
 - [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [cortana-personal-ai/README](../ai-model-scratch-build/README.md) - Cortana AI
 - [hypocrisynow/README](../ai-model-scratch-build/README.md) - Hypocrisy Now

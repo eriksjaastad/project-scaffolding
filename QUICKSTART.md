@@ -72,7 +72,7 @@ Edit each file and replace the placeholders:
 
 **File:** `AGENTS.md`
 
-> **Important:** AGENTS.md is the **single source of truth** for AI agent configuration. Edit only this file - `.cursorrules`, `CLAUDE.md`, and `.agent/rules/agents.md` are auto-generated from it. See `Documents/reference/AGENT_CONFIG_SYNC.md` for details.
+> **Important:** AGENTS.md is the **single source of truth** for AI agent configuration. Edit only this file - `.cursorrules`, `CLAUDE.md`, and `.agent/rules/agents.md` are auto-generated from it. See `agentsync/README.md` for details.
 
 - [ ] Replace `{project_description}` with clear summary
 - [ ] Update `{language}`, `{frameworks}`, `{ai_strategy}`
@@ -142,7 +142,7 @@ git commit -m "Initial commit: Project scaffolded from project-scaffolding
 
 - Added project index (00_Index_*.md)
 - Configured AI collaboration files (AGENTS.md, CLAUDE.md, .cursorrules)
-- Set up Documents/ structure
+- Set up .agent/rules/ structure
 - Ready for development"
 ```
 
@@ -179,7 +179,7 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scripts/validate_project.py" "$(basen
 - ✅ Project index has valid YAML frontmatter and required sections
 - ✅ **DNA Integrity:** No hardcoded absolute paths (`[absolute_path]/...`, `/home/...`)
 - ✅ **Security:** No exposed secrets (API keys like `sk-...`, `AIza...`)
-- ✅ Mandatory directories exist (Documents/, etc.)
+- ✅ Mandatory directories exist (.agent/rules/, etc.)
 
 **Example output (clean project):**
 ```bash
@@ -225,7 +225,7 @@ uv run scaffold_cli.py review --type document --input /path/to/your/CODE_REVIEW_
 ```bash
 # Copy the most relevant review to your project
 cp "$PROJECTS_ROOT/project-scaffolding/review_outputs/round_1/CODE_REVIEW_CLAUDE_SONNET.md" \
-   ./Documents/archives/reviews/
+   ./.agent/archives/reviews/
 ```
 
 ---
@@ -512,25 +512,21 @@ git commit -m "Add project scaffolding structure
 
 ---
 
-## Documents/ Structure Reference
+## .agent/rules/ Structure Reference
 
-When adding `Documents/` to a project:
+When adding ecosystem rules to a project:
 
 ```
-Documents/
-├── README.md              # Docs index (Grand Central Station)
-├── ARCHITECTURE.md        # Core: System design (at root for visibility!)
-├── OPERATIONS.md          # Core: How to run/deploy (at root!)
-├── CODE_QUALITY_STANDARDS.md  # Core: Coding rules (at root!)
-├── guides/                # How-to documents  
-├── reference/             # Standards, knowledge base
-├── safety/                # Safety systems
-└── archives/              # Historical docs
-    ├── reviews/           # Code review history
-    └── sessions/          # Session notes
-```bash
+.agent/rules/
+├── governance.md                  # MANDATORY: Review protocol
+├── CODE_QUALITY_STANDARDS.md      # MANDATORY: Coding rules
+├── PROJECT_STRUCTURE_STANDARDS.md  # Directory conventions
+├── code-review-anti-patterns.md   # Database of what to avoid
+├── documentation-hygiene.md       # Docs standards
+└── PROJECT_PHILOSOPHY.md          # The "why" behind the ecosystem
+```
 
-**IMPORTANT:** Core documents (Architecture, Operations, Standards) go **at the Documents/ root level**, NOT in a `core/` subdirectory. This makes them immediately visible and discoverable.
+**IMPORTANT:** These files are the **Source of Truth** for AI agents. They are synced across projects using `agentsync`.
 
 ---
 
@@ -544,9 +540,8 @@ Documents/
 | `AGENTS.md.template` | AI source of truth (DoD, constraints) |
 | `CLAUDE.md.template` | AI working instructions & safety rules |
 | `.cursorrules-template` | Cursor IDE configuration |
-| `.cursorignore.template` | Context window optimization |
-| `Documents/` | Standard documentation structure |
-| `README.md.template` | Project overview |
+| `.agent/rules/*.md` | Modular agent rules |
+| `README.md.template` | Project readme |
 | `TODO.md.template` | Task tracking format |
 | `CODE_REVIEW.md.template` | Code review request format |
 | `TIERED_SPRINT_PLANNER.md` | Sprint planning template |
@@ -575,16 +570,16 @@ This scaffolding promotes projects that improve over time. Skills (reusable AI i
 
 **Recommendation:** Start with per-project skills. Extract to a shared library when you copy the same instructions across 3+ projects.
 
-See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
+See `.agent/rules/learning-loop-pattern.md` for establishing feedback cycles.
 
-### Key Documents (`Documents/`)
+### Key Documents (`.agent/rules/`)
 
 | Document | Purpose |
 |----------|---------|
-| `PROJECT_KICKOFF_GUIDE.md` | Detailed guide for starting new projects |
+| `governance.md` | Detailed code review and governance protocol |
 | `PROJECT_STRUCTURE_STANDARDS.md` | Directory structure conventions |
 | `CODE_QUALITY_STANDARDS.md` | Coding standards (MANDATORY) |
-| `guides/USAGE_GUIDE.md` | How to use this scaffolding |
+| `documentation-hygiene.md` | Standards for keeping docs clean |
 
 ---
 
@@ -633,16 +628,16 @@ Common issues:
 
 **MANDATORY for code projects:**
 - `requirements.txt` or `package.json` - Dependencies
-- `Documents/` - Documentation
+- `.agent/rules/` - Rules & Standards
 
 ---
 
 ## Next Steps After Scaffolding
 
-1. **Read** `Documents/PROJECT_KICKOFF_GUIDE.md` for detailed planning workflow
+1. **Review** `.agent/rules/governance.md` to understand code review standards
 2. **Review** `patterns/development-philosophy.md` to understand the mindset
 3. **Plan** using tiered AI approach before coding
-4. **Track** external resources in `EXTERNAL_RESOURCES.md` when adding services
+4. **Track** external resources in `EXTERNAL_RESOURCES.yaml` when adding services
 
 ---
 
@@ -651,18 +646,16 @@ Common issues:
 ---
 
 *Part of the [project-scaffolding](https://github.com/eriksjaastad/project-scaffolding) meta-project.*  
-*Last Updated: January 2026*
+*Last Updated: March 2026*
 
 ## Related Documentation
 
-- [CODE_QUALITY_STANDARDS](Documents/CODE_QUALITY_STANDARDS.md) - code standards
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [PROJECT_KICKOFF_GUIDE](Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [REVIEWS_AND_GOVERNANCE_PROTOCOL](.agent/rules/governance.md) - code review
+- [CODE_QUALITY_STANDARDS](.agent/rules/CODE_QUALITY_STANDARDS.md) - code standards
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
+- [Cost Management](../MODEL_HIERARCHY.md) - cost management
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [Safety Systems](patterns/safety-systems.md) - security
 - Claude Code Skills (`~/.claude/skills/`) - Agent Capabilities

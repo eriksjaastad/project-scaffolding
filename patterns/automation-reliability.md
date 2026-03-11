@@ -487,8 +487,6 @@ When setting up new automation:
 
 ## Related Documentation
 
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
 - [Automation Reliability](patterns/automation-reliability.md) - automation
 - [Discord Webhooks Per Project](patterns/discord-webhooks-per-project.md) - Discord
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI

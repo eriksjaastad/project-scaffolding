@@ -396,7 +396,7 @@ Add a function called validate_project that:
 - Single atomic tasks
 - 1-3 simple prompts
 
-**Example:** `project-tracker/Documents/archives/planning/phase4_agent_dispatcher/AGENT_DISPATCHER_INDEX.md` (6 prompts for one feature)
+**Example:** `project-tracker/.agent/archives/planning/phase4_agent_dispatcher/AGENT_DISPATCHER_INDEX.md` (6 prompts for one feature)
 
 **First observed:** Project-tracker Agent Dispatcher (Jan 11, 2026)
 
@@ -501,7 +501,7 @@ Things to try or investigate:
 
 - `patterns/local-ai-integration.md` - Model tiers and when to use each
 - `AGENTS.md` - Caretaker Role (working with memory-less entities)
-- `Documents/archives/planning/warden_evolution/WARDEN_PROMPTS_INDEX.md` - Example of structured prompts
+- `.agent/archives/planning/warden_evolution/WARDEN_PROMPTS_INDEX.md` - Example of structured prompts
 
 ---
 
@@ -509,10 +509,8 @@ Things to try or investigate:
 
 ## Related Documentation
 
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [Safety Systems](patterns/safety-systems.md) - security
 - [project-tracker/README](../../../ai-model-scratch-build/README.md) - Project Tracker

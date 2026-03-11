@@ -282,5 +282,4 @@ That's how you get to "I can hand work off to an AI team and not worry" - throug
 
 ## Related Documentation
 
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
 - [project-tracker/README](../../ai-model-scratch-build/README.md) - Project Tracker

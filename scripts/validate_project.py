@@ -38,15 +38,11 @@ SKIP_DIRS = PROTECTED_PROJECTS
 MANDATORY_FILES = [
     "AGENTS.md",
     "CLAUDE.md",
-    ".cursorrules",
-    ".cursorignore",
-    "TODO.md",
+    "GEMINI.md",
     "README.md",
     ".gitignore"
 ]
-MANDATORY_DIRS = [
-    "Documents"
-]
+MANDATORY_DIRS = []
 
 # YAML frontmatter requirements
 REQUIRED_TAGS = ["map/project", "p/"]  # p/ is a prefix that must exist
@@ -238,9 +234,6 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     # 2. Check for mandatory files
     for filename in MANDATORY_FILES:
         if not (project_path / filename).exists():
-            # Special case: check for README.md in Documents/ if not in root
-            if filename == "README.md" and (project_path / "Documents" / "README.md").exists():
-                continue
             errors.append(f"Missing mandatory file: {filename}")
             
     # 3. Check for mandatory directories
@@ -289,7 +282,6 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     # Files/directories to skip for placeholder scan
     placeholder_skip_files = {
         "SILENT_FAILURES_AUDIT.md",
-        "TODO_FORMAT_STANDARD.md",
         "REVIEWS_AND_GOVERNANCE_PROTOCOL.md",
         "validate_project.py",
         "cli.py"

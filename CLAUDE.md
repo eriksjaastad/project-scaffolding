@@ -40,14 +40,18 @@
 - **Mandate:**
   1. Read Kanban tickets and their full prompts
   2. Analyze the project and organize work (identify what can run in parallel)
-  3. Delegate tasks to Workers (sub-agents or local Ollama models)
+  3. Delegate tasks to low-cost Workers (see below for which type)
   4. Review Worker output against acceptance criteria
   5. Move tasks to **Review** status when satisfied — The Architect does final sign-off
 
-### 4. The Workers (Code Generators)
+### 4. The Workers (Low-cost Subagents)
 - **Role:** Primary implementers of logic and code generation
-- **Mac Mini:** Workers are local Ollama models (DeepSeek-R1, Qwen, etc.)
-- **MacBook Pro:** Workers are sub-agents (Claude Haiku, Gemini Flash, GPT-mini, etc.)
+- **Which workers to use depends on which machine you're on:**
+  ```bash
+  hostname
+  # "eriks-mac-mini" → local Ollama models (Qwen, DeepSeek-R1, etc.)
+  # Anything else → cloud subagents (Claude Haiku, Gemini Flash, GPT-mini)
+  ```
 - **Mandate:** Generate code, report completion to Floor Manager for inspection
 
 ## Workflow Steps

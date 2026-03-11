@@ -21,15 +21,15 @@ When we discovered a great pattern (like the IndyDevDan video on self-validating
 
 Great ideas shouldn't be siloed into one IDE. All our agents should get the same benefit from every improvement we make.
 
-**The Solution:**
+The Solution:
 
-Single source of truth → auto-generate all IDE configs.
+Single source of truth → auto-generate all agent configs.
 
-Edit once in `.agentsync/rules/`, run sync, all IDEs get the same instructions. No more copy-paste drift. No more "I forgot to update Cursor's rules."
+Edit once in `.agentsync/rules/`, run sync, all tools get the same instructions. No more copy-paste drift.
 
 **Why It Lives in project-scaffolding:**
 
-AgentSync is infrastructure for setting up projects correctly. It's part of the "make projects work well from day one" toolset, alongside templates, scripts, and documentation patterns. Keeping it here makes the relationship obvious: AGENTS.md templates → AgentSync → IDE configs.
+AgentSync is infrastructure for setting up projects correctly. It's part of the "make projects work well from day one" toolset, alongside templates, scripts, and documentation patterns. Keeping it here makes the relationship obvious: AGENTS.md templates → AgentSync → Agent configs.
 
 ---
 
@@ -43,11 +43,11 @@ AgentSync is infrastructure for setting up projects correctly. It's part of the 
 └── 03-safety.md
 ```
 
-**Single source of truth.** Edit rules in `.agentsync/rules/`, run sync, all IDEs get updated.
+**Single source of truth.** Edit rules in `.agentsync/rules/`, run sync, all agents get updated.
 
-## Target IDEs
+## Target Tools
 
-| IDE | Output File | How It Reads |
+| Tool | Output File | How It Reads |
 |-----|-------------|--------------|
 | Claude Code | `CLAUDE.md` | Automatically reads project root |
 | Antigravity (Gemini) | `.agent/rules/instructions.md` | Uses `trigger: always_on` frontmatter |

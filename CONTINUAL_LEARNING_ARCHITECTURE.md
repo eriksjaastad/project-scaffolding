@@ -100,7 +100,7 @@ $PROJECTS_ROOT/
 ├── ai-journal/
 │   └── entries/2026/          # Crafted AI reflections (manual)
 └── project-scaffolding/
-    └── Documents/reference/
+        └── .agent/rules/
         └── LEARNINGS.md       # Cross-project pattern documentation
 ```
 

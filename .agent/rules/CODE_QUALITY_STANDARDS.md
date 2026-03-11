@@ -87,7 +87,7 @@ for file in library.glob("*.md"):
 **ALL user-provided strings used in file paths (titles, slugs, categories) MUST be sanitized using a `safe_slug()` function to prevent Path Traversal and shell injection.**
 
 ### Why This Exists (The "Clobber" Scar)
-In the `bridge.py` review of Jan 2026, it was discovered that an attacker (or a malicious transcript) could provide a skill name like `../../Documents/Secrets` which would cause the script to write files outside the project root.
+In the `bridge.py` review of Jan 2026, it was discovered that an attacker (or a malicious transcript) could provide a skill name like `../../.agent/rules/Secrets` which would cause the script to write files outside the project root.
 
 ### What to Do
 #### BAD: Direct Slug Construction

@@ -24,7 +24,7 @@ Edit files in `rules/` - they will be synced to IDE config files in filename ord
 
 ## Full Documentation
 
-**📖 [AGENTSYNC_SYSTEM.md](../Documents/reference/AGENTSYNC_SYSTEM.md)** - Comprehensive guide covering:
+**📖 [AGENTSYNC_SYSTEM.md](README.md)** - Comprehensive guide covering:
 1. What is .agentsync?
 2. Directory structure
 3. How sync_rules.py works

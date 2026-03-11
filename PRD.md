@@ -11,8 +11,8 @@ The Erik Sjaastad project ecosystem consists of 30+ projects that need to follow
 A project is considered 'properly scaffolded' if it meets the following criteria:
 - **Version Tracking**: Contains a `.scaffolding-version` file in the root matching the current ecosystem version.
 - **Rule Alignment**: The `.agentsync/rules/` directory is in sync with the latest templates.
-- **Governed Sections**: Files like `CLAUDE.md`, `AGENTS.md`, and `.cursorrules` have their governed sections (between markers) in sync with templates.
-- **Required Files**: Essential files exist: `00_Index_*.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `TODO.md`.
+- **Governed Sections**: Files like `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md` have their governed sections (between markers) in sync with templates.
+- **Required Files**: Essential files exist: `00_Index_*.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`.
 - **DNA Integrity**: No hardcoded absolute paths; uses relative paths or environment variables like `$PROJECTS_ROOT`.
 - **Security**: Contains `scripts/warden_audit.py` and `scripts/validate_project.py`.
 
@@ -27,7 +27,7 @@ The `validate_project.py` script enforces the following checks:
     - `.agentsync/rules/` out of sync with templates.
     - Missing `scripts/` directory or core validation scripts.
 - **P2 (Warning)**:
-    - Missing `Documents/` directory.
+    - Missing `.agent/rules/` directory.
     - Outdated scaffolding version.
     - Missing `EXTERNAL_RESOURCES.md`.
 

@@ -23,7 +23,7 @@ Review output files are standardized to enable automated tracking and prevent co
 * **Naming Convention:** `CODE_REVIEW_{REVIEWER_NAME}_{VERSION}.md` (All Caps).
     *   Example: `CODE_REVIEW_CLAUDE_v1.md`, `CODE_REVIEW_GEMINI_v2.1.md`.
 * **Location - The "Now" Rule:** The most recent review **MUST** reside in the **Project Root**.
-* **Location - The "Archive" Rule:** All previous versions **MUST** be moved to `Documents/archives/reviews/` before a new review is initiated.
+* **Location - The "Archive" Rule:** All previous versions **MUST** be moved to `.agent/archives/reviews/` before a new review is initiated.
 * **Review ID:** Every review should include a `Review ID: [UUID or Timestamp]` in the frontmatter to enable linking to `WARDEN_LOG.yaml`.
 
 ### 3. The Review Workflow
@@ -59,5 +59,5 @@ find . -name "CODE_REVIEW_ARCHITECTURE_REVIEWER.md"
 
 ## Related Documentation
 
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
 - [Safety Systems](patterns/safety-systems.md) - security

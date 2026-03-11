@@ -303,11 +303,10 @@ Fix your operating system first. Then build.
 
 ## Related Documentation
 
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
-- [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
-- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
-- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [Code Review Anti-Patterns](../.agent/rules/code-review-anti-patterns.md) - code review
+- [Local Model Learnings](../.agent/rules/local-model-learnings.md) - local AI
+- [Cost Management](../../MODEL_HIERARCHY.md) - cost management
+- [Automation Reliability](automation-reliability.md) - automation
+- [Tiered AI Sprint Planning](tiered-ai-sprint-planning.md) - prompt engineering
+- [AI Team Orchestration](ai-team-orchestration.md) - orchestration
+- [Project Scaffolding](../README.md) - Project Scaffolding

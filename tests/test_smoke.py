@@ -49,14 +49,6 @@ class TestProjectStructure:
         assert (prompts / "architecture.md").exists()
         assert (prompts / "performance.md").exists()
         assert (prompts / "security.md").exists()
-    
-    def test_documentation_exists(self, project_root):
-        """Test that key documentation exists"""
-        docs = project_root / "Documents"
-        assert docs.exists()
-        
-        assert (docs / "guides" / "DEEPSEEK_SETUP.md").exists()
-        assert (docs / "PROJECT_KICKOFF_GUIDE.md").exists()
 
 
 class TestImports:
@@ -73,7 +65,8 @@ class TestImports:
     
     def test_import_scaffold_review(self):
         """Test importing review module"""
-        import importlib.util, pytest
+        import importlib.util
+        import pytest
         if (importlib.util.find_spec("anthropic") is None) or (importlib.util.find_spec("openai") is None):
             pytest.skip("Optional provider SDK(s) not installed; skipping scaffold.review import smoke.")
         try:

@@ -306,7 +306,6 @@ def save_daily_file(
 
 **This meta-project:**
 - Explicitly waiting for 3rd instance of patterns
-- Documents/ pattern seen in 2 projects (watching for 3rd)
 - CLAUDE.md seen in 2 projects (watching for 3rd)
 
 **image-workflow:**
@@ -777,12 +776,9 @@ Orchestrate complex project launches by separating AI agents into specialized ro
 
 ## Related Documentation
 
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [Safety Systems](patterns/safety-systems.md) - security
 - [3d-pose-factory/README](../../ai-model-scratch-build/README.md) - 3D Pose Factory
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI

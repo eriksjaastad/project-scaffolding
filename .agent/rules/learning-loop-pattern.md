@@ -72,7 +72,7 @@ Every task prompt should include a **Downstream Harm Estimate**:
 ```markdown
 ### ⚠️ DOWNSTREAM HARM ESTIMATE
 - **If this fails:** [What breaks? Who pays? How long to recover?]
-- **Known pitfalls:** [What patterns from LOCAL_MODEL_LEARNINGS.md apply here?]
+- **Known pitfalls:** [What patterns from local-model-learnings.md apply here?]
 - **Assumptions that would break this:** [What's the confidence range?]
 ```
 
@@ -85,7 +85,7 @@ Every task prompt should include a **Downstream Harm Estimate**:
 ```markdown
 ### ⚠️ DOWNSTREAM HARM ESTIMATE
 - **If this fails:** Script corrupts cursorrules files. Recovery requires git restore. ~15 min per affected project.
-- **Known pitfalls:** DeepSeek-R1 needs 300s timeout for file-heavy tasks (LOCAL_MODEL_LEARNINGS.md). Task requires file writes.
+- **Known pitfalls:** DeepSeek-R1 needs 300s timeout for file-heavy tasks (local-model-learnings.md). Task requires file writes.
 - **Assumptions that would break this:** Assumes all projects have .cursorrules in root. If nested, detection fails silently.
 ```
 
@@ -105,7 +105,7 @@ Option A: **Learnings Checksum in Prompts**
 - [x] Decomposition: Micro-tasks for DeepSeek (learned Jan 10)
 - [x] Diff style: StrReplace over full rewrites (learned Jan 10)
 
-_Last consulted LOCAL_MODEL_LEARNINGS.md: 2026-01-10_
+_Last consulted local-model-learnings.md: 2026-01-10_
 ```
 
 If this section is missing or stale, the Floor Manager should **block execution** and request it.
@@ -173,7 +173,7 @@ Track this explicitly:
 │         ▼                                                       │
 │   ┌─────────────┐                                               │
 │   │  DOCUMENT   │  ← Floor Manager writes to                    │
-│   │  (Learnings)│    LOCAL_MODEL_LEARNINGS.md                   │
+│   │  (Learnings)│    local-model-learnings.md                   │
 │   └─────────────┘                                               │
 │         │                                                       │
 │         ▼                                                       │
@@ -270,9 +270,9 @@ Your project may have multiple learning loops for different domains:
 
 | Learning Type | Trigger Examples | Where to Document |
 |---------------|------------------|-------------------|
-| **Model/Tool Behavior** | Timeout, unexpected output, hallucination | `Documents/reference/MODEL_LEARNINGS.md` |
-| **Workflow/Governance** | Role bypass, skipped approval, wrong escalation | `Documents/reference/WORKFLOW_LEARNINGS.md` or incident report |
-| **Safety/Security** | Vulnerability found, data at risk, near-miss | `Documents/safety/` or incident report |
+| **Model/Tool Behavior** | Timeout, unexpected output, hallucination | `local-model-learnings.md` |
+| **Workflow/Governance** | Role bypass, skipped approval, wrong escalation | governance protocol or incident report |
+| **Safety/Security** | Vulnerability found, data at risk, near-miss | safety rules or incident report |
 | **Success Patterns** | Something worked exceptionally well | Pattern library or success report |
 
 ### Minimum Viable Learning Loop
@@ -297,7 +297,7 @@ For simple projects, a single file may suffice:
 
 For projects with significant AI collaboration or automation:
 
-**1. Learnings Document** (`Documents/reference/LEARNINGS.md`)
+**1. Learnings Document** (`local-model-learnings.md`)
 - Categorized by type (model, workflow, safety)
 - Includes failure log with root cause
 - Learning Debt Tracker (documented but not yet compiled)
@@ -307,7 +307,7 @@ For projects with significant AI collaboration or automation:
 - "Learnings Applied" acknowledgment
 - Reference to learnings document
 
-**3. Incident Reports** (`Documents/reports/`)
+**3. Incident Reports**
 - Detailed analysis of significant failures
 - Lessons learned
 - Changes made as a result
@@ -378,9 +378,8 @@ If no → New learning discovered. Document and reinforce.
 
 ## Related Documents
 
-- `Documents/reference/LOCAL_MODEL_LEARNINGS.md` - Example implementation for local AI models
+- `local-model-learnings.md` - Example implementation for local AI models
 - `AGENTS.md` - Prompt template with learning integration
-- `Documents/planning/KNOWLEDGE_CYCLE_DISCUSSION.md` - Original design discussion
 
 ---
 
@@ -388,10 +387,9 @@ If no → New learning discovered. Document and reinforce.
 
 ## Related Documentation
 
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
-- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
-- [Safety Systems](patterns/safety-systems.md) - security
-- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
+- [Local Model Learnings](local-model-learnings.md) - local AI
+- [Automation Reliability](automation-reliability.md) - automation
+- [Cost Management](../../MODEL_HIERARCHY.md) - cost management
+- [Tiered AI Sprint Planning](tiered-ai-sprint-planning.md) - prompt engineering
+- [Safety Systems](safety-systems.md) - security
+- [Project Scaffolding](../../README.md) - Project Scaffolding

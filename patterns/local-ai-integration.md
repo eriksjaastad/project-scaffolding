@@ -416,7 +416,7 @@ See: /project-scaffolding/patterns/local-ai-integration.md
 
 - **Local AI:** Ollama with qwen3:4b (cost optimization)
 - **Cloud AI:** OpenAI/Claude (quality-critical tasks only)
-- **Setup:** See Documents/LOCAL_AI_SETUP.md
+- **Setup:** See .agent/rules/local-ai-setup.md (if exists) or root README
 ```
 
 ---
@@ -451,12 +451,8 @@ See: /project-scaffolding/patterns/local-ai-integration.md
 
 ## Related Documentation
 
-- [Doppler Secrets Management](Documents/reference/DOPPLER_SECRETS_MANAGEMENT.md) - secrets management
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [PROJECT_KICKOFF_GUIDE](../Documents/PROJECT_KICKOFF_GUIDE.md) - project setup
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Automation Reliability](patterns/automation-reliability.md) - automation
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

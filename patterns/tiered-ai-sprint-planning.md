@@ -256,7 +256,7 @@ Result:
 | Action | Tier Used | Should Use | Savings |
 |--------|-----------|------------|---------|
 | Restore deleted files | 1 ✅ | 1 | $0 (correct - crisis!) |
-| Organize Documents/ folder | 1 ❌ | 3 | $3 |
+| Organize .agent/rules/ folder | 1 ❌ | 3 | $3 |
 | Write TODO.md | 1 ❌ | 3 | $2 |
 | Write cleanup doc | 1 ❌ | 3 | $1 |
 | Strategic planning | 1 ✅ | 1 | $0 (correct - architecture) |
@@ -358,9 +358,7 @@ Result:
 
 ## Related Documentation
 
-- [Code Review Anti-Patterns](Documents/reference/CODE_REVIEW_ANTI_PATTERNS.md) - code review
-- [Local Model Learnings](Documents/reference/LOCAL_MODEL_LEARNINGS.md) - local AI
-- [Cost Management](Documents/reference/MODEL_COST_COMPARISON.md) - cost management
-- [AI Model Cost Comparison](Documents/reference/MODEL_COST_COMPARISON.md) - AI models
+- [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
+- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Safety Systems](patterns/safety-systems.md) - security
 - [ai-usage-billing-tracker/README](../../ai-model-scratch-build/README.md) - AI Billing Tracker
