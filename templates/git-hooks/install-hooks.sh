@@ -33,8 +33,15 @@ if [ -f "$SCRIPT_DIR/pre-commit" ]; then
     echo "  Installed: pre-commit"
 fi
 
+# Install post-merge hook if exists
+if [ -f "$SCRIPT_DIR/post-merge" ]; then
+    cp "$SCRIPT_DIR/post-merge" "$HOOKS_DIR/post-merge"
+    chmod +x "$HOOKS_DIR/post-merge"
+    echo "  Installed: post-merge"
+fi
+
 echo ""
 echo "Done. Hooks installed in $HOOKS_DIR"
 echo ""
-echo "To test: make a change and try 'git push'"
+echo "To test: try 'git push' and 'git pull'"
 echo "To bypass (emergency only): git push --no-verify"

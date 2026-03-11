@@ -17,8 +17,8 @@ This directory contains the source of truth for agent configurations.
 ## How It Works
 
 1. **Edit rules here** - These files are the source of truth
-2. **Auto-sync on save** - Claude hook syncs when you save
-3. **Auto-sync on commit** - Pre-commit hook ensures everything is synced
+2. **Sync before push** - The pre-push hook runs `sync.py --components rules`
+3. **Commit regenerated files** - If `CLAUDE.md` or `.agent/rules/instructions.md` changed, the push is blocked until you review and commit them
 
 ## Generated Files
 
@@ -44,5 +44,11 @@ root: true               # Mark as overview/root file
 ## Manual Sync
 
 ```bash
-uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py $(basename $(pwd))
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py $(basename $(pwd))
+```
+
+To preview rules-only sync:
+
+```bash
+uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py $(basename $(pwd)) --components rules --dry-run
 ```
