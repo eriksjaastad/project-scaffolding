@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+#
+# Post-merge hook: Run agent-health scan after pull/merge
+# This is informational only and never blocks the completed merge.
+#
+
+set -euo pipefail
+
+run_python() {
+    if [ -x "$HOME/.local/bin/uv" ]; then
+        "$HOME/.local/bin/uv" run "$@"
+    elif command -v uv &>/dev/null; then
+        uv run "$@"
+    else
+        python3 "$@"
+    fi
+}
+
+find_scaffolding_root() {
+    local project_root="$1"
+    local default_projects_root
+    default_projects_root="$(cd "$project_root/.." && pwd)"
+
+    if [ -f "$project_root/scaffold/cli.py" ]; then
+        printf '%s\n' "$project_root"
+        return 0
+    fi
+
+    if [ -n "${PROJECT_SCAFFOLDING_ROOT:-}" ] && [ -f "$PROJECT_SCAFFOLDING_ROOT/scaffold/cli.py" ]; then
+        printf '%s\n' "$PROJECT_SCAFFOLDING_ROOT"
+        return 0
+    fi
+
+    if [ -n "${PROJECTS_ROOT:-}" ] && [ -f "$PROJECTS_ROOT/project-scaffolding/scaffold/cli.py" ]; then
+        printf '%s\n' "$PROJECTS_ROOT/project-scaffolding"
+        return 0
+    fi
+
+    if [ -f "$default_projects_root/project-scaffolding/scaffold/cli.py" ]; then
+        printf '%s\n' "$default_projects_root/project-scaffolding"
+        return 0
+    fi
+
+    return 1
+}
+
+run_agent_health_scan() {
+    local project_root project_name scaffolding_root cli_script
+
+    project_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+    project_name="$(basename "$project_root")"
+    cd "$project_root"
+
+    if [ ! -f ".scaffolding-version" ] && [ ! -f "CLAUDE.md" ] \
+        && [ ! -f "AGENTS.md" ] && [ ! -d ".agent/rules" ]; then
+        echo "No scaffolded agent config detected - skipping post-merge agent-health scan"
+        return 0
+    fi
+
+    if ! scaffolding_root="$(find_scaffolding_root "$project_root")"; then
+        echo "WARNING: Could not locate project-scaffolding - skipping post-merge agent-health scan"
+        echo "Set PROJECTS_ROOT or PROJECT_SCAFFOLDING_ROOT to enable it."
+        return 0
+    fi
+
+    cli_script="$scaffolding_root/scaffold/cli.py"
+
+    echo ""
+    echo "POST-MERGE AGENT HEALTH"
+    echo "-----------------------"
+
+    if ! run_python "$cli_script" agent-health --project "$project_name"; then
+        echo ""
+        echo "WARNING: agent-health scan failed after merge"
+        echo "Run manually when convenient:"
+        echo "  $HOME/.local/bin/uv run $cli_script agent-health --project $project_name"
+        echo ""
+    fi
+}
+
+run_agent_health_scan
+
+exit 0
