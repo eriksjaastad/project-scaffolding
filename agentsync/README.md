@@ -68,20 +68,26 @@ This is NOT the same as AGENTS.md - Antigravity reads from `.agent/`, not the pr
 
 ```bash
 # Sync a single project
-uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py project-name
+uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync.py project-name
 
-# Sync all projects with .agentsync/
-uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py --all
+# Sync all eligible projects
+uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync.py --all
 
-# List projects with .agentsync/
-uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py --list
+# Sync only rules for one project
+uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync.py project-name --components rules
+
+# List eligible projects for the selected components
+uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync.py --list
 ```
 
 ## Files
 
 | Script | Purpose |
 |--------|---------|
-| `sync_rules.py` | Main sync: `.agentsync/rules/` → IDE configs |
+| `sync.py` | Canonical project sync for rules, AGENTS.md, and governance |
+| `sync_rules.py` | Rules-only sync: `.agentsync/rules/` → IDE configs |
+| `sync_agents_md.py` | AGENTS.md template sync |
+| `sync_governance.py` | Governance file sync |
 | `migrate_agents_md.py` | One-time migration: AGENTS.md → `.agentsync/rules/` structure |
 | `sync_mcp.py` | Syncs MCP server configurations |
 
@@ -102,7 +108,7 @@ uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py --list
 AgentSync lives inside project-scaffolding. The `scaffold apply` command:
 
 1. Copies `.agentsync/rules/` templates with placeholder substitution
-2. Runs `sync_rules.py` to generate CLAUDE.md and .agent/rules/instructions.md
+2. Runs `sync.py --components rules` to generate CLAUDE.md and .agent/rules/instructions.md
 3. Appends project-specific content outside AGENTSYNC markers
 
 ## AGENTSYNC Markers
@@ -120,6 +126,28 @@ Generated files use markers to separate synced content from custom additions:
 ---
 
 ## Comprehensive Sync Script Documentation
+
+### sync.py - Unified Project Sync
+
+Canonical project-scoped AgentSync entrypoint.
+
+**Usage:**
+```bash
+# Sync the default project-scoped components for one project
+uv run project-scaffolding/agentsync/sync.py project-name
+
+# Sync all eligible projects
+uv run project-scaffolding/agentsync/sync.py --all
+
+# Sync a subset of components
+uv run project-scaffolding/agentsync/sync.py project-name --components rules,agents
+
+# Preview without writing
+uv run project-scaffolding/agentsync/sync.py project-name --dry-run
+```
+
+By default `sync.py` includes `rules`, `agents`, and `governance`.
+`sync_mcp.py` remains separate because it manages workstation-level config.
 
 ### sync_agents_md.py - AGENTS.md Template Sync
 
@@ -146,6 +174,7 @@ uv run project-scaffolding/agentsync/sync_agents_md.py --list
 ### sync_rules.py - IDE Configuration Sync
 
 Syncs `.agentsync/rules/` templates to IDE-specific rule files (CLAUDE.md, .agent/rules/instructions.md).
+This remains available as a specialized/backwards-compatible command.
 
 **Usage:**
 ```bash
@@ -221,7 +250,7 @@ uv run project-scaffolding/scaffold_cli.py apply project-name --verify-only
 1. Copies scripts (`warden_audit.py`, `validate_project.py`)
 2. Copies documentation templates
 3. Copies `.agentsync/rules/` templates
-4. Runs `sync_rules.py` to generate IDE configs
+4. Runs `sync.py --components rules` to generate IDE configs
 5. Updates AGENTS.md, README.md, DECISIONS.md from templates
 
 ### Quick Reference: Common Workflows
@@ -244,12 +273,11 @@ uv run project-scaffolding/agentsync/sync_agents_md.py
 vim project-scaffolding/templates/.agentsync/rules/00-overview.md
 
 # 2. Sync to all projects
-uv run project-scaffolding/agentsync/sync_rules.py --all
+uv run project-scaffolding/agentsync/sync.py --all --components rules
 ```
 
 **Sync only what changed (with staging):**
 ```bash
 # Sync and automatically git add changed files
-uv run project-scaffolding/agentsync/sync_agents_md.py --stage
-uv run project-scaffolding/agentsync/sync_rules.py --all --stage
+uv run project-scaffolding/agentsync/sync.py --all --stage
 ```

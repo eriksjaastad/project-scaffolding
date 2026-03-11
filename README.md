@@ -42,8 +42,9 @@ python main.py
 
 Sync scripts are located in `agentsync/`. When you update templates in `project-scaffolding/templates/`, use these scripts to distribute changes to all projects:
 
+- `sync.py` - Canonical project sync for rules, `AGENTS.md`, and governance
 - `sync_agents_md.py` - Sync AGENTS.md templates to all projects
-- `sync_rules.py` - Sync IDE rule configs (CLAUDE.md, .agent/rules/)
+- `sync_rules.py` - Sync IDE rule configs only (backwards-compatible / specialized)
 - `sync_governance.py` - Sync governance files
 - `sync_mcp.py` - Sync MCP configurations
 
@@ -252,8 +253,9 @@ This project is the **canonical source of truth** for shared tooling across the 
 
 | What | How | Command |
 |------|-----|---------|
+| Project-scoped agent files | `sync.py` | `uv run agentsync/sync.py <project>` |
 | `AGENTS.md` content | `sync_agents_md.py` | `uv run agentsync/sync_agents_md.py` |
-| IDE rules (CLAUDE.md, .agent/rules/) | `sync_rules.py` | `uv run agentsync/sync_rules.py` |
+| IDE rules only (CLAUDE.md, .agent/rules/) | `sync_rules.py` | `uv run agentsync/sync_rules.py` |
 | Governance protocol | `sync_governance.py` | `uv run agentsync/sync_governance.py` |
 | MCP configs | `sync_mcp.py` | `uv run agentsync/sync_mcp.py` |
 
@@ -291,6 +293,7 @@ project-scaffolding/
 │   └── cli.py                   ← The scaffold command implementation
 │
 ├── agentsync/                   ← Rules sync to IDE configs
+│   ├── sync.py                  ← Canonical project-scoped AgentSync entrypoint
 │   ├── sync_agents_md.py        ← Syncs AGENTS.md.template to all projects
 │   ├── sync_rules.py            ← Syncs .agentsync/rules/ to IDE configs
 │   ├── sync_governance.py       ← Syncs governance files

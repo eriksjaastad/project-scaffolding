@@ -1,7 +1,7 @@
 # CLAUDE.md - {{PROJECT_NAME}}
 
 <!-- Core content is managed by agentsync from .agentsync/rules/ -->
-<!-- Run: uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync_rules.py {{PROJECT_NAME}} -->
+<!-- Run: uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py {{PROJECT_NAME}} -->
 
 <!-- AGENTSYNC:START - Do not edit between markers -->
 <!-- Content will be populated by agentsync -->

@@ -18,7 +18,6 @@ Usage:
 
 import argparse
 import os
-import re
 import sys
 from pathlib import Path
 
@@ -49,22 +48,6 @@ def split_agents_md(content: str) -> dict[str, str]:
     Returns a dict mapping section names to content.
     """
     sections = {}
-
-    # Common section headers to look for
-    section_patterns = [
-        (r'^#\s*(?:AGENTS\.md\s*-\s*)?Ecosystem Constitution.*$', '00-overview'),
-        (r'^##\s*.*SYSTEM ARCHITECTURE.*HIERARCHY.*$', '01-hierarchy'),
-        (r'^##\s*.*THE WORKFLOW.*$', '02-workflow'),
-        (r'^##\s*.*SANDBOX DRAFT PATTERN.*$', '03-sandbox-draft'),
-        (r'^##\s*.*MCP SERVER INFRASTRUCTURE.*$', '04-mcp-infrastructure'),
-        (r'^##\s*.*STANDARDIZED PROMPT TEMPLATE.*$', '05-prompt-template'),
-        (r'^##\s*.*UNIVERSAL CONSTRAINTS.*$', '06-constraints'),
-        (r'^##\s*.*Safety.*File Operations.*$', '07-safety'),
-        (r'^##\s*.*JOURNAL ENTRY PROTOCOL.*$', '08-journal'),
-        (r'^##\s*.*CARETAKER ROLE.*$', '09-caretaker'),
-        (r'^##\s*.*OBSIDIAN INTEGRATION.*$', '10-obsidian'),
-        (r'^##\s*.*RELATED DOCUMENTS.*$', '99-related'),
-    ]
 
     # For now, we'll put everything in a single file
     # A more sophisticated version would split by headers
@@ -105,7 +88,7 @@ def migrate_project(project_name: str, dry_run: bool = False) -> bool:
 
     # Check if it's an auto-generated file (from old sync)
     if "AUTO-GENERATED from AGENTS.md" in content or "Source of truth: AGENTS.md" in content:
-        print(f"  Note: This appears to be an auto-generated file, looking for source...")
+        print("  Note: This appears to be an auto-generated file, looking for source...")
         # This might be CLAUDE.md or .agent/rules/instructions.md, not the actual AGENTS.md
         # Skip these
 
@@ -148,7 +131,7 @@ Edit files in `rules/` - they will be synced to CLAUDE.md and .agent/rules/instr
 ## Manual Sync
 
 ```bash
-uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync_rules.py {project_name}
+uv run $PROJECT_ROOT/project-scaffolding/agentsync/sync.py {project_name}
 ```
 """.format(project_name=project_name)
         readme.write_text(readme_content)
@@ -161,7 +144,7 @@ def cleanup_migration_artifacts(project_name: str, dry_run: bool = False) -> boo
     """Remove migration artifact 00-full-content.md if real rule files exist.
     
     The 00-full-content.md file was created during initial migration as a temporary
-    placeholder. Once sync_rules.py creates the real rule files (01-workflow.md, etc.),
+    placeholder. Once sync.py / sync_rules.py creates the real rule files (01-workflow.md, etc.),
     the artifact should be removed.
     
     Returns True if cleanup succeeded or was not needed, False on error.
@@ -208,6 +191,9 @@ def cleanup_migration_artifacts(project_name: str, dry_run: bool = False) -> boo
     except Exception as e:
         print(f"  Error: Failed to clean up {artifact_file}: {e}", file=sys.stderr)
         return False
+
+
+def find_projects_with_agents_md() -> list[str]:
     """Find all projects with AGENTS.md files."""
     projects_root = get_projects_root()
     projects = []
