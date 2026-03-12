@@ -51,5 +51,4 @@
 
 **Universal Resources:**
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md)
-- [Local Model Learnings](.agent/rules/local-model-learnings.md)
 - [AI Model Cost Comparison](../MODEL_HIERARCHY.md)

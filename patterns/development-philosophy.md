@@ -776,7 +776,6 @@ Orchestrate complex project launches by separating AI agents into specialized ro
 
 ## Related Documentation
 
-- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Automation Reliability](patterns/automation-reliability.md) - automation
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
 - [Safety Systems](patterns/safety-systems.md) - security

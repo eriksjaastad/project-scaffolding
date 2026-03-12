@@ -451,7 +451,6 @@ See: /project-scaffolding/patterns/local-ai-integration.md
 
 ## Related Documentation
 
-- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Automation Reliability](patterns/automation-reliability.md) - automation
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
 - [cortana-personal-ai/README](../../ai-model-scratch-build/README.md) - Cortana AI

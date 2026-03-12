@@ -509,7 +509,6 @@ Things to try or investigate:
 
 ## Related Documentation
 
-- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [Safety Systems](patterns/safety-systems.md) - security
