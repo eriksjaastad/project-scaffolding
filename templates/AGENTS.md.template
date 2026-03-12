@@ -111,7 +111,7 @@ When The Architect generates a Worker prompt, use this structure:
 
 ### ⚠️ DOWNSTREAM HARM ESTIMATE
 - **If this fails:** [What breaks? How long to recover?]
-- **Known pitfalls:** [What patterns from LOCAL_MODEL_LEARNINGS.md apply?]
+- **Known pitfalls:** [What patterns from project learnings apply?]
 
 ### 🎯 [ACCEPTANCE CRITERIA] (MANDATORY CHECKLIST)
 - [ ] **Functional:** [e.g., Code correctly implements the new logic in file X]

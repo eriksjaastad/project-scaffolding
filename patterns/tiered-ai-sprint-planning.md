@@ -359,6 +359,5 @@ Result:
 ## Related Documentation
 
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
-- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Safety Systems](patterns/safety-systems.md) - security
 - [ai-usage-billing-tracker/README](../../ai-model-scratch-build/README.md) - AI Billing Tracker

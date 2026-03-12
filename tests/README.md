@@ -145,7 +145,6 @@ pip install -r requirements.txt
 ## Related Documentation
 
 - [REVIEWS_AND_GOVERNANCE_PROTOCOL](.agent/rules/governance.md) - code review
-- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Cost Management](../MODEL_HIERARCHY.md) - cost management
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

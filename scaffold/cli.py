@@ -541,8 +541,7 @@ def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
     docs_to_copy = [
         (".agent/rules/governance.md", ".agent/rules/governance.md"),
         (".agent/rules/code-review-standard.md", ".agent/rules/code-review-standard.md"),
-        (".agent/rules/learning-loop-pattern.md", ".agent/rules/learning-loop-pattern.md"),
-        (".agent/rules/local-model-learnings.md", ".agent/rules/local-model-learnings.md")
+        (".agent/rules/learning-loop-pattern.md", ".agent/rules/learning-loop-pattern.md")
     ]
     
     for src_rel, dst_rel in docs_to_copy:

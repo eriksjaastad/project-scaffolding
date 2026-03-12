@@ -304,7 +304,6 @@ Fix your operating system first. Then build.
 ## Related Documentation
 
 - [Code Review Anti-Patterns](../.agent/rules/code-review-anti-patterns.md) - code review
-- [Local Model Learnings](../.agent/rules/local-model-learnings.md) - local AI
 - [Cost Management](../../MODEL_HIERARCHY.md) - cost management
 - [Automation Reliability](automation-reliability.md) - automation
 - [Tiered AI Sprint Planning](tiered-ai-sprint-planning.md) - prompt engineering

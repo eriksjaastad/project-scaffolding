@@ -31,7 +31,6 @@ UNIVERSAL_REPLACEMENTS = [
     # Universal documents that exist in scaffolded projects
     (r'\[\[CODE_REVIEW_ANTI_PATTERNS\]\]', '[Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md)'),
     (r'\[\[DOPPLER_SECRETS_MANAGEMENT\]\]', '[Doppler Secrets Management](.agent/rules/doppler-secrets.md)'),
-    (r'\[\[LOCAL_MODEL_LEARNINGS\]\]', '[Local Model Learnings](.agent/rules/local-model-learnings.md)'),
     (r'\[\[trustworthy_ai_report\]\]', '[Trustworthy AI Report](.agent/rules/governance.md)'),
     
     # Pattern mappings (actual file names)

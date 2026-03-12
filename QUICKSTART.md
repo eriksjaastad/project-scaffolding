@@ -653,7 +653,6 @@ Common issues:
 - [REVIEWS_AND_GOVERNANCE_PROTOCOL](.agent/rules/governance.md) - code review
 - [CODE_QUALITY_STANDARDS](.agent/rules/CODE_QUALITY_STANDARDS.md) - code standards
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
-- [Local Model Learnings](.agent/rules/local-model-learnings.md) - local AI
 - [Cost Management](../MODEL_HIERARCHY.md) - cost management
 - [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
 - [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
