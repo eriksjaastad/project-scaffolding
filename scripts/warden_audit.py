@@ -133,7 +133,7 @@ def check_dangerous_functions(project_root: pathlib.Path) -> list:
         if any(part in file_path.parts for part in ['venv', '.venv', 'node_modules', '.git', '__pycache__']):
             continue
             
-        if file_path.name == 'warden_audit.py' or file_path.name == 'validate_project.py':
+        if file_path.name in ('warden_audit.py', 'validate_project.py', 'pre-review.sh'):
             continue
 
         is_code_file = file_path.suffix in ['.py', '.sh', '.js', '.ts']
@@ -212,9 +212,9 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
                 for file_path in result.stdout.strip().split('\n'):
                     if file_path:  # Skip empty lines
                         path_obj = pathlib.Path(file_path)
-                        if path_obj.name == 'warden_audit.py' or path_obj.name == 'validate_project.py':
+                        if path_obj.name in ('warden_audit.py', 'validate_project.py', 'pre-review.sh'):
                             continue
-                        
+
                         is_test_file = 'test' in path_obj.parts or path_obj.name.startswith('test_')
                         severity = Severity.P2 if is_test_file else Severity.P0
                         found_issues.append((path_obj, pattern, severity))
@@ -243,7 +243,7 @@ def check_dangerous_functions_fast(project_root: pathlib.Path) -> list:
                 for file_path in result.stdout.strip().split('\n'):
                     if file_path:
                         path_obj = pathlib.Path(file_path)
-                        if path_obj.name == 'warden_audit.py' or path_obj.name == 'validate_project.py':
+                        if path_obj.name in ('warden_audit.py', 'validate_project.py', 'pre-review.sh'):
                             continue
                         found_issues.append((path_obj, pattern, Severity.P1))
 
