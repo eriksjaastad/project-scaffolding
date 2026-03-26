@@ -2,7 +2,7 @@
 
 > **Purpose:** Break down project work into tier-appropriate tasks for cost-effective execution  
 > **Use After:** Phase 1 planning is complete (big idea → concrete plan)  
-> **Pattern Reference:** `../patterns/tiered-ai-sprint-planning.md`
+> **Pattern Reference:** `.agent/rules/CODE_QUALITY_STANDARDS.md` (CLI design section)
 
 ---
 
@@ -697,5 +697,5 @@ Before starting execution:
 
 *This template is part of the project-scaffolding meta-project.*
 
-**Pattern Reference:** `patterns/tiered-ai-sprint-planning.md`
+**Pattern Reference:** `.agent/rules/ANTIGRAVITY_ORCHESTRATION_PATTERNS.md` (tiered model routing)
 **Last Updated:** December 22, 2025

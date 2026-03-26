@@ -60,4 +60,3 @@ find . -name "CODE_REVIEW_ARCHITECTURE_REVIEWER.md"
 ## Related Documentation
 
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
-- [Safety Systems](patterns/safety-systems.md) - security
