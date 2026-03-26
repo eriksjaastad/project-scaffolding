@@ -75,7 +75,6 @@ npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**"
 | Document | Purpose |
 |----------|---------|
 | `QUICKSTART.md` | Step-by-step checklists (new + existing projects) |
-| `DECISIONS.md` | Architectural decision log - document the "why" behind choices |
 | `.agent/rules/governance.md` | **MANDATORY** code review and governance protocol |
 | `.agent/rules/CODE_QUALITY_STANDARDS.md` | **MANDATORY** coding rules |
 | `.agent/rules/PROJECT_STRUCTURE_STANDARDS.md` | Directory conventions |
