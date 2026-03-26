@@ -31,17 +31,6 @@ This meta-project serves as a central repository for proven patterns, templates,
 
 ## Key Components
 
-### Patterns
-
-The `patterns/` directory contains documented patterns extracted from successful projects. These patterns represent best practices and proven solutions to common development challenges.
-
-*   `safety-systems.md`: Details 6 proven patterns for building robust and secure systems.
-*   `development-philosophy.md`: Outlines 7 core principles guiding our development approach.
-*   `tiered-ai-sprint-planning.md`: Explains how to leverage AI cost-effectively in sprint planning.
-*   `learning-loop-pattern.md`: Describes the implementation of reinforcement learning cycles for continuous improvement.
-*   `code-review-standard.md`: Defines the standards and orchestration process for code reviews.
-*   `ssot-via-yaml.md`: Explains how to manage data using a Single Source of Truth (SSOT) approach with YAML.
-
 ### Templates
 
 The `templates/` directory provides reusable starting points for new projects, ensuring consistency and accelerating setup.
@@ -110,7 +99,6 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-projec
 | [.agent/rules/](.agent/rules/) | 10 | Project-specific rules and governance. |
 | [agentsync/](agentsync/README.md) | 6 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
-| [patterns/](patterns/) | 14 | Shared development and safety patterns. |
 | [scaffold/](scaffold/) | 6 | Core scaffolding library code. |
 
 ### Files
