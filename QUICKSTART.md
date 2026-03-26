@@ -493,7 +493,7 @@ grep -rE "(sk-|AIza|AKIA)" . --include="*.md" --include="*.py" 2>/dev/null
 - [ ] No absolute paths introduced
 - [ ] No secrets exposed
 - [ ] Existing functionality preserved
-- [ ] Document any existing patterns/conventions
+- [ ] Document any existing conventions
 
 ---
 
