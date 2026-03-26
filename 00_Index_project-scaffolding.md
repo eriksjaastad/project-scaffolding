@@ -118,11 +118,8 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-projec
 | File | Description |
 | :--- | :--- |
 | [AGENTS.md](AGENTS.md) | The single source of truth for hierarchy, workflow, and AI collaboration philosophy. |
-| [CHANGELOG.md](CHANGELOG.md) | Notable changes to project-scaffolding. |
 | [CLAUDE.md](CLAUDE.md) | AI agent instructions (auto-generated). |
-| [DECISIONS.md](DECISIONS.md) | Documenting WHY we made decisions. |
 | [EXTERNAL_RESOURCES.yaml](EXTERNAL_RESOURCES.yaml) | Central registry for services and APIs. |
-| [GEN_MANIFEST_USAGE.md](GEN_MANIFEST_USAGE.md) | Usage guide for manifest generation. |
 | [PRD.md](PRD.md) | Project Requirements Document. |
 | [QUICKSTART.md](QUICKSTART.md) | Step-by-step onboarding guide. |
 | [README.md](README.md) | Project overview and workflows. |

@@ -251,7 +251,7 @@ uv run project-scaffolding/scaffold_cli.py apply project-name --verify-only
 2. Copies documentation templates
 3. Copies `.agentsync/rules/` templates
 4. Runs `sync.py --components rules` to generate IDE configs
-5. Updates AGENTS.md, README.md, DECISIONS.md from templates
+5. Updates AGENTS.md, README.md from templates
 
 ### Quick Reference: Common Workflows
 
