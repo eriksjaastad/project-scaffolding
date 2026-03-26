@@ -145,5 +145,3 @@ pip install -r requirements.txt
 ## Related Documentation
 
 - [REVIEWS_AND_GOVERNANCE_PROTOCOL](.agent/rules/governance.md) - code review
-- [Cost Management](../MODEL_HIERARCHY.md) - cost management
-- [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding
