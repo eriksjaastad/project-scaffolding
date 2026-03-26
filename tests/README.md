@@ -146,5 +146,4 @@ pip install -r requirements.txt
 
 - [REVIEWS_AND_GOVERNANCE_PROTOCOL](.agent/rules/governance.md) - code review
 - [Cost Management](../MODEL_HIERARCHY.md) - cost management
-- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

@@ -53,11 +53,6 @@ Coverage reports are generated in `scripts/tests/htmlcov/`:
 - `index.html` - Main report (open in browser)
 - `coverage.xml` - XML format (for CI integration)
 
-## See Also
-
-- `patterns/project-vs-tool-requirements.md` - When to use coverage
-- `patterns/testing-patterns.md` - Test structure guidelines
-
 ## Related Documentation
 
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

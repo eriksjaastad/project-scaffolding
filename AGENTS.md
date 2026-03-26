@@ -404,13 +404,6 @@ These documents are copied to each project during scaffolding:
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - Anti-patterns to avoid in code reviews
 - [Reviews and Governance Protocol](.agent/rules/governance.md) - Full audit checklist and evidence requirements
 
-### Pattern Library
-Located in `patterns/` directory of project-scaffolding:
-- [AI Team Orchestration](patterns/ai-team-orchestration.md) - Multi-agent workflow patterns
-- [Safety Systems](patterns/safety-systems.md) - Data protection and security patterns
-- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - Cost-effective AI usage
-- [Learning Loop Pattern](patterns/learning-loop-pattern.md) - Reinforcement learning cycles
-
 ### Ecosystem Resources
 Cross-project resources (relative paths from project root):
 - [Project Scaffolding](../project-scaffolding/README.md) - This scaffolding system

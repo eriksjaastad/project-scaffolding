@@ -249,7 +249,6 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scripts/validate_project.py" "$(basen
 #### Learn More About Code Review System
 
 - **Full Protocol:** `$PROJECTS_ROOT/project-scaffolding/REVIEWS_AND_GOVERNANCE_PROTOCOL.md`
-- **Pattern Documentation:** `$PROJECTS_ROOT/project-scaffolding/patterns/code-review-standard.md`
 - **Multi-AI Orchestrator:** `$PROJECTS_ROOT/project-scaffolding/scaffold/review.py` (supports OpenAI, Anthropic, DeepSeek, Ollama)
 
 **Key principle:** The review system is centralized in `project-scaffolding` to maintain consistency across all your projects. Projects reference and use it via absolute path commands.
@@ -546,18 +545,6 @@ When adding ecosystem rules to a project:
 | `CODE_REVIEW.md.template` | Code review request format |
 | `TIERED_SPRINT_PLANNER.md` | Sprint planning template |
 
-### Patterns (`patterns/`)
-
-| Pattern | What It Teaches |
-|---------|-----------------|
-| `safety-systems.md` | Data protection patterns (append-only, atomic writes) |
-| `development-philosophy.md` | Layer-by-layer, data before decisions |
-| `tiered-ai-sprint-planning.md` | Cost-effective AI usage (Tier 1/2/3) |
-| `learning-loop-pattern.md` | **How to create reinforcement learning cycles** |
-| `code-review-standard.md` | Multi-AI review process |
-| `api-key-management.md` | Per-project API key strategy |
-| `ssot-via-yaml.md` | Single source of truth patterns |
-
 ### Self-Learning Projects (Skills Management)
 
 This scaffolding promotes projects that improve over time. Skills (reusable AI instructions) can live:
@@ -635,7 +622,7 @@ Common issues:
 ## Next Steps After Scaffolding
 
 1. **Review** `.agent/rules/governance.md` to understand code review standards
-2. **Review** `patterns/development-philosophy.md` to understand the mindset
+2. **Review** `.agent/rules/PROJECT_PHILOSOPHY.md` to understand the mindset
 3. **Plan** using tiered AI approach before coding
 4. **Track** external resources in `EXTERNAL_RESOURCES.yaml` when adding services
 
@@ -654,8 +641,5 @@ Common issues:
 - [CODE_QUALITY_STANDARDS](.agent/rules/CODE_QUALITY_STANDARDS.md) - code standards
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
 - [Cost Management](../MODEL_HIERARCHY.md) - cost management
-- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
-- [Safety Systems](patterns/safety-systems.md) - security
 - Claude Code Skills (`~/.claude/skills/`) - Agent Capabilities
 - [Project Scaffolding](../project-scaffolding/README.md) - Project Scaffolding

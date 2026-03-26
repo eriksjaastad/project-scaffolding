@@ -92,7 +92,6 @@ npx repomix@latest --ignore "**/node_modules/**,**/.env*,**/dist/**,**/.git/**"
 | **templates/** | Every new project was starting from scratch. We kept recreating the same files. Templates capture "what a well-structured project looks like" so we don't reinvent it each time. |
 | **agentsync/** | We use Claude and Antigravity simultaneously. Each reads different config files. Without sync, improvements to one agent's rules never reached the others. AgentSync makes one edit propagate everywhere. |
 | **scaffold/cli.py** | Copying templates manually was error-prone. The CLI ensures consistent setup: right files, right structure, right placeholders filled in. One command instead of 15 copy-pastes. |
-| **patterns/** | Hard-won lessons were getting lost. "Every safety system was a scar" - we kept re-learning the same lessons. Patterns document WHY we do things, not just how. |
 | **.agent/rules/** | Project rules and standards provided at scaffold time to ensure consistency and quality. |
 
 ### Why `.agentsync/rules/` Instead of Just AGENTS.md?
@@ -147,42 +146,24 @@ Then customize the templates (especially the `00_Index_*.md` - it's MANDATORY).
 
 ## Understanding This Scaffolding
 
-1. **Pattern Analysis** (See `patterns/` directory)
-   - See all identified patterns with confidence levels
-   - Understand which are proven (🟢), emerging (🟡), or candidates (🔵)
+1. **Governance Protocol** (`REVIEWS_AND_GOVERNANCE_PROTOCOL.md`)
+   - Checklist-driven review standard for all projects
+   - Two-layer defense: robotic scan + cognitive audit
 
-2. **Safety Systems** (`patterns/safety-systems.md`)
-   - 6 proven patterns with code examples
-   - "Every safety system was a scar" philosophy
-   - Real scar stories from projects
+2. **Code Quality Standards** (`.agent/rules/CODE_QUALITY_STANDARDS.md`)
+   - Hard rules unique to code quality (error laundering ban, memory guards, input sanitization)
 
-3. **Development Philosophy** (`patterns/development-philosophy.md`)
-   - 7 core principles: Layer-by-layer, data before decisions, etc.
-   - When to apply, when not to apply
-   - Anti-patterns to avoid
+3. **Project Philosophy** (`.agent/rules/PROJECT_PHILOSOPHY.md`)
+   - Core principles: experiments over products, data before decisions, consolidate on 3rd duplicate
 
-4. **Tiered AI Sprint Planning** (`patterns/tiered-ai-sprint-planning.md`)
-   - Route tasks to cost-appropriate AI models
-   - 3 tiers: Big Brain (architecture), Mid-Weight (features), Worker Bee (boilerplate)
-   - Escalation system to avoid getting stuck with wrong-tier models
-   - Multi-model review automation (from image-workflow)
+4. **Self-Learning Projects** (Skills Management)
 
-5. **Learning Loop Pattern** (`patterns/learning-loop-pattern.md`)
-   - How to create reinforcement learning cycles in any project
-   - 4 universal components: Trigger, Documentation, Analysis, Reinforcement
-   - Guidance for model, workflow, and safety learnings
-   - Prevents "write-only documentation" - closes the gap between learning and applying
-
-6. **Self-Learning Projects** (Skills Management)
-   
    This scaffolding supports projects that improve over time by capturing what works. Skills (reusable AI instructions) can live:
    - In the **Claude Code Skills** directory (`~/.claude/skills/`)
    - **Within individual projects** (project-specific patterns)
    - Or **both** - shared patterns + project-specific skills
-   
+
    Skills can move between locations as they mature. Start wherever makes sense; extract to a shared library when you find yourself copying across 3+ projects.
-   
-   See `patterns/learning-loop-pattern.md` for establishing feedback cycles.
 
 ### Managing Your Projects
 
@@ -276,11 +257,6 @@ project-scaffolding/
 │   ├── warden_audit.py          ← Security audit (copied to projects)
 │   └── validate_project.py      ← Project validation (copied to projects)
 │
-├── patterns/                    ← ⚠️ SOURCE FILES - scaffold apply copies these
-│   ├── safety-systems.md        ← Data protection patterns
-│   ├── development-philosophy.md ← Development principles
-│   └── tiered-ai-sprint-planning.md ← Cost-effective AI usage
-│
 ├── templates/                   ← Template sources for scaffold apply
 │   ├── root/                    ← Templates for projects root (sync-root command)
 │   ├── .agentsync/rules/        ← Agent rules templates
@@ -311,7 +287,4 @@ project-scaffolding/
 - [CODE_QUALITY_STANDARDS](.agent/rules/CODE_QUALITY_STANDARDS.md) - code standards
 - [Code Review Anti-Patterns](.agent/rules/code-review-anti-patterns.md) - code review
 - [Cost Management](../MODEL_HIERARCHY.md) - cost management
-- [Tiered AI Sprint Planning](patterns/tiered-ai-sprint-planning.md) - prompt engineering
-- [AI Team Orchestration](patterns/ai-team-orchestration.md) - orchestration
-- [Safety Systems](patterns/safety-systems.md) - security
 - Claude Code Skills (`~/.claude/skills/`) - Agent Capabilities
