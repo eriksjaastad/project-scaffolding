@@ -101,13 +101,34 @@
 5. **Inspection (The Guardrail):** Floor Manager must:
    - Read the modified/new files
    - Check off each item in the **[ACCEPTANCE CRITERIA]** checklist
-6. **Loop/Correction:**
+6. **Pre-Review Check:** Before claiming done, run `bash pre-review.sh` (if available in project). This catches mock data left in, hardcoded paths, TODOs, debug output, and missing env vars. If it fails, fix the issues before proceeding.
+7. **Loop/Correction:**
    - **IF FAIL:** Floor Manager sends specific failed items back to Worker
    - **FAILURE PROTOCOL:** If Worker fails **3 times**, halt and alert the Conductor
    - **IF PASS:** Floor Manager issues official **"Floor Manager Sign-off"**
-7. **Finalization:** Task marked **Complete** only after Sign-off
+8. **Finalization:** Task marked **Complete** only after Sign-off
 
 **CRITICAL RULE:** Only the **Workers** write code. Under no circumstances should the Super Manager or Floor Manager generate code snippets or implementation logic.
+
+---
+
+## 🚫 ANTI-RATIONALIZATION TABLE (ALL AGENTS)
+
+Agents find creative ways to technically follow rules while violating their spirit. These rationalizations are pre-emptively banned. If you catch yourself thinking any of these, stop — you're wrong.
+
+| If You're Thinking... | Why That's Wrong | Do This Instead |
+|----------------------|------------------|-----------------|
+| "I can't proceed because..." | Nothing is coming to unblock you. You're unattended. | Try an alternative approach. If 3 alternatives fail, move task to Blocked with a structured transcript of what you tried. |
+| "I'm waiting for clarification" | Nobody is watching. Clarification isn't coming. | Make your best judgment, document the assumption, proceed. Flag the assumption in your completion notes. |
+| "Done" (without evidence) | Saying done isn't being done. | Run the acceptance criteria checks. Paste the output. If you can't verify mechanically, say what you verified and how. |
+| "I'll come back to this" | You won't. There is no "later" in an unattended session. | Do it now or escalate it as incomplete. |
+| "This is too simple to verify" | Simple things break. That's why they're in the acceptance criteria. | Run the check anyway. It takes 3 seconds. |
+| "Sorry I dropped the ball" | Apologizing isn't working. | Explain what happened: what you attempted, where it failed, what the error was, and what you'd try next. |
+| "Everything works" (still on mock data) | Mock data passing is not production readiness. | Check if production data sources are wired. Run `bash pre-review.sh` if available. Report mock vs. production status explicitly. |
+| "I'll clean this up later" | There is no later. Ship clean or escalate. | Fix it now. If it's out of scope, document it as tech debt in the task notes. |
+| "The tests pass" (but you didn't run them) | Assuming tests pass is not running tests. | Actually run them. Paste the output. |
+
+**This table applies to ALL agents:** Workers, Floor Managers, and any subagent. No exceptions.
 
 ---
 

@@ -4,7 +4,7 @@
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-03-10"
+  last_updated: "2026-03-12"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # ACCOUNT REGISTRY
@@ -317,6 +317,35 @@ projects:
         env_var: "MUFFIN_RUNPOD_API_KEY"
         cost: "Pay-per-use"
 
+  ai-memory:
+    monthly_cost: 0
+    account: synthinsightlabs
+    credential_file: "Doppler"
+    services:
+      - name: Cloudflare R2
+        purpose: "Backup storage for brain.db (Open Brain cross-agent memory)"
+        type: storage
+        env_var: "R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ENDPOINT, R2_BUCKET"
+        cost: 0
+        plan: "Free tier (10GB)"
+        bucket: "open-brain-backups"
+        notes: "S3-compatible keys + CF_API_TOKEN. Created 2026-03-20 under SIL Cloudflare account."
+      - name: Anthropic
+        purpose: "Haiku 3.5 for scope classification (shared vs agent-scoped)"
+        type: ai
+        env_var: "ANTHROPIC_API_KEY"
+        cost: "<$0.01"
+        notes: "Extremely low usage — classifies ~10 words per memory entry"
+      - name: Ollama
+        purpose: "Local embeddings (nomic-embed-text-v2-moe)"
+        type: ai
+        cost: 0
+        notes: "Runs locally on both laptop and Mac Mini. No API key needed."
+      - name: Doppler
+        purpose: "Secrets management"
+        type: security
+        cost: 0
+
   # Projects needing audit for service usage
   hypocrisynow:
     account: TODO (erik@spudlogic.com?)
@@ -365,6 +394,12 @@ projects:
         cost: 0
         signed_up: "2025-08-29"
         notes: "SIL Reddit account. Not actively used."
+      - name: Paddle
+        purpose: "Payment processing / subscriptions"
+        type: payments
+        cost: 0
+        signed_up: "2026-03-12"
+        notes: "Not yet assigned to a project. Evaluate vs Stripe for SIL products."
 
 # SERVICES BY FUNCTION
 # Purpose: Prevent signing up for duplicate services
@@ -385,12 +420,13 @@ services_by_function:
 
   ecommerce:
     - Gumroad (programmatic product sales)
+    - Paddle (payments/subscriptions — synthinsightlabs)
 
   cms:
     - Ghost (Admin API for pSEO)
 
   security:
-    - Doppler (secrets management)
+    - Doppler (secrets management — paid plan as of 2026-03-12, was free tier 10-project limit)
   
   hosting:
     - Railway (Python cron jobs + Postgres)
@@ -509,6 +545,107 @@ before_adding_service:
     - "Update cost_summary"
     - "Document credential location"
     - "Update metadata.last_updated"
+
+# DOMAIN & PACKAGE REGISTRY
+# Purpose: Track all registered names so we don't lose track or let them expire
+domains_and_packages:
+  domains:
+    - domain: "synthinsightlabs.com"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "synth-insight-labs (company)"
+      dns: "Cloudflare"
+      registered: "2026-03"
+    - domain: "smartinvoiceworkflow.com"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "smart-invoice-workflow"
+      registered: "2026-02"
+    - domain: "x402gateway.dev"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (x402-gateway)"
+      registered: "2026-03"
+    - domain: "mcp-trust-scanner.com"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-scanner)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust-scanner.dev"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-scanner)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust-gateway.com"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-gateway)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust-gateway.dev"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-gateway)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust.ai"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (umbrella brand)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust-registry.dev"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-registry)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust-policy.dev"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-policy)"
+      registered: "2026-03-21"
+    - domain: "mcp-trust-console.dev"
+      registrar: "Namecheap"
+      account: synthinsightlabs
+      project: "data-vault-factory (mcp-trust-console)"
+      registered: "2026-03-21"
+
+  pypi_packages:
+    - name: "x402-gateway"
+      version: "0.0.1"
+      owner: "SynthInsight Labs"
+      project: "data-vault-factory"
+      registered: "2026-03"
+    - name: "mcp-trust-scanner"
+      version: "0.0.1"
+      owner: "SynthInsight Labs"
+      project: "data-vault-factory"
+      registered: "2026-03-21"
+    - name: "mcp-trust-gateway"
+      version: "0.0.1"
+      owner: "SynthInsight Labs"
+      project: "data-vault-factory"
+      registered: "2026-03-21"
+
+  npm_packages:
+    - name: "x402-gateway"
+      version: "0.0.1"
+      owner: "eriksjaastad"
+      project: "data-vault-factory"
+      registered: "2026-03"
+    - name: "mcp-trust-scanner"
+      version: "0.0.1"
+      owner: "eriksjaastad"
+      project: "data-vault-factory"
+      registered: "2026-03-21"
+    - name: "mcp-trust-gateway"
+      version: "0.0.1"
+      owner: "eriksjaastad"
+      project: "data-vault-factory"
+      registered: "2026-03-21"
+
+  failed_registrations:
+    - name: "mcp-scanner"
+      registry: "PyPI"
+      reason: "Too similar to existing project (mcp-scan by Snyk)"
+      date: "2026-03-21"
 
 # SECURITY NOTES
 security:

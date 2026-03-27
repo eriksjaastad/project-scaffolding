@@ -56,10 +56,21 @@ WARNING_HEADER = """\
 
 
 def extract_version(source_path: Path) -> str:
-    """Extract version from the governance doc title line (e.g., 'v1.3')."""
-    first_line = source_path.read_text().split("\n", 1)[0]
-    match = re.search(r"\(v([\d.]+)\)", first_line)
-    return match.group(1) if match else "0.0.0"
+    """Extract version from the governance doc title or top-level metadata."""
+    lines = source_path.read_text().splitlines()
+    if not lines:
+        return "0.0.0"
+
+    title_match = re.search(r"\(v([\d.]+)\)", lines[0])
+    if title_match:
+        return title_match.group(1)
+
+    for line in lines[1:10]:
+        metadata_match = re.match(r"version:\s*v?([\d.]+)\s*$", line.strip(), re.IGNORECASE)
+        if metadata_match:
+            return metadata_match.group(1)
+
+    return "0.0.0"
 
 
 def update_scaffolding_version(project_dir: Path, version: str):
