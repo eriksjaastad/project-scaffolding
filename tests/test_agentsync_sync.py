@@ -55,3 +55,33 @@ def test_scaffold_run_agentsync_uses_unified_rules_command() -> None:
     joined = "\n".join(actions)
     assert "agentsync/sync.py" in joined
     assert "--components rules" in joined
+
+
+def test_extract_governance_version_from_title(tmp_path: Path) -> None:
+    _ensure_repo_on_path()
+
+    from agentsync.sync_governance import extract_version
+
+    source = tmp_path / "governance.md"
+    source.write_text("# Governance Protocol (v1.3)\n\npurpose: test\n")
+
+    assert extract_version(source) == "1.3"
+
+
+def test_extract_governance_version_from_metadata_line(tmp_path: Path) -> None:
+    _ensure_repo_on_path()
+
+    from agentsync.sync_governance import extract_version
+
+    source = tmp_path / "governance.md"
+    source.write_text("# Governance Protocol\n\nversion: 2026.03.12\n\npurpose: test\n")
+
+    assert extract_version(source) == "2026.03.12"
+
+
+def test_live_governance_source_has_parseable_version() -> None:
+    _ensure_repo_on_path()
+
+    from agentsync.sync_governance import SOURCE_FILE, extract_version
+
+    assert extract_version(SOURCE_FILE) != "0.0.0"

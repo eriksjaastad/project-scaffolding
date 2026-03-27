@@ -85,10 +85,16 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-projec
 
 ## Recent Activity
 
-- 2026-03-10: [CLEANUP] Deprecated Documents/ directory in favor of .agent/rules/
-- 2026-03-10: [CLEANUP] Removed stale docs, guides, and reports
-- 2026-03-10: [FEAT] Migrated account tracking to EXTERNAL_RESOURCES.yaml
+- 2026-03-11: refactor: remove local-model-learnings.md from scaffold system (#5097)
+- 2026-03-11: refactor: rewrite learning-loop-pattern (396→51 lines) and recreate governance protocol
+- 2026-03-11: feat: add hook-based agentsync and agent-health checks (#5100, #5101)
+- 2026-03-11: feat: unify agentsync sync command (#5099)
+- 2026-03-10: refactor: remove Documents/ directory, migrate agent rules to .agent/rules/ (#5094)
 - 2026-02-27: fix: Exclude backtick-quoted rmtree mentions from pre-push block
+- 2026-02-27: fix: Allow rmtree mentions in .md docs in pre-push hook
+- 2026-02-27: docs: Template audit and cleanup — The Architect, DRY rules, centralized safety
+- 2026-02-27: docs: Add Trickle-Down Updates section documenting propagation model for shared tooling
+- 2026-02-27: refactor: Replace duplicate path greps in CI with canonical warden_audit.py call
 
 <!-- LIBRARIAN-INDEX-START -->
 
@@ -96,8 +102,7 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-projec
 
 | Directory | Files | Description |
 | :--- | :---: | :--- |
-| [.agent/rules/](.agent/rules/) | 10 | Project-specific rules and governance. |
-| [agentsync/](agentsync/README.md) | 6 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
+| [agentsync/](agentsync/README.md) | 7 | Synchronizes AI instruction rules from a single source to multiple IDE-specific config files. |
 | [examples/](examples/) | 0 | No description available. |
 | [scaffold/](scaffold/) | 6 | Core scaffolding library code. |
 
@@ -111,5 +116,36 @@ uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" apply "my-new-projec
 | [PRD.md](PRD.md) | Project Requirements Document. |
 | [QUICKSTART.md](QUICKSTART.md) | Step-by-step onboarding guide. |
 | [README.md](README.md) | Project overview and workflows. |
+| [agentsync/migrate_agents_md.py](agentsync/migrate_agents_md.py) | No description available. |
+| [agentsync/sync.py](agentsync/sync.py) | No description available. |
+| [agentsync/sync_agents_md.py](agentsync/sync_agents_md.py) | No description available. |
+| [agentsync/sync_governance.py](agentsync/sync_governance.py) | No description available. |
+| [agentsync/sync_mcp.py](agentsync/sync_mcp.py) | No description available. |
+| [agentsync/sync_rules.py](agentsync/sync_rules.py) | No description available. |
+| [patterns/ai-team-orchestration.md](patterns/ai-team-orchestration.md) | > **Purpose:** How to structure multi-agent AI workflows with clear roles, metrics, and guardrails |
+| [patterns/api-key-management.md](patterns/api-key-management.md) | **Status:** Proven |
+| [patterns/automation-reliability.md](patterns/automation-reliability.md) | > **Philosophy:** "Silent failures are the worst failures" |
+| [patterns/development-philosophy.md](patterns/development-philosophy.md) | > **Purpose:** Proven principles for building maintainable experimental projects |
+| [patterns/discord-webhooks-per-project.md](patterns/discord-webhooks-per-project.md) | **Pattern:** Create dedicated Discord channels for each project's notifications |
+| [patterns/foundation-documents-first.md](patterns/foundation-documents-first.md) | **Pattern Type:** 🟢 Proven (learned through pain) |
+| [patterns/local-ai-integration.md](patterns/local-ai-integration.md) | > **Purpose:** How to use local AI models to reduce API costs while maintaining quality |
+| [patterns/project-vs-tool-requirements.md](patterns/project-vs-tool-requirements.md) | > **Purpose:** Define different levels of requirements for full projects vs utility tools |
+| [patterns/safety-systems.md](patterns/safety-systems.md) | > **Philosophy:** "Every safety system was a scar" |
+| [patterns/scaffolding-as-dependency.md](patterns/scaffolding-as-dependency.md) | **Pattern Type:** Draft - Needs Discussion |
+| [patterns/ssot-via-yaml.md](patterns/ssot-via-yaml.md) | **Status:** Proven Pattern (Dec 31, 2025) |
+| [patterns/tiered-ai-sprint-planning.md](patterns/tiered-ai-sprint-planning.md) | **Pattern Type:** 🟡 Emerging (needs validation) |
+| [pyproject.toml](pyproject.toml) | No description available. |
+| [pytest.ini](pytest.ini) | No description available. |
+| [requirements.txt](requirements.txt) | No description available. |
+| [scaffold/__init__.py](scaffold/__init__.py) | Project Scaffolding - Automated Multi-AI Review & Build System |
+| [scaffold/agent_health.py](scaffold/agent_health.py) | Agent config file health checks for the project scanner. |
+| [scaffold/alerts.py](scaffold/alerts.py) | No description available. |
+| [scaffold/cli.py](scaffold/cli.py) | CLI for Project Scaffolding automation system |
+| [scaffold/constants.py](scaffold/constants.py) | Centralized constants for the project scaffolding system. |
+| [scaffold/review.py](scaffold/review.py) | Multi-AI Review Orchestrator |
+| [scaffold/utils.py](scaffold/utils.py) | No description available. |
+| [scaffold_cli.py](scaffold_cli.py) | No description available. |
+| [uv.lock](uv.lock) | No description available. |
+>>>>>>> Stashed changes
 
 <!-- LIBRARIAN-INDEX-END -->

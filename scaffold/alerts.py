@@ -1,7 +1,6 @@
 import os
 import json
 import urllib.request
-from typing import Optional
 
 def send_discord_alert(message: str) -> bool:
     """
@@ -34,7 +33,7 @@ def send_discord_alert(message: str) -> bool:
             headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'}
         )
         
-        with urllib.request.urlopen(req) as response:
+        with urllib.request.urlopen(req, timeout=5) as response:
             if response.getcode() in [200, 204]:
                 return True
             else:
