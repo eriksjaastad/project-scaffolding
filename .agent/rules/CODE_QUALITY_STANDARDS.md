@@ -3,12 +3,6 @@
 purpose: Hard rules for code quality (supplement to REVIEWS_AND_GOVERNANCE_PROTOCOL.md checklist)
 scope: Rules here are UNIQUE to this file — governance checklist covers paths, subprocess, error handling, etc.
 
-## Index File Requirement
-
-rule: every project MUST have 00_Index_[ProjectName].md in its root
-reason: projects without indexes are invisible and forgotten
-check: scaffolding validation fails without this file
-
 ## Error Laundering Ban
 
 rule: never use except: pass or except Exception: pass without logging

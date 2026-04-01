@@ -5,19 +5,18 @@ Validate project structure and requirements.
 Usage:
     ./scripts/validate_project.py [project_name]      # Check specific project
     ./scripts/validate_project.py --all               # Check all projects
-    ./scripts/validate_project.py --missing           # List projects without indexes
 
 This script enforces:
-- Critical Rule #0: Every project must have an index file
-- Index file naming: 00_Index_[ProjectName].md
-- Index file location: project root
-- Index file structure: Valid YAML frontmatter + required sections
+- Mandatory files (CLAUDE.md, README.md, etc.)
+- DNA integrity (no hardcoded paths)
+- Safety checks (no rm, no shutil.rmtree)
+- Placeholder validation
 """
 
 import sys
 import os
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 import re
 from scaffold.utils import safe_slug
 from scaffold.alerts import send_discord_alert
@@ -31,7 +30,6 @@ if not PROJECTS_ROOT_ENV:
 else:
     PROJECTS_ROOT = Path(PROJECTS_ROOT_ENV).resolve()
 
-REQUIRED_INDEX_PATTERN = r"00_Index_.+\.md"
 SKIP_DIRS = PROTECTED_PROJECTS
 
 # Mandatory files and directories
@@ -44,14 +42,6 @@ MANDATORY_FILES = [
 ]
 MANDATORY_DIRS = []
 
-# YAML frontmatter requirements
-REQUIRED_TAGS = ["map/project", "p/"]  # p/ is a prefix that must exist
-# Regex patterns for required sections (allows for emojis and slight variations)
-REQUIRED_SECTION_PATTERNS = [
-    (re.compile(r"^#\s+", re.MULTILINE), "H1 Title"),
-    (re.compile(r"^##\s+.*(Key Components|Project Overview)", re.MULTILINE | re.IGNORECASE), "## Key Components"),
-    (re.compile(r"^##\s+.*Status", re.MULTILINE | re.IGNORECASE), "## Status"),
-]
 
 
 class ValidationError(Exception):
@@ -70,55 +60,6 @@ def find_projects(root: Path) -> List[Path]:
             projects.append(item)
     return sorted(projects)
 
-
-def has_index_file(project_path: Path) -> Tuple[bool, Path | None]:
-    """Check if project has index file matching pattern."""
-    for file in project_path.glob("00_Index_*.md"):
-        return True, file
-    return False, None
-
-
-def validate_index_content(index_path: Path) -> List[str]:
-    """Validate index file content. Returns list of errors."""
-    errors = []
-    content = index_path.read_text()
-    
-    # Check for YAML frontmatter
-    if not content.startswith("---"):
-        errors.append("Missing YAML frontmatter (must start with '---')")
-        return errors  # Can't continue without frontmatter
-    
-    # Extract frontmatter
-    try:
-        parts = content.split("---", 2)
-        if len(parts) < 3:
-            errors.append("Invalid YAML frontmatter (must have closing '---')")
-            return errors
-        
-        frontmatter = parts[1]
-        body = parts[2]
-    except Exception as e:
-        errors.append(f"Failed to parse frontmatter: {e}")
-        return errors
-    
-    # Check required tags
-    for required_tag in REQUIRED_TAGS:
-        if required_tag not in frontmatter:
-            errors.append(f"Missing required tag: {required_tag}")
-    
-    # Check required sections
-    for pattern, section_name in REQUIRED_SECTION_PATTERNS:
-        if not pattern.search(body):
-            errors.append(f"Missing required section: {section_name}")
-    
-    # Check for 3-sentence summary (heuristic: body should have substance before first ##)
-    if "## Key Components" in body:
-        summary_section = body.split("## Key Components")[0]
-        # Should have H1 title and some content
-        if summary_section.count("\n") < 5:
-            errors.append("Summary section appears too short (need 3-sentence description)")
-    
-    return errors
 
 
 def is_documentation_example(line: str) -> bool:
@@ -222,16 +163,7 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
     project_name = project_path.name
     errors = []
     
-    # 1. Check for index file
-    has_index, index_path = has_index_file(project_path)
-    if not has_index:
-        errors.append("Missing index file (00_Index_*.md)")
-    else:
-        # Validate index content
-        index_errors = validate_index_content(index_path)
-        errors.extend(index_errors)
-    
-    # 2. Check for mandatory files
+    # 1. Check for mandatory files
     for filename in MANDATORY_FILES:
         if not (project_path / filename).exists():
             errors.append(f"Missing mandatory file: {filename}")
@@ -300,11 +232,7 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
             if not file.endswith((".md", ".py", ".sh", ".js", ".ts")):
                 continue
             
-            # Skip index files for placeholder check (they pull from other files)
-            if file.startswith("00_Index_") and file.endswith(".md"):
-                is_placeholder_skip_file = True
-            else:
-                is_placeholder_skip_file = file in placeholder_skip_files
+            is_placeholder_skip_file = file in placeholder_skip_files
                 
             file_path = Path(root) / file
             rel_file_path = file_path.relative_to(project_path)
@@ -348,7 +276,7 @@ def validate_project(project_path: Path, verbose: bool = True) -> bool:
 
     if errors:
         if verbose:
-            status_icon = "⚠️ " if has_index else "❌ "
+            status_icon = "❌ "
             print(f"{status_icon} {project_name}")
             for error in errors:
                 print(f"   - {error}")
@@ -374,7 +302,6 @@ def main() -> None:
         print("Usage:")
         print("  ./scripts/validate_project.py [project_name]  # Check specific project")
         print("  ./scripts/validate_project.py --all           # Check all projects")
-        print("  ./scripts/validate_project.py --missing       # List missing indexes")
         sys.exit(0 if len(sys.argv) > 1 else 1)
     
     arg = sys.argv[1]
@@ -401,36 +328,12 @@ def main() -> None:
         print(f"Summary: {valid_count}/{total} projects valid ({invalid_count} need attention)")
         
         if invalid_count > 0:
-            print(f"\n⚠️  {invalid_count} projects need index files or fixes")
-            print("Run with --missing to see which projects need indexes")
+            print(f"\n⚠️  {invalid_count} projects have validation issues")
             sys.exit(1)
         else:
-            print("\n✅ All projects have valid index files!")
+            print("\n✅ All projects passed validation!")
             sys.exit(0)
-    
-    elif arg == "--missing":
-        # List projects without indexes
-        print("Projects missing index files:\n")
-        projects = find_projects(PROJECTS_ROOT)
-        
-        missing = []
-        for project in projects:
-            has_index, _ = has_index_file(project)
-            if not has_index:
-                missing.append(project.name)
-        
-        if missing:
-            for name in missing:
-                print(f"  - {name}")
-            
-            print(f"\n{len(missing)} projects need index files")
-            print("\nTo create indexes:")
-            print("  ./scripts/reindex_projects.py --missing")
-        else:
-            print("✅ All projects have index files!")
-        
-        sys.exit(len(missing))  # Exit code = number of missing
-    
+
     else:
         # Validate specific project
         # First try the raw name

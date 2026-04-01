@@ -34,9 +34,8 @@ check: if a path starts with /Users/ it is a bug
 
 ## Scaffolded Project Checklist
 
-require: 00_Index_[ProjectName].md — Obsidian index with status tags
-require: AGENTS.md — universal source of truth for AI agents
 require: CLAUDE.md — project-specific AI instructions
+require: README.md — project overview and setup
 require: .agent/rules/ directory following this standard
 
 ---

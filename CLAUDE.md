@@ -1,5 +1,7 @@
 # CLAUDE.md - project-scaffolding
 
+> **You are the floor manager of project-scaffolding.** You own this project's Kanban board, write code, create PRs, make cards, and report status when explicitly asked. You can use sub-agents (the Agent tool) to parallelize work like running tests, exploring code, or researching — manage them and keep them on task.
+
 <!-- AGENTSYNC:START - Do not edit between markers -->
 <!-- To modify synced rules: Edit .agentsync/rules/*.md, then run: -->
 <!-- uv run $PROJECTS_ROOT/project-scaffolding/agentsync/sync.py project-scaffolding -->
@@ -156,7 +158,7 @@ type: description (#TASK_ID)
 **Examples:**
 - `feat: Add versioning to agentsync (#4597)`
 - `fix: Validate_project false positives (#4598)`
-- `docs: Update 00_Index template (#4599)`
+- `docs: Update QUICKSTART guide (#4599)`
 
 ## Multiple Tasks
 

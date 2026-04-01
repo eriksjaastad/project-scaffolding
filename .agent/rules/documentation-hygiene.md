@@ -20,7 +20,6 @@ Every project needs exactly these, as defined in the [PROJECT_STRUCTURE_STANDARD
 |------|---------|----------|
 | `README.md` | What is this, how to run it | 100 lines |
 | `AGENTS.md` | AI collaboration rules | 200 lines |
-| `00_Index_*.md` | Project metadata (See [PROJECT_INDEXING_SYSTEM](../PROJECT_INDEXING_SYSTEM.md)) | 50 lines |
 | `TODO.md` | Current work, backlog | No limit |
 
 ---

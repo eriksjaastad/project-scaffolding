@@ -18,8 +18,7 @@ What "Production Ready" means in this ecosystem.
 
 ### Governance
 - Project Tracker ontology-aware
-- `00_Index_*.md` up to date
-- AGENTS.md synced via agentsync
+- CLAUDE.md present with behavior rules
 
 ### Validation
 - `warden_audit.py --fast` passes
