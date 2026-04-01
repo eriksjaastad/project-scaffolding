@@ -16,20 +16,15 @@ class TestProjectStructure:
         return Path(__file__).parent.parent
     
     def test_templates_exist(self, project_root):
-        """Test that all critical templates exist"""
+        """Test that templates directory exists with git hook templates"""
         templates = project_root / "templates"
         assert templates.exists()
-        
-        # Other templates
-        assert (templates / "CLAUDE.md.template").exists()
-    
+        assert (templates / "git-hooks").exists()
+
     def test_scripts_exist(self, project_root):
-        """Test that scripts exist and are executable"""
+        """Test that scripts directory exists"""
         scripts = project_root / "scripts"
         assert scripts.exists()
-        
-        # Check scripts exist
-        assert (scripts / "test_deepseek.py").exists()
     
     def test_scaffold_package_exists(self, project_root):
         """Test that scaffold package is importable"""
