@@ -4,7 +4,6 @@ import sys
 import subprocess
 import shutil
 from enum import Enum
-from typing import cast
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -16,44 +15,16 @@ class Severity(Enum):
     P2 = "WARNING"   # Allow commit - acceptable with context
     P3 = "INFO"      # Allow commit - informational only
 
-def is_tier_1_project(index_path: pathlib.Path) -> bool:
+def is_tier_1_project(project_root: pathlib.Path) -> bool:
     """
-    Determines if the given markdown index file represents a Tier 1 (Full Stack/Code) project.
+    Determines if the given project directory is a Tier 1 (code) project.
+    Detects by presence of code manifests (pyproject.toml, package.json, Cargo.toml, go.mod).
     """
-    if not index_path.exists():
-        return False
-    
-    tech_languages = {'python', 'javascript', 'java', 'c++', 'ruby', 'php', 'typescript', 'rust', 'go'}
-    
-    try:
-        with index_path.open('r') as f:
-            content = f.read()
-            content_lower = content.lower()
-            
-        # 1. Explicit tags
-        if '#type/code' in content_lower or '#type/project' in content_lower:
-            return True
-            
-        if any(f'tech/{lang}' in content_lower for lang in tech_languages):
-            return True
-
-        # 2. Check headers and list items in the first 50 lines
-        lines = cast(list[str], content.split('\n'))
-        for line in lines[:50]:
-            line_strip = line.strip().lower()
-            if not line_strip:
-                continue
-                
-            # If it's a header or a list item
-            if line_strip.startswith('#') or line_strip.startswith('- ') or line_strip.startswith('* '):
-                if any(lang in line_strip for lang in tech_languages):
-                    return True
-                    
-        return False
-        
-    except Exception as e:
-        logger.error(f"Error reading file {index_path}: {e}")
-        return False
+    code_markers = [
+        "pyproject.toml", "package.json", "Cargo.toml", "go.mod",
+        "Gemfile", "pom.xml", "build.gradle", "Makefile",
+    ]
+    return any((project_root / marker).exists() for marker in code_markers)
 
 def check_dependencies(project_root: pathlib.Path) -> bool:
     """Checks if a Tier 1 project has a dependency manifest."""
@@ -263,17 +234,22 @@ def run_audit(root_dir: pathlib.Path, use_fast: bool = False) -> bool:
     p1_issues = 0  # Error
     p2_issues = 0  # Warning
     
-    # Find all project roots by looking for 00_Index_*.md files
-    for index_path in root_dir.rglob('00_Index_*.md'):
-        # Skip indices in templates
-        if any(part in index_path.parts for part in ['templates', 'venv', '.git']):
+    # Find project roots: immediate subdirectories that contain a .git dir or code manifest
+    skip_dirs = {'venv', '.git', '__pycache__', 'node_modules', 'templates', '_handoff'}
+    for child in sorted(root_dir.iterdir()):
+        if not child.is_dir() or child.name.startswith('.') or child.name in skip_dirs:
             continue
-            
+        # A project has either a .git dir or a code manifest
+        if not (child / ".git").is_dir() and not any((child / m).exists() for m in [
+            "pyproject.toml", "package.json", "Cargo.toml", "go.mod", "CLAUDE.md"
+        ]):
+            continue
+
         projects_found += 1
-        project_root = index_path.parent
+        project_root = child
         project_name = project_root.name
-        
-        is_tier_1 = is_tier_1_project(index_path)
+
+        is_tier_1 = is_tier_1_project(project_root)
         tier_label = "Tier 1 (Code)" if is_tier_1 else "Tier 2 (Other)"
         
         logger.info(f"Auditing Project: {project_name} [{tier_label}]")
