@@ -403,7 +403,6 @@ created: {{DATE}}
 
 ### Documentation Links
 - Use standard markdown links: `[Document Name](path/to/document.md)`
-- Link to the project index file: `00_Index_*.md`
 
 ---
 

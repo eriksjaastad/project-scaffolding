@@ -17,7 +17,7 @@ type: description (#TASK_ID)
 **Examples:**
 - `feat: Add versioning to agentsync (#4597)`
 - `fix: Validate_project false positives (#4598)`
-- `docs: Update 00_Index template (#4599)`
+- `docs: Update QUICKSTART guide (#4599)`
 
 ## Multiple Tasks
 
