@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Pre-push hook: Run AgentSync + Warden safety audit before allowing push
+# Pre-push hook: Run Warden safety audit before allowing push
 # This is a SECOND line of defense after pre-commit
 #
 # Why both pre-commit AND pre-push?
@@ -14,105 +14,9 @@
 
 set -euo pipefail
 
-run_python() {
-    if [ -x "$HOME/.local/bin/uv" ]; then
-        "$HOME/.local/bin/uv" run "$@"
-    elif command -v uv &>/dev/null; then
-        uv run "$@"
-    else
-        python3 "$@"
-    fi
-}
-
-find_scaffolding_root() {
-    local project_root="$1"
-    local default_projects_root
-    default_projects_root="$(cd "$project_root/.." && pwd)"
-
-    if [ -f "$project_root/agentsync/sync.py" ]; then
-        printf '%s\n' "$project_root"
-        return 0
-    fi
-
-    if [ -n "${PROJECT_SCAFFOLDING_ROOT:-}" ] && [ -f "$PROJECT_SCAFFOLDING_ROOT/agentsync/sync.py" ]; then
-        printf '%s\n' "$PROJECT_SCAFFOLDING_ROOT"
-        return 0
-    fi
-
-    if [ -n "${PROJECTS_ROOT:-}" ] && [ -f "$PROJECTS_ROOT/project-scaffolding/agentsync/sync.py" ]; then
-        printf '%s\n' "$PROJECTS_ROOT/project-scaffolding"
-        return 0
-    fi
-
-    if [ -f "$default_projects_root/project-scaffolding/agentsync/sync.py" ]; then
-        printf '%s\n' "$default_projects_root/project-scaffolding"
-        return 0
-    fi
-
-    return 1
-}
-
-run_agentsync_rules() {
-    local project_root project_name scaffolding_root sync_script
-    local version_status_before version_status_after generated_status
-
-    project_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-    project_name="$(basename "$project_root")"
-    cd "$project_root"
-
-    if [ ! -d ".agentsync/rules" ]; then
-        echo "No .agentsync/rules directory found - skipping AgentSync auto-sync"
-        return 0
-    fi
-
-    if ! scaffolding_root="$(find_scaffolding_root "$project_root")"; then
-        echo "WARNING: Could not locate project-scaffolding - skipping AgentSync auto-sync"
-        echo "Set PROJECTS_ROOT or PROJECT_SCAFFOLDING_ROOT to enable it."
-        return 0
-    fi
-
-    sync_script="$scaffolding_root/agentsync/sync.py"
-    version_status_before="$(git status --porcelain -- .scaffolding-version || true)"
-
-    echo "Running AgentSync rules sync..."
-    if ! run_python "$sync_script" "$project_name" --components rules; then
-        echo ""
-        echo "PUSH BLOCKED: AgentSync failed"
-        echo "Fix the sync error above, then push again."
-        echo ""
-        exit 1
-    fi
-
-    generated_status="$(git status --porcelain -- CLAUDE.md .agent/rules/instructions.md || true)"
-    if [ -z "$generated_status" ]; then
-        version_status_after="$(git status --porcelain -- .scaffolding-version || true)"
-        if [ -z "$version_status_before" ] && [ -n "$version_status_after" ]; then
-            git restore --staged --worktree -- .scaffolding-version >/dev/null 2>&1 \
-                || git restore --worktree -- .scaffolding-version >/dev/null 2>&1 \
-                || true
-        fi
-        echo "AgentSync already up to date."
-        return 0
-    fi
-
-    echo ""
-    echo "PUSH BLOCKED: AgentSync regenerated files that are not committed yet"
-    echo ""
-    echo "$generated_status"
-    echo ""
-    echo "Review the regenerated files, then:"
-    echo "  git add CLAUDE.md .agent/rules/instructions.md .scaffolding-version"
-    echo "  git commit"
-    echo "  git push"
-    echo ""
-    exit 1
-}
-
 echo ""
 echo "PRE-PUSH SAFETY CHECK"
 echo "---------------------"
-
-run_agentsync_rules
 
 # Check if warden_audit.py exists (project has safety tooling)
 WARDEN_SCRIPT=""
@@ -125,12 +29,17 @@ fi
 if [ -n "$WARDEN_SCRIPT" ]; then
     echo "Running Warden safety audit..."
 
-    # Try uv first, fall back to python3
-    if command -v uv &> /dev/null; then
-        uv run python "$WARDEN_SCRIPT" --root . --fast
-    else
-        python3 "$WARDEN_SCRIPT" --root . --fast
-    fi
+    run_python() {
+        if [ -x "$HOME/.local/bin/uv" ]; then
+            "$HOME/.local/bin/uv" run "$@"
+        elif command -v uv &>/dev/null; then
+            uv run "$@"
+        else
+            python3 "$@"
+        fi
+    }
+
+    run_python "$WARDEN_SCRIPT" --root . --fast
 
     WARDEN_EXIT=$?
 
@@ -181,11 +90,11 @@ while read local_ref local_sha remote_ref remote_sha; do
     # Only block actual usage patterns like rmtree( or shutil.rmtree
     # Exclude: validation scripts, documentation, string literals describing patterns
     RMTREE_MATCHES=$(git diff "$range" 2>/dev/null | grep -E '^\+.*\brmtree\s*\(' || true)
-    
+
     if [ -n "$RMTREE_MATCHES" ]; then
         # Filter out known validation scripts and pattern definitions
         REAL_USAGE=$(echo "$RMTREE_MATCHES" | grep -v 'warden_audit\|validate_project\|dangerous.*patterns\|# .*rmtree\|".*rmtree\|'"'"'.*rmtree\|`.*rmtree' || true)
-        
+
         if [ -n "$REAL_USAGE" ]; then
             echo ""
             echo "PUSH BLOCKED: Found 'rmtree()' call in changes"

@@ -3,13 +3,9 @@ CLI for Project Scaffolding automation system
 """
 
 import asyncio
-import re
-import shutil
-import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
-from typing import List, Optional, Dict
+from typing import List, Optional
 
 if sys.version_info >= (3, 11):
     import tomllib
@@ -21,7 +17,6 @@ from dotenv import load_dotenv
 from rich.console import Console
 
 from scaffold.alerts import send_discord_alert
-from scaffold.constants import PROTECTED_PROJECTS
 
 
 def get_version() -> str:
@@ -37,246 +32,16 @@ def get_version() -> str:
     return "0.1.0"
 
 
-# from scaffold.review import ReviewConfig, create_orchestrator
-
 # Load environment variables from .env
 load_dotenv()
 
 console = Console(force_terminal=False)
 
 
-def _get_context(project_name: str) -> Dict[str, str]:
-    """Derive context variables for template substitution."""
-    today = datetime.now().strftime("%Y-%m-%d")
-    
-    # Try to find existing context from 00_Index or project.yaml if we're updating
-    # For now, we derive from project name and defaults
-    return {
-        "PROJECT_NAME": project_name,
-        "PROJECT_DESCRIPTION": "Brief description of the project's purpose",
-        "PROJECT_INTENT": "Define project intent (what is it for / what does success look like / how should that influence decisions)",
-        "DATE": today,
-        "STATUS": "Active",
-        "PHASE": "Foundation",
-        "PHASE_NUMBER": "1",
-        "PHASE_NAME": "Initial Setup",
-        "PREVIOUS_PHASE": "None",
-        "DATE_RANGE": today,
-        "PREVIOUS_DATE": today,
-        "TASK_GROUP_NAME": "Core Implementation",
-        "AI_NAME": "Claude",
-        "MODEL": "Claude 3.5 Sonnet",
-        "ROLE": "floor-manager",
-        "DESCRIPTIVE_TITLE": "Task Implementation",
-        "CRON_EXPRESSION": "0 0 * * *",
-        "COMMAND": "python scripts/validate_project.py",
-        "SERVICE_NAME": "GitHub",
-        "LANGUAGE": "Python",
-        "LANGUAGE_VERSION": "3.11+",
-        "FRAMEWORKS": "None",
-        "RUN_COMMAND": "uv run main.py",
-        "SETUP_COMMAND": "pip install -r requirements.txt",
-        "TEST_COMMAND": "uv run -m pytest",
-        "MAIN_CODE_DIR": "src",
-        "CONSTRAINTS": "None",
-        "AI_STRATEGY": "Local-First",
-        "CONFIG_NAME": "default",
-        "FILE_CONTENT": "",
-        "VENV_ACTIVATION": "source venv/bin/activate",
-        "WAIT_TIME": "2",
-        "CONSTRAINT_1": "None",
-        "CONSTRAINT_2": "None",
-    }
-
-
-def _substitute_placeholders(content: str, context: Dict[str, str], filename: str) -> str:
-    """Substitute {{VAR}} or {var} placeholders in content."""
-    
-    # Mandatory variables that MUST exist in context if found in {{VAR}} format
-    MANDATORY_VARS = {
-        "PROJECT_NAME", "PROJECT_DESCRIPTION", "PROJECT_INTENT", "DATE", "STATUS", "PHASE",
-        "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
-        "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
-        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME",
-        "LANGUAGE", "LANGUAGE_VERSION", "FRAMEWORKS", "RUN_COMMAND",
-        "TEST_COMMAND", "MAIN_CODE_DIR", "CONSTRAINTS", "AI_STRATEGY",
-        "VENV_ACTIVATION", "WAIT_TIME"
-    }
-
-    # 1. Substitute {{VAR}}
-    def replace_double(match):
-        var_name = match.group(1).upper()
-        if var_name in context:
-            return context[var_name]
-        
-        # Fail loud ONLY if it's a mandatory scaffolding variable
-        if var_name in MANDATORY_VARS:
-            raise click.ClickException(f"Error: No context value for mandatory placeholder '{{{{{var_name}}}}}' in {filename}")
-        
-        # Otherwise, keep as is (might be a project-specific placeholder)
-        return match.group(0)
-
-    # 2. Substitute {var} - Optional substitution, no failure if missing
-    def replace_single(match):
-        var_name = match.group(1).upper()
-        if var_name in context:
-            return context[var_name]
-        return match.group(0) # Keep as is if not in context
-
-    # Pattern for {{VAR}}
-    double_pattern = re.compile(r"\{\{([A-Z0-9_]+)\}\}")
-    content = double_pattern.sub(replace_double, content)
-    
-    # Pattern for {var}
-    single_pattern = re.compile(r"\{([a-z0-9_]+)\}")
-    content = single_pattern.sub(replace_single, content)
-    
-    return content
-
-
-def _copy_agentsync_rules(
-    template_dir: Path,
-    target_dir: Path,
-    context: Dict[str, str],
-    dry_run: bool = False,
-) -> List[str]:
-    """
-    Copy .agentsync/rules/ templates to target project with placeholder substitution.
-
-    Args:
-        template_dir: Path to project-scaffolding templates directory
-        target_dir: Path to target project root
-        context: Variables for placeholder substitution
-        dry_run: Preview changes without writing
-
-    Returns:
-        List of actions taken (for logging)
-    """
-    actions = []
-
-    agentsync_src = template_dir / ".agentsync" / "rules"
-    agentsync_dst = target_dir / ".agentsync" / "rules"
-
-    if not agentsync_src.exists():
-        actions.append(f"[yellow]⚠️  No .agentsync/rules/ templates found at {agentsync_src}[/yellow]")
-        return actions
-
-    # Create target directory structure
-    if not dry_run:
-        agentsync_dst.mkdir(parents=True, exist_ok=True)
-    actions.append(f"[dim]📁 Ensuring {agentsync_dst} exists[/dim]")
-
-    # Find all template files
-    templates = list(agentsync_src.glob("*.md.template")) + list(agentsync_src.glob("*.md"))
-
-    for template_path in templates:
-        # Determine output filename (strip .template suffix if present)
-        out_name = template_path.name
-        if out_name.endswith(".template"):
-            out_name = out_name[:-9]  # Remove ".template"
-
-        out_path = agentsync_dst / out_name
-
-        # Read template and substitute placeholders
-        template_content = template_path.read_text()
-        try:
-            substituted = _substitute_placeholders(template_content, context, template_path.name)
-        except click.ClickException as e:
-            actions.append(f"[red]❌ Error processing {template_path.name}: {e}[/red]")
-            continue
-
-        if dry_run:
-            action = "Would update" if out_path.exists() else "Would create"
-            actions.append(f"[cyan]📝 {action} {out_path} (from {template_path.name})[/cyan]")
-        else:
-            # Backup existing file before overwriting
-            if out_path.exists():
-                backup_path = out_path.with_suffix(out_path.suffix + ".backup")
-                shutil.copy2(out_path, backup_path)
-                actions.append(f"[yellow]💾 Backed up {out_path.name} → {backup_path.name}[/yellow]")
-
-            out_path.write_text(substituted)
-            action = "Updated" if out_path.exists() else "Created"
-            actions.append(f"[green]✅ {action} {out_path}[/green]")
-
-    return actions
-
-
-def _run_agentsync(
-    project_name: str,
-    dry_run: bool = False,
-) -> tuple[bool, List[str]]:
-    """
-    Run agentsync to sync .agentsync/rules/ to tool configs.
-
-    Args:
-        project_name: Name of the project to sync
-        dry_run: Preview without running
-
-    Returns:
-        Tuple of (success, list of log messages)
-    """
-    actions = []
-
-    # AgentSync lives in project-scaffolding/agentsync/ (same repo as this CLI).
-    # During scaffold apply we intentionally run only the rules component here,
-    # because _add_version_metadata() overwrites .scaffolding-version later in
-    # the apply flow and would otherwise clobber AGENTS/governance sync metadata.
-    agentsync_script = Path(__file__).parent.parent / "agentsync" / "sync.py"
-
-    if not agentsync_script.exists():
-        actions.append(f"[yellow]⚠️  AgentSync not found at {agentsync_script}[/yellow]")
-        actions.append("[yellow]   Skipping agentsync (tool configs won't be updated)[/yellow]")
-        return False, actions
-
-    if dry_run:
-        actions.append(
-            f"[cyan]🔄 Would run: uv run {agentsync_script} {project_name} --components rules[/cyan]"
-        )
-        return True, actions
-
-    # Run agentsync
-    actions.append(f"[blue]🔄 Running agentsync for {project_name}...[/blue]")
-
-    try:
-        # Use uv run to ensure consistent Python environment
-        result = subprocess.run(
-            ["uv", "run", str(agentsync_script), project_name, "--components", "rules"],
-            capture_output=True,
-            text=True,
-            timeout=60,
-            check=False,
-        )
-
-        if result.returncode == 0:
-            actions.append("[green]✅ AgentSync completed successfully[/green]")
-            if result.stdout.strip():
-                for line in result.stdout.strip().split("\n"):
-                    actions.append(f"[dim]   {line}[/dim]")
-            return True, actions
-        else:
-            actions.append(f"[red]❌ AgentSync failed (exit code {result.returncode})[/red]")
-            if result.stderr.strip():
-                for line in result.stderr.strip().split("\n"):
-                    actions.append(f"[red]   {line}[/red]")
-            return False, actions
-
-    except subprocess.TimeoutExpired:
-        actions.append("[red]❌ AgentSync timed out after 60 seconds[/red]")
-        return False, actions
-    except FileNotFoundError:
-        actions.append("[yellow]⚠️  'uv' command not found - skipping agentsync[/yellow]")
-        actions.append("[yellow]   Install uv or run agentsync manually[/yellow]")
-        return False, actions
-    except Exception as e:
-        actions.append(f"[red]❌ AgentSync error: {e}[/red]")
-        return False, actions
-
-
 @click.group()
 @click.version_option(version=get_version())
 def cli() -> None:
-    """Project Scaffolding - Automated Multi-AI Review & Build System"""
+    """Project Scaffolding - Health Checks & Multi-AI Review System"""
     pass
 
 
@@ -351,82 +116,73 @@ def review(
     google_key: Optional[str],
     deepseek_key: Optional[str],
     ollama_model: str,
-    ollama_host: str
+    ollama_host: str,
 ) -> None:
-    """
-    Run multi-AI review on document or code
-    
+    """Run multi-AI review on a document or code.
+
     Example:
-        scaffold review --type document --input docs/VISION.md --round 1
+        scaffold review --type document --input docs/PRD.md
+        scaffold review --type code --input src/main.py --round 2
     """
-    # Determine output directory
-    if output_dir is None:
-        if review_type == "document":
-            output_dir = Path("docs/sprint_reviews")
-        else:
-            output_dir = Path("docs/code_reviews")
-    
-    # Check for Definition of Done (DoD) in input file
-    try:
-        content = input_path.read_text()
-        if "Definition of Done" not in content and "DoD" not in content:
-            console.print("[red]Error: Input file missing 'Definition of Done' or 'DoD' section.[/red]")
-            console.print("[yellow]Standard: All code review requests MUST include a Definition of Done for tracking.[/yellow]")
-            return
-    except Exception as e:
-        console.print(f"[red]Error reading input file: {e}[/red]")
-        return
-    
-    # Get prompt directory
-    prompt_base = Path("prompts/active")
-    if review_type == "document":
-        prompt_dir = prompt_base / "document_review"
-    else:
-        prompt_dir = prompt_base / "code_review"
-    
-    if not prompt_dir.exists():
-        console.print(f"[red]Error: Prompt directory not found: {prompt_dir}[/red]")
-        console.print("[yellow]Hint: Create prompts in prompts/active/[/yellow]")
-        return
-    
-    # Import here to avoid dependency issues when running other commands
     from scaffold.review import create_orchestrator
 
+    # Set output directory based on review type
+    if output_dir is None:
+        if review_type == "document":
+            output_dir = Path("docs/reviews")
+        else:
+            output_dir = Path("docs/code_reviews")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     # Load review configurations
-    configs = _load_review_configs(prompt_dir, openai_key, anthropic_key, google_key, deepseek_key, ollama_model)
-    
-    if not configs:
-        console.print("[red]Error: No review configurations found[/red]")
-        console.print(f"[yellow]Hint: Add prompt files to {prompt_dir}[/yellow]")
+    prompt_dir = Path(__file__).parent / "prompts" / review_type
+    if not prompt_dir.exists():
+        console.print(f"[red]Error: No prompts found for review type '{review_type}'[/red]")
+        console.print(f"[red]Expected directory: {prompt_dir}[/red]")
         return
-    
-    # Create orchestrator
-    orchestrator = create_orchestrator(
-        openai_key=openai_key,
-        anthropic_key=anthropic_key,
-        google_key=google_key,
-        deepseek_key=deepseek_key,
-        ollama_host=ollama_host
+
+    configs = _load_review_configs(
+        prompt_dir,
+        openai_key,
+        anthropic_key,
+        google_key,
+        deepseek_key,
+        ollama_model
     )
-    
-    # Run review
+
+    if not configs:
+        console.print("[red]Error: No review configurations could be loaded (missing API keys?)[/red]")
+        return
+
+    console.print(f"\n[bold]Running {review_type} review (Round {round_number})[/bold]")
+    console.print(f"  Input: {input_path}")
+    console.print(f"  Output: {output_dir}")
+    console.print(f"  Reviewers: {len(configs)}\n")
+
+    # Run reviews
+    orchestrator = create_orchestrator(configs, ollama_host)
+
     try:
-        summary = asyncio.run(
-            orchestrator.run_review(
-                document_path=input_path,
-                configs=configs,
-                round_number=round_number,
-                output_dir=output_dir
-            )
-        )
-        
-        # Ask if user wants to continue to next round
-        if round_number < 3:  # Assume max 3 rounds
-            next_round = round_number + 1
-            estimated_cost = summary.total_cost * 1.05  # Assume similar cost
-            
-            console.print("\n[bold]Next Steps:[/bold]")
-            console.print(f"  1. Review feedback in: {output_dir / f'round_{round_number}'}")
+        content = input_path.read_text()
+        results = asyncio.run(orchestrator.run_reviews(content, round_number))
+
+        # Save results
+        for result in results:
+            safe_name = result.reviewer_name.lower().replace(" ", "_")
+            output_file = output_dir / f"round_{round_number}_{safe_name}.md"
+            output_file.write_text(result.content)
+            console.print(f"  [green]✓[/green] {result.reviewer_name} → {output_file}")
+
+        # Calculate cost estimate
+        total_tokens = sum(r.tokens_used for r in results if r.tokens_used)
+        estimated_cost = total_tokens * 0.00001  # Rough estimate
+
+        # Summary
+        next_round = round_number + 1
+        if round_number < 3:
+            console.print("\n[bold yellow]Next steps:[/bold yellow]")
+            console.print(f"  1. Review feedback in {output_dir}/")
             console.print("  2. Revise document based on feedback")
             console.print(f"  3. Run Round {next_round}:")
             console.print(f"     [cyan]scaffold review --type {review_type} --input {input_path} --round {next_round}[/cyan]")
@@ -435,912 +191,10 @@ def review(
             console.print("\n[bold green]Review process complete![/bold green]")
             console.print(f"  Total rounds: {round_number}")
             console.print(f"  Reviews saved to: {output_dir}\n")
-        
+
     except Exception as e:
         console.print(f"[red]Error running review: {e}[/red]")
         raise
-
-
-@cli.command()
-@click.argument("project_name")
-@click.option("--dry-run", is_flag=True, help="Preview changes without writing anything")
-@click.option("--verify-only", is_flag=True, help="Just check for $SCAFFOLDING refs, no copies")
-def apply(project_name: str, dry_run: bool, verify_only: bool) -> None:
-    """
-    Apply scaffolding to a target project to make it standalone.
-    
-    Example:
-        scaffold apply project-tracker
-    """
-    # 0. Protection Check
-    if project_name in PROTECTED_PROJECTS:
-        console.print(f"[bold red]ERROR: {project_name} is a PROTECTED PROJECT.[/bold red]")
-        console.print("[red]These projects are on the 'Do Not Touch' list and cannot be scaffolded or modified by automatic services.[/red]")
-        return
-
-    scaffold_root = Path(__file__).parent.parent
-    
-    # Target resolution: try direct, then hyphen-to-space, then in parent dir
-    target_dir = Path(project_name)
-    if not target_dir.exists():
-        # Try in parent directory (standard project layout)
-        target_dir = scaffold_root.parent / project_name
-    
-    if not target_dir.exists() and "-" in project_name:
-        # Try with space instead of hyphen
-        alt_name = project_name.replace("-", " ")
-        alt_target = scaffold_root.parent / alt_name
-        if alt_target.exists():
-            target_dir = alt_target
-            project_name = alt_name
-
-    if not target_dir.exists():
-        if not dry_run:
-            console.print(f"[yellow]Creating directory: {target_dir}[/yellow]")
-            target_dir.mkdir(parents=True, exist_ok=True)
-        else:
-            console.print(f"[yellow]Would create directory: {target_dir}[/yellow]")
-
-    console.print(f"\n[bold]Applying scaffolding to {project_name}...[/bold]\n")
-    if dry_run:
-        console.print("[yellow]DRY RUN: No changes will be made.[/yellow]\n")
-
-    # Check for existing version
-    version_file = target_dir / ".scaffolding-version"
-    current_version = get_version()
-    rules_version = get_rules_version()
-    if version_file.exists():
-        try:
-            import json
-            data = json.loads(version_file.read_text())
-            old_version = data.get("scaffolding_version", "0.0.0")
-            old_rules_version = data.get("rules_version", "0.0.0")
-            
-            if old_version < current_version:
-                console.print(f"[yellow]⚠️  Updating project from scaffolding version {old_version} to {current_version}[/yellow]")
-            elif old_version > current_version:
-                console.print(f"[red]⚠️  Warning: Project has newer scaffolding version ({old_version}) than this CLI ({current_version})[/red]")
-            
-            if old_rules_version < rules_version:
-                console.print(f"[yellow]⚠️  Updating project from rules version {old_rules_version} to {rules_version}[/yellow]")
-            elif old_rules_version > rules_version:
-                console.print(f"[red]⚠️  Warning: Project has newer rules version ({old_rules_version}) than this CLI ({rules_version})[/red]")
-                
-            if old_version == current_version and old_rules_version == rules_version:
-                console.print(f"[blue]ℹ️  Project is already at version {current_version} (rules: {rules_version})[/blue]")
-        except Exception:
-            pass
-
-    # 1. Verification Only mode
-    if verify_only:
-        _verify_references(target_dir)
-        return
-
-    # 2. Copy scripts
-    console.print("[bold]Copying scripts...[/bold]")
-    scripts_to_copy = [
-        "scripts/warden_audit.py",
-        "scripts/validate_project.py"
-    ]
-    
-    target_scripts_dir = target_dir / "scripts"
-    if not dry_run:
-        target_scripts_dir.mkdir(parents=True, exist_ok=True)
-
-    for script in scripts_to_copy:
-        src = scaffold_root / script
-        dst = target_dir / script
-        _copy_file(src, dst, dry_run)
-
-    # Special case: pre_review_scan.sh
-    pre_review_src = target_dir / "scripts/pre_review_scan.sh"
-    _create_pre_review_scan(pre_review_src, project_name, dry_run)
-
-    # 3. Copy docs
-    console.print("\n[bold]Copying docs...[/bold]")
-    docs_to_copy = [
-        (".agent/rules/governance.md", ".agent/rules/governance.md"),
-        (".agent/rules/code-review-standard.md", ".agent/rules/code-review-standard.md"),
-        (".agent/rules/learning-loop-pattern.md", ".agent/rules/learning-loop-pattern.md")
-    ]
-    
-    for src_rel, dst_rel in docs_to_copy:
-        src = scaffold_root / src_rel
-        dst = target_dir / dst_rel
-        if not dry_run:
-            dst.parent.mkdir(parents=True, exist_ok=True)
-        _copy_file(src, dst, dry_run)
-
-    # 4. Copy .agentsync/rules/ templates
-    console.print("\n[bold]Copying .agentsync/rules/...[/bold]")
-    context = _get_context(project_name)
-    agentsync_actions = _copy_agentsync_rules(
-        template_dir=scaffold_root / "templates",
-        target_dir=target_dir,
-        context=context,
-        dry_run=dry_run,
-    )
-    for action in agentsync_actions:
-        console.print(f"  {action}")
-
-    # 5. Run agentsync to sync rules to tool configs
-    console.print("\n[bold]Running agentsync...[/bold]")
-    agentsync_success, agentsync_logs = _run_agentsync(
-        project_name=project_name,
-        dry_run=dry_run,
-    )
-    for log in agentsync_logs:
-        console.print(f"  {log}")
-
-    # 6. Update templates with npm-like marker pattern
-    # NOTE: CLAUDE.md is managed by AgentSync (step 5)
-    # Do NOT add templates for them here - it causes duplication
-    console.print("\n[bold]Updating/creating from templates...[/bold]")
-
-    # Markers for scaffold-owned sections (content outside these is preserved)
-    # This follows the same pattern as agentsync for consistency
-    SCAFFOLD_START = "<!-- SCAFFOLD:START - Do not edit between markers -->"
-    SCAFFOLD_END = "<!-- SCAFFOLD:END - Custom content below is preserved -->"
-
-    # Map files to their templates (None means no template available)
-    # IMPORTANT: CLAUDE.md is managed by AgentSync, not here
-    files_with_templates = {
-        "AGENTS.md": "templates/AGENTS.md.template",
-        "DECISIONS.md": "templates/DECISIONS.md.template",
-        "README.md": "templates/README.md.template",
-        ".gitignore": "templates/.gitignore.template",
-    }
-
-    for filename, template_path in files_with_templates.items():
-        file_path = target_dir / filename
-
-        template_full_path = scaffold_root / template_path if template_path else None
-
-        if template_full_path and not template_full_path.exists():
-            console.print(f"  [yellow]⚠️  Template not found for {filename}[/yellow]")
-            continue
-
-        if file_path.exists():
-            if template_path:
-                existing_content = file_path.read_text()
-                template_content = template_full_path.read_text()
-
-                # Perform substitution on template content
-                substituted_template = _substitute_placeholders(template_content, context, str(template_path))
-
-                # Check if file has our markers (npm-like update between markers)
-                if SCAFFOLD_START in existing_content and SCAFFOLD_END in existing_content:
-                    # UPDATE mode: Replace content between markers, preserve content outside
-                    console.print(f"  🔄 Updating {filename} (between markers)...")
-                    if not dry_run:
-                        # Extract content before START marker
-                        start_idx = existing_content.find(SCAFFOLD_START)
-                        content_before = existing_content[:start_idx].rstrip()
-
-                        # Extract content after END marker
-                        end_idx = existing_content.find(SCAFFOLD_END)
-                        content_after = existing_content[end_idx + len(SCAFFOLD_END):].lstrip('\n')
-
-                        # Build new content: before + markers + template + after
-                        new_content = f"{content_before}\n{SCAFFOLD_START}\n{substituted_template}\n{SCAFFOLD_END}"
-                        if content_after:
-                            new_content += f"\n{content_after}"
-
-                        file_path.write_text(new_content)
-                    _update_file_references(file_path, dry_run)
-                else:
-                    # Check for old-style marker to migrate
-                    OLD_MARKER = "<!-- project-scaffolding template appended -->"
-                    if OLD_MARKER in existing_content:
-                        # MIGRATION mode: Convert old marker format to new
-                        console.print(f"  🔄 Migrating {filename} to marker-based format...")
-                        if not dry_run:
-                            # Remove old marker and content after it
-                            old_idx = existing_content.find(OLD_MARKER)
-                            preserved_content = existing_content[:old_idx].rstrip()
-
-                            # Build new content with proper markers
-                            new_content = f"{SCAFFOLD_START}\n{substituted_template}\n{SCAFFOLD_END}\n\n{preserved_content}"
-                            file_path.write_text(new_content)
-                        _update_file_references(file_path, dry_run)
-                    else:
-                        # ADD mode: File exists without markers - add them (existing content becomes custom)
-                        console.print(f"  📝 Adding markers to {filename} (preserving existing as custom)...")
-                        if not dry_run:
-                            # Existing content becomes "custom content" after END marker
-                            new_content = f"{SCAFFOLD_START}\n{substituted_template}\n{SCAFFOLD_END}\n\n{existing_content}"
-                            file_path.write_text(new_content)
-                        _update_file_references(file_path, dry_run)
-            else:
-                # File exists but no template - just update references
-                _update_file_references(file_path, dry_run)
-        elif template_path:
-            # File missing but template available - create from template with markers
-            console.print(f"  📝 Creating {filename} from template...")
-            if not dry_run:
-                template_content = template_full_path.read_text()
-                # Perform substitution
-                substituted_content = _substitute_placeholders(template_content, context, str(template_path))
-                # Create with markers so future runs can update
-                content_with_markers = f"{SCAFFOLD_START}\n{substituted_content}\n{SCAFFOLD_END}"
-                file_path.write_text(content_with_markers)
-                # Also update references in the newly created file
-                _update_file_references(file_path, dry_run=False)
-        else:
-            # No template available
-            console.print(f"  ⏭️  Skipped {filename} (not found, no template)")
-
-    # 7. Add version metadata
-    console.print("\n[bold]Adding version metadata...[/bold]")
-    _add_version_metadata(target_dir, dry_run)
-
-    # 8. Final verification
-    console.print("\n[bold]Verifying...[/bold]")
-    _verify_references(target_dir)
-    _verify_no_placeholders(target_dir, project_name)
-
-    if not dry_run:
-        console.print(f"\n[bold green]✅ {project_name} is standalone (scaffolding_version: 1.0.0)[/bold green]\n")
-
-
-def _verify_no_placeholders(target_dir: Path, project_name: str) -> None:
-    """Verify that no mandatory {{VAR}} placeholders remain in scaffolded files."""
-    files_to_check = ["AGENTS.md", "CLAUDE.md", "README.md"]
-    found_any = False
-    
-    # Mandatory variables that SHOULD NOT remain in scaffolded files
-    MANDATORY_VARS = {
-        "PROJECT_NAME", "PROJECT_DESCRIPTION", "PROJECT_INTENT", "DATE", "STATUS", "PHASE",
-        "PHASE_NUMBER", "PHASE_NAME", "PREVIOUS_PHASE", "DATE_RANGE",
-        "PREVIOUS_DATE", "TASK_GROUP_NAME", "AI_NAME", "MODEL", "ROLE",
-        "CRON_EXPRESSION", "COMMAND", "SERVICE_NAME",
-        "LANGUAGE", "LANGUAGE_VERSION", "FRAMEWORKS", "RUN_COMMAND",
-        "TEST_COMMAND", "MAIN_CODE_DIR", "CONSTRAINTS", "AI_STRATEGY",
-        "VENV_ACTIVATION", "WAIT_TIME"
-    }
-    
-    # Pattern for {{VAR}}
-    pattern = re.compile(r"\{\{([A-Z0-9_]+)\}\}")
-    
-    for filename in files_to_check:
-        file_path = target_dir / filename
-        if not file_path.exists():
-            continue
-            
-        content = file_path.read_text()
-        matches = pattern.findall(content)
-        for match in matches:
-            if match in MANDATORY_VARS:
-                found_any = True
-                console.print(f"  [red]Error: Mandatory placeholder {{{{{match}}}}} remains in {filename}[/red]")
-    
-    if found_any:
-        msg = f"❌ **Scaffolding Failure** in project: `{project_name}`\nMandatory placeholders remain in scaffolded files."
-        send_discord_alert(msg)
-        raise click.ClickException("Verification failed: Mandatory placeholders remain.")
-    else:
-        console.print("  ✅ No mandatory placeholders found")
-
-
-def _migrate_index(index_path: Path, context: Dict[str, str], dry_run: bool) -> None:
-    """Ensure Index file has all required sections."""
-    if not index_path.exists():
-        return
-
-    content = index_path.read_text()
-    modified = False
-    
-    # 1. Check tags in frontmatter
-    if "map/project" not in content:
-        console.print(f"  🔄 Adding map/project tag to {index_path.name}...")
-        if not dry_run:
-            # Simple insertion after 'tags:'
-            content = re.sub(r"(tags:\s*\n)", r"\1    - map/project\n", content)
-            modified = True
-
-    # 2. Check for required sections
-    required_sections = [
-        ("## Key Components", "\n## Key Components\n- **Component 1**: Description\n- **Component 2**: Description\n"),
-        ("## Status", "\n## Status\nCurrent status and next steps.\n")
-    ]
-    
-    for section_title, template in required_sections:
-        if section_title not in content:
-            console.print(f"  🔄 Adding {section_title} section to {index_path.name}...")
-            if not dry_run:
-                content = content.rstrip() + "\n" + template
-                modified = True
-    
-    if modified and not dry_run:
-        index_path.write_text(content)
-
-
-def _copy_file(src: Path, dst: Path, dry_run: bool) -> None:
-    if not src.exists():
-        console.print(f"  [red]error[/red] Source not found: {src}")
-        return
-
-    # Skip if source and destination are the same file
-    if src.resolve() == dst.resolve():
-        console.print(f"  [blue]ℹ️  Skipping {dst.name} (source and destination are the same)[/blue]")
-        return
-
-    action = "Copying" if not dst.exists() else "Updating"
-    console.print(f"  {action} {dst.name}...")
-
-    if not dry_run:
-        if dst.exists():
-            backup = dst.with_suffix(dst.suffix + ".backup")
-            shutil.copy2(dst, backup)
-        shutil.copy2(src, dst)
-
-
-def _create_pre_review_scan(dst: Path, project_name: str, dry_run: bool) -> None:
-    template = """#!/bin/bash
-# pre_review_scan.sh - Run before code reviews or commits
-# Usage: ./scripts/pre_review_scan.sh
-
-set -e  # Exit on first error
-
-echo "=== Pre-Review Scan ==="
-echo ""
-
-# Get script directory and project root
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-
-cd "$PROJECT_ROOT"
-
-echo "1. Running Warden Security Audit (fast mode)..."
-python ./scripts/warden_audit.py --root . --fast
-WARDEN_EXIT=$?
-
-echo ""
-echo "2. Running Project Validation..."
-python ./scripts/validate_project.py {project_name}
-VALIDATE_EXIT=$?
-
-echo ""
-echo "=== Scan Complete ==="
-
-if [ $WARDEN_EXIT -ne 0 ] || [ $VALIDATE_EXIT -ne 0 ]; then
-    echo "FAILED: One or more checks failed"
-    exit 1
-else
-    echo "PASSED: All checks passed"
-    exit 0
-fi
-"""
-    content = template.replace("{project_name}", project_name)
-
-    action = "Creating" if not dst.exists() else "Updating"
-    console.print(f"  {action} pre_review_scan.sh...")
-
-    if not dry_run:
-        if dst.exists():
-            backup = dst.with_suffix(dst.suffix + ".backup")
-            dst.rename(backup)
-        dst.write_text(content)
-        dst.chmod(0o755)
-
-
-def _update_file_references(file_path: Path, dry_run: bool) -> None:
-    content = file_path.read_text()
-    
-    replacements = [
-        (r"\$SCAFFOLDING/scripts/", "./scripts/"),
-        (r"\$SCAFFOLDING/", "./"),
-    ]
-    
-    new_content = content
-    total_replacements = 0
-    for pattern, replacement in replacements:
-        new_content, count = re.subn(pattern, replacement, new_content)
-        total_replacements += count
-    
-    if total_replacements > 0:
-        console.print(f"  ✅ {file_path.name} - {total_replacements} replacements")
-        if not dry_run:
-            file_path.write_text(new_content)
-    else:
-        console.print(f"  ✅ {file_path.name} - 0 replacements (already clean)")
-
-
-def get_rules_version() -> str:
-    """Read rules version from templates/.agentsync/RULES_VERSION."""
-    try:
-        rules_version_path = Path(__file__).parent.parent / "templates" / ".agentsync" / "RULES_VERSION"
-        if rules_version_path.exists():
-            return rules_version_path.read_text().strip()
-    except Exception:
-        pass
-    return "1.0.0"
-
-
-def _add_version_metadata(target_dir: Path, dry_run: bool) -> None:
-    """Add version metadata to 00_Index and create .scaffolding-version file."""
-    # 1. Update 00_Index
-    index_files = list(target_dir.glob("00_Index_*.md"))
-    current_version = get_version()
-    rules_version = get_rules_version()
-    today = datetime.now().strftime("%Y-%m-%d")
-    
-    # Context for migration
-    context = {"DATE": today} # Minimal context for now
-
-    if index_files:
-        for index_file in index_files:
-            # NEW: Migrate index to include required sections
-            _migrate_index(index_file, context, dry_run)
-            
-            content = index_file.read_text()
-            if "scaffolding_version:" in content:
-                # Update existing version
-                new_content = re.sub(r"scaffolding_version: .*", f"scaffolding_version: {current_version}", content)
-                new_content = re.sub(r"scaffolding_date: .*", f"scaffolding_date: {today}", new_content)
-                if new_content != content:
-                    console.print(f"  ✅ Updated version in {index_file.name}")
-                    if not dry_run:
-                        index_file.write_text(new_content)
-            else:
-                # Add new version metadata
-                metadata = f"\nscaffolding_version: {current_version}\nscaffolding_date: {today}\n"
-                console.print(f"  ✅ Added version to {index_file.name}")
-                if not dry_run:
-                    with open(index_file, "a") as f:
-                        f.write(metadata)
-    else:
-        console.print("  [yellow]⏭️  Skipped 00_Index version metadata (no 00_Index_*.md found)[/yellow]")
-
-    # 2. Create .scaffolding-version JSON file
-    version_file = target_dir / ".scaffolding-version"
-    version_data = {
-        "scaffolding_version": current_version,
-        "applied_at": datetime.now().isoformat(),
-        "rules_version": rules_version
-    }
-    
-    if dry_run:
-        console.print(f"  [cyan]Would create {version_file.name} with version {current_version} and rules {rules_version}[/cyan]")
-    else:
-        import json
-        version_file.write_text(json.dumps(version_data, indent=2))
-        console.print(f"  ✅ Created {version_file.name}")
-
-
-def _verify_references(target_dir: Path) -> None:
-    files_to_check = ["AGENTS.md", "CLAUDE.md"]
-    found_any = False
-    
-    for filename in files_to_check:
-        file_path = target_dir / filename
-        if not file_path.exists():
-            continue
-            
-        content = file_path.read_text()
-        if "$SCAFFOLDING" in content:
-            found_any = True
-            lines = content.splitlines()
-            for i, line in enumerate(lines):
-                if "$SCAFFOLDING" in line:
-                    console.print(f"  [red]Error: Found $SCAFFOLDING in {filename}:{i+1}[/red]")
-                    console.print(f"    [dim]{line.strip()}[/dim]")
-    
-    if not found_any:
-        console.print("  ✅ No $SCAFFOLDING references found")
-    else:
-        console.print("\n[red]Verification failed: $SCAFFOLDING references remain.[/red]")
-
-
-@cli.command("sync-root")
-@click.option("--dry-run", is_flag=True, help="Preview changes without writing anything")
-def sync_root(dry_run: bool) -> None:
-    """
-    Sync root-level ecosystem files (CLAUDE.md, etc.) from templates.
-    
-    This updates the projects root directory with the latest templates.
-    Unlike 'apply' which works on individual projects, this updates the
-    ecosystem-wide root files.
-    
-    Example:
-        scaffold sync-root
-        scaffold sync-root --dry-run
-    """
-    scaffold_root = Path(__file__).parent.parent
-    root_templates = scaffold_root / "templates" / "root"
-    
-    # Detect projects root (parent of project-scaffolding)
-    projects_root = scaffold_root.parent
-    
-    console.print(f"\n[bold]Syncing root-level files to {projects_root}...[/bold]\n")
-    if dry_run:
-        console.print("[yellow]DRY RUN: No changes will be made.[/yellow]\n")
-    
-    if not root_templates.exists():
-        console.print(f"[red]Error: Root templates directory not found: {root_templates}[/red]")
-        return
-    
-    # Files to sync from templates/root/
-    templates = list(root_templates.glob("*.template"))
-    
-    if not templates:
-        console.print("[yellow]No root templates found in templates/root/[/yellow]")
-        return
-    
-    for template_path in templates:
-        # Determine output filename (strip .template suffix)
-        out_name = template_path.name
-        if out_name.endswith(".template"):
-            out_name = out_name[:-9]
-        
-        target_path = projects_root / out_name
-        template_content = template_path.read_text()
-        
-        if target_path.exists():
-            existing_content = target_path.read_text()
-            
-            # Create backup before overwriting
-            if not dry_run:
-                backup_path = target_path.with_suffix(target_path.suffix + ".backup")
-                backup_path.write_text(existing_content)
-                console.print(f"  [yellow]💾 Backed up {out_name} → {backup_path.name}[/yellow]")
-            
-            console.print(f"  [green]✅ Updated {out_name}[/green]")
-            if not dry_run:
-                target_path.write_text(template_content)
-        else:
-            console.print(f"  [green]✅ Created {out_name}[/green]")
-            if not dry_run:
-                target_path.write_text(template_content)
-    
-    # Add version tracking
-    version_file = projects_root / ".root-sync-version"
-    current_version = get_version()
-    
-    if not dry_run:
-        import json
-        version_data = {
-            "synced_version": current_version,
-            "synced_at": datetime.now().isoformat()
-        }
-        version_file.write_text(json.dumps(version_data, indent=2))
-        console.print(f"  [green]✅ Updated {version_file.name}[/green]")
-    else:
-        console.print(f"  [cyan]Would update {version_file.name}[/cyan]")
-    
-    console.print(f"\n[bold green]✅ Root sync complete (version {current_version})[/bold green]\n")
-
-
-def _load_review_configs(
-    prompt_dir: Path,
-    openai_key: Optional[str],
-    anthropic_key: Optional[str],
-    google_key: Optional[str],
-    deepseek_key: Optional[str],
-    ollama_model: str
-) -> List:
-    """Load review configurations from prompt directory"""
-    # Import here to avoid dependency issues
-    from scaffold.review import ReviewConfig
-    configs = []
-    
-    # Map prompt names to API and model
-    # Format: {filename_prefix}: (api, model, display_name)
-    default_mapping = {
-        "security": ("deepseek", "deepseek-chat", "Security Reviewer"),
-        "performance": ("deepseek", "deepseek-chat", "Performance Reviewer"),
-        "architecture": ("ollama", ollama_model, "Architecture Reviewer"),  # Local via Ollama
-        "quality": ("deepseek", "deepseek-chat", "Code Quality Reviewer"),
-    }
-    
-    # Find all .md files in prompt directory
-    for prompt_file in sorted(prompt_dir.glob("*.md")):
-        # Extract prefix (e.g., "security" from "security_v2.md")
-        name_parts = prompt_file.stem.split("_")
-        prefix = name_parts[0]
-        
-        # Get config from mapping or use defaults
-        if prefix in default_mapping:
-            api, model, display_name = default_mapping[prefix]
-        else:
-            # Default to OpenAI GPT-4o
-            api = "openai"
-            model = "gpt-4o"
-            display_name = f"{prefix.title()} Reviewer"
-        
-        # Check if we have the API key (fail loud!)
-        if api == "openai" and not openai_key:
-            console.print(f"[red]✗ {display_name} requires OpenAI API key (SCAFFOLDING_OPENAI_KEY)[/red]")
-            continue
-        if api == "anthropic" and not anthropic_key:
-            console.print(f"[red]✗ {display_name} requires Anthropic API key (SCAFFOLDING_ANTHROPIC_KEY)[/red]")
-            continue
-        if api == "google" and not google_key:
-            console.print(f"[red]✗ {display_name} requires Google API key (SCAFFOLDING_GOOGLE_KEY)[/red]")
-            continue
-        if api == "deepseek" and not deepseek_key:
-            console.print(f"[red]✗ {display_name} requires DeepSeek API key (SCAFFOLDING_DEEPSEEK_KEY)[/red]")
-            continue
-        
-        configs.append(ReviewConfig(
-            name=display_name,
-            api=api,
-            model=model,
-            prompt_path=prompt_file
-        ))
-    
-    return configs
-
-
-ENTRY_POINT_NAMES = {"main.py", "app.py", "server.py", "cli.py", "__main__.py", "manage.py"}
-
-
-def _scan_pyproject(project_dir: Path) -> dict:
-    """Extract project metadata from pyproject.toml."""
-    info = {"name": project_dir.name, "description": "", "run_cmd": "", "test_cmd": "", "deps": []}
-    pyproject = project_dir / "pyproject.toml"
-    if not pyproject.exists():
-        return info
-
-    with open(pyproject, "rb") as f:
-        data = tomllib.load(f)
-
-    proj = data.get("project", {})
-    info["name"] = proj.get("name", project_dir.name)
-    info["description"] = proj.get("description", "")
-    info["deps"] = [d.split(">")[0].split("<")[0].split("=")[0].split("[")[0].strip()
-                    for d in proj.get("dependencies", [])]
-
-    # Extract scripts for run command
-    scripts = proj.get("scripts", {})
-    if scripts:
-        first_script = next(iter(scripts))
-        info["run_cmd"] = first_script
-
-    # Check for test config
-    if "pytest" in str(data.get("tool", {})):
-        info["test_cmd"] = "uv run pytest"
-
-    return info
-
-
-def _scan_package_json(project_dir: Path) -> dict:
-    """Extract project metadata from package.json."""
-    import json as _json
-    info = {"name": project_dir.name, "description": "", "run_cmd": "", "test_cmd": "", "deps": []}
-    pkg = project_dir / "package.json"
-    if not pkg.exists():
-        return info
-
-    data = _json.loads(pkg.read_text())
-    info["name"] = data.get("name", project_dir.name)
-    info["description"] = data.get("description", "")
-    scripts = data.get("scripts", {})
-    if "start" in scripts:
-        info["run_cmd"] = "npm start"
-    if "dev" in scripts:
-        info["run_cmd"] = "npm run dev"
-    if "test" in scripts:
-        info["test_cmd"] = "npm test"
-    info["deps"] = list(data.get("dependencies", {}).keys())
-    return info
-
-
-def _scan_entry_points(project_dir: Path) -> list[str]:
-    """Find entry point files in a project."""
-    found = []
-    # Check root
-    for name in ENTRY_POINT_NAMES:
-        if (project_dir / name).exists():
-            found.append(name)
-    # Check src/ directory
-    src_dir = project_dir / "src"
-    if src_dir.is_dir():
-        for name in ENTRY_POINT_NAMES:
-            if (src_dir / name).exists():
-                found.append(f"src/{name}")
-        # Check src/*/  subdirs for __main__.py, app.py etc
-        for subdir in src_dir.iterdir():
-            if subdir.is_dir() and not subdir.name.startswith("."):
-                for name in ENTRY_POINT_NAMES:
-                    if (subdir / name).exists():
-                        found.append(f"src/{subdir.name}/{name}")
-    return found
-
-
-def _scan_internal_deps(project_dir: Path, projects_root: Path) -> list[str]:
-    """Find references to other internal projects."""
-    known_projects = set()
-    for p in projects_root.iterdir():
-        if p.is_dir() and not p.name.startswith(".") and not p.name.startswith("_"):
-            known_projects.add(p.name)
-
-    found = set()
-    # Check CLAUDE.md, pyproject.toml, and common config files for project references
-    files_to_scan = ["CLAUDE.md", "pyproject.toml", "package.json", "README.md"]
-    for fname in files_to_scan:
-        fpath = project_dir / fname
-        if fpath.exists():
-            content = fpath.read_text()
-            for proj_name in known_projects:
-                if proj_name != project_dir.name and proj_name in content:
-                    found.add(proj_name)
-    return sorted(found)
-
-
-def _llm_purpose(project_name: str, description: str, entry_points: list[str]) -> str:
-    """Ask local Ollama model for a one-line purpose. Returns empty string on failure."""
-    import json as _json
-    try:
-        prompt = (
-            f"Write exactly one sentence describing what the project '{project_name}' does. "
-            f"Known info: {description}. Entry points: {', '.join(entry_points) or 'unknown'}. "
-            f"Reply with ONLY the one sentence, no quotes, no preamble."
-        )
-        result = subprocess.run(
-            ["curl", "-s", "--max-time", "15", "http://localhost:11434/api/generate",
-             "-d", _json.dumps({"model": "coding:current", "prompt": prompt, "stream": False})],
-            capture_output=True, text=True, timeout=20,
-        )
-        if result.returncode == 0:
-            resp = _json.loads(result.stdout)
-            line = resp.get("response", "").strip().split("\n")[0].strip()
-            if 10 < len(line) < 200:
-                return line
-    except Exception:
-        pass
-    return ""
-
-
-def _build_manifest(project_dir: Path, projects_root: Path, refresh_purpose: bool = False) -> str:
-    """Build manifest content for a project by scanning its source files."""
-    # Try pyproject.toml first, fall back to package.json
-    info = _scan_pyproject(project_dir)
-    if not info["description"]:
-        pkg_info = _scan_package_json(project_dir)
-        if pkg_info["description"]:
-            info = pkg_info
-
-    entry_points = _scan_entry_points(project_dir)
-    internal_deps = _scan_internal_deps(project_dir, projects_root)
-
-    # Determine purpose: LLM if --refresh, else pyproject description
-    purpose = info["description"]
-    if refresh_purpose or not purpose:
-        llm_result = _llm_purpose(info["name"], info["description"], entry_points)
-        if llm_result:
-            purpose = llm_result
-
-    if not purpose:
-        purpose = "Add project description to pyproject.toml"
-
-    # Build commands section
-    commands = []
-    if info["run_cmd"]:
-        commands.append(info["run_cmd"])
-    if info["test_cmd"]:
-        commands.append(info["test_cmd"])
-    if not commands:
-        # Check for Makefile
-        if (project_dir / "Makefile").exists():
-            commands.append("make")
-
-    # Build entry points section
-    ep_lines = []
-    for ep in entry_points[:5]:  # Cap at 5
-        ep_lines.append(f"1. `{ep}`")
-    if not ep_lines:
-        ep_lines.append("1. `README.md` — Project overview")
-
-    # Build dependencies section
-    dep_lines = []
-    for dep in internal_deps:
-        dep_lines.append(f"- **{dep}**")
-    if not dep_lines:
-        dep_lines.append("- None detected")
-
-    # Assemble
-    auto_section = f"""**Purpose:** {purpose}
-
-**Status:** Active
-
-**Entry points:**
-{chr(10).join(ep_lines)}
-
-**Key commands:**
-```bash
-{chr(10).join(commands) if commands else "# No commands detected — check pyproject.toml or Makefile"}
-```
-
-**Dependencies (internal):**
-{chr(10).join(dep_lines)}
-
-**Last generated:** {datetime.now().strftime("%Y-%m-%d")}"""
-
-    return auto_section
-
-
-@cli.command("gen-manifest")
-@click.argument("project_name")
-@click.option("--refresh", is_flag=True, help="Re-run LLM call for Purpose line")
-@click.option("--dry-run", is_flag=True, help="Preview without writing")
-def gen_manifest(project_name: str, refresh: bool, dry_run: bool) -> None:
-    """Generate or update the auto-generated section of README.md by scanning source files.
-
-    Writes project purpose, entry points, commands, and dependencies between
-    MANIFEST:AUTO markers in README.md. Custom content outside markers is preserved.
-
-    Examples:
-        scaffold gen-manifest project-tracker
-        scaffold gen-manifest project-scaffolding --refresh
-        scaffold gen-manifest --all
-    """
-    scaffold_root = Path(__file__).parent.parent
-    projects_root = scaffold_root.parent
-
-    # Handle --all
-    if project_name == "--all":
-        targets = []
-        for p in sorted(projects_root.iterdir()):
-            if p.is_dir() and (p / ".scaffolding-version").exists():
-                targets.append(p)
-        if not targets:
-            console.print("[yellow]No scaffolded projects found.[/yellow]")
-            return
-        console.print(f"\n[bold]Generating manifests for {len(targets)} projects...[/bold]\n")
-        for target in targets:
-            _gen_manifest_for(target, projects_root, refresh, dry_run)
-        return
-
-    # Single project
-    target_dir = projects_root / project_name
-    if not target_dir.exists():
-        console.print(f"[red]Error: Project directory not found: {target_dir}[/red]")
-        return
-
-    _gen_manifest_for(target_dir, projects_root, refresh, dry_run)
-
-
-def _gen_manifest_for(target_dir: Path, projects_root: Path, refresh: bool, dry_run: bool) -> None:
-    """Generate auto-manifest section inside README.md for a single project."""
-    project_name = target_dir.name
-    readme_path = target_dir / "README.md"
-
-    console.print(f"  [bold]{project_name}[/bold]")
-
-    auto_content = _build_manifest(target_dir, projects_root, refresh_purpose=refresh)
-
-    auto_block = "\n".join([
-        "<!-- MANIFEST:AUTO:START — Auto-generated by `scaffold gen-manifest`. Do not edit this section. -->",
-        auto_content,
-        "<!-- MANIFEST:AUTO:END -->",
-    ])
-
-    if readme_path.exists():
-        existing = readme_path.read_text()
-        # Replace existing auto block if present
-        pattern = r"<!-- MANIFEST:AUTO:START.*?-->.*?<!-- MANIFEST:AUTO:END -->"
-        if re.search(pattern, existing, re.DOTALL):
-            output = re.sub(pattern, auto_block, existing, flags=re.DOTALL)
-        else:
-            # No auto block yet — inject after the first heading
-            heading_match = re.search(r"(^#[^\n]*\n)", existing, re.MULTILINE)
-            if heading_match:
-                insert_pos = heading_match.end()
-                output = existing[:insert_pos] + "\n" + auto_block + "\n\n" + existing[insert_pos:]
-            else:
-                # No heading — prepend
-                output = auto_block + "\n\n" + existing
-    else:
-        # No README at all — create one
-        output = f"# {project_name}\n\n{auto_block}\n"
-
-    if dry_run:
-        console.print(f"    [cyan]Would write README.md ({len(output)} chars)[/cyan]")
-        console.print(output)
-    else:
-        readme_path.write_text(output)
-        console.print("    [green]Wrote README.md[/green]")
 
 
 @cli.command("agent-health")
@@ -1390,6 +244,60 @@ def agent_health(verbose: bool, json_out: bool, project: Optional[str],
         alert_msg = f"Agent Config Health: {total_warnings} warnings across {len(results)} projects"
         send_discord_alert(alert_msg)
         console.print(f"\n[yellow]Discord alert sent ({total_warnings} warnings)[/yellow]")
+
+
+def _load_review_configs(
+    prompt_dir: Path,
+    openai_key: Optional[str],
+    anthropic_key: Optional[str],
+    google_key: Optional[str],
+    deepseek_key: Optional[str],
+    ollama_model: str
+) -> List:
+    """Load review configurations from prompt directory"""
+    from scaffold.review import ReviewConfig
+    configs = []
+
+    # Map prompt names to API and model
+    default_mapping = {
+        "security": ("deepseek", "deepseek-chat", "Security Reviewer"),
+        "performance": ("deepseek", "deepseek-chat", "Performance Reviewer"),
+        "architecture": ("ollama", ollama_model, "Architecture Reviewer"),
+        "quality": ("deepseek", "deepseek-chat", "Code Quality Reviewer"),
+    }
+
+    for prompt_file in sorted(prompt_dir.glob("*.md")):
+        name_parts = prompt_file.stem.split("_")
+        prefix = name_parts[0]
+
+        if prefix in default_mapping:
+            api, model, display_name = default_mapping[prefix]
+        else:
+            api = "openai"
+            model = "gpt-4o"
+            display_name = f"{prefix.title()} Reviewer"
+
+        if api == "openai" and not openai_key:
+            console.print(f"[red]✗ {display_name} requires OpenAI API key (SCAFFOLDING_OPENAI_KEY)[/red]")
+            continue
+        if api == "anthropic" and not anthropic_key:
+            console.print(f"[red]✗ {display_name} requires Anthropic API key (SCAFFOLDING_ANTHROPIC_KEY)[/red]")
+            continue
+        if api == "google" and not google_key:
+            console.print(f"[red]✗ {display_name} requires Google API key (SCAFFOLDING_GOOGLE_KEY)[/red]")
+            continue
+        if api == "deepseek" and not deepseek_key:
+            console.print(f"[red]✗ {display_name} requires DeepSeek API key (SCAFFOLDING_DEEPSEEK_KEY)[/red]")
+            continue
+
+        configs.append(ReviewConfig(
+            name=display_name,
+            api=api,
+            model=model,
+            prompt_path=prompt_file
+        ))
+
+    return configs
 
 
 if __name__ == "__main__":
