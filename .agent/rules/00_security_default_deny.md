@@ -44,4 +44,4 @@ Only inside the repo root:
 - If a command touches the network, always request approval first.
 
 ---
-*Synced from project-scaffolding governance templates*
+*Source: project-scaffolding governance*
