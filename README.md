@@ -1,63 +1,56 @@
-<!-- SCAFFOLD:START - Do not edit between markers -->
-# project-scaffolding
+# Project Scaffolding
 
-Templates, governance rules, and sync tooling for bootstrapping and maintaining projects in this ecosystem. One edit here propagates to all downstream projects via AgentSync.
+Health checks, multi-AI review, and safety tooling for the project ecosystem.
 
-**Status:** Active | **Language:** Python | **Started:** December 2025
+> **Want to set up a new project or get briefed on an existing one?** Use `/intake`.
+> Project scaffolding no longer pushes files into projects. See `PRD.md` for what changed and why.
 
-## Setup
-
-```bash
-pip install -r requirements.txt
-```
-
-## Key Commands
+## Commands
 
 | Command | What it does |
 |---------|-------------|
-| `scaffold apply <project>` | Bootstrap a project with templates |
-| `scaffold validate <project>` | Check structure, DNA integrity, secrets |
-| `scaffold agent-health` | Lint agent configs for bloat/staleness |
-| `uv run agentsync/sync.py <project>` | Sync rules + governance to a project |
-| `uv run agentsync/sync_governance.py` | Sync governance protocol to all projects |
+| `scaffold agent-health` | Lint agent configs (CLAUDE.md, .agent/rules/) for bloat and staleness |
+| `scaffold agent-health -p <project>` | Check a single project |
+| `scaffold review --type code --input <path>` | Run multi-AI code review |
+| `scaffold review --type document --input <path>` | Run multi-AI document review |
 
-See `QUICKSTART.md` for the full new-project walkthrough.
+## Safety Scripts
+
+| Script | What it does |
+|--------|-------------|
+| `scripts/warden_audit.py --root . --fast` | Security audit (hardcoded paths, dangerous functions, secrets) |
+| `scripts/validate_project.py <project>` | Structure validation (mandatory files, DNA integrity) |
+
+## Templates
+
+Reference templates for bootstrapping new projects live in `templates/`:
+
+- `git-hooks/` — pre-commit, pre-push, post-merge hooks with safety checks
+- `claude-code/` — Claude Code agent/command templates, settings.json
+- `claude-review.yml` — GitHub Actions workflow for automated PR review
+- `github-workflows/` — PR label checks and other CI templates
+- `test-coverage/` — Coverage config and runner script
+- `spec-template.md.template` — Kiro spec template
 
 ## Structure
 
 ```
 project-scaffolding/
-├── scaffold/              # CLI source (apply, validate, agent-health)
-│   └── cli.py
-├── agentsync/             # Sync rules to IDE configs across projects
-│   ├── sync.py            # Canonical project sync
-│   ├── sync_governance.py # Governance sync
-│   └── sync_mcp.py        # MCP config sync
-├── templates/             # Source templates for scaffold apply
-│   ├── .agentsync/rules/  # Agent rules templates
-│   ├── AGENTS.md.template
-│   └── CLAUDE.md.template
-├── scripts/               # Validation + security audit scripts
-│   ├── validate_project.py
-│   └── warden_audit.py
-└── config/                # Scan config, protected projects
+├── scaffold/           # CLI (review, agent-health)
+├── scripts/            # Standalone validation + security tools
+├── templates/          # Reference templates for new projects
+├── agentsync/          # sync_mcp.py only (infra config sync)
+└── config/             # scan_config.yaml (protected projects)
 ```
 
-## Common Mistakes
+## What This Is Not
 
-- **Copying everything** -- Use `scaffold apply`, not manual copy. Pick what fits.
-- **Over-engineering early** -- Patterns are guidelines, not laws. Abstract on the 3rd instance.
-- **Skipping docs** -- Even experiments need a README and CLAUDE.md.
+This project used to push governance files, agent configs, and templates into every project via "agentsync." That system was retired in March 2026. If you're looking for:
 
-## Essential Reading
-
-| Document | Purpose |
-|----------|---------|
-| `QUICKSTART.md` | Step-by-step new project checklist |
-| `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` | Code review and governance standard |
-| `.agent/rules/CODE_QUALITY_STANDARDS.md` | Coding rules |
-| `agentsync/README.md` | Sync usage, flags, and examples |
+- **Project briefings** — Use `/intake` (pulls from Open Brain, project tracker, git)
+- **Governance rules** — Read `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` (canonical source)
+- **Agent config setup** — Copy from `templates/claude-code/` manually
 
 ---
 
-*This is the canonical source of truth for shared tooling. Changes here trickle down to all projects via AgentSync.*
+*See `QUICKSTART.md` for usage details. See `PRD.md` for the full v2 scope.*
