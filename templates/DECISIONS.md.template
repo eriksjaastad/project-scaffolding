@@ -1,0 +1,19 @@
+# Decisions
+
+Deliberate architectural choices. Read before changing anything structural.
+To revisit a decision, don't edit — add a new entry that supersedes it.
+
+---
+
+## [Decision Title]
+**Accepted YYYY-MM-DD**
+
+[1-2 sentences of context: what problem, what constraints.]
+
+[1-2 sentences of decision: what was chosen and why.]
+
+| Alternative | Why rejected |
+|-------------|-------------|
+| ... | ... |
+
+[1-2 sentences of consequences: what follows, including trade-offs.]
