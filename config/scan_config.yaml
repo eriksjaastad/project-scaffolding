@@ -82,7 +82,7 @@ ignore_projects:
   - openclaw          # External project - do not track
   - nanoclaw          # External project - do not track
   - github-repos      # Downloaded repos for study - not our code
-  - holoscape         # 3D/creative project - not code we scan
+  - kaperion          # Domain placeholder - no active project
 
 # Projects that can be scanned/read but should NEVER be modified
 # Scaffolding, automated cleanup, and other tools should not touch these
@@ -107,6 +107,7 @@ scan_extensions:
   .bash: shell
   .zsh: shell
   .sql: sql
+  .swift: swift
   .toml: config
   Makefile: config
   Dockerfile: config
