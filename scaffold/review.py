@@ -21,6 +21,11 @@ from .utils import safe_slug
 from anthropic import AsyncAnthropic
 from openai import AsyncOpenAI, APIError, APIConnectionError, RateLimitError
 from send2trash import send2trash
+
+try:
+    from api_trust_tracker import track
+except ImportError:
+    track = lambda resp, *a, **kw: resp
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -312,19 +317,13 @@ class ReviewOrchestrator:
             ],
             temperature=0.7
         )
-        
-        # Calculate cost (approximate - update with actual pricing)
+        track(response, "openai", project="project-scaffolding", caller="review.openai")
+
         tokens = response.usage.total_tokens
-        if "gpt-4o" in model:
-            cost = tokens * 0.000015  # $15 per 1M tokens (rough average)
-        elif "gpt-4o-mini" in model:
-            cost = tokens * 0.0000015  # $1.50 per 1M tokens
-        else:
-            cost = tokens * 0.00003  # Default to GPT-4 pricing
-        
+
         return {
             "content": response.choices[0].message.content,
-            "cost": cost,
+            "cost": 0.0,
             "tokens": tokens
         }
     
@@ -347,23 +346,14 @@ class ReviewOrchestrator:
                 {"role": "user", "content": prompt}
             ]
         )
-        
-        # Calculate cost (approximate - update with actual pricing)
+        track(response, "anthropic", project="project-scaffolding", caller="review.anthropic")
+
         input_tokens = response.usage.input_tokens
         output_tokens = response.usage.output_tokens
-        
-        if "opus" in model:
-            cost = (input_tokens * 0.000015) + (output_tokens * 0.000075)  # $15/$75 per 1M
-        elif "sonnet" in model:
-            cost = (input_tokens * 0.000003) + (output_tokens * 0.000015)  # $3/$15 per 1M
-        elif "haiku" in model:
-            cost = (input_tokens * 0.00000025) + (output_tokens * 0.00000125)  # $0.25/$1.25 per 1M
-        else:
-            cost = (input_tokens * 0.000003) + (output_tokens * 0.000015)  # Default to Sonnet
-        
+
         return {
             "content": response.content[0].text,
-            "cost": cost,
+            "cost": 0.0,
             "tokens": input_tokens + output_tokens
         }
     
@@ -392,15 +382,13 @@ class ReviewOrchestrator:
             ],
             temperature=0.0
         )
-        
-        # Calculate cost
-        # DeepSeek pricing: $0.27 per 1M tokens (input + output combined)
+        track(response, "openai", project="project-scaffolding", caller="review.deepseek")
+
         total_tokens = response.usage.total_tokens
-        cost = total_tokens * 0.00000027
-        
+
         return {
             "content": response.choices[0].message.content,
-            "cost": cost,
+            "cost": 0.0,
             "tokens": total_tokens
         }
     
