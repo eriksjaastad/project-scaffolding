@@ -27,6 +27,7 @@ skip_dirs:
   # Trash and archives
   - _trash
   - trash
+  - _archive
   - archives
   - archive
 
@@ -71,6 +72,7 @@ ignore_projects:
   - nanoclaw          # External project - do not track
   - github-repos      # Downloaded repos for study - not our code
   - kaperion          # Domain placeholder - no active project
+  - dreamhost-backup  # Snapshot of DreamHost site - thousands of WP files, not our code
 
 # Projects that can be scanned/read but should NEVER be modified
 # Scaffolding, automated cleanup, and other tools should not touch these
