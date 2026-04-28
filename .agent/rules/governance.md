@@ -25,7 +25,7 @@ Audit files in order of their potential to infect the ecosystem:
 ## 🏛️ Part 2: The Two-Layer Defense Model
 
 ### Layer 1: Robotic Scan (Gatekeeper)
-A mechanical script (`pre_review_scan.sh`) that catches hardcoded paths, secrets, and silent errors. A single "FAIL" blocks the AI/Human review. This is integrated into the `Project-workflow.md` (lives at projects root) as the mandatory Gate 0.
+Mechanical checks (hardcoded paths, secrets, silent errors) run via the user-scope `code-reviewer` subagent and PreToolUse hooks. A single "FAIL" blocks the AI/Human review. The previous `pre_review_scan.sh` wrapper was retired in audit Phase F.
 
 ### Layer 2: Cognitive Audit (Architect Work)
 AI Architects focus on judgment-heavy tasks that automation misses:
@@ -236,7 +236,7 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 ---
 
 ## 🛠️ Immediate Action Items
-- [x] **Task 1:** Finalize `scripts/pre_review_scan.sh` as the mandatory Gate 0.
+- [x] **Task 1:** ~~Finalize `scripts/pre_review_scan.sh` as the mandatory Gate 0.~~ Retired in audit Phase F.
 - [ ] **Task 2:** Refactor `test_scripts_follow_standards.py` to `test_ecosystem_dna_integrity.py`.
 - [ ] **Task 3:** Establish the "Vault" protocol for the local `.env` record of API keys.
 - [x] **Task 4:** Ecosystem-wide placeholder scanning (now via inline `grep -RInE '\{\{[A-Z_]+\}\}'`; the standalone `audit_all_projects.py` was retired in #6095).
