@@ -22,7 +22,7 @@ jobs:
           echo "Checking for dangerous deletion patterns..."
           if grep -RInE '\brm[[:space:]]+-rf\b|\bshutil\.rmtree[[:space:]]*\(|\brmtree[[:space:]]*\(|\bos\.remove[[:space:]]*\(|\bos\.unlink[[:space:]]*\(' \
             --include='*.py' --include='*.sh' --include='*.bash' --include='*.zsh' . \
-            | grep -vE '/(\.git|\.venv|venv|node_modules|__pycache__)/|tests/test_security\.py'; then
+            | grep -vE '/(\.git|\.venv|venv|node_modules|__pycache__)/|tests/test_(security|git_hooks)\.py'; then
             echo "::error::Dangerous deletion pattern found. Use send2trash or a reviewed allowlist."
             exit 1
           fi
@@ -74,6 +74,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install -e .
 
       - name: Run tests
         run: pytest tests/ -v
