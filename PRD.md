@@ -46,7 +46,7 @@ project-scaffolding/
 │   ├── review.py          # Multi-AI review orchestrator
 │   ├── alerts.py          # Discord alerting
 │   └── constants.py       # Protected projects config
-├── scripts/               # Misc tooling (pre_review_scan.sh, etc.)
+├── scripts/               # Misc tooling (legacy pre_review_scan.sh retired in audit Phase F)
 ├── templates/
 │   └── git-hooks/         # Hook templates for new projects
 ├── agentsync/

@@ -14,7 +14,7 @@ rule: audit in tier order — a Tier 1 defect infects every downstream project
 
 ## Two-Layer Defense
 
-layer_1: Robotic Scan (Gate 0) — pre_review_scan.sh catches hardcoded paths, secrets, silent errors
+layer_1: Robotic Scan (Gate 0) — user-scope code-reviewer subagent + PreToolUse hooks catch hardcoded paths, secrets, silent errors (pre_review_scan.sh wrapper retired in audit Phase F)
 layer_1_rule: single FAIL blocks all further review
 layer_2: Cognitive Audit — judgment-heavy checks automation misses
 layer_2_check: inverse test analysis (what do passing tests NOT check?)
