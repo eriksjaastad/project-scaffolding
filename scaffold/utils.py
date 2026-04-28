@@ -26,7 +26,7 @@ def safe_slug(text: str, base_path: Optional[Path] = None) -> str:
         if not target_path.is_relative_to(base_path):
             raise ValueError("Security Alert: Path Traversal detected.")
 
-    return slug
+    return slug[:255]
 
 
 def grepai_search(query: str, project: str | None = None, limit: int = 10) -> list[dict]:

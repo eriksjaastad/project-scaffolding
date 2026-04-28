@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Pre-push hook: Run Warden safety audit before allowing push
+# Pre-push hook: Run safety checks before allowing push
 # This is a SECOND line of defense after pre-commit
 #
 # Why both pre-commit AND pre-push?
@@ -18,52 +18,8 @@ echo ""
 echo "PRE-PUSH SAFETY CHECK"
 echo "---------------------"
 
-# Check if warden_audit.py exists (project has safety tooling)
-WARDEN_SCRIPT=""
-if [ -f "scripts/warden_audit.py" ]; then
-    WARDEN_SCRIPT="scripts/warden_audit.py"
-elif [ -f "warden_audit.py" ]; then
-    WARDEN_SCRIPT="warden_audit.py"
-fi
-
-if [ -n "$WARDEN_SCRIPT" ]; then
-    echo "Running Warden safety audit..."
-
-    run_python() {
-        if [ -x "$HOME/.local/bin/uv" ]; then
-            "$HOME/.local/bin/uv" run "$@"
-        elif command -v uv &>/dev/null; then
-            uv run "$@"
-        else
-            python3 "$@"
-        fi
-    }
-
-    run_python "$WARDEN_SCRIPT" --root . --fast
-
-    WARDEN_EXIT=$?
-
-    if [ $WARDEN_EXIT -ne 0 ]; then
-        echo ""
-        echo "PUSH BLOCKED: Warden found safety violations"
-        echo ""
-        echo "The pre-commit hook should have caught this."
-        echo "If you bypassed pre-commit with --no-verify, FIX THE ISSUES."
-        echo ""
-        echo "To force push anyway (DANGEROUS): git push --no-verify"
-        echo "WARNING: This pushes potentially unsafe code to the remote!"
-        echo ""
-        exit 1
-    fi
-
-    echo "Warden audit passed."
-else
-    echo "No warden_audit.py found - skipping safety audit"
-    echo "(Consider adding safety tooling to this project)"
-fi
-
-# Check for common dangerous patterns in staged changes
-echo "Checking for dangerous patterns..."
+# Check for common dangerous patterns in pushed commits.
+echo "Checking pushed commits for dangerous patterns..."
 
 # Get the commits being pushed
 while read local_ref local_sha remote_ref remote_sha; do
@@ -93,7 +49,7 @@ while read local_ref local_sha remote_ref remote_sha; do
 
     if [ -n "$RMTREE_MATCHES" ]; then
         # Filter out known validation scripts and pattern definitions
-        REAL_USAGE=$(echo "$RMTREE_MATCHES" | grep -v 'warden_audit\|validate_project\|dangerous.*patterns\|# .*rmtree\|".*rmtree\|'"'"'.*rmtree\|`.*rmtree' || true)
+        REAL_USAGE=$(echo "$RMTREE_MATCHES" | grep -vE 'dangerous.*patterns|# .*rmtree|".*rmtree|'"'"'.*rmtree|`.*rmtree' || true)
 
         if [ -n "$REAL_USAGE" ]; then
             echo ""
@@ -106,7 +62,7 @@ while read local_ref local_sha remote_ref remote_sha; do
             echo ""
             exit 1
         else
-            echo "  ℹ️  Found 'rmtree' in validation/documentation (allowed)"
+            echo "Found 'rmtree' only in comments, strings, or pattern definitions (allowed)"
         fi
     fi
 

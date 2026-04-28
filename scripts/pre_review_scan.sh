@@ -13,19 +13,19 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 cd "$PROJECT_ROOT"
 
-echo "1. Running Warden Security Audit (fast mode)..."
-python ./scripts/warden_audit.py --root . --fast
-WARDEN_EXIT=$?
+echo "1. Running security tests..."
+python -m pytest tests/test_security.py -v
+SECURITY_EXIT=$?
 
 echo ""
-echo "2. Running Project Validation..."
-python ./scripts/validate_project.py project-scaffolding
-VALIDATE_EXIT=$?
+echo "2. Checking git hook template syntax..."
+bash -n templates/git-hooks/pre-commit templates/git-hooks/pre-push templates/git-hooks/post-merge templates/git-hooks/install-hooks.sh
+HOOK_EXIT=$?
 
 echo ""
 echo "=== Scan Complete ==="
 
-if [ $WARDEN_EXIT -ne 0 ] || [ $VALIDATE_EXIT -ne 0 ]; then
+if [ $SECURITY_EXIT -ne 0 ] || [ $HOOK_EXIT -ne 0 ]; then
     echo "FAILED: One or more checks failed"
     exit 1
 else

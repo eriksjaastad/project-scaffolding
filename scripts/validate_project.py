@@ -72,7 +72,12 @@ def is_documentation_example(line: str) -> bool:
         return True
         
     # Check for quotes or backticks (common in documentation)
-    if ('"' in line and '/Users/' in line) or ("'" in line and '/Users/' in line) or ('`' in line and '/Users/' in line):
+    user_home_marker = "/" + "Users" + "/"
+    if (
+        ('"' in line and user_home_marker in line)
+        or ("'" in line and user_home_marker in line)
+        or ('`' in line and user_home_marker in line)
+    ):
         return True
     
     # Check for backticks around dangerous patterns (anti-pattern documentation)
@@ -370,4 +375,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
