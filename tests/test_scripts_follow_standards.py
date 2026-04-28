@@ -8,9 +8,13 @@ def test_no_hardcoded_paths():
     pattern = "/" + "Users" + "/"
     # grep returns 0 if matches are found, 1 if no matches are found.
     # We want it to NOT find matches.
+    # Only scan dirs that exist (scripts/ is empty post-Phase-F retirement).
+    targets = [d for d in ("scripts/", "scaffold/") if Path(d).is_dir() and any(Path(d).rglob("*.py"))]
+    if not targets:
+        return
     try:
         result = subprocess.run(
-            ["grep", "-rn", pattern, "scripts/", "scaffold/", "--include=*.py"],
+            ["grep", "-rn", pattern, *targets, "--include=*.py"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -23,18 +27,22 @@ def test_no_hardcoded_paths():
             stdout = ""
         else:
             raise
-    
+
     # Filter out legitimate uses (like regex patterns for detection)
     lines = [line for line in stdout.splitlines() if "re.compile" not in line and "absolute paths (e.g.," not in line]
-    
+
     assert not lines, "Found hardcoded paths:\n" + "\n".join(lines)
 
 def test_no_hardcoded_api_keys():
     """Scripts must not contain API keys"""
+    # Only scan dirs that exist (scripts/ is empty post-Phase-F retirement).
+    targets = [d for d in ("scripts/", "scaffold/") if Path(d).is_dir() and any(Path(d).rglob("*.py"))]
+    if not targets:
+        return
     # Regex for sk-... keys
     try:
         result = subprocess.run(
-            ["grep", "-rE", "sk-[a-zA-Z0-9]{32,}", "scripts/", "scaffold/", "--include=*.py"],
+            ["grep", "-rE", "sk-[a-zA-Z0-9]{32,}", *targets, "--include=*.py"],
             capture_output=True,
             text=True,
             timeout=10,
@@ -47,7 +55,7 @@ def test_no_hardcoded_api_keys():
             stdout = ""
         else:
             raise
-    
+
     assert not stdout, f"Found API keys:\n{stdout}"
 
 def test_scripts_have_type_hints():
