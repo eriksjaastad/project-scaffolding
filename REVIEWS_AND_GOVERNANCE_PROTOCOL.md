@@ -90,7 +90,7 @@ banned: weak assertions — assert isinstance() or is not None alone is insuffic
 ## Placeholder Integrity (Gate 2)
 
 rule: zero unfilled {{VAR}} patterns in any .md, .py, or .sh files
-check: run scripts/validate_project.py or scripts/audit_all_projects.py
+check: grep -RInE '\{\{[A-Z_]+\}\}' --include='*.md' --include='*.py' --include='*.sh' .
 enforcement: single unfilled placeholder triggers Scaffolding Failure alert
 
 ## Silent Failure Prevention
@@ -132,7 +132,7 @@ banned: requirements vanishing without documentation — silent drops are review
 | **M1** | **Robot** | No hardcoded `/Users/` or `/home/` paths | Paste `grep` output (all files) |
 | **M2** | **Robot** | No silent `except: pass` patterns | Paste `grep` output (Python files) |
 | **M3** | **Robot** | No API keys (`sk-...`) in code/templates | Paste `grep` output |
-| **M4** | **Robot** | Zero unfilled `{{VAR}}` placeholders | Paste `validate_project.py` output |
+| **M4** | **Robot** | Zero unfilled `{{VAR}}` placeholders | Paste `grep -RInE '\{\{[A-Z_]+\}\}'` output |
 | **P1** | **DNA** | Templates contain no machine-specific data | List files checked in `templates/` |
 | **P2** | **DNA** | `.cursorrules` is portable | Verify path placeholders used |
 | **T1** | **Tests** | Inverse Audit: What do tests MISS? | Map "Dark Territory" |
