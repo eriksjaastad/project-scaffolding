@@ -28,12 +28,12 @@ if printf '%s\n' "$STAGED_DIFF" | grep -E '^\+.*\brm\s+-rf\b' > /dev/null; then
     exit $FAIL
 fi
 
-RMTREE_MATCHES=$(printf '%s\n' "$STAGED_DIFF" | grep -E '^\+.*\brmtree\s*\(' || true)
+RMTREE_MATCHES=$(printf '%s\n' "$STAGED_DIFF" | grep -E '^\+.*\b(rmtree|os\.remove|os\.unlink)\s*\(' || true)
 if [ -n "$RMTREE_MATCHES" ]; then
-    REAL_USAGE=$(printf '%s\n' "$RMTREE_MATCHES" | grep -vE '# .*rmtree|".*rmtree|'"'"'.*rmtree|`.*rmtree|dangerous.*patterns' || true)
+    REAL_USAGE=$(printf '%s\n' "$RMTREE_MATCHES" | grep -vE '# .*(rmtree|os\.remove|os\.unlink)|".*(rmtree|os\.remove|os\.unlink)|'"'"'.*(rmtree|os\.remove|os\.unlink)|`.*(rmtree|os\.remove|os\.unlink)|dangerous.*patterns' || true)
     if [ -n "$REAL_USAGE" ]; then
         echo "================================"
-        echo "COMMIT BLOCKED: Found 'rmtree()' call in staged changes"
+        echo "COMMIT BLOCKED: Found unsafe deletion call (rmtree/os.remove/os.unlink) in staged changes"
         echo "Use send2trash instead for safe deletion."
         echo "$REAL_USAGE"
         exit $FAIL

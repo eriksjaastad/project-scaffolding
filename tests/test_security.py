@@ -10,7 +10,7 @@ Run with: pytest tests/test_security.py -v
 import pytest
 from pathlib import Path
 import tempfile
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 class TestPathTraversal:
@@ -205,8 +205,16 @@ class TestValidationEdgeCases:
             assert "validate_project" not in hook
 
     def test_installed_pre_push_does_not_allowlist_retiring_scripts(self):
-        """The installed local pre-push hook should match the retiring-script cleanup."""
-        hook = Path(".git/hooks/pre-push").read_text()
+        """The installed local pre-push hook should match the retiring-script cleanup.
+
+        Skipped when no installed hook exists (fresh checkouts, CI). The
+        templates/ check above is the source-of-truth assertion; this only
+        catches drift on developer machines that have run install-hooks.sh.
+        """
+        installed = Path(".git/hooks/pre-push")
+        if not installed.exists():
+            pytest.skip("No installed pre-push hook (run templates/git-hooks/install-hooks.sh)")
+        hook = installed.read_text()
 
         assert "warden_audit" not in hook
         assert "validate_project" not in hook

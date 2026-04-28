@@ -21,15 +21,16 @@ What "Production Ready" means in this ecosystem.
 - CLAUDE.md present with behavior rules
 
 ### Validation
-- `warden_audit.py --fast` passes
-- `validate_project.py` passes
+- `pytest tests/` passes (security tests included)
+- Pre-commit and pre-push git hooks installed and passing
+- Zero unfilled `{{VAR}}` placeholders in `.md`, `.py`, `.sh` files
 
 ## Quick Check
 
 ```bash
 # From project root
-uv run python scripts/warden_audit.py --root . --fast
-uv run python scripts/validate_project.py "$(basename $(pwd))"
+pytest tests/ -v
+grep -RInE '\{\{[A-Z_]+\}\}' --include='*.md' --include='*.py' --include='*.sh' .
 ```
 
-Both must pass for Gold Standard status.
+Both must pass (zero placeholder hits) for Gold Standard status.
