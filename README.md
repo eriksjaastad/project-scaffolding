@@ -14,12 +14,13 @@ Health checks, multi-AI review, and safety tooling for the project ecosystem.
 | `scaffold review --type code --input <path>` | Run multi-AI code review |
 | `scaffold review --type document --input <path>` | Run multi-AI document review |
 
-## Safety Scripts
+## Safety Tooling
 
-| Script | What it does |
-|--------|-------------|
-| `scripts/warden_audit.py --root . --fast` | Security audit (hardcoded paths, dangerous functions, secrets) |
-| `scripts/validate_project.py <project>` | Structure validation (mandatory files, DNA integrity) |
+Safety enforcement lives in the git hook templates (`templates/git-hooks/`)
+and CI workflow (`.github/workflows/safety-check.yml`). Inline grep checks
+in pre-commit and pre-push block dangerous deletion patterns and obvious
+hardcoded credentials. Test coverage for the hook templates lives in
+`tests/test_git_hooks.py`.
 
 ## Templates
 

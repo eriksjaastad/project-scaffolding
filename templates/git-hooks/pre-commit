@@ -3,7 +3,7 @@
 # Pre-commit hook: Run safety, linting, and type checks before allowing commits
 #
 # Checks (in order):
-#   1. Warden safety audit   — blocks on P0/P1 (dangerous patterns, hardcoded paths)
+#   1. Staged diff safety    — blocks dangerous deletion and obvious secret patterns
 #   2. Ruff lint check       — blocks on real linting errors (matches IDE Ruff)
 #   3. Pyright type check    — blocks on type errors only (matches IDE type checker)
 #
@@ -15,21 +15,39 @@ set -euo pipefail
 PASS=0
 FAIL=1
 
-# ── 1. Warden Safety Audit ──────────────────────────────────────────────────
-echo "Running Warden safety audit..."
+# ── 1. Staged Diff Safety ───────────────────────────────────────────────────
+echo "Running staged diff safety check..."
 echo "================================"
 
-python3 scripts/warden_audit.py --root . --fast
-WARDEN_EXIT=$?
+STAGED_DIFF=$(git diff --cached --diff-filter=ACM)
 
-if [ $WARDEN_EXIT -ne 0 ]; then
+if printf '%s\n' "$STAGED_DIFF" | grep -E '^\+.*\brm\s+-rf\b' > /dev/null; then
     echo "================================"
-    echo "COMMIT BLOCKED: Warden found safety violations"
-    echo "Fix the issues above or use 'git commit --no-verify' to skip (emergency only)"
+    echo "COMMIT BLOCKED: Found 'rm -rf' in staged changes"
+    echo "Use send2trash or document a reviewed exception."
     exit $FAIL
 fi
 
-echo "Warden audit passed."
+RMTREE_MATCHES=$(printf '%s\n' "$STAGED_DIFF" | grep -E '^\+.*\b(rmtree|os\.remove|os\.unlink)\s*\(' || true)
+if [ -n "$RMTREE_MATCHES" ]; then
+    REAL_USAGE=$(printf '%s\n' "$RMTREE_MATCHES" | grep -vE '# .*(rmtree|os\.remove|os\.unlink)|".*(rmtree|os\.remove|os\.unlink)|'"'"'.*(rmtree|os\.remove|os\.unlink)|`.*(rmtree|os\.remove|os\.unlink)|dangerous.*patterns' || true)
+    if [ -n "$REAL_USAGE" ]; then
+        echo "================================"
+        echo "COMMIT BLOCKED: Found unsafe deletion call (rmtree/os.remove/os.unlink) in staged changes"
+        echo "Use send2trash instead for safe deletion."
+        echo "$REAL_USAGE"
+        exit $FAIL
+    fi
+fi
+
+if printf '%s\n' "$STAGED_DIFF" | grep -E '^\+.*(api_key|secret|password)\s*=\s*["\x27][^"\x27]{8,}' > /dev/null; then
+    echo "================================"
+    echo "COMMIT BLOCKED: Possible hardcoded credential in staged changes"
+    echo "Use environment variables or .env files instead."
+    exit $FAIL
+fi
+
+echo "Staged diff safety passed."
 echo ""
 
 # ── 2. Ruff Lint Check ──────────────────────────────────────────────────────
