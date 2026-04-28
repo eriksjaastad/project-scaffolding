@@ -14,18 +14,11 @@ New Python commands use `uv run` for reproducible execution. Existing venv/Poetr
 
 | Command | What it does |
 |---------|-------------|
-| `scaffold agent-health` | Lint agent config files for bloat/staleness |
-| `scaffold agent-health --project X` | Check a single project |
 | `scaffold review --type code --input src/` | Run multi-AI code review |
 
 ---
 
 ## Quick Validation
-
-```bash
-# Agent config health
-uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" agent-health
-```
 
 Safety enforcement runs through the installed git hooks and the
 `safety-check.yml` workflow — no standalone audit script to invoke.
