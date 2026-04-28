@@ -81,7 +81,7 @@ For projects with filesystem or external dependencies:
 
 ### 5. Placeholder Integrity (Gate 2)
 Every scaffolded project must be validated for unfilled template placeholders:
-*   **The Check:** Run `scripts/validate_project.py` or `scripts/audit_all_projects.py`.
+*   **The Check:** `grep -RInE '\{\{[A-Z_]+\}\}' --include='*.md' --include='*.py' --include='*.sh' .`
 *   **The Standard:** Zero results for `{{VAR}}` patterns in any `.md`, `.py`, or `.sh` files.
 *   **The Enforcement:** A single unfilled placeholder triggers a **Scaffolding Failure** alert to Discord.
 
@@ -206,7 +206,7 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 | **M1** | **Robot** | No hardcoded `/Users/` or `/home/` paths | Paste `grep` output (all files) |
 | **M2** | **Robot** | No silent `except: pass` patterns | Paste `grep` output (Python files) |
 | **M3** | **Robot** | No API keys (`sk-...`) in code/templates | Paste `grep` output |
-| **M4** | **Robot** | Zero unfilled `{{VAR}}` placeholders | Paste `validate_project.py` output |
+| **M4** | **Robot** | Zero unfilled `{{VAR}}` placeholders | Paste `grep -RInE '\{\{[A-Z_]+\}\}'` output |
 | **P1** | **DNA** | Templates contain no machine-specific data | List files checked in `templates/` |
 | **P2** | **DNA** | `.cursorrules` is portable | Verify path placeholders used |
 | **T1** | **Tests** | Inverse Audit: What do tests MISS? | Map "Dark Territory" |
@@ -239,7 +239,7 @@ Use the **RISEN Framework** (Role, Instructions, Steps, Expectations, Narrowing)
 - [x] **Task 1:** Finalize `scripts/pre_review_scan.sh` as the mandatory Gate 0.
 - [ ] **Task 2:** Refactor `test_scripts_follow_standards.py` to `test_ecosystem_dna_integrity.py`.
 - [ ] **Task 3:** Establish the "Vault" protocol for the local `.env` record of API keys.
-- [x] **Task 4:** Implement `scripts/audit_all_projects.py` for ecosystem-wide placeholder scanning.
+- [x] **Task 4:** Ecosystem-wide placeholder scanning (now via inline `grep -RInE '\{\{[A-Z_]+\}\}'`; the standalone `audit_all_projects.py` was retired in #6095).
 - [x] **Task 5:** Add database safety rules (H5-H7) and incident documentation (2026-01-27).
 - [x] **Task 6:** Add silent failure prevention rules (E2-E4, Section 6-8) after code quality audit.
 

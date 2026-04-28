@@ -138,8 +138,8 @@ def review(
     # Load review configurations
     prompt_dir = Path(__file__).parent / "prompts" / review_type
     if not prompt_dir.exists():
-        console.print(f"[red]Error: No prompts found for review type '{review_type}'[/red]")
-        console.print(f"[red]Expected directory: {prompt_dir}[/red]")
+        console.print(f"[yellow]Skipping review: no prompts found for review type '{review_type}'[/yellow]")
+        console.print(f"[yellow]Expected directory: {prompt_dir}[/yellow]")
         return
 
     configs = _load_review_configs(

@@ -23,12 +23,12 @@ New Python commands use `uv run` for reproducible execution. Existing venv/Poetr
 ## Quick Validation
 
 ```bash
-# Security audit
-uv run "$PROJECTS_ROOT/project-scaffolding/scripts/warden_audit.py" --root . --fast
-
 # Agent config health
 uv run "$PROJECTS_ROOT/project-scaffolding/scaffold_cli.py" agent-health
 ```
+
+Safety enforcement runs through the installed git hooks and the
+`safety-check.yml` workflow — no standalone audit script to invoke.
 
 ---
 

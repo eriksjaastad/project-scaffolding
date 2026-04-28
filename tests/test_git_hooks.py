@@ -7,13 +7,15 @@ import subprocess
 HOOKS_DIR = Path("templates") / "git-hooks"
 
 
-def test_pre_push_runs_warden_audit() -> None:
-    """Pre-push should run the Warden safety audit."""
+def test_pre_push_blocks_dangerous_patterns_without_warden() -> None:
+    """Pre-push should be self-contained and block dangerous diff patterns."""
     content = (HOOKS_DIR / "pre-push").read_text()
 
-    assert "warden_audit.py" in content
+    assert "warden_audit.py" not in content
+    assert "validate_project.py" not in content
     assert "PUSH BLOCKED" in content
     assert "rm -rf" in content
+    assert "rmtree" in content
 
 
 def test_post_merge_runs_agent_health_scan() -> None:

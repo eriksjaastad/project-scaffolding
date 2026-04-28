@@ -1,6 +1,5 @@
 # Scan Configuration - Single source of truth for ecosystem scanning
-# Used by: graph_builder.py, scaffold/constants.py,
-#          audit_all_projects.py, validate_project.py, update_cursorrules.py
+# Used by: graph_builder.py, scaffold/constants.py
 #
 # Philosophy: Track OUR code, skip imported/generated/vendored code.
 # Each project's .gitignore handles project-specific exclusions.
@@ -51,7 +50,6 @@ skip_files:
   - package.json
   - package-lock.json
   - __init__.py
-  - warden_audit.py
   - CLAUDE.md
   - mcp_config.json
   - registry-entry.json

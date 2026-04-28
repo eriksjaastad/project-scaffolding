@@ -17,10 +17,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Warden safety audit
+      - name: Check for dangerous deletion patterns
         run: |
-          echo "Running Warden safety audit..."
-          python3 scripts/warden_audit.py --root .
+          echo "Checking for dangerous deletion patterns..."
+          if grep -RInE '\brm[[:space:]]+-rf\b|\bshutil\.rmtree[[:space:]]*\(|\brmtree[[:space:]]*\(|\bos\.remove[[:space:]]*\(|\bos\.unlink[[:space:]]*\(' \
+            --include='*.py' --include='*.sh' --include='*.bash' --include='*.zsh' . \
+            | grep -vE '/(\.git|\.venv|venv|node_modules|__pycache__)/|tests/test_(security|git_hooks)\.py'; then
+            echo "::error::Dangerous deletion pattern found. Use send2trash or a reviewed allowlist."
+            exit 1
+          fi
+          echo "No dangerous deletion patterns detected."
 
       - name: Check for potential secrets
         run: |
@@ -64,14 +70,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Check for and run tests
+      - name: Install dependencies
         run: |
-          if [ -f "requirements.txt" ]; then
-            pip install -r requirements.txt
-          fi
-          if [ -d "tests" ]; then
-            pip install pytest
-            pytest tests/ -v || echo "Tests failed but continuing"
-          else
-            echo "No tests directory found, skipping tests"
-          fi
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Run tests
+        run: pytest tests/ -v
