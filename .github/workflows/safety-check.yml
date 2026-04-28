@@ -20,9 +20,9 @@ jobs:
       - name: Check for dangerous deletion patterns
         run: |
           echo "Checking for dangerous deletion patterns..."
-          if grep -RInE '\brm[[:space:]]+-rf\b|\bshutil\.rmtree[[:space:]]*\(|\brmtree[[:space:]]*\(' \
+          if grep -RInE '\brm[[:space:]]+-rf\b|\bshutil\.rmtree[[:space:]]*\(|\brmtree[[:space:]]*\(|\bos\.remove[[:space:]]*\(|\bos\.unlink[[:space:]]*\(' \
             --include='*.py' --include='*.sh' --include='*.bash' --include='*.zsh' . \
-            | grep -vE '/(\.git|\.venv|venv|node_modules|__pycache__)/|scripts/(warden_audit|validate_project)\.py|tests/test_security\.py'; then
+            | grep -vE '/(\.git|\.venv|venv|node_modules|__pycache__)/|tests/test_security\.py'; then
             echo "::error::Dangerous deletion pattern found. Use send2trash or a reviewed allowlist."
             exit 1
           fi
