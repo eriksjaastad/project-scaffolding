@@ -189,13 +189,12 @@ class TestValidationEdgeCases:
         assert "scripts/validate_project.py" not in workflow
         assert "pytest tests/ -v" in workflow
 
-    def test_pre_review_scan_does_not_call_retiring_scripts(self):
-        """Pre-review scan should stay usable after old safety scripts are deleted."""
-        scan = Path("scripts/pre_review_scan.sh").read_text()
-
-        assert "scripts/warden_audit.py" not in scan
-        assert "scripts/validate_project.py" not in scan
-        assert "pytest tests/test_security.py" in scan
+    def test_pre_review_scan_is_retired(self):
+        """pre_review_scan.sh was retired in audit Phase F (PR #22). Verify it stays gone."""
+        assert not Path("scripts/pre_review_scan.sh").exists(), (
+            "scripts/pre_review_scan.sh was retired in audit Phase F. "
+            "Reintroducing it is a regression — re-evaluate before bringing it back."
+        )
 
     def test_git_hooks_do_not_allowlist_retiring_scripts(self):
         """Git hook templates should not special-case scripts that are being retired."""
