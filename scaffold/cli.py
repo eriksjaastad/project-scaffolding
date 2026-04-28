@@ -16,7 +16,6 @@ import click
 from dotenv import load_dotenv
 from rich.console import Console
 
-from scaffold.alerts import send_discord_alert
 
 
 def get_version() -> str:
@@ -195,55 +194,6 @@ def review(
     except Exception as e:
         console.print(f"[red]Error running review: {e}[/red]")
         raise
-
-
-@cli.command("agent-health")
-@click.option("--verbose", "-v", is_flag=True, help="Show all projects, not just those with warnings")
-@click.option("--json-output", "--json", "json_out", is_flag=True, help="Output as JSON")
-@click.option("--project", "-p", default=None, help="Check a single project")
-@click.option("--scaffolded-only", is_flag=True, help="Only check scaffolded projects")
-@click.option("--alert", is_flag=True, help="Send Discord alert if warnings found")
-def agent_health(verbose: bool, json_out: bool, project: Optional[str],
-                 scaffolded_only: bool, alert: bool) -> None:
-    """Check health of agent config files (CLAUDE.md, AGENTS.md, .agent/rules/) across projects.
-
-    Detects line count violations (>200), prose-heavy structure, boilerplate ratio,
-    and stale files. Use --verbose to see all projects, not just those with warnings.
-
-    Examples:
-        scaffold agent-health
-        scaffold agent-health --verbose
-        scaffold agent-health --project project-tracker
-        scaffold agent-health --json
-    """
-    import json as _json
-    from scaffold.agent_health import check_project, scan_all_projects, format_report
-
-    scaffold_root = Path(__file__).parent.parent
-    projects_root = scaffold_root.parent
-
-    if project:
-        target = projects_root / project
-        if not target.is_dir():
-            console.print(f"[red]Error: Project not found: {target}[/red]")
-            return
-        results = [check_project(target)]
-    else:
-        results = scan_all_projects(projects_root, only_scaffolded=scaffolded_only)
-
-    if json_out:
-        click.echo(_json.dumps([r.to_dict() for r in results], indent=2))
-        return
-
-    report = format_report(results, verbose=verbose)
-    console.print(report)
-
-    # Send alert if requested and there are warnings
-    total_warnings = sum(r.warning_count for r in results)
-    if alert and total_warnings > 0:
-        alert_msg = f"Agent Config Health: {total_warnings} warnings across {len(results)} projects"
-        send_discord_alert(alert_msg)
-        console.print(f"\n[yellow]Discord alert sent ({total_warnings} warnings)[/yellow]")
 
 
 def _load_review_configs(

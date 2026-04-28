@@ -19,7 +19,7 @@ SECURITY_EXIT=$?
 
 echo ""
 echo "2. Checking git hook template syntax..."
-bash -n templates/git-hooks/pre-commit templates/git-hooks/pre-push templates/git-hooks/post-merge templates/git-hooks/install-hooks.sh
+bash -n templates/git-hooks/pre-commit templates/git-hooks/pre-push templates/git-hooks/install-hooks.sh
 HOOK_EXIT=$?
 
 echo ""
