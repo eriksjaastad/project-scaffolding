@@ -24,8 +24,7 @@ v2 is **pull-based**: tools run on demand, nothing gets pushed into other projec
 |-----------|---------|--------|
 | Agent config health checks | `scaffold agent-health` | Shipped |
 | Multi-AI code/document review | `scaffold review` | Shipped |
-| Safety audit scripts | `warden_audit.py`, `validate_project.py` | Shipped |
-| Git hook templates | `templates/git-hooks/` | Shipped |
+| Git hook templates (inline safety checks) | `templates/git-hooks/` | Shipped |
 | REVIEW.md system | `scaffold review-rules` | Planned (#5110) |
 | Git history mining for review rules | `scaffold mine-rules` | Planned (#5111) |
 
@@ -49,9 +48,7 @@ project-scaffolding/
 │   ├── review.py          # Multi-AI review orchestrator
 │   ├── alerts.py          # Discord alerting
 │   └── constants.py       # Protected projects config
-├── scripts/               # Standalone validation tools
-│   ├── warden_audit.py    # Security/safety audit
-│   └── validate_project.py # Structure validation
+├── scripts/               # Misc tooling (pre_review_scan.sh, etc.)
 ├── templates/
 │   └── git-hooks/         # Hook templates for new projects
 ├── agentsync/
