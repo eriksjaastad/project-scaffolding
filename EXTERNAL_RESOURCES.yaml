@@ -4,8 +4,19 @@
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-04-14"
+  last_updated: "2026-04-20"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
+
+# MARKET DATA POLICY
+# Exchanges (NYSE, Nasdaq, CME) charge "professional subscribers" 10-30× the non-professional rate.
+# Business entities, LLCs, and anyone deriving trading revenue are classified as professional.
+# Always sign up for market data subscriptions (Tradier, Alpaca, Polygon, Databento, IBKR, etc.)
+# under the PERSONAL account (spudlogic, spudlogic@gmail.com) to retain non-pro status.
+# Re-evaluate carefully if/when SIL incorporates — incorrect re-certification can be expensive.
+market_data_policy:
+  rule: "All market data subscriptions under spudlogic (personal) account, never under synthinsightlabs"
+  reason: "Exchange 'professional subscriber' fees are 10-30× higher for entities"
+  applies_to: ["Tradier", "Alpaca", "Polygon", "Databento", "IBKR", "TradingView", "any exchange-feed vendor"]
 
 # ACCOUNT REGISTRY
 # Two accounts: personal (spudlogic) and business (synthinsightlabs)
@@ -13,7 +24,7 @@ metadata:
 accounts:
   spudlogic:
     type: personal
-    email: "erik@spudlogic.com"
+    email: "spudlogic@gmail.com"
     github: "eriksjaastad"
     notes: "Personal account. Most services default here (legacy). GitHub, personal bank."
   synthinsightlabs:
@@ -107,40 +118,38 @@ projects:
     notes: "Removed from Doppler March 2026"
 
   trading-copilot:
-    monthly_cost: 12
+    monthly_cost: 1
     account: spudlogic
-    credential_file: ".env"
+    credential_file: "Doppler (trading-copilot/dev)"
     services:
-      - name: Railway
-        purpose: "hosting + Postgres"
-        type: hosting
-        env_var: "TRADING_RAILWAY_API_KEY"
-        cost: 5
-      - name: OpenAI
-        purpose: "GPT-4o, 4o-mini, o1"
-        type: ai
-        env_var: "TRADING_OPENAI_API_KEY"
-        cost: 4
       - name: Anthropic
-        purpose: "Claude Opus 4, Sonnet 4, Haiku 3.5"
+        purpose: "Claude Haiku 4.5 for Alpha Report signal extraction (scripts/alpha_audit.py)"
         type: ai
-        env_var: "TRADING_ANTHROPIC_API_KEY"
-        cost: 2
-      - name: Google AI
-        purpose: "Gemini 2.0/2.5 Flash"
-        type: ai
-        env_var: "TRADING_GOOGLE_AI_KEY"
-        cost: 1
-      - name: xAI
-        purpose: "Grok-3"
-        type: ai
-        env_var: "TRADING_XAI_KEY"
-        cost: 0.50
-      - name: Discord
-        purpose: "Webhooks for daily briefings"
-        type: notifications
-        env_var: "TRADING_DISCORD_WEBHOOK_URL"
+        env_var: "ANTHROPIC_API_KEY"
+        cost: "<$1"
+      - name: Finnhub
+        purpose: "Free-tier market data (evaluation)"
+        type: data
+        env_var: "FINNHUB_API_KEY"
         cost: 0
+      - name: Tradier
+        purpose: "Paper trading + free real-time US equity data"
+        type: broker
+        env_var: "TRADIER_API_KEY"  # plus TRADIER_ACCOUNT_NUMBER for account-scoped calls
+        cost: 0
+        account: spudlogic
+        status: active
+        notes: |
+          Approved 2026-04-20. Sandbox account VA61078727 (margin, individual, non-pro).
+          MCP: https://mcp.tradier.com/mcp registered at user scope with PAPER_TRADING: true.
+          REST sandbox: https://sandbox.tradier.com (confirmed real-time quotes, not 15-min delayed).
+          Live trading blocked until #5968 risk gates are filled in.
+    notes: |
+      Model Arena ecosystem (Railway + Postgres + Discord + arena scripts) removed 2026-04-17.
+      Project is now local-only: macOS LaunchAgent watches Alfa reports/, converts PDFs to JSON,
+      and scripts/alpha_audit.py analyzes them. Archive of 4 months of arena data preserved at
+      data/arena_archive/arena_snapshot.json. OpenAI, xAI, Google AI keys remain in Doppler but
+      are not used by current code — safe to delete on next Doppler audit if still unused.
 
   cortana-personal-ai:
     monthly_cost: 0.60
@@ -348,7 +357,7 @@ projects:
 
   # Projects needing audit for service usage
   hypocrisynow:
-    account: TODO (erik@spudlogic.com?)
+    account: TODO (spudlogic@gmail.com?)
     notes: "Audit needed: check for database, hosting, or API usage."
   
   tax-organizer:
@@ -695,6 +704,25 @@ security:
 
 # RECENT DISCOVERIES
 recent_changes:
+  - date: "2026-04-20"
+    change: |
+      trading-copilot: Tradier approved and activated. Sandbox account VA61078727 (margin,
+      individual, non-pro per market_data_policy). Tradier MCP server registered at user scope
+      (https://mcp.tradier.com/mcp) with PAPER_TRADING: true header. Secrets stored in Doppler
+      as TRADIER_API_KEY and TRADIER_ACCOUNT_NUMBER (replaces the placeholder
+      TRADING_TRADIER_ACCESS_TOKEN env_var listed on the resource). REST sandbox smoke test
+      confirmed real-time quotes (trade_date within seconds of now — not 15-min delayed, which
+      resolves an open question on card #6017). Live trading is gated on #5968 risk numbers.
+  - date: "2026-04-17"
+    change: |
+      trading-copilot: removed Railway (Postgres + cron dispatcher), Discord webhooks, and the
+      entire Model Arena ecosystem (daily LLM prediction logging, weekly/monthly review scripts).
+      4 months of arena data archived locally before DB deletion. Tradier added as pending —
+      paper trading + free real-time data, signing up under spudlogic per new market_data_policy.
+      Added top-level market_data_policy: always use personal account for exchange data feeds to
+      avoid "professional subscriber" 10-30× fees. Removed xAI, Google AI, OpenAI from
+      trading-copilot's service list (arena-only; not used by what remains). Keys remain in
+      Doppler pending cleanup audit.
   - date: "2026-04-14"
     change: "Brought pypi_packages and npm_packages in sync with actual registry state. pypi_packages now correctly lists all 6 MCP Trust + x402 packages (added mcp-trust-registry, mcp-trust-policy, mcp-trust-console which were previously missing from this file but had been registered on 2026-03-21). npm_packages grew to 6 total — mcp-trust-registry, mcp-trust-policy, and mcp-trust-console were registered on npm for the first time today at version 0.0.2 (placeholder releases with no functional code). Previous file had only 3 PyPI and 3 npm packages listed even though PyPI had 6."
   - date: "2026-03-10"
