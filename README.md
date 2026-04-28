@@ -9,8 +9,6 @@ Health checks, multi-AI review, and safety tooling for the project ecosystem.
 
 | Command | What it does |
 |---------|-------------|
-| `scaffold agent-health` | Lint agent configs (CLAUDE.md, .agent/rules/) for bloat and staleness |
-| `scaffold agent-health -p <project>` | Check a single project |
 | `scaffold review --type code --input <path>` | Run multi-AI code review |
 | `scaffold review --type document --input <path>` | Run multi-AI document review |
 
@@ -26,7 +24,7 @@ hardcoded credentials. Test coverage for the hook templates lives in
 
 Reference templates for bootstrapping new projects live in `templates/`:
 
-- `git-hooks/` — pre-commit, pre-push, post-merge hooks with safety checks
+- `git-hooks/` — pre-commit, pre-push hooks with safety checks
 - `claude-code/` — Claude Code agent/command templates, settings.json
 - `claude-review.yml` — GitHub Actions workflow for automated PR review
 - `github-workflows/` — PR label checks and other CI templates
@@ -37,7 +35,7 @@ Reference templates for bootstrapping new projects live in `templates/`:
 
 ```
 project-scaffolding/
-├── scaffold/           # CLI (review, agent-health)
+├── scaffold/           # CLI (review)
 ├── scripts/            # Standalone validation + security tools
 ├── templates/          # Reference templates for new projects
 ├── agentsync/          # sync_mcp.py only (infra config sync)

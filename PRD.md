@@ -22,7 +22,6 @@ v2 is **pull-based**: tools run on demand, nothing gets pushed into other projec
 
 | Capability | Command | Status |
 |-----------|---------|--------|
-| Agent config health checks | `scaffold agent-health` | Shipped |
 | Multi-AI code/document review | `scaffold review` | Shipped |
 | Git hook templates (inline safety checks) | `templates/git-hooks/` | Shipped |
 | REVIEW.md system | `scaffold review-rules` | Planned (#5110) |
@@ -43,8 +42,7 @@ v2 is **pull-based**: tools run on demand, nothing gets pushed into other projec
 ```
 project-scaffolding/
 ├── scaffold/              # Python package
-│   ├── cli.py             # Click CLI: review, agent-health
-│   ├── agent_health.py    # Health check engine
+│   ├── cli.py             # Click CLI: review
 │   ├── review.py          # Multi-AI review orchestrator
 │   ├── alerts.py          # Discord alerting
 │   └── constants.py       # Protected projects config
@@ -59,7 +57,6 @@ project-scaffolding/
 
 ## 4. Success Metrics
 
-- **Health coverage**: `scaffold agent-health` runs across all projects with zero false positives
 - **Review adoption**: Multi-AI review used for PRDs and critical code changes
 - **Zero push footprint**: No files written to other projects by scaffolding automation
 - **Warden clean**: Zero P0 findings in warden audit across active projects
