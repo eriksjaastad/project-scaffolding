@@ -22,9 +22,17 @@ class TestProjectStructure:
         assert (templates / "git-hooks").exists()
 
     def test_scripts_exist(self, project_root):
-        """Test that scripts directory exists"""
+        """scripts/ used to hold the trio retired in audit Phase F.
+
+        It may not exist on a fresh checkout (git doesn't track empty dirs).
+        If present, it must not contain the retired files.
+        """
         scripts = project_root / "scripts"
-        assert scripts.exists()
+        if scripts.exists():
+            for retired in ("validate_project.py", "warden_audit.py", "pre_review_scan.sh"):
+                assert not (scripts / retired).exists(), (
+                    f"scripts/{retired} was retired in audit Phase F. Reintroducing it is a regression."
+                )
     
     def test_scaffold_package_exists(self, project_root):
         """Test that scaffold package is importable"""
