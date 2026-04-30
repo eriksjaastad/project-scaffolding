@@ -4,7 +4,7 @@
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-04-20"
+  last_updated: "2026-04-30"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # MARKET DATA POLICY
@@ -485,16 +485,263 @@ api_key_pattern:
   rule: "Each project manages its own API keys - NEVER share across projects"
   format: "{project-name}-{service} → {project}/.env"
   template: "{PROJECTS_ROOT}/.env.project-template"
-  naming_rule: "PREFIX_SERVICE_TYPE"
+  naming_rule: "Provider API keys use canonical provider names inside each project scope; project prefixes are legacy."
   examples:
-    - "SCAFFOLDING_DEEPSEEK_KEY → project-scaffolding/.env"
-    - "CORTANA_OPENAI_KEY → cortana-personal-ai/.env"
-    - "TRADING_OPENAI_KEY → trading-copilot/.env"
+    - "DEEPSEEK_API_KEY → project-scaffolding/.env or project-scaffolding Doppler config"
+    - "OPENAI_API_KEY → cortana-personal-ai/.env or cortana-personal-ai Doppler config"
+    - "OPENAI_API_KEY → trading-copilot Doppler config"
   why:
     - "Cost attribution (which project spent what?)"
     - "Failure isolation (one project's rate limit doesn't affect others)"
     - "Security isolation (compromise one → others safe)"
     - "Clear ownership (each project pays for itself)"
+
+# API KEY INVENTORY AND NORMALIZATION AUDIT
+# First pass added 2026-04-30 after a live DeepSeek key usage investigation.
+# Rules:
+# - Never record secret values here. Record names, owners, storage location, and consumers only.
+# - Doppler is preferred for active projects. Local .env keys are legacy/local-only and should be reviewed.
+# - DOPPLER_TOKEN must not be hardcoded in repos. Use Doppler CLI auth/keychain for local machines;
+#   only deployment-scoped service tokens may exist, and only in the deployment platform.
+# - Standard AI provider key names:
+#   ANTHROPIC_API_KEY, DEEPSEEK_API_KEY, GOOGLE_API_KEY, OPENAI_API_KEY, XAI_API_KEY.
+# - GROK_API_KEY is a legacy/provider-alias name. Keep compatibility only while migrating.
+api_key_inventory:
+  audit_date: "2026-04-30"
+  source:
+    - "Repo grep for *_KEY, API_KEY, *_TOKEN, and key-shaped literals across active first-party projects"
+    - "Doppler secret-name checks from Mac Mini where available"
+    - "Prior Doppler audit: ../INFRASTRUCTURE_AUDIT_2026-04-03.md"
+  status: "first-pass inventory; secret values were not read or recorded"
+  normalized_ai_provider_keys:
+    - ANTHROPIC_API_KEY
+    - DEEPSEEK_API_KEY
+    - GOOGLE_API_KEY
+    - OPENAI_API_KEY
+    - XAI_API_KEY
+
+  doppler_projects:
+    auxesis:
+      configs_seen: ["dev"]
+      api_key_names_confirmed_by_doppler:
+        - ANTHROPIC_API_KEY
+        - CLOUDFLARE_API_KEY
+        - CLOUDFLARE_API_TOKEN
+        - COST_TRACKER_API_KEY
+        - DEEPSEEK_API_KEY
+        - FIRECRAWL_API_KEY
+        - GOOGLE_API_KEY
+        - GROK_API_KEY
+        - GUMROAD_ACCESS_TOKEN
+        - NPM_TOKEN
+        - OPENAI_API_KEY
+        - PADDLE_API_KEY
+        - PYPI_TOKEN
+        - RAILWAY_API_TOKEN
+        - RESEND_API_KEY
+        - STRIPE_SECRET_KEY
+        - TURSO_KANBAN_TOKEN
+        - XAI_API_KEY
+      notes: "DeepSeek investigation target. Confirm exact value fingerprint against provider dashboard before rotating or deleting."
+
+    openclaw:
+      configs_seen: ["dev"]
+      api_key_names_confirmed_by_doppler:
+        - ANTHROPIC_API_KEY
+        - DEEPSEEK_API_KEY
+        - DISCORD_BOT_TOKEN
+        - GATEWAY_TOKEN
+        - GOOGLE_API_KEY
+        - OPENAI_API_KEY
+        - XAI_API_KEY
+      notes: "OpenClaw gateway launches under doppler run --project openclaw --config dev on the Mini; treat as a live consumer."
+
+    auxesis-research-labs:
+      configs_seen: ["dev"]
+      api_key_names_confirmed_by_doppler:
+        - ANTHROPIC_API_KEY
+        - COST_TRACKER_API_KEY
+        - GOOGLE_API_KEY
+        - OPENAI_API_KEY
+        - XAI_API_KEY
+      notes: "No DEEPSEEK_API_KEY listed in first pass. Code/docs require this project to use its own Doppler project, not auxesis."
+
+    ai-memory:
+      configs_seen: ["prd"]
+      api_key_names_from_prior_audit:
+        - ANTHROPIC_API_KEY
+        - TURSO_BRAIN_TOKEN
+        - R2_SECRET_ACCESS_KEY
+      notes: "Needs fresh Doppler name export; prior audit marked active."
+
+    cortana-personal-ai:
+      configs_seen: ["dev"]
+      api_key_names_from_repo:
+        - ANTHROPIC_API_KEY
+        - GITHUB_APP_PRIVATE_KEY
+      notes: "Project docs say GitHub App secrets live in cortana-personal-ai/dev. EXTERNAL_RESOURCES still lists local .env/OpenAI; reconcile."
+
+    flo-fi:
+      configs_seen: ["dev", "prd"]
+      api_key_names_from_repo:
+        - ELEVEN_LABS_API_KEY
+        - FAL_AI_API_KEY
+        - LEONARDO_API_KEY
+        - VERCEL_BLOB_READ_WRITE_TOKEN
+      notes: "Scripts say FAL_AI_API_KEY is in Doppler/flo-fi/prd. Prior audit said flo-fi missing some auth secrets; refresh needed."
+
+    hypocrisynow:
+      configs_seen: ["dev"]
+      api_key_names_from_repo:
+        - ADMIN_API_KEY
+        - OPENAI_API_KEY
+        - RAILWAY_API_TOKEN
+        - SEARCH_API_KEY
+        - VERCEL_TOKEN
+      notes: "Docs say all secrets are Doppler-managed. .env.example/.env.reference contain placeholders only; verify no live values."
+
+    muffinpanrecipes:
+      configs_seen: ["prd", "stg"]
+      api_key_names_from_repo:
+        - ANTHROPIC_API_KEY
+        - BLOB_READ_WRITE_TOKEN
+        - GOOGLE_API_KEY
+        - MUFFINPANRECIPES_R2_SECRET_ACCESS_KEY
+        - NANOBANANA_API_KEY
+        - OPENAI_API_KEY
+        - STABILITY_API_KEY
+      notes: "Project-level EXTERNAL_RESOURCES.yaml lists DOPPLER_TOKEN. Verify this is documentation-only or a deployment-scoped token, not a hardcoded value."
+
+    project-tracker:
+      configs_seen: ["dev"]
+      api_key_names_from_repo:
+        - AGENT_CHAT_API_KEY
+        - GOOGLE_API_KEY
+        - TURSO_BRAIN_TOKEN
+        - TURSO_KANBAN_TOKEN
+      notes: "Prior audit said project-tracker used TURSO tokens from openclaw/dev; must move/verify ownership."
+
+    smart-invoice-workflow:
+      configs_seen: ["prd"]
+      api_key_names_from_repo:
+        - GOOGLE_TOKEN_ENCRYPTION_KEY
+        - RESEND_API_KEY
+        - SIW_STRIPE_SECRET_KEY
+        - STRIPE_PUBLISHABLE_KEY
+        - STRIPE_SECRET_KEY
+        - VERCEL_TOKEN
+        - X_MAKE_API_KEY
+      notes: "EXTERNAL_RESOURCES says .env; project docs also mention Doppler/Vercel. Normalize source of truth."
+
+    synth-insight-labs:
+      configs_seen: ["prd"]
+      api_key_names_from_repo:
+        - COST_TRACKER_API_KEY
+        - XAI_API_KEY
+      notes: "Prior audit called this the shared infra hub. It may intentionally hold central GitHub App/package tokens; AI provider key sharing should be reviewed."
+
+    trading-copilot:
+      configs_seen: ["dev"]
+      api_key_names_from_repo:
+        - ANTHROPIC_API_KEY
+        - FINNHUB_API_KEY
+        - TRADIER_API_KEY
+      stale_or_pending_cleanup:
+        - OPENAI_API_KEY
+        - GOOGLE_API_KEY
+        - XAI_API_KEY
+      notes: "Arena-related AI keys remain in Doppler but current code no longer uses them; cleanup pending."
+
+  legacy_or_local_key_references:
+    project-scaffolding:
+      storage: ".env (legacy/local)"
+      key_names:
+        - SCAFFOLDING_ANTHROPIC_KEY
+        - SCAFFOLDING_DEEPSEEK_KEY
+        - SCAFFOLDING_GOOGLE_KEY
+        - SCAFFOLDING_OPENAI_KEY
+      action: "Move to Doppler or explicitly mark as local-only; normalize to provider API_KEY names if possible."
+    holoscape:
+      storage: ".env (removed from Doppler March 2026)"
+      key_names:
+        - HOLOSCAPE_ANTHROPIC_KEY
+        - HOLOSCAPE_OPENAI_KEY
+      action: "Verify current auth path; project code now appears to prefer OAuth/subscription for Anthropic."
+    image-workflow:
+      storage: ".env"
+      key_names:
+        - IMAGE_WORKFLOW_OPENAI_API_KEY
+      action: "Verify project still exists/uses this key; move to Doppler if active."
+    data-vault-factory:
+      storage: "Doppler per registry; code not on laptop during prior audit"
+      key_names:
+        - DVF_ANTHROPIC_KEY
+        - DVF_FIRECRAWL_KEY
+        - DVF_GHOST_ADMIN_KEY
+        - DVF_GUMROAD_TOKEN
+        - DVF_OPENAI_KEY
+      action: "Normalize names if DVF is revived or moved into Auxesis."
+
+  hardcoded_value_findings:
+    live_secret_values_found: "none in first-pass active-project grep"
+    placeholders_found:
+      - "hypocrisynow/.env.example: fake OpenAI-style placeholder"
+      - "hypocrisynow/.env.reference.md: fake OpenAI-style placeholder"
+      - "Smart-Invoice-Follow-Up-Workflow/.env.example: Stripe/Make/Resend/Vercel placeholders"
+    needs_follow_up:
+      - "Muffinpanrecipes documents DOPPLER_TOKEN; verify no deployment token value is stored in repo, shell history, launchd, or Vercel."
+      - "Run a Doppler names export for every project/config and compare against this table once local keyring auth is fixed."
+      - "Run a dedicated secret scanner with entropy detection; grep only catches common prefixes."
+
+  weird_or_noncanonical_names:
+    - name: GROK_API_KEY
+      preferred: XAI_API_KEY
+      scope: "xAI/Grok provider key"
+      notes: "Confirmed in auxesis Doppler names and prior infrastructure audit; XAI_API_KEY is already present and should be canonical."
+    - name: SCAFFOLDING_DEEPSEEK_KEY
+      preferred: DEEPSEEK_API_KEY
+    - name: SCAFFOLDING_OPENAI_KEY
+      preferred: OPENAI_API_KEY
+    - name: SCAFFOLDING_ANTHROPIC_KEY
+      preferred: ANTHROPIC_API_KEY
+    - name: SCAFFOLDING_GOOGLE_KEY
+      preferred: GOOGLE_API_KEY
+    - name: CORTANA_OPENAI_KEY
+      preferred: OPENAI_API_KEY inside cortana-personal-ai scope
+    - name: CORTANA_OPENAI_API_KEY
+      preferred: OPENAI_API_KEY inside cortana-personal-ai Doppler scope
+    - name: IMAGE_WORKFLOW_OPENAI_API_KEY
+      preferred: OPENAI_API_KEY inside image-workflow Doppler scope
+    - name: HOLOSCAPE_OPENAI_KEY
+      preferred: OPENAI_API_KEY inside holoscape scope
+    - name: HOLOSCAPE_ANTHROPIC_KEY
+      preferred: ANTHROPIC_API_KEY inside holoscape scope
+    - name: DVF_OPENAI_KEY
+      preferred: OPENAI_API_KEY inside data-vault-factory Doppler scope
+    - name: DVF_ANTHROPIC_KEY
+      preferred: ANTHROPIC_API_KEY inside data-vault-factory Doppler scope
+    - name: TRADING_OPENAI_KEY
+      preferred: OPENAI_API_KEY inside trading-copilot Doppler scope
+      notes: "Registry example only; current trading-copilot entry already uses ANTHROPIC_API_KEY for live code."
+    - name: ANTHROPIC_GITHUB_API_KEY
+      preferred: ANTHROPIC_API_KEY for GitHub Actions unless action isolation requires a separate secret name
+      notes: "Workflow secret name, not runtime app config. Present in claude-review workflow templates and archived workflows."
+    - name: MUFFIN_STABILITY_API_KEY
+      preferred: STABILITY_API_KEY inside muffinpanrecipes Doppler scope
+    - name: SIW_STRIPE_SECRET_KEY
+      preferred: STRIPE_SECRET_KEY inside smart-invoice-workflow Doppler scope
+
+  not_ai_provider_key_discrepancies:
+    - name: GOOGLE_TOKEN_ENCRYPTION_KEY
+      reason: "Application encryption key; do not rename to GOOGLE_API_KEY."
+    - name: GOOGLE_CLOUD_API_KEY
+      reason: "Cloud service key naming may be service-specific; do not merge with Google AI provider key without consumer review."
+    - name: ANTHROPIC_PROXY_KEY
+      reason: "Proxy/gateway auth, not the canonical Anthropic provider API key."
+    - name: AZURE_OPENAI_API_KEY
+      reason: "Azure OpenAI has provider-specific endpoint/key semantics; do not collapse into OPENAI_API_KEY automatically."
+    - name: AZURE_ANTHROPIC_KEY
+      reason: "Azure-scoped Anthropic auth, not the canonical Anthropic provider API key."
 
 # COST SUMMARY
 cost_summary:
