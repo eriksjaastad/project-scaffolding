@@ -73,3 +73,4 @@ Thumbs.db
 repomix-output.xml
 .env.doppler-backup
 *.backup
+.scratch/
