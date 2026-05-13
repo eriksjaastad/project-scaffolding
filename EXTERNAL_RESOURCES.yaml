@@ -468,6 +468,12 @@ services_by_function:
   communications:
     - Twilio (SMS/Voice API — free trial, not active)
 
+  data_sources:
+    - FRED API (St. Louis Fed — free, keyless reads; FRED_API_KEY in Doppler trading-copilot/dev raises rate limits)
+    - BLS API (free, optional BLS_API_KEY in Doppler trading-copilot/dev raises daily call limit from 50 to 500)
+    - SEC EDGAR (free, no key — 10-K filings for headcount disclosures)
+    - layoffs.fyi (public Google Sheet, no auth — tech layoffs since 2020)
+
   monitoring:
     - Discord Webhooks
     - Slack (OpenClaw agent communication)
