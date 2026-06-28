@@ -88,15 +88,18 @@ def test_fragment_has_markers():
 def test_fragment_documents_phase_b_and_c_enforcement():
     """
     Acceptance: after install, a fresh agent reading the inserted block learns
-    that Phase B blocks main edits and Phase C gates at session end.
+    that Phase B blocks main edits and that stale branches/stashes are surfaced
+    (non-blocking) rather than gated at session end.
     Verify via doc inspection (not by triggering hooks, per card #6154).
     """
     body = hygiene.fragment_body()
     # Phase B: no direct main edits
     assert "main" in body and "feature branch" in body.lower()
-    # Phase C: dirty exit gate with four conditions
-    assert "session-end" in body.lower()
-    assert "dirty" in body.lower()
+    # Stale branches/stashes are surfaced, not blocked — the former session-end
+    # gate was removed (Stop fires every turn, not at session end).
+    assert "stale branches" in body.lower()
+    assert "/cleanup" in body
+    assert "session-end" not in body.lower()
     # Phase D + F surfaces are named so an agent knows where to go
     assert "pt handoff" in body
     assert "pt migration" in body
