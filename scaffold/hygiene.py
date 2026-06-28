@@ -16,11 +16,15 @@ Cross-references
 ----------------
 The fragment documents the hygiene contract enforced by:
 
-- Phase B: ``~/.claude/hooks/branch-on-first-edit.py`` (Edit/Write gate while
-  HEAD is ``main``/``master``/``trunk``; bypass via ``PT_ALLOW_MAIN_EDIT=1``;
-  any path containing ``.scratch/`` passes unconditionally).
-- Phase C: ``~/.claude/hooks/locked-session-end-gate.py`` (Stop-event gate;
-  bypass via ``PT_ALLOW_DIRTY_EXIT=1``; escape via active ``pt handoff``).
+- Phase B: ``~/.claude/hooks/branch-on-first-edit.py`` (PreToolUse Edit/Write
+  gate while HEAD is ``main``/``master``/``trunk``; bypass via
+  ``PT_ALLOW_MAIN_EDIT=1``; any path containing ``.scratch/`` passes
+  unconditionally).
+- ``~/.claude/hooks/stale-workspace-reporter.py`` (non-blocking Stop reminder
+  for stale branches/stashes, throttled to once per day per repo). This
+  replaced the former Phase C ``locked-session-end-gate.py``, which was removed:
+  ``Stop`` fires after every turn (not at session end), so a *blocking* gate
+  there trapped any dirty repo in a per-turn loop. Visibility, not enforcement.
 - Phase D: ``pt handoff create | list | resolve | show`` (project-tracker).
 - Phase F: ``pt migration start | finish | list`` (project-tracker).
 
@@ -82,23 +86,21 @@ def fragment_body() -> str:
         "\n"
         "### What the contract requires\n"
         "\n"
-        "1. **No direct edits on `main`/`master`/`trunk`.** A Stop-event hook blocks\n"
+        "1. **No direct edits on `main`/`master`/`trunk`.** A PreToolUse hook blocks\n"
         "   `Edit`/`Write`/`MultiEdit`/`NotebookEdit` on tracked files while HEAD is the\n"
         "   default branch. Work happens on feature branches; PRs are how changes land.\n"
-        "2. **No dirty session exits.** A session-end gate refuses to close while any of\n"
-        "   four conditions hold:\n"
-        "   - dirty working tree (PROGRESS.md is ignored),\n"
-        "   - commits ahead of upstream unpushed,\n"
-        "   - branch with no PR opened,\n"
-        "   - an authored PR still open against this repo.\n"
+        "2. **Stale branches and stashes are surfaced, not blocked.** A non-blocking\n"
+        "   reminder flags merged-but-undeleted branches and leftover stashes (at most\n"
+        "   once per day per repo). Run `/cleanup` to clear them. Nothing ever blocks a\n"
+        "   session from ending — visibility, not enforcement.\n"
         "3. **Audit trail for bulk changes.** Multi-file refactors, renames, and doc\n"
         "   reorgs run inside `pt migration start <name>` … `pt migration finish <name>`\n"
         "   so they are reversible (`--revert` uses `git restore` for tracked paths and\n"
         "   `send2trash` for untracked — never raw `rm`).\n"
-        "4. **Handoffs are first-class.** If a session must end dirty (mid-rebase, mid-\n"
-        "   investigation), record it: `pt handoff create <card-pk> --branch <b> --intent\n"
-        "   <s> --status <s> --next <s> --guidance preserve|discard`. The session-end\n"
-        "   gate honors an open handoff covering the current branch.\n"
+        "4. **Handoffs for work in progress.** If a session ends mid-task (mid-rebase,\n"
+        "   mid-investigation), record it: `pt handoff create <card-pk> --branch <b>\n"
+        "   --intent <s> --status <s> --next <s> --guidance preserve|discard` so the next\n"
+        "   session or machine can pick it up cleanly.\n"
         "\n"
         "### Safety valves\n"
         "\n"
@@ -110,11 +112,8 @@ def fragment_body() -> str:
         "- **`PT_ALLOW_MAIN_EDIT=1`** — one-shot env var to bypass the main-edit hook.\n"
         "  Use sparingly; intended for emergency fixes and tooling that must touch the\n"
         "  default branch.\n"
-        "- **`PT_ALLOW_DIRTY_EXIT=1`** — one-shot env var to bypass the session-end gate.\n"
-        "  Every use is logged to `~/.claude/state/locked_hygiene/bypasses.jsonl`.\n"
-        "- **`pt handoff`** — durable alternative to the env-var bypass: the gate\n"
-        "  recognizes an active handoff record for the current branch and lets the\n"
-        "  session close.\n"
+        "- **`pt handoff`** — durable record of in-progress work, carried across\n"
+        "  sessions and machines.\n"
         "\n"
         "### Quick reference\n"
         "\n"
