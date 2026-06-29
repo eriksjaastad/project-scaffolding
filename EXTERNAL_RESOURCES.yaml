@@ -1,10 +1,10 @@
 # External Resources & Services
 # Purpose: Track which external services, APIs, and resources are used across all projects
-# Last Updated: 2026-04-14
+# Last Updated: 2026-06-29
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-04-30"
+  last_updated: "2026-06-29"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # MARKET DATA POLICY
@@ -31,10 +31,10 @@ accounts:
     type: business
     email: "admin@synthinsightlabs.com"
     domain: "synthinsightlabs.com"
-    github: null
+    github: "11 GitHub Apps managed under synth-insight-labs Doppler (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder, smart-invoice-workflow[dead])"
     bank: null
-    llc: false
-    notes: "Future business entity. Has domain, email, Google Cloud Console. No bank account or LLC yet."
+    llc: "UNCONFIRMED — SYNTH_INSIGHT_LABS_LLC_EIN exists in Doppler (synth-insight-labs/prd and auxesis/dev) as of 2026-06-29, which implies an EIN was obtained. Verify actual LLC formation + bank status; the prior 'llc: false' is likely stale."
+    notes: "No longer a near-empty future entity — see the synth-insight-labs project entry below: it is the company identity/infra hub (GitHub App creds, Google OAuth, Resend, Bluesky, Paddle). EIN exists; confirm LLC/bank to update this block."
 
 # PROJECT SERVICE USAGE
 # This is the main data structure - parsed by project-tracker dashboard
@@ -233,7 +233,8 @@ projects:
     notes: "100% local, no external services"
 
   smart-invoice-workflow:
-    monthly_cost: 16
+    status: DEAD  # Failed, costly product. Killed & archived 2026-06-29 (Erik). Local dir → ~/projects/_archive/. GitHub repo KEPT. Vercel deploy already removed (no cost). Domain smartinvoiceworkflow.com flagged for non-renewal. Service list below retained as historical record ONLY — do not treat as live or as a reference.
+    monthly_cost: 0  # was 16 (Make.com Core $16). Make.com sub may still be billing — review whether any other project needs it, else downgrade/cancel.
     account: synthinsightlabs
     credential_file: ".env"
     services:
@@ -354,6 +355,244 @@ projects:
         purpose: "Secrets management"
         type: security
         cost: 0
+
+  # --- Added 2026-06-29 reconciliation: projects with live Doppler configs that were missing from this registry. ---
+  # Services inferred from Doppler secret NAMES (not values). Costs marked "audit" where not yet confirmed.
+  synth-insight-labs:
+    monthly_cost: "audit"
+    account: synthinsightlabs
+    credential_file: "Doppler (synth-insight-labs/prd)"
+    services:
+      - name: GitHub Apps (identity hub)
+        purpose: "Bot identities for 11 apps (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder, smart-invoice-workflow[dead])"
+        type: identity
+        env_var: "GITHUB_APP_ID_*, GITHUB_APP_INSTALLATION_ID_*, GITHUB_APP_PRIVATE_KEY_*"
+        cost: 0
+      - name: Google OAuth + Ads
+        purpose: "OAuth client + Google Ads developer token"
+        type: cloud
+        env_var: "GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_API_KEY, GOOGLE_ADS_DEVELOPER_TOKEN"
+        cost: 0
+      - name: Resend
+        purpose: "Transactional email — portfolio-wide verified send domain send.synthinsightlabs.com"
+        type: email
+        env_var: "RESEND_API_KEY"
+        cost: 0
+      - name: Bluesky
+        purpose: "Social posting"
+        type: social
+        env_var: "BLUESKY_HANDLE, BLUESKY_APP_PASSWORD"
+        cost: 0
+      - name: Paddle
+        purpose: "Payments/subscriptions"
+        type: payments
+        env_var: "PADDLE_API_KEY"
+        cost: "per-transaction"
+      - name: Qodo
+        purpose: "Code review/quality tooling"
+        type: dev
+        env_var: "QODO_API_KEY"
+        cost: "audit"
+    notes: |
+      COMPANY IDENTITY/INFRA HUB (not the near-empty entity the accounts block implied). Central GitHub App
+      credential store + Google OAuth + Resend send domain. Holds SYNTH_INSIGHT_LABS_LLC_EIN (verify LLC status).
+      Natural home for the portfolio alert-email digest (RESEND_API_KEY lives here).
+
+  auxesis:
+    monthly_cost: "audit"
+    account: synthinsightlabs
+    credential_file: "Doppler (auxesis/dev)"
+    services:
+      - name: Anthropic / OpenAI / xAI / DeepSeek / InceptionLabs
+        purpose: "Multi-model autonomous venture runtime (forge/scout/publisher roles)"
+        type: ai
+        env_var: "ANTHROPIC_API_KEY, OPENAI_API_KEY, XAI_API_KEY, DEEPSEEK_API_KEY, INCEPTIONLABS_API_KEY"
+        cost: "Variable (capped by MAX_PIPELINE_BUDGET_USD)"
+      - name: Stripe / Paddle / Gumroad
+        purpose: "Sales platforms for autonomous ventures"
+        type: payments
+        env_var: "STRIPE_SECRET_KEY, PADDLE_API_KEY, GUMROAD_ACCESS_TOKEN"
+        cost: "per-transaction"
+      - name: Cloudflare
+        purpose: "DNS/zone management for venture domains"
+        type: cloud
+        env_var: "CLOUDFLARE_API_KEY, CLOUDFLARE_API_TOKEN, CLOUDFLARE_ZONE_ID"
+        cost: "audit"
+      - name: Firecrawl
+        purpose: "Web scraping"
+        type: data
+        env_var: "FIRECRAWL_API_KEY"
+        cost: "audit"
+      - name: Turso
+        purpose: "Kanban DB (shared with project-tracker)"
+        type: database
+        env_var: "TURSO_KANBAN_TOKEN, TURSO_KANBAN_URL"
+        cost: "audit"
+      - name: Resend
+        purpose: "Transactional email"
+        type: email
+        env_var: "RESEND_API_KEY"
+        cost: 0
+    notes: "Auxesis = autonomous venture control plane (Mac Mini). Holds its own GitHub Apps (auxesis, auxesis_caretaker_mini), SYNTH_INSIGHT_LABS_LLC_EIN, encryption/JWT keys, RAILWAY_API_TOKEN."
+
+  auxesis-research-labs:
+    monthly_cost: "audit"
+    account: synthinsightlabs
+    credential_file: "Doppler (auxesis-research-labs/dev)"
+    services:
+      - name: Anthropic / OpenAI / xAI / DeepSeek / Google
+        purpose: "Multi-model research agents"
+        type: ai
+        env_var: "ANTHROPIC_API_KEY, OPENAI_API_KEY, XAI_API_KEY, DEEPSEEK_API_KEY, GOOGLE_API_KEY"
+        cost: "Variable"
+      - name: Firecrawl
+        purpose: "Web scraping"
+        type: data
+        env_var: "FIRECRAWL_API_KEY"
+        cost: "audit"
+      - name: Cost Tracker
+        purpose: "Internal spend tracking API"
+        type: monitoring
+        env_var: "COST_TRACKER_API_KEY, COST_TRACKER_URL"
+        cost: 0
+    notes: "Research arm of Auxesis (Mac Mini)."
+
+  flo-fi:
+    monthly_cost: "Pay-per-use"
+    account: spudlogic
+    credential_file: "Doppler (flo-fi/dev, flo-fi/prd)"
+    services:
+      - name: ElevenLabs
+        purpose: "Voice/audio generation"
+        type: ai
+        env_var: "ELEVEN_LABS_API_KEY"
+        cost: "Pay-per-use"
+      - name: Fal.ai
+        purpose: "Image/video generation"
+        type: ai
+        env_var: "FAL_AI_API_KEY"
+        cost: "Pay-per-use"
+      - name: Leonardo
+        purpose: "Image generation"
+        type: ai
+        env_var: "LEONARDO_API_KEY"
+        cost: "Pay-per-use"
+      - name: Meshy
+        purpose: "Image-to-3D generation"
+        type: ai
+        env_var: "MESHY_API_KEY"
+        cost: "Pay-per-use"
+      - name: Cloudflare R2
+        purpose: "Asset storage"
+        type: storage
+        env_var: "R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ENDPOINT, R2_BUCKET, R2_ACCOUNT_ID"
+        cost: "Free tier"
+      - name: Vercel
+        purpose: "Hosting (flo-fi.vercel.app)"
+        type: hosting
+        cost: 0
+        plan: "Hobby"
+    notes: "Character-consistency LoRA / creative pipeline (Mac Mini). Has a live Vercel project."
+
+  openclaw:
+    monthly_cost: "audit"
+    account: spudlogic
+    credential_file: "Doppler (openclaw/dev)"
+    services:
+      - name: Discord (gateway bot)
+        purpose: "Agent comms"
+        type: communications
+        env_var: "DISCORD_BOT_TOKEN, DISCORD_APPLICATION_ID, DISCORD_PUBLIC_KEY, DISCORD_SERVER_ID, DISCORD_USER_ID, GATEWAY_TOKEN"
+        cost: 0
+      - name: OpenRouter / OpenAI / xAI / DeepSeek / Google
+        purpose: "Multi-model agent backends"
+        type: ai
+        env_var: "OPENROUTER_API_KEY, OPENAI_API_KEY, XAI_API_KEY, DEEPSEEK_API_KEY, GOOGLE_API_KEY"
+        cost: "Variable"
+    notes: "OpenClaw agent gateway (Mac Mini). Launches under doppler run --project openclaw --config dev."
+
+  hermes:
+    monthly_cost: "audit"
+    account: spudlogic
+    credential_file: "Doppler (hermes/dev)"
+    services:
+      - name: OpenRouter / DeepSeek
+        purpose: "Agent model backends"
+        type: ai
+        env_var: "OPEN_ROUTER_API_KEY, DEEPSEEK_API_KEY"
+        cost: "Variable"
+      - name: Discord
+        purpose: "Agent comms"
+        type: communications
+        env_var: "DISCORD_TOKEN"
+        cost: 0
+    notes: "Hermes agent (github-repos/hermes-agent)."
+
+  land-tracker:
+    monthly_cost: "audit"
+    account: spudlogic
+    credential_file: "Doppler (land-tracker/dev)"
+    services:
+      - name: Gmail SMTP
+        purpose: "Sends parcel alert emails via app password"
+        type: email
+        env_var: "GMAIL_ADDRESS, GMAIL_APP_PASSWORD"
+        cost: 0
+        notes: "EXISTING portfolio email-send path (Gmail app password). Resend is preferred for new senders / the alert digest."
+    notes: "Active daily cron (per-state land-deal sourcing). Real feature momentum as of June 2026."
+
+  agent-runtime-config:
+    monthly_cost: "Variable"
+    account: spudlogic
+    credential_file: "Doppler (agent-runtime-config/dev)"
+    services:
+      - name: DeepSeek / OpenAI
+        purpose: "Rewriter+verifier in the runtime-config translation gate"
+        type: ai
+        env_var: "DEEPSEEK_API_KEY, OPENAI_API_KEY"
+        cost: "Variable"
+    notes: "Cross-provider agent runtime-config drift detection/translation."
+
+  agent-chat:
+    monthly_cost: "audit"
+    account: spudlogic
+    credential_file: "Doppler (agent-chat/dev)"
+    services:
+      - name: Agent Chat API
+        purpose: "Cross-agent messaging (Cloud Run) — backs pt message"
+        type: api
+        env_var: "AGENT_CHAT_API_KEY, AGENT_CHAT_DATABASE_URL"
+        cost: "audit"
+    notes: "Cloud Run Agent Chat API."
+
+  ai-memory-replay:
+    monthly_cost: "Pay-per-use"
+    account: synthinsightlabs
+    credential_file: "Doppler (ai-memory-replay/dev)"
+    services:
+      - name: Anthropic
+        purpose: "Memory replay analysis"
+        type: ai
+        env_var: "ANTHROPIC_API_KEY"
+        cost: "Variable"
+      - name: ElevenLabs
+        purpose: "Audio narration (dream/replay)"
+        type: ai
+        env_var: "ELEVENLABS_API_KEY"
+        cost: "Pay-per-use"
+    notes: "Companion to ai-memory."
+
+  analyze-youtube-videos:
+    monthly_cost: 0
+    account: spudlogic
+    credential_file: "Doppler (analyze-youtube-videos/dev)"
+    services:
+      - name: Ollama
+        purpose: "Local transcript synthesis — no paid API"
+        type: ai
+        cost: 0
+        notes: "Doppler holds only dir/model config (LIBRARY_DIR, OLLAMA_MODEL, SKILLS_LIBRARY_PATH, etc.) — no API keys."
+    notes: "Local YouTube channel analysis."
 
   # Projects needing audit for service usage
   hypocrisynow:
@@ -821,8 +1060,9 @@ domains_and_packages:
     - domain: "smartinvoiceworkflow.com"
       registrar: "Namecheap"
       account: synthinsightlabs
-      project: "smart-invoice-workflow"
+      project: "smart-invoice-workflow (DEAD)"
       registered: "2026-02"
+      status: "FLAG FOR NON-RENEWAL — project killed 2026-06-29. Let it lapse; do not auto-renew."
     - domain: "x402gateway.dev"
       registrar: "Namecheap"
       account: synthinsightlabs
@@ -957,6 +1197,17 @@ security:
 
 # RECENT DISCOVERIES
 recent_changes:
+  - date: "2026-06-29"
+    change: |
+      Reconciliation pass after ~2.5 months stale. (1) smart-invoice-workflow marked DEAD — failed costly
+      product, local dir archived to _archive/, GitHub repo kept, Vercel deploy already removed, domain
+      smartinvoiceworkflow.com flagged for non-renewal, Make.com $16/mo sub flagged for review. (2) Added 11
+      projects that had live Doppler configs but were missing here: synth-insight-labs (identity/infra hub),
+      auxesis, auxesis-research-labs, flo-fi, openclaw, hermes, land-tracker, agent-runtime-config, agent-chat,
+      ai-memory-replay, analyze-youtube-videos — services inferred from Doppler secret NAMES only. (3) Flagged
+      synthinsightlabs account: SYNTH_INSIGHT_LABS_LLC_EIN now exists in Doppler, contradicting 'llc: false' —
+      verify LLC/bank status. (4) Noted land-tracker sends email via Gmail app password (existing send path).
+      Costs for new entries marked "audit" pending confirmation — do not treat as final.
   - date: "2026-04-20"
     change: |
       trading-copilot: Tradier approved and activated. Sandbox account VA61078727 (margin,
