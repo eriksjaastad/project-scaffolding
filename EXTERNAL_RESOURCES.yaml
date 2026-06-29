@@ -32,9 +32,10 @@ accounts:
     email: "admin@synthinsightlabs.com"
     domain: "synthinsightlabs.com"
     github: "11 GitHub Apps managed under synth-insight-labs Doppler (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder, smart-invoice-workflow[dead])"
-    bank: null
-    llc: "UNCONFIRMED — SYNTH_INSIGHT_LABS_LLC_EIN exists in Doppler (synth-insight-labs/prd and auxesis/dev) as of 2026-06-29, which implies an EIN was obtained. Verify actual LLC formation + bank status; the prior 'llc: false' is likely stale."
-    notes: "No longer a near-empty future entity — see the synth-insight-labs project entry below: it is the company identity/infra hub (GitHub App creds, Google OAuth, Resend, Bluesky, Paddle). EIN exists; confirm LLC/bank to update this block."
+    bank: "confirm — not yet documented"
+    llc: true  # Confirmed by Erik 2026-06-29: SIL is a real LLC.
+    ein: "Obtained (confirmed 2026-06-29). Value stored in Doppler as SYNTH_INSIGHT_LABS_LLC_EIN (synth-insight-labs + auxesis configs); not inlined here per the no-secret-values policy."
+    notes: "Real business entity (LLC + EIN). Also the company identity/infra hub — see the synth-insight-labs project entry below (GitHub App creds, Google OAuth, Resend, Bluesky, Paddle). Re-check market_data_policy now that SIL is incorporated: keep market-data subscriptions under the personal (spudlogic) account to avoid 'professional subscriber' fees."
 
 # PROJECT SERVICE USAGE
 # This is the main data structure - parsed by project-tracker dashboard
@@ -533,12 +534,17 @@ projects:
     account: spudlogic
     credential_file: "Doppler (land-tracker/dev)"
     services:
+      - name: Discord
+        purpose: "Posts new high-interest parcel alerts — the ONLY active send channel (notify.py)"
+        type: notifications
+        env_var: "DISCORD_WEBHOOK_URL"
+        cost: 0
       - name: Gmail SMTP
-        purpose: "Sends parcel alert emails via app password"
+        purpose: "STAGED, NOT WIRED — creds provisioned for a future email channel notify.py does not yet use"
         type: email
         env_var: "GMAIL_ADDRESS, GMAIL_APP_PASSWORD"
         cost: 0
-        notes: "EXISTING portfolio email-send path (Gmail app password). Resend is preferred for new senders / the alert digest."
+        notes: "Corrected 2026-06-29: land-tracker does NOT send email yet — notify.py only posts to Discord; email is a carded-but-unbuilt channel. (Prior reconciliation wrongly called this an active email path.)"
     notes: "Active daily cron (per-state land-deal sourcing). Real feature momentum as of June 2026."
 
   agent-runtime-config:
