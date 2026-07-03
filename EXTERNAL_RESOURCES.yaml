@@ -1,10 +1,10 @@
 # External Resources & Services
 # Purpose: Track which external services, APIs, and resources are used across all projects
-# Last Updated: 2026-06-29
+# Last Updated: 2026-07-03
 
 metadata:
   purpose: "Track external services and costs across all projects"
-  last_updated: "2026-06-29"
+  last_updated: "2026-07-03"
   why_exists: "When you get a bill or notification, you need to know which project uses that service"
 
 # MARKET DATA POLICY
@@ -31,10 +31,11 @@ accounts:
     type: business
     email: "admin@synthinsightlabs.com"
     domain: "synthinsightlabs.com"
-    github: "11 GitHub Apps managed under synth-insight-labs Doppler (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder, smart-invoice-workflow[dead])"
-    bank: null
-    llc: "UNCONFIRMED — SYNTH_INSIGHT_LABS_LLC_EIN exists in Doppler (synth-insight-labs/prd and auxesis/dev) as of 2026-06-29, which implies an EIN was obtained. Verify actual LLC formation + bank status; the prior 'llc: false' is likely stale."
-    notes: "No longer a near-empty future entity — see the synth-insight-labs project entry below: it is the company identity/infra hub (GitHub App creds, Google OAuth, Resend, Bluesky, Paddle). EIN exists; confirm LLC/bank to update this block."
+    github: "10 GitHub Apps managed under synth-insight-labs Doppler (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder)"
+    bank: "confirm — not yet documented"
+    llc: true  # Confirmed by Erik 2026-06-29: SIL is a real LLC.
+    ein: "Obtained (confirmed 2026-06-29). Value stored in Doppler as SYNTH_INSIGHT_LABS_LLC_EIN (synth-insight-labs + auxesis configs); not inlined here per the no-secret-values policy."
+    notes: "Real business entity (LLC + EIN). Also the company identity/infra hub — see the synth-insight-labs project entry below (GitHub App creds, Google OAuth, Resend, Bluesky, Paddle). Re-check market_data_policy now that SIL is incorporated: keep market-data subscriptions under the personal (spudlogic) account to avoid 'professional subscriber' fees."
 
 # PROJECT SERVICE USAGE
 # This is the main data structure - parsed by project-tracker dashboard
@@ -232,80 +233,6 @@ projects:
         cost: 0
     notes: "100% local, no external services"
 
-  smart-invoice-workflow:
-    status: DEAD  # Failed, costly product. Killed & archived 2026-06-29 (Erik). Local dir → ~/projects/_archive/. GitHub repo KEPT. Vercel deploy already removed (no cost). Domain smartinvoiceworkflow.com flagged for non-renewal. Service list below retained as historical record ONLY — do not treat as live or as a reference.
-    monthly_cost: 0  # was 16 (Make.com Core $16). Make.com sub may still be billing — review whether any other project needs it, else downgrade/cancel.
-    account: synthinsightlabs
-    credential_file: ".env"
-    services:
-      - name: Google Cloud Console
-        purpose: "OAuth credentials for Gmail + Drive MCP connectors"
-        type: cloud
-        account: "admin@synthinsightlabs.com"
-        url: "https://console.cloud.google.com/"
-        cost: 0
-        notes: "Synth Insight Labs project. Powers Claude Code MCP integrations (Gmail, Google Drive). Set up 2026-03-10."
-      - name: Make.com
-        purpose: "Google OAuth proxy, Sheets/Gmail automation, daily scheduling"
-        type: automation
-        account: synthinsightlabs
-        env_vars:
-          - "MAKE_DAILY_PROCESSING_WEBHOOK_URL"
-          - "MAKE_LIST_SHEETS_WEBHOOK_URL"
-          - "MAKE_VALIDATE_SHEET_WEBHOOK_URL"
-          - "MAKE_CREATE_TEMPLATE_WEBHOOK_URL"
-          - "X_MAKE_API_KEY"
-        cost: 16
-        plan: "Core (10K ops/month)"
-        zone: "us2.make.com"
-        connection_ids:
-          google_sheets: 7471828
-          gmail: 7471878
-          google_drive: 7506553
-        notes: "4 webhook scenarios. Edit in UI only — re-imports break module IDs."
-      - name: Auth0
-        purpose: "User authentication (email/password, magic link)"
-        type: auth
-        account: synthinsightlabs
-        env_var: "SIW_AUTH0_CLIENT_ID"
-        cost: 0
-        plan: "Free (up to 7,500 MAU)"
-      - name: Vercel
-        purpose: "Hosting (FastAPI serverless)"
-        type: hosting
-        account: synthinsightlabs
-        env_vars:
-          - "VERCEL_TOKEN"
-          - "VERCEL_TEAM_ID"
-          - "VERCEL_PROJECT_ID"
-        cost: 0
-        plan: "Hobby (free)"
-        project_id: "prj_BhSNJWvzEqXbU4z4y5PVIbuZNZbL"
-        team_id: "team_PJUqNMkyhhctGVPOgpjU8F3L"
-        region: "iad1"
-        url: "https://smart-invoice-workflow.vercel.app"
-      - name: Neon
-        purpose: "PostgreSQL database"
-        type: database
-        account: synthinsightlabs
-        env_var: "DATABASE_URL"
-        cost: 0
-        plan: "Free"
-      - name: Stripe
-        purpose: "Payment processing"
-        type: payments
-        account: synthinsightlabs
-        env_var: "SIW_STRIPE_SECRET_KEY"
-        cost: 0
-        notes: "2.9% + 30¢ per transaction"
-      - name: Resend
-        purpose: "Transactional email"
-        type: email
-        account: synthinsightlabs
-        env_var: "RESEND_API_KEY"
-        cost: 0
-        notes: "Chosen over SendGrid (couldn't log into SendGrid account)"
-
   muffinpanrecipes:
     monthly_cost: 12
     account: spudlogic
@@ -364,7 +291,7 @@ projects:
     credential_file: "Doppler (synth-insight-labs/prd)"
     services:
       - name: GitHub Apps (identity hub)
-        purpose: "Bot identities for 11 apps (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder, smart-invoice-workflow[dead])"
+        purpose: "Bot identities for 10 apps (architect, manager, claude, ai-memory, hypocrisynow, muffinpanrecipes, tax-organizer, synthinsightlabs, tools, auxesis-coder)"
         type: identity
         env_var: "GITHUB_APP_ID_*, GITHUB_APP_INSTALLATION_ID_*, GITHUB_APP_PRIVATE_KEY_*"
         cost: 0
@@ -533,12 +460,17 @@ projects:
     account: spudlogic
     credential_file: "Doppler (land-tracker/dev)"
     services:
+      - name: Discord
+        purpose: "Posts new high-interest parcel alerts — the ONLY active send channel (notify.py)"
+        type: notifications
+        env_var: "DISCORD_WEBHOOK_URL"
+        cost: 0
       - name: Gmail SMTP
-        purpose: "Sends parcel alert emails via app password"
+        purpose: "STAGED, NOT WIRED — creds provisioned for a future email channel notify.py does not yet use"
         type: email
         env_var: "GMAIL_ADDRESS, GMAIL_APP_PASSWORD"
         cost: 0
-        notes: "EXISTING portfolio email-send path (Gmail app password). Resend is preferred for new senders / the alert digest."
+        notes: "Corrected 2026-06-29: land-tracker does NOT send email yet — notify.py only posts to Discord; email is a carded-but-unbuilt channel."
     notes: "Active daily cron (per-state land-deal sourcing). Real feature momentum as of June 2026."
 
   agent-runtime-config:
@@ -698,7 +630,6 @@ services_by_function:
 
   databases:
     - PostgreSQL (Railway)
-    - PostgreSQL (Neon — smart-invoice-workflow)
     - SQLite (local)
 
   email:
@@ -866,18 +797,6 @@ api_key_inventory:
         - TURSO_KANBAN_TOKEN
       notes: "Prior audit said project-tracker used TURSO tokens from openclaw/dev; must move/verify ownership."
 
-    smart-invoice-workflow:
-      configs_seen: ["prd"]
-      api_key_names_from_repo:
-        - GOOGLE_TOKEN_ENCRYPTION_KEY
-        - RESEND_API_KEY
-        - SIW_STRIPE_SECRET_KEY
-        - STRIPE_PUBLISHABLE_KEY
-        - STRIPE_SECRET_KEY
-        - VERCEL_TOKEN
-        - X_MAKE_API_KEY
-      notes: "EXTERNAL_RESOURCES says .env; project docs also mention Doppler/Vercel. Normalize source of truth."
-
     synth-insight-labs:
       configs_seen: ["prd"]
       api_key_names_from_repo:
@@ -973,8 +892,6 @@ api_key_inventory:
       notes: "Workflow secret name, not runtime app config. Present in claude-review workflow templates and archived workflows."
     - name: MUFFIN_STABILITY_API_KEY
       preferred: STABILITY_API_KEY inside muffinpanrecipes Doppler scope
-    - name: SIW_STRIPE_SECRET_KEY
-      preferred: STRIPE_SECRET_KEY inside smart-invoice-workflow Doppler scope
 
   not_ai_provider_key_discrepancies:
     - name: GOOGLE_TOKEN_ENCRYPTION_KEY
@@ -1057,12 +974,6 @@ domains_and_packages:
       project: "synth-insight-labs (company)"
       dns: "Cloudflare"
       registered: "2026-03"
-    - domain: "smartinvoiceworkflow.com"
-      registrar: "Namecheap"
-      account: synthinsightlabs
-      project: "smart-invoice-workflow (DEAD)"
-      registered: "2026-02"
-      status: "FLAG FOR NON-RENEWAL — project killed 2026-06-29. Let it lapse; do not auto-renew."
     - domain: "x402gateway.dev"
       registrar: "Namecheap"
       account: synthinsightlabs
@@ -1197,6 +1108,17 @@ security:
 
 # RECENT DISCOVERIES
 recent_changes:
+  - date: "2026-07-03"
+    change: |
+      Purged smart-invoice-workflow (dead product) from this registry entirely, per Erik: removed the
+      project entry, its api-key inventory block, the smartinvoiceworkflow.com domain, the Neon DB line,
+      the SIW_STRIPE_SECRET_KEY naming entry, and dropped it from the SIL GitHub-App identity lists
+      (10 apps now). It had lingered on the dashboard because the parser doesn't filter dead projects;
+      removing the entry stops it surfacing. Also confirmed SIL is a real LLC (llc: true, EIN in Doppler)
+      and fixed the land-tracker email claim (Discord-only; Gmail staged but unbuilt). This supersedes PR #31.
+      FOLLOW-UP for Erik: GITHUB_APP_*_SMART_INVOICE_WORKFLOW secrets still exist in synth-insight-labs
+      Doppler — flagged for deletion (destructive, not done here). The workspace-mcp server on the Mac Mini
+      is authed to help@smartinvoiceworkflow.com and will break when the domain lapses.
   - date: "2026-06-29"
     change: |
       Reconciliation pass after ~2.5 months stale. (1) smart-invoice-workflow marked DEAD — failed costly
