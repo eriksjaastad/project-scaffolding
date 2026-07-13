@@ -11,6 +11,7 @@ Health checks, multi-AI review, and safety tooling for the project ecosystem.
 |---------|-------------|
 | `scaffold review --type code --input <path>` | Run multi-AI code review |
 | `scaffold review --type document --input <path>` | Run multi-AI document review |
+| `scaffold seats validate <path>` | Validate a project `seats.yaml` against the portfolio contract |
 
 ## Safety Tooling
 
@@ -29,6 +30,7 @@ Reference templates for bootstrapping new projects live in `templates/`:
 - `claude-review.yml` — GitHub Actions workflow for automated PR review
 - `github-workflows/` — PR label checks and other CI templates
 - `test-coverage/` — Coverage config and runner script
+- `seats.schema.v1.md` / `seats.yaml.template` — Model seat-definition contract and reference template
 - `spec-template.md.template` — Kiro spec template
 
 ## Structure
