@@ -160,21 +160,21 @@ def review(
     console.print(f"  Reviewers: {len(configs)}\n")
 
     # Run reviews
-    orchestrator = create_orchestrator(configs, ollama_host)
+    orchestrator = create_orchestrator(
+        openai_key=openai_key,
+        anthropic_key=anthropic_key,
+        google_key=google_key,
+        deepseek_key=deepseek_key,
+        ollama_host=ollama_host,
+    )
 
     try:
-        content = input_path.read_text()
-        results = asyncio.run(orchestrator.run_reviews(content, round_number))
-
-        # Save results
-        for result in results:
-            safe_name = result.reviewer_name.lower().replace(" ", "_")
-            output_file = output_dir / f"round_{round_number}_{safe_name}.md"
-            output_file.write_text(result.content)
-            console.print(f"  [green]✓[/green] {result.reviewer_name} → {output_file}")
+        summary = asyncio.run(
+            orchestrator.run_review(input_path, configs, round_number, output_dir)
+        )
 
         # Calculate cost estimate
-        total_tokens = sum(r.tokens_used for r in results if r.tokens_used)
+        total_tokens = sum(r.tokens_used for r in summary.results if r.tokens_used)
         estimated_cost = total_tokens * 0.00001  # Rough estimate
 
         # Summary
@@ -430,7 +430,7 @@ def sync(targets: tuple[Path, ...], all_projects: bool, apply: bool) -> None:
             result = hygiene.plan_for_project(project)
             if hygiene.is_refused(result):
                 refused_count += 1
-                console.print(f"   [red]✗  refused — manual cleanup required[/red]")
+                console.print("   [red]✗  refused — manual cleanup required[/red]")
                 continue
             written = hygiene.apply_result(result)
             for change in written:
@@ -457,6 +457,28 @@ def sync(targets: tuple[Path, ...], all_projects: bool, apply: bool) -> None:
         console.print(
             "\n[yellow]Detection-only — re-run with --apply to refresh.[/yellow]"
         )
+
+
+@cli.group("seats")
+def seats() -> None:
+    """Validate portfolio seat-definition files."""
+
+
+@seats.command("validate")
+@click.argument(
+    "path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+def validate_seats(path: Path) -> None:
+    """Validate a seats.yaml file against the v1 contract."""
+    from scaffold.seats import SeatValidationError, validate_seats_file
+
+    try:
+        document = validate_seats_file(path)
+    except SeatValidationError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    console.print(f"OK {path}: {len(document['seats'])} seat(s)")
 
 
 if __name__ == "__main__":
