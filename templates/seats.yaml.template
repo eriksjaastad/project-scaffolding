@@ -1,0 +1,89 @@
+# Portfolio seat-definition contract.
+# Copy this file to a project's repository root as seats.yaml, then replace the
+# example ids, paths, jobs, pins, and fixture metadata with project-owned values.
+schema_version: seats.v1
+project:
+  id: example-project
+  name: Example Project
+  seats_file: seats.yaml
+
+seats:
+  - id: example_json_worker
+    job: Convert messy project inputs into validated structured JSON.
+    output_contract:
+      type: json
+      schema_ref: schemas/example-output.schema.json
+      validation: Validate every response against schema_ref before scoring quality.
+    input_character: messy
+    supervision: human_in_loop
+    required_capabilities:
+      - json_mode
+      - long_context
+    failure_cost:
+      level: high
+      description: Bad structured output can pollute downstream project state.
+    volume:
+      expected: 20
+      unit: items_per_run
+      burst: 100
+    cost_sensitivity: medium
+    latency_tolerance: batch
+    current_pin:
+      provider: provider-name
+      model: model-id-used-today
+      status: LIVE
+      reason: Current production chair; safe for bench comparison.
+      parameters:
+        temperature: 0
+    eval_fixtures:
+      path: benchmarks/seats/example_json_worker.jsonl
+      format: jsonl
+      id_field: fixture_id
+      input_field: input
+      expected_output_field: expected_output
+      split:
+        method: deterministic_hash_modulo
+        hash_field: fixture_id
+        modulo: 5
+        dev_remainders: [1, 2, 3, 4]
+        sealed_remainders: [0]
+        sealed_unseal_env: MODEL_BENCH_UNSEAL
+
+  - id: example_frozen_judge
+    job: Judge benchmark answers with a fixed prompt and fixed model.
+    output_contract:
+      type: json
+      schema_ref: schemas/example-judge.schema.json
+      validation: Validate label and rationale fields before accepting a score.
+    input_character: clean
+    supervision: unattended
+    required_capabilities:
+      - json_mode
+    failure_cost:
+      level: critical
+      description: Changing this seat invalidates benchmark comparability.
+    volume:
+      expected: 200
+      unit: calls_per_benchmark_run
+    cost_sensitivity: low
+    latency_tolerance: batch
+    current_pin:
+      provider: openai
+      model: gpt-4o-2024-08-06
+      status: FROZEN
+      reason: Frozen to preserve comparability with prior benchmark results.
+      parameters:
+        temperature: 0
+    eval_fixtures:
+      path: benchmarks/seats/example_frozen_judge.jsonl
+      format: jsonl
+      id_field: fixture_id
+      input_field: prompt
+      expected_output_field: expected_label
+      split:
+        method: deterministic_hash_modulo
+        hash_field: fixture_id
+        modulo: 5
+        dev_remainders: [1, 2, 3, 4]
+        sealed_remainders: [0]
+        sealed_unseal_env: MODEL_BENCH_UNSEAL
