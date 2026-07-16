@@ -10,7 +10,7 @@ import yaml
 
 SCHEMA_VERSION = "seats.v1"
 
-OUTPUT_TYPES = {"free_text", "json", "code"}
+OUTPUT_TYPES = {"free_text", "json", "code", "image"}
 INPUT_CHARACTERS = {"clean", "messy", "adversarial"}
 SUPERVISION_MODES = {"human_in_loop", "unattended"}
 REQUIRED_CAPABILITIES = {
@@ -18,6 +18,7 @@ REQUIRED_CAPABILITIES = {
     "tools",
     "json_mode",
     "vision",
+    "image_generation",
     "long_context",
 }
 FAILURE_COST_LEVELS = {"low", "medium", "high", "critical"}
@@ -26,10 +27,15 @@ LATENCY_TOLERANCES = {"interactive", "standard", "batch"}
 PIN_STATUSES = {"LIVE", "FROZEN"}
 FIXTURE_FORMATS = {"jsonl", "json", "yaml", "csv"}
 SPLIT_METHODS = {"deterministic_hash_modulo"}
+CONTEXT_PROVIDER_SOURCES = {"fixture_field", "project_file"}
+REVIEW_GATE_TYPES = {"model", "human"}
+SEALED_LABEL_POLICIES = {"co_located", "external"}
 
 _SEAT_ID_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 _PROJECT_ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 _ENV_RE = re.compile(r"^[A-Z][A-Z0-9_]*$")
+_MIME_TYPE_RE = re.compile(r"^image/[a-z0-9][a-z0-9.+-]*$")
+_ASPECT_RATIO_RE = re.compile(r"^[1-9][0-9]*:[1-9][0-9]*$")
 
 
 class _UniqueKeyLoader(yaml.SafeLoader):
@@ -153,6 +159,21 @@ def _validate_seats(errors: list[str], seats: list[Any]) -> None:
         if seat_id in seen:
             errors.append(f"{path}.id: duplicate seat id '{seat_id}'")
         seen.add(seat_id)
+    for index, seat in enumerate(seats):
+        if not isinstance(seat, dict):
+            continue
+        gates = seat.get("review_gates")
+        if not isinstance(gates, list):
+            continue
+        for gate_index, gate in enumerate(gates):
+            if not isinstance(gate, dict) or gate.get("type") != "model":
+                continue
+            seat_id = gate.get("seat_id")
+            if isinstance(seat_id, str) and seat_id not in seen:
+                errors.append(
+                    f"root.seats[{index}].review_gates[{gate_index}].seat_id: "
+                    f"unknown seat id '{seat_id}'"
+                )
 
 
 def _validate_seat(errors: list[str], seat: dict[str, Any], path: str) -> str | None:
@@ -167,6 +188,8 @@ def _validate_seat(errors: list[str], seat: dict[str, Any], path: str) -> str | 
             "input_character",
             "supervision",
             "required_capabilities",
+            "pipeline_provided_capabilities",
+            "review_gates",
             "failure_cost",
             "volume",
             "cost_sensitivity",
@@ -200,6 +223,31 @@ def _validate_seat(errors: list[str], seat: dict[str, Any], path: str) -> str | 
         REQUIRED_CAPABILITIES,
         f"{path}.required_capabilities",
     )
+    if "pipeline_provided_capabilities" in seat:
+        _validate_string_list_enum(
+            errors,
+            seat,
+            "pipeline_provided_capabilities",
+            REQUIRED_CAPABILITIES,
+            f"{path}.pipeline_provided_capabilities",
+        )
+        model_capabilities = seat.get("required_capabilities")
+        pipeline_capabilities = seat.get("pipeline_provided_capabilities")
+        if isinstance(model_capabilities, list) and isinstance(
+            pipeline_capabilities, list
+        ):
+            overlap = sorted(
+                value
+                for value in set(model_capabilities) & set(pipeline_capabilities)
+                if isinstance(value, str)
+            )
+            if overlap:
+                errors.append(
+                    f"{path}: model-native and pipeline-provided capabilities "
+                    f"overlap: {overlap}"
+                )
+    if "review_gates" in seat:
+        _validate_review_gates(errors, seat, path)
     _require_enum(
         errors,
         seat,
@@ -250,7 +298,7 @@ def _validate_output_contract(
         errors,
         path,
         output_contract,
-        {"type", "schema_ref", "validation", "notes"},
+        {"type", "schema_ref", "image", "validation", "notes"},
     )
     contract_type = _require_enum(errors, output_contract, "type", OUTPUT_TYPES, f"{path}.type")
     if contract_type == "json":
@@ -259,8 +307,91 @@ def _validate_output_contract(
             _validate_relative_path(errors, schema_ref, f"{path}.schema_ref")
     else:
         _optional_str(errors, output_contract, "schema_ref", f"{path}.schema_ref")
+    if contract_type == "image":
+        image = _require_mapping(errors, output_contract, "image", f"{path}.image")
+        if image:
+            _validate_image_contract(errors, image, f"{path}.image")
+    elif "image" in output_contract:
+        errors.append(f"{path}.image: is only valid when type is 'image'")
     _require_str(errors, output_contract, "validation", f"{path}.validation")
     _optional_str(errors, output_contract, "notes", f"{path}.notes")
+
+
+def _validate_image_contract(
+    errors: list[str], image: dict[str, Any], path: str
+) -> None:
+    _validate_unknown_keys(
+        errors,
+        path,
+        image,
+        {
+            "allowed_mime_types",
+            "min_width_px",
+            "min_height_px",
+            "max_bytes",
+            "allowed_aspect_ratios",
+        },
+    )
+    mime_types = _require_list(
+        errors, image, "allowed_mime_types", f"{path}.allowed_mime_types"
+    )
+    if mime_types is not None:
+        _validate_string_values(
+            errors,
+            mime_types,
+            f"{path}.allowed_mime_types",
+            pattern=_MIME_TYPE_RE,
+            pattern_message="must be a lowercase image MIME type",
+        )
+    for field in ("min_width_px", "min_height_px", "max_bytes"):
+        if field in image:
+            _require_positive_int(errors, image, field, f"{path}.{field}")
+    if "allowed_aspect_ratios" in image:
+        aspect_ratios = _require_list(
+            errors,
+            image,
+            "allowed_aspect_ratios",
+            f"{path}.allowed_aspect_ratios",
+        )
+        if aspect_ratios is not None:
+            _validate_string_values(
+                errors,
+                aspect_ratios,
+                f"{path}.allowed_aspect_ratios",
+                pattern=_ASPECT_RATIO_RE,
+                pattern_message="must use positive integer WIDTH:HEIGHT form",
+            )
+
+
+def _validate_review_gates(
+    errors: list[str], seat: dict[str, Any], seat_path: str
+) -> None:
+    path = f"{seat_path}.review_gates"
+    gates = _require_list(errors, seat, "review_gates", path)
+    if gates is None:
+        return
+    if not gates:
+        errors.append(f"{path}: must contain at least one gate")
+        return
+    for index, gate in enumerate(gates):
+        gate_path = f"{path}[{index}]"
+        if not isinstance(gate, dict):
+            errors.append(f"{gate_path}: must be a mapping")
+            continue
+        _validate_unknown_keys(
+            errors, gate_path, gate, {"type", "required", "seat_id", "notes"}
+        )
+        gate_type = _require_enum(
+            errors, gate, "type", REVIEW_GATE_TYPES, f"{gate_path}.type"
+        )
+        _require_bool(errors, gate, "required", f"{gate_path}.required")
+        if gate_type == "model":
+            seat_id = _require_str(errors, gate, "seat_id", f"{gate_path}.seat_id")
+            if seat_id and not _SEAT_ID_RE.match(seat_id):
+                errors.append(f"{gate_path}.seat_id: must be a lowercase seat id")
+        elif "seat_id" in gate:
+            errors.append(f"{gate_path}.seat_id: is only valid for a model gate")
+        _optional_str(errors, gate, "notes", f"{gate_path}.notes")
 
 
 def _validate_failure_cost(
@@ -311,6 +442,8 @@ def _validate_eval_fixtures(
             "id_field",
             "input_field",
             "expected_output_field",
+            "context_providers",
+            "sealed_labels",
             "split",
             "notes",
         },
@@ -328,9 +461,80 @@ def _validate_eval_fixtures(
         f"{path}.expected_output_field",
     )
     _optional_str(errors, eval_fixtures, "notes", f"{path}.notes")
+    if "context_providers" in eval_fixtures:
+        _validate_context_providers(errors, eval_fixtures, path)
+    if "sealed_labels" in eval_fixtures:
+        sealed_labels = _require_mapping(
+            errors, eval_fixtures, "sealed_labels", f"{path}.sealed_labels"
+        )
+        if sealed_labels:
+            _validate_sealed_labels(errors, sealed_labels, f"{path}.sealed_labels")
     split = _require_mapping(errors, eval_fixtures, "split", f"{path}.split")
     if split:
         _validate_split(errors, split, f"{path}.split")
+
+
+def _validate_context_providers(
+    errors: list[str], eval_fixtures: dict[str, Any], fixture_path: str
+) -> None:
+    path = f"{fixture_path}.context_providers"
+    providers = _require_list(errors, eval_fixtures, "context_providers", path)
+    if providers is None:
+        return
+    if not providers:
+        errors.append(f"{path}: must contain at least one provider")
+        return
+    seen: set[str] = set()
+    for index, provider in enumerate(providers):
+        provider_path = f"{path}[{index}]"
+        if not isinstance(provider, dict):
+            errors.append(f"{provider_path}: must be a mapping")
+            continue
+        _validate_unknown_keys(
+            errors,
+            provider_path,
+            provider,
+            {"id", "source", "source_ref", "required", "notes"},
+        )
+        provider_id = _require_str(errors, provider, "id", f"{provider_path}.id")
+        if provider_id:
+            if not _SEAT_ID_RE.match(provider_id):
+                errors.append(f"{provider_path}.id: must be a lowercase identifier")
+            if provider_id in seen:
+                errors.append(
+                    f"{provider_path}.id: duplicate context provider id '{provider_id}'"
+                )
+            seen.add(provider_id)
+        source = _require_enum(
+            errors,
+            provider,
+            "source",
+            CONTEXT_PROVIDER_SOURCES,
+            f"{provider_path}.source",
+        )
+        source_ref = _require_str(
+            errors, provider, "source_ref", f"{provider_path}.source_ref"
+        )
+        if source == "project_file" and source_ref:
+            _validate_relative_path(errors, source_ref, f"{provider_path}.source_ref")
+        _require_bool(errors, provider, "required", f"{provider_path}.required")
+        _optional_str(errors, provider, "notes", f"{provider_path}.notes")
+
+
+def _validate_sealed_labels(
+    errors: list[str], sealed_labels: dict[str, Any], path: str
+) -> None:
+    _validate_unknown_keys(errors, path, sealed_labels, {"policy", "path", "notes"})
+    policy = _require_enum(
+        errors, sealed_labels, "policy", SEALED_LABEL_POLICIES, f"{path}.policy"
+    )
+    if policy == "external":
+        labels_path = _require_str(errors, sealed_labels, "path", f"{path}.path")
+        if labels_path:
+            _validate_relative_path(errors, labels_path, f"{path}.path")
+    elif "path" in sealed_labels:
+        errors.append(f"{path}.path: is only valid when policy is 'external'")
+    _optional_str(errors, sealed_labels, "notes", f"{path}.notes")
 
 
 def _validate_split(errors: list[str], split: dict[str, Any], path: str) -> None:
@@ -506,6 +710,29 @@ def _require_positive_number(
     return value
 
 
+def _require_positive_int(
+    errors: list[str], data: dict[str, Any], key: str, path: str
+) -> int | None:
+    value = _require_int(errors, data, key, path)
+    if value is not None and value <= 0:
+        errors.append(f"{path}: must be greater than zero")
+        return None
+    return value
+
+
+def _require_bool(
+    errors: list[str], data: dict[str, Any], key: str, path: str
+) -> bool | None:
+    if key not in data:
+        errors.append(f"{path}: missing required field")
+        return None
+    value = data[key]
+    if not isinstance(value, bool):
+        errors.append(f"{path}: must be a boolean")
+        return None
+    return value
+
+
 def _require_int(
     errors: list[str], data: dict[str, Any], key: str, path: str
 ) -> int | None:
@@ -540,6 +767,30 @@ def _require_int_list(
         seen.add(value)
         result.append(value)
     return result
+
+
+def _validate_string_values(
+    errors: list[str],
+    values: list[Any],
+    path: str,
+    *,
+    pattern: re.Pattern[str],
+    pattern_message: str,
+) -> None:
+    if not values:
+        errors.append(f"{path}: must contain at least one value")
+        return
+    seen: set[str] = set()
+    for index, value in enumerate(values):
+        item_path = f"{path}[{index}]"
+        if not isinstance(value, str) or not value.strip():
+            errors.append(f"{item_path}: must be a non-empty string")
+            continue
+        if not pattern.match(value):
+            errors.append(f"{item_path}: {pattern_message}")
+        if value in seen:
+            errors.append(f"{item_path}: duplicate value '{value}'")
+        seen.add(value)
 
 
 def _validate_remainders(

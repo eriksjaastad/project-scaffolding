@@ -95,7 +95,92 @@ def test_reference_template_validates() -> None:
     assert [seat["id"] for seat in document["seats"]] == [
         "example_json_worker",
         "example_frozen_judge",
+        "example_image_generator",
     ]
+
+
+def test_pilot_followup_fields_are_backward_compatible_additions() -> None:
+    reviewer = _seat("automated_reviewer")
+    image_generator = _seat(
+        "image_generator",
+        output_contract={
+            "type": "image",
+            "image": {
+                "allowed_mime_types": ["image/png", "image/webp"],
+                "min_width_px": 1024,
+                "min_height_px": 1024,
+                "max_bytes": 10_000_000,
+                "allowed_aspect_ratios": ["1:1", "4:5"],
+            },
+            "validation": "Decode the artifact and enforce MIME, dimensions, size, and aspect ratio.",
+        },
+        required_capabilities=["image_generation"],
+        pipeline_provided_capabilities=["vision"],
+        review_gates=[
+            {"type": "model", "required": True, "seat_id": "automated_reviewer"},
+            {"type": "human", "required": False},
+        ],
+        eval_fixtures={
+            "context_providers": [
+                {
+                    "id": "brand_brief",
+                    "source": "fixture_field",
+                    "source_ref": "input.brand_brief",
+                    "required": True,
+                },
+                {
+                    "id": "style_guide",
+                    "source": "project_file",
+                    "source_ref": "docs/style-guide.md",
+                    "required": False,
+                },
+            ],
+            "sealed_labels": {
+                "policy": "external",
+                "path": "benchmarks/seats/labels/image_generator.jsonl",
+            },
+        },
+    )
+
+    document = validate_seats_data(_document([reviewer, image_generator]))
+
+    assert document["seats"][1]["output_contract"]["type"] == "image"
+    assert document["seats"][1]["review_gates"][1]["required"] is False
+
+
+def test_model_and_pipeline_capabilities_must_not_overlap() -> None:
+    document = _document(
+        [
+            _seat(
+                "overlapping_capabilities",
+                required_capabilities=["vision"],
+                pipeline_provided_capabilities=["vision"],
+            )
+        ]
+    )
+
+    with pytest.raises(SeatValidationError) as excinfo:
+        validate_seats_data(document)
+
+    assert "capabilities overlap" in str(excinfo.value)
+
+
+def test_model_review_gate_must_reference_a_declared_seat() -> None:
+    document = _document(
+        [
+            _seat(
+                "gated_worker",
+                review_gates=[
+                    {"type": "model", "required": True, "seat_id": "missing_reviewer"}
+                ],
+            )
+        ]
+    )
+
+    with pytest.raises(SeatValidationError) as excinfo:
+        validate_seats_data(document)
+
+    assert "unknown seat id 'missing_reviewer'" in str(excinfo.value)
 
 
 def test_auxesis_registry_shape_pressure_case() -> None:
