@@ -19,6 +19,15 @@ seats:
     required_capabilities:
       - json_mode
       - long_context
+    pipeline_provided_capabilities:
+      - tools
+    review_gates:
+      - type: model
+        seat_id: example_frozen_judge
+        required: true
+      - type: human
+        required: false
+        notes: Optional spot check for high-impact runs.
     failure_cost:
       level: high
       description: Bad structured output can pollute downstream project state.
@@ -41,6 +50,17 @@ seats:
       id_field: fixture_id
       input_field: input
       expected_output_field: expected_output
+      context_providers:
+        - id: case_context
+          source: fixture_field
+          source_ref: context
+          required: true
+        - id: project_policy
+          source: project_file
+          source_ref: benchmarks/context/project-policy.md
+          required: false
+      sealed_labels:
+        policy: co_located
       split:
         method: deterministic_hash_modulo
         hash_field: fixture_id
@@ -80,6 +100,53 @@ seats:
       id_field: fixture_id
       input_field: prompt
       expected_output_field: expected_label
+      sealed_labels:
+        policy: external
+        path: benchmarks/seats/example_frozen_judge.labels.jsonl
+      split:
+        method: deterministic_hash_modulo
+        hash_field: fixture_id
+        modulo: 5
+        dev_remainders: [1, 2, 3, 4]
+        sealed_remainders: [0]
+        sealed_unseal_env: MODEL_BENCH_UNSEAL
+
+  - id: example_image_generator
+    job: Generate a project image artifact that meets machine-checkable constraints.
+    output_contract:
+      type: image
+      image:
+        allowed_mime_types:
+          - image/png
+          - image/webp
+        min_width_px: 1024
+        min_height_px: 1024
+        max_bytes: 10485760
+        allowed_aspect_ratios: ["1:1", "16:9"]
+      validation: Decode the artifact and enforce MIME type, size, dimensions, and aspect ratio.
+    input_character: clean
+    supervision: human_in_loop
+    required_capabilities:
+      - image_generation
+    failure_cost:
+      level: medium
+      description: Invalid assets waste review time and cannot enter the publishing pipeline.
+    volume:
+      expected: 12
+      unit: images_per_run
+    cost_sensitivity: medium
+    latency_tolerance: standard
+    current_pin:
+      provider: provider-name
+      model: image-model-id-used-today
+      status: LIVE
+      reason: Current image generation chair; safe for bench comparison.
+    eval_fixtures:
+      path: benchmarks/seats/example_image_generator.yaml
+      format: yaml
+      id_field: fixture_id
+      input_field: prompt
+      expected_output_field: rubric
       split:
         method: deterministic_hash_modulo
         hash_field: fixture_id
