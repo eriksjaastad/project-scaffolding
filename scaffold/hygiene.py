@@ -51,6 +51,20 @@ from scaffold.constants import PROJECTS_ROOT, PROTECTED_PROJECTS
 BEGIN_MARKER = "<!-- BEGIN scaffold:hygiene -->"
 END_MARKER = "<!-- END scaffold:hygiene -->"
 
+# Generated-mirror header for AGENTS.md (#6680).
+#
+# FORMAT OWNER: agent-runtime-config's `runtime_doctor/compile/instructions.py`
+# (GENERATED_PREFIX / INSTRUCTION_LINE). It is duplicated here rather than
+# imported because these are separate repos with no dependency between them.
+# The bytes MUST stay identical: runtime-doctor's `_is_managed_agents` keys
+# off the first line, and monitor reports a mismatch as `agents_unmanaged`.
+# `test_agents_mirror_matches_runtime_doctor_format` pins the exact strings.
+AGENTS_GENERATED_PREFIX = "<!-- GENERATED FROM:"
+AGENTS_INSTRUCTION_LINE = (
+    "<!-- DO NOT EDIT DIRECTLY. "
+    "Edit CLAUDE.md and re-run ~/.claude/scripts/sync-claude-md-to-agents-md.sh -->"
+)
+
 # Regex finds the managed block (greedy across newlines). Used for both
 # extraction and replacement. Capture group 1 is the *inner* body between
 # markers, exclusive of leading/trailing newlines on the marker lines.
@@ -319,20 +333,68 @@ def plan_for_project(project: Path) -> ProjectResult:
 
     # CLAUDE.md / AGENTS.md
     # Update CLAUDE.md if it exists OR AGENTS.md doesn't exist either (then we
-    # create CLAUDE.md). Update AGENTS.md only if it already exists — we do not
-    # create a new AGENTS.md if the project doesn't use the mirror convention.
+    # create CLAUDE.md).
     claude = project / "CLAUDE.md"
     agents = project / "AGENTS.md"
+    claude_change = None
     if claude.exists() or not agents.exists():
-        change = _plan_doc(claude, project.name)
-        if change is not None:
-            result.changes.append(change)
+        claude_change = _plan_doc(claude, project.name)
+        if claude_change is not None:
+            result.changes.append(claude_change)
+
     if agents.exists():
         change = _plan_doc(agents, project.name)
         if change is not None:
             result.changes.append(change)
+    elif claude_change is not None:
+        # #6680: create the mirror instead of silently excluding Codex.
+        # Before this, AGENTS.md was updated only if it already existed, so
+        # every rule synced into CLAUDE.md reached Claude and skipped Codex
+        # — ai-memory had no AGENTS.md at all and Codex working there got no
+        # project instructions whatsoever.
+        #
+        # Mirror from the PLANNED CLAUDE.md content, not what is on disk:
+        # this pass may be inserting or updating the hygiene block, and a
+        # mirror of the pre-change bytes would be stale the moment it lands.
+        result.changes.append(_plan_agents_mirror(agents, claude, claude_change.after))
 
     return result
+
+
+def render_agents_mirror(claude_path: Path, claude_text: str) -> str:
+    """Render AGENTS.md as a generated mirror of CLAUDE.md (#6680).
+
+    Shape is fixed by runtime-doctor (see AGENTS_GENERATED_PREFIX above):
+    marker line, instruction line, blank line, then the CLAUDE.md body
+    byte-for-byte. A plain copy would also "work" for Codex, but nothing
+    could then distinguish a stale copy from a hand-authored file — which is
+    exactly how the portfolio root AGENTS.md drifted for five weeks unnoticed.
+
+    The marker path is rendered home-relative so the file is identical on
+    every machine.
+    """
+    try:
+        rel = claude_path.resolve().relative_to(Path.home())
+        source = f"~/{rel}"
+    except ValueError:
+        source = str(claude_path)
+    return (
+        f"{AGENTS_GENERATED_PREFIX} {source} -->\n"
+        f"{AGENTS_INSTRUCTION_LINE}\n"
+        "\n"
+        f"{claude_text}"
+    )
+
+
+def _plan_agents_mirror(agents_path: Path, claude_path: Path, claude_text: str) -> FileChange:
+    before = agents_path.read_text() if agents_path.exists() else ""
+    after = render_agents_mirror(claude_path, claude_text)
+    return FileChange(
+        path=agents_path,
+        before=before,
+        after=after,
+        note="create AGENTS.md mirror",
+    )
 
 
 # ---------------------------------------------------------------------------
