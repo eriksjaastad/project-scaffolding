@@ -223,12 +223,19 @@ def test_multiple_markers_refused(portfolio: Path):
         f"{hygiene.BEGIN_MARKER}\n## second\n{hygiene.END_MARKER}\n"
     )
     project = _make_project(portfolio, "alpha", claude_body=bad)
+    assert not (project / "AGENTS.md").exists()
     result = hygiene.plan_for_project(project)
     assert hygiene.is_refused(result)
     # Refused changes are not written
     pre_text = (project / "CLAUDE.md").read_text()
     hygiene.apply_result(result)
     assert (project / "CLAUDE.md").read_text() == pre_text
+
+    # ...and refusing to auto-merge must also mean refusing to PROPAGATE.
+    # This test already had the exact repro setup (REFUSED + no AGENTS.md)
+    # and only checked CLAUDE.md, so it sailed straight past #6680's first
+    # cut, which mirrored the corrupted content into a brand-new file.
+    assert not (project / "AGENTS.md").exists()
 
 
 def test_agents_md_mirror_updated_when_present(portfolio: Path):
@@ -324,19 +331,32 @@ def test_agents_mirror_matches_runtime_doctor_format(tmp_path: Path):
     assert rendered.split("\n", 3)[3] == "BODY\n"
 
 
-def test_mirror_source_path_is_home_relative(portfolio: Path):
+def test_mirror_source_path_is_home_relative(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     """A machine-specific absolute path would make the file differ between
-    the laptop and the Mini for no reason."""
-    project = _make_project(portfolio, "alpha", with_agents=False)
-    hygiene.apply_result(hygiene.plan_for_project(project))
-    first_line = (project / "AGENTS.md").read_text().splitlines()[0]
-    assert "/Users/" not in first_line or first_line.startswith("<!-- GENERATED FROM: ~/")
+    the laptop and the Mini for no reason.
+
+    The `portfolio` fixture is deliberately NOT used here: it only patches
+    PROJECTS_ROOT, and pytest's tmp_path lives outside $HOME, so
+    `relative_to(Path.home())` raises and the code takes its absolute-path
+    fallback. An earlier version of this test used that fixture and passed
+    vacuously without ever exercising the home-relative branch it claimed
+    to cover.
+    """
+    fake_home = tmp_path / "home"
+    (fake_home / "projects" / "alpha").mkdir(parents=True)
+    monkeypatch.setattr(Path, "home", classmethod(lambda cls: fake_home))
+
+    claude = fake_home / "projects" / "alpha" / "CLAUDE.md"
+    rendered = hygiene.render_agents_mirror(claude, "BODY\n")
+
+    assert rendered.splitlines()[0] == "<!-- GENERATED FROM: ~/projects/alpha/CLAUDE.md -->"
 
 
-# ---------------------------------------------------------------------------
-# Discovery
-# ---------------------------------------------------------------------------
-
+def test_mirror_source_path_falls_back_to_absolute_outside_home(tmp_path: Path):
+    """Outside $HOME there is no `~/` form; the absolute path is correct."""
+    claude = tmp_path / "CLAUDE.md"
+    rendered = hygiene.render_agents_mirror(claude, "BODY\n")
+    assert rendered.splitlines()[0] == f"<!-- GENERATED FROM: {claude} -->"
 
 def test_discover_skips_non_git_dirs(portfolio: Path):
     _make_project(portfolio, "alpha")

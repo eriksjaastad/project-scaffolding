@@ -346,8 +346,18 @@ def plan_for_project(project: Path) -> ProjectResult:
         change = _plan_doc(agents, project.name)
         if change is not None:
             result.changes.append(change)
-    elif claude_change is not None:
+    elif claude_change is not None and not claude_change.note.startswith("REFUSED"):
         # #6680: create the mirror instead of silently excluding Codex.
+        #
+        # The REFUSED guard is load-bearing. `_plan_doc` returns a REFUSED
+        # FileChange (never None — the docstring is wrong about that) when
+        # CLAUDE.md carries multiple marker pairs, and `apply_result`
+        # correctly declines to write it. Without this check the mirror was
+        # still built from `claude_change.after`, which for a REFUSED change
+        # equals the corrupted `before` — so `scaffold sync --apply` would
+        # mint a brand-new AGENTS.md containing the very corruption the tool
+        # had just refused to touch. Refusing to auto-merge has to mean
+        # refusing to propagate.
         # Before this, AGENTS.md was updated only if it already existed, so
         # every rule synced into CLAUDE.md reached Claude and skipped Codex
         # — ai-memory had no AGENTS.md at all and Codex working there got no
@@ -372,6 +382,14 @@ def render_agents_mirror(claude_path: Path, claude_text: str) -> str:
 
     The marker path is rendered home-relative so the file is identical on
     every machine.
+
+    One documented divergence from runtime-doctor's `_build_managed_bytes`:
+    a CRLF source is normalized to LF here, because `claude_text` has been
+    through `_plan_doc`'s text-mode read/write round trip, while
+    runtime-doctor reads with `read_bytes()` and preserves CRLF verbatim.
+    Pre-existing `_plan_doc` behavior, not introduced with the mirror, and
+    inert on this all-POSIX portfolio — but "byte-for-byte" is not literally
+    true for that one input.
     """
     try:
         rel = claude_path.resolve().relative_to(Path.home())
