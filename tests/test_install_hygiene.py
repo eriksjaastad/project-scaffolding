@@ -241,11 +241,96 @@ def test_agents_md_mirror_updated_when_present(portfolio: Path):
     assert hygiene.BEGIN_MARKER in agents_text
 
 
-def test_agents_md_not_created_if_absent(portfolio: Path):
-    """We only update AGENTS.md if the project already has one."""
+def test_agents_md_is_created_as_a_mirror_when_absent(portfolio: Path):
+    """#6680: a missing AGENTS.md is created, not silently skipped.
+
+    This test previously asserted the opposite — "we only update AGENTS.md
+    if the project already has one" — which encoded the defect as intent.
+    The consequence found 2026-08-15: ai-memory had no AGENTS.md at all, so
+    Codex working there got no project instructions whatsoever: no
+    bot-identity rules, no database-safety rules, no Doppler notes. Every
+    rule synced into CLAUDE.md reached Claude and silently skipped Codex.
+    """
     project = _make_project(portfolio, "alpha", with_agents=False)
     hygiene.apply_result(hygiene.plan_for_project(project))
-    assert not (project / "AGENTS.md").exists()
+
+    agents = project / "AGENTS.md"
+    assert agents.exists()
+    text = agents.read_text()
+    assert text.startswith(hygiene.AGENTS_GENERATED_PREFIX)
+    assert hygiene.AGENTS_INSTRUCTION_LINE in text
+
+
+def test_created_mirror_carries_the_post_fragment_claude_body(portfolio: Path):
+    """The mirror must reflect the CLAUDE.md this pass just wrote.
+
+    Mirroring the on-disk bytes instead would produce a file that is stale
+    the instant it lands, because the same pass inserts the hygiene block.
+    """
+    project = _make_project(portfolio, "alpha", with_agents=False)
+    hygiene.apply_result(hygiene.plan_for_project(project))
+
+    claude_text = (project / "CLAUDE.md").read_text()
+    agents_text = (project / "AGENTS.md").read_text()
+
+    assert hygiene.BEGIN_MARKER in claude_text
+    assert agents_text.endswith(claude_text)
+    assert hygiene.BEGIN_MARKER in agents_text
+
+
+def test_existing_agents_md_is_not_replaced_by_a_mirror(portfolio: Path):
+    """Only absence triggers creation. A hand-authored AGENTS.md keeps its
+    own content and just gets the hygiene block, as before."""
+    project = _make_project(portfolio, "alpha", with_agents=True)
+    (project / "AGENTS.md").write_text("# Hand authored\n\nMine.\n")
+
+    hygiene.apply_result(hygiene.plan_for_project(project))
+
+    text = (project / "AGENTS.md").read_text()
+    assert text.startswith("# Hand authored")
+    assert not text.startswith(hygiene.AGENTS_GENERATED_PREFIX)
+
+
+def test_agents_mirror_matches_runtime_doctor_format(tmp_path: Path):
+    """Cross-repo byte contract.
+
+    runtime-doctor's `_is_managed_agents` keys off the first line, and its
+    monitor reports any mismatch as `agents_unmanaged` — a permanent
+    finding. These two repos have no dependency on each other, so the format
+    is duplicated and this test is the only thing holding them together. If
+    it fails, reconcile against
+    agent-runtime-config/runtime_doctor/compile/instructions.py
+    (GENERATED_PREFIX / INSTRUCTION_LINE / _build_managed_bytes).
+    """
+    assert hygiene.AGENTS_GENERATED_PREFIX == "<!-- GENERATED FROM:"
+    assert hygiene.AGENTS_INSTRUCTION_LINE == (
+        "<!-- DO NOT EDIT DIRECTLY. "
+        "Edit CLAUDE.md and re-run ~/.claude/scripts/sync-claude-md-to-agents-md.sh -->"
+    )
+
+    # A path outside $HOME renders absolute; exact expected bytes, no
+    # self-reference.
+    claude = tmp_path / "CLAUDE.md"
+    rendered = hygiene.render_agents_mirror(claude, "BODY\n")
+    assert rendered == (
+        f"<!-- GENERATED FROM: {claude} -->\n"
+        f"{hygiene.AGENTS_INSTRUCTION_LINE}\n"
+        "\n"
+        "BODY\n"
+    )
+
+    # Header is exactly three lines before the body begins.
+    assert rendered.splitlines()[2] == ""
+    assert rendered.split("\n", 3)[3] == "BODY\n"
+
+
+def test_mirror_source_path_is_home_relative(portfolio: Path):
+    """A machine-specific absolute path would make the file differ between
+    the laptop and the Mini for no reason."""
+    project = _make_project(portfolio, "alpha", with_agents=False)
+    hygiene.apply_result(hygiene.plan_for_project(project))
+    first_line = (project / "AGENTS.md").read_text().splitlines()[0]
+    assert "/Users/" not in first_line or first_line.startswith("<!-- GENERATED FROM: ~/")
 
 
 # ---------------------------------------------------------------------------
