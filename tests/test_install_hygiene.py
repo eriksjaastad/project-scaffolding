@@ -110,17 +110,22 @@ def test_fragment_documents_phase_b_and_c_enforcement():
 # ---------------------------------------------------------------------------
 
 
+ALL_IGNORE_LINES = "".join(f"{line}\n" for line, _ in hygiene.GITIGNORE_ENTRIES)
+
+
 def test_gitignore_added_when_missing(portfolio: Path):
     project = _make_project(portfolio, "alpha")
     result = hygiene.plan_for_project(project)
     written = hygiene.apply_result(result)
     gi = (project / ".gitignore").read_text()
     assert ".scratch/" in gi
+    # PROGRESS.md is session state, not source (#6959).
+    assert "PROGRESS.md" in gi
     assert any(c.path.name == ".gitignore" for c in written)
 
 
 def test_gitignore_idempotent_when_present(portfolio: Path):
-    project = _make_project(portfolio, "alpha", gitignore="node_modules/\n.scratch/\n")
+    project = _make_project(portfolio, "alpha", gitignore="node_modules/\n" + ALL_IGNORE_LINES)
     result = hygiene.plan_for_project(project)
     gi_change = next(c for c in result.changes if c.path.name == ".gitignore")
     assert gi_change.is_noop
@@ -128,10 +133,142 @@ def test_gitignore_idempotent_when_present(portfolio: Path):
 
 
 def test_gitignore_idempotent_when_present_no_trailing_slash(portfolio: Path):
-    project = _make_project(portfolio, "alpha", gitignore=".scratch\n")
+    project = _make_project(portfolio, "alpha", gitignore=".scratch\nPROGRESS.md\n")
     result = hygiene.plan_for_project(project)
     gi_change = next(c for c in result.changes if c.path.name == ".gitignore")
     assert gi_change.is_noop
+
+
+def test_gitignore_progress_md_rooted_form_counts_as_present(portfolio: Path):
+    # `/PROGRESS.md` anchors to the repo root — same effect, do not duplicate.
+    project = _make_project(portfolio, "alpha", gitignore=".scratch/\n/PROGRESS.md\n")
+    result = hygiene.plan_for_project(project)
+    gi_change = next(c for c in result.changes if c.path.name == ".gitignore")
+    assert gi_change.is_noop
+
+
+# ---------------------------------------------------------------------------
+# `_ignore_covers` — the false negative (miss an existing entry, append a
+# duplicate on every sync) is the untidy failure; the false positive (skip a
+# project that is not actually covered) is the one that fails silently.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "PROGRESS.md\n",
+        "/PROGRESS.md\n",  # root-anchored — where our entry sits anyway
+        "PROGRESS.md   \n",  # git strips unescaped trailing spaces
+        "*.md\n",  # broader pattern already covers it
+        "PROGRESS.*\n",
+        "PROG*.md\n",
+        "PROG?ESS.md\n",
+        "[Pp]ROGRESS.md\n",
+        "**/PROGRESS.md\n",  # "in any directory" includes the root
+        "venv/\n*.md\n*.pyc\n",  # buried among unrelated entries
+        "*.md\n!README.md\n",  # negation aimed at a different file
+    ],
+)
+def test_ignore_covers_detects_existing_progress_entry(body: str):
+    assert hygiene._ignore_covers(body, "PROGRESS.md", is_dir=False) is True
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "",
+        "venv/\n*.pyc\n",
+        "# PROGRESS.md\n",  # a comment ignores nothing
+        "#PROGRESS.md\n",
+        "docs/PROGRESS.md\n",  # path-scoped, cannot cover the root-level file
+        "PROGRESS.md/\n",  # directory-only pattern does not match a file
+        "  PROGRESS.md\n",  # leading whitespace is part of the pattern in git
+        "PROGRESS.markdown\n",
+        "PROGRESS\n",
+        "*.md\n!PROGRESS.md\n",  # last match wins: explicitly un-ignored
+        "PROGRESS.md\n!PROGRESS.md\n",
+        # git strips trailing SPACES, not tabs — this pattern is `PROGRESS.md\t`
+        # and ignores nothing. Confirmed against `git check-ignore`.
+        "PROGRESS.md\t\n",
+        "PROGRESS.md\\ \n",  # backslash-escaped space: pattern keeps the space
+    ],
+)
+def test_ignore_covers_rejects_non_covering_bodies(body: str):
+    assert hygiene._ignore_covers(body, "PROGRESS.md", is_dir=False) is False
+
+
+def test_ignore_covers_is_case_sensitive_by_design():
+    # Documented divergence from the local git: on a case-insensitive
+    # filesystem `core.ignorecase` makes `*.MD` cover PROGRESS.md. Agreeing
+    # would make planned output depend on the host filesystem, so we do not.
+    assert hygiene._ignore_covers("*.MD\n", "PROGRESS.md", is_dir=False) is False
+
+
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        (".scratch/\n", True),
+        (".scratch\n", True),  # bare name matches the directory too
+        ("/.scratch/\n", True),
+        (".scratch/   \n", True),
+        ("", False),
+        ("scratch/\n", False),  # missing the leading dot
+        ("tools/.scratch/\n", False),  # path-scoped
+    ],
+)
+def test_ignore_covers_directory_entry(body: str, expected: bool):
+    assert hygiene._ignore_covers(body, ".scratch", is_dir=True) is expected
+
+
+def test_gitignore_dir_only_pattern_does_not_cover_the_file(portfolio: Path):
+    # A repo ignoring a `PROGRESS.md/` *directory* has not ignored the file, so
+    # the line must still be added — silently skipping it is the bad failure.
+    project = _make_project(portfolio, "alpha", gitignore=".scratch/\nPROGRESS.md/\n")
+    result = hygiene.plan_for_project(project)
+    gi_change = next(c for c in result.changes if c.path.name == ".gitignore")
+    assert gi_change.note == "add PROGRESS.md"
+
+
+def test_gitignore_broad_md_glob_suppresses_duplicate(portfolio: Path):
+    project = _make_project(portfolio, "alpha", gitignore=".scratch/\n*.md\n")
+    result = hygiene.plan_for_project(project)
+    gi_change = next(c for c in result.changes if c.path.name == ".gitignore")
+    assert gi_change.is_noop
+
+
+def test_gitignore_negated_progress_md_is_still_added(portfolio: Path):
+    project = _make_project(portfolio, "alpha", gitignore=".scratch/\n*.md\n!PROGRESS.md\n")
+    result = hygiene.plan_for_project(project)
+    hygiene.apply_result(result)
+    post = (project / ".gitignore").read_text()
+    assert post == ".scratch/\n*.md\n!PROGRESS.md\nPROGRESS.md\n"
+
+
+def test_gitignore_second_sync_is_a_noop(portfolio: Path):
+    # The property that matters portfolio-wide: syncing twice must not grow the
+    # file. A literal-match regex passes this one and still misses `*.md`.
+    project = _make_project(portfolio, "alpha", gitignore="venv/\n")
+    hygiene.apply_result(hygiene.plan_for_project(project))
+    first = (project / ".gitignore").read_text()
+    second_plan = hygiene.plan_for_project(project)
+    gi_change = next(c for c in second_plan.changes if c.path.name == ".gitignore")
+    assert gi_change.is_noop
+    hygiene.apply_result(second_plan)
+    assert (project / ".gitignore").read_text() == first
+
+
+def test_gitignore_adds_only_the_missing_entries(portfolio: Path):
+    # The common catch-up case: .scratch/ landed in an earlier sync, PROGRESS.md
+    # did not. Add one line, not both.
+    project = _make_project(portfolio, "alpha", gitignore="venv/\n.scratch/\n")
+    result = hygiene.plan_for_project(project)
+    gi_change = next(c for c in result.changes if c.path.name == ".gitignore")
+    assert not gi_change.is_noop
+    assert gi_change.note == "add PROGRESS.md"
+    hygiene.apply_result(result)
+    post = (project / ".gitignore").read_text()
+    assert post == "venv/\n.scratch/\nPROGRESS.md\n"
 
 
 def test_gitignore_preserves_existing_entries(portfolio: Path):
@@ -140,9 +277,16 @@ def test_gitignore_preserves_existing_entries(portfolio: Path):
     result = hygiene.plan_for_project(project)
     hygiene.apply_result(result)
     post = (project / ".gitignore").read_text()
-    # Order preserved, entries kept.
-    assert post.startswith(pre)
-    assert post.rstrip().endswith(".scratch/")
+    # Order preserved, entries kept, new lines appended in declaration order.
+    assert post == pre + ALL_IGNORE_LINES
+
+
+def test_gitignore_repairs_missing_trailing_newline(portfolio: Path):
+    project = _make_project(portfolio, "alpha", gitignore="venv/")
+    result = hygiene.plan_for_project(project)
+    hygiene.apply_result(result)
+    post = (project / ".gitignore").read_text()
+    assert post == "venv/\n" + ALL_IGNORE_LINES
 
 
 # ---------------------------------------------------------------------------

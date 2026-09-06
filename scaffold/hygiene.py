@@ -8,7 +8,8 @@ Responsibilities
 ----------------
 - Maintain the canonical hygiene fragment (text inserted into each project's
   CLAUDE.md / AGENTS.md between sentinel markers).
-- Add ``.scratch/`` to each project's ``.gitignore`` (line-additive only).
+- Add the portfolio-wide ignore lines (``.scratch/``, ``PROGRESS.md``) to each
+  project's ``.gitignore`` (line-additive only).
 - Provide idempotent install + drift detection so re-running is a no-op when
   the fragment is already current.
 
@@ -32,7 +33,8 @@ Design decisions (from coordinator)
 -----------------------------------
 1. Fragment is bounded by HTML-comment markers so ``scaffold sync`` can refresh
    the block without disturbing surrounding content. Appended to EOF if missing.
-2. ``.gitignore`` is line-additive; never re-ordered.
+2. ``.gitignore`` is line-additive; never re-ordered. Entries are appended in
+   ``GITIGNORE_ENTRIES`` order, and only the ones actually missing.
 3. Project discovery for ``--all`` uses ``PROJECTS_ROOT.iterdir()`` filtered to
    directories with a ``.git/``, minus ``PROTECTED_PROJECTS``.
 4. Dry-run is the default; ``--apply`` is required to mutate files.
@@ -40,6 +42,7 @@ Design decisions (from coordinator)
 from __future__ import annotations
 
 import difflib
+import fnmatch
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -76,9 +79,26 @@ _BLOCK_RE = re.compile(
 # Files we mirror the fragment into when they exist alongside each other.
 DOC_FILENAMES = ("CLAUDE.md", "AGENTS.md")
 
-# Line we add to .gitignore. Matched by the regex below for idempotency.
-GITIGNORE_LINE = ".scratch/"
-_GITIGNORE_RE = re.compile(r"^\.scratch/?$", re.MULTILINE)
+# Lines we add to each project's .gitignore, as (line, is_dir). Appended in
+# this order, and only when `_ignore_covers` says the file does not already
+# ignore that path — see that function for why detection is not a plain regex.
+#
+# `PROGRESS.md` (#6959) is session state, not source — the root CLAUDE.md rule
+# is "never commit it, never stage it, never delete it." A repo that tracks it
+# is misconfigured, and the branch-on-first-edit hook then blocks editing it on
+# `main` because that hook only guards *tracked* files. Untracking an already-
+# tracked PROGRESS.md is a one-time `git rm --cached` per repo; this list only
+# stops it from being re-added.
+GITIGNORE_ENTRIES: tuple[tuple[str, bool], ...] = (
+    (".scratch/", True),
+    ("PROGRESS.md", False),
+)
+
+# Trailing *spaces* in a .gitignore line are stripped by git unless escaped with
+# a backslash. Tabs are NOT stripped — they stay part of the pattern, so
+# `"PROGRESS.md\t"` ignores nothing. Verified against `git check-ignore`;
+# gitignore(5) says "trailing spaces", and it means only spaces.
+_TRAILING_WS_RE = re.compile(r"(?<!\\) +$")
 
 
 def fragment_body() -> str:
@@ -240,17 +260,99 @@ class ProjectResult:
 # ---------------------------------------------------------------------------
 
 
+def _ignore_covers(text: str, entry: str, is_dir: bool) -> bool:
+    """
+    Is ``entry`` already ignored by the ``.gitignore`` body ``text``?
+
+    Detection deliberately is not a literal-match regex. The failure that
+    matters is the *false negative*: miss an existing entry and every sync
+    appends another copy of the same rule. A repo that ignores ``*.md``
+    already covers ``PROGRESS.md``, and a line with trailing spaces
+    (``"PROGRESS.md   "``) is a working ignore because git strips them.
+    Neither is a literal match, and both would otherwise grow a duplicate.
+
+    A false *positive* is the worse error in the other direction — we would
+    silently skip a project that is not actually covered — so the rules below
+    stay strict wherever git is strict:
+
+    * ``#`` starts a comment; blank lines are skipped.
+    * Trailing whitespace is stripped unless backslash-escaped.
+    * A leading ``/`` anchors to the repo root, which is where our entries
+      live, so it is stripped and still counts.
+    * A pattern containing a ``/`` in the middle is path-scoped (``docs/
+      PROGRESS.md``) and cannot cover a root-level entry.
+    * A trailing ``/`` means directory-only, so it covers ``.scratch/`` but
+      not the ``PROGRESS.md`` file.
+    * Leading whitespace is *significant* in gitignore — it is part of the
+      pattern — so ``"  PROGRESS.md"`` genuinely does not ignore
+      ``PROGRESS.md`` and must not count.
+    * ``!`` negates, and the last matching pattern wins, so ``*.md`` followed
+      by ``!PROGRESS.md`` leaves the file un-ignored.
+
+    Deliberately case-sensitive, which is the one place this disagrees with
+    the local ``git``: on a case-insensitive filesystem (APFS, NTFS) git sets
+    ``core.ignorecase`` and ``*.MD`` really does ignore ``PROGRESS.md``, so
+    ``git check-ignore`` says yes where this says no. Matching that would make
+    the planned file contents depend on the filesystem the tool happens to run
+    on — unacceptable for a tool whose job is emitting identical files on every
+    machine. The cost of disagreeing is one redundant line in the rare repo
+    that ignores ``*.MD``; the cost of agreeing is a portfolio that drifts by
+    platform.
+
+    Not handled, because none of it appears in a portfolio ``.gitignore`` and
+    guessing wrong would mean skipping a project that needs the line: ``**``
+    in the *middle* of a path glob, character classes spanning ``/``, and
+    patterns whose effect depends on a nested ``.gitignore`` or the user's
+    global excludes file.
+    """
+    covered = False
+    for raw in text.splitlines():
+        line = _TRAILING_WS_RE.sub("", raw)
+        if not line or line.startswith("#"):
+            continue
+        negated = line.startswith("!")
+        if negated:
+            line = line[1:]
+        elif line.startswith("\\"):
+            # `\#foo` / `\!foo` escape a leading literal `#` or `!`.
+            line = line[1:]
+        if not line:
+            continue
+        # Anchored to repo root — same place our entries sit.
+        pattern = line[1:] if line.startswith("/") else line
+        # `**/foo` means "foo in any directory", which includes the root.
+        while pattern.startswith("**/"):
+            pattern = pattern[3:]
+        dir_only = pattern.endswith("/")
+        pattern = pattern.rstrip("/")
+        if not pattern or "/" in pattern:
+            continue
+        if dir_only and not is_dir:
+            continue
+        if fnmatch.fnmatchcase(entry, pattern):
+            covered = not negated
+    return covered
+
+
 def _plan_gitignore(project: Path) -> FileChange:
     gi = project / ".gitignore"
     before = gi.read_text() if gi.exists() else ""
-    if _GITIGNORE_RE.search(before):
-        return FileChange(path=gi, before=before, after=before, note=".scratch/ already ignored")
-    # Append; preserve trailing newline discipline.
-    if before and not before.endswith("\n"):
-        after = before + "\n" + GITIGNORE_LINE + "\n"
-    else:
-        after = before + GITIGNORE_LINE + "\n"
-    return FileChange(path=gi, before=before, after=after, note="add .scratch/")
+    after = before
+    added: list[str] = []
+    for line, is_dir in GITIGNORE_ENTRIES:
+        # Check against `after`, not `before`: an entry appended earlier in this
+        # same loop must count as present for a later overlapping one.
+        if _ignore_covers(after, line.rstrip("/"), is_dir):
+            continue
+        # Append; preserve trailing newline discipline.
+        if after and not after.endswith("\n"):
+            after += "\n"
+        after += line + "\n"
+        added.append(line)
+    if not added:
+        present = ", ".join(line for line, _ in GITIGNORE_ENTRIES)
+        return FileChange(path=gi, before=before, after=before, note=f"{present} already ignored")
+    return FileChange(path=gi, before=before, after=after, note="add " + ", ".join(added))
 
 
 def _plan_doc(doc_path: Path, project_name: str) -> FileChange | None:
