@@ -48,7 +48,7 @@ project-scaffolding/
 
 This project used to push governance files, agent configs, and templates into every project via "agentsync." That system was retired in March 2026. If you're looking for:
 
-- **Project briefings** — Use `/intake` (pulls from Open Brain, project tracker, git)
+- **Project briefings** — Use `/intake` (pulls from ai-memory, project tracker, git)
 - **Governance rules** — Read `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` (canonical source)
 - **Agent config setup** — Copy from `templates/claude-code/` manually
 
