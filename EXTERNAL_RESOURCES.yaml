@@ -260,7 +260,7 @@ projects:
     credential_file: "Doppler"
     services:
       - name: Cloudflare R2
-        purpose: "Backup storage for brain.db (Open Brain cross-agent memory)"
+        purpose: "Backup storage for brain.db (ai-memory cross-agent memory)"
         type: storage
         env_var: "R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ENDPOINT, R2_BUCKET"
         cost: 0
