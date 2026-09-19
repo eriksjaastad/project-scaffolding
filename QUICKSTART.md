@@ -33,4 +33,4 @@ Safety enforcement runs through the installed git hooks and the
 
 ---
 
-*See `README.md` for project overview. See `REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for the review standard.*
+*See `README.md` for project overview. See `~/projects/project-tracker/REVIEWS_AND_GOVERNANCE_PROTOCOL.md` for the review standard.*
