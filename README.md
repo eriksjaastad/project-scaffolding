@@ -46,12 +46,17 @@ project-scaffolding/
 
 ## What This Is Not
 
-This project used to push governance files, agent configs, and templates into every project via "agentsync." That system was retired in March 2026. If you're looking for:
+This project used to push governance files, agent configs, and templates into every project via "agentsync." That system was retired in March 2026. 
+
+**Hygiene contract commands removed (Sept 2026, #6833):** The `scaffold sync` and `scaffold install-hygiene` commands were removed during project decommissioning. Hygiene contract management has moved to agent-runtime-config.
+
+If you're looking for:
 
 - **Project briefings** — Use `/intake` (pulls from ai-memory, project tracker, git)
 - **Governance rules** — See `~/projects/project-tracker/REVIEWS_AND_GOVERNANCE_PROTOCOL.md` (canonical source, moved from scaffolding)
 - **External resources registry** — See `~/projects/project-tracker/EXTERNAL_RESOURCES.yaml` (canonical source, moved from scaffolding)
 - **Agent config setup** — Copy from `templates/claude-code/` manually
+- **Hygiene contract** — Managed by agent-runtime-config
 
 ---
 
