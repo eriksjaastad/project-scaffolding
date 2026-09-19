@@ -1,9 +1,12 @@
 """
-Tests for `scaffold install-hygiene` and `scaffold sync`.
+Tests for hygiene module internals.
+
+NOTE: The `scaffold install-hygiene` and `scaffold sync` CLI commands were
+removed as part of project decommissioning (#6833). These tests now focus on
+the hygiene module's internal functions that may still be used elsewhere.
 
 These run against a tmp_path "portfolio" — never against the live ~/projects
-tree. The Click invocations use CliRunner so we exercise the CLI surface end-
-to-end (option parsing + summary output) in addition to the planner internals.
+tree.
 """
 from __future__ import annotations
 
@@ -12,10 +15,8 @@ import subprocess
 from pathlib import Path
 
 import pytest
-from click.testing import CliRunner
 
 from scaffold import hygiene
-from scaffold.cli import cli
 
 
 # ---------------------------------------------------------------------------
@@ -385,106 +386,6 @@ def test_discover_skips_hidden_dirs(portfolio: Path):
 
 
 # ---------------------------------------------------------------------------
-# Dry-run safety (CLI)
+# CLI commands removed (#6833) — CLI tests deleted.
+# Drift detection and hygiene module internals remain tested above.
 # ---------------------------------------------------------------------------
-
-
-def test_dry_run_does_not_write(portfolio: Path):
-    project = _make_project(portfolio, "alpha")
-    mtimes_before = {
-        p.name: p.stat().st_mtime
-        for p in project.iterdir()
-        if p.is_file()
-    }
-    runner = CliRunner()
-    result = runner.invoke(cli, ["install-hygiene", str(project)])
-    assert result.exit_code == 0, result.output
-    assert "DRY-RUN" in result.output
-    mtimes_after = {
-        p.name: p.stat().st_mtime
-        for p in project.iterdir()
-        if p.is_file()
-    }
-    assert mtimes_before == mtimes_after
-    # And nothing got created
-    assert not (project / ".gitignore").exists()
-
-
-def test_apply_actually_writes(portfolio: Path):
-    project = _make_project(portfolio, "alpha")
-    runner = CliRunner()
-    result = runner.invoke(cli, ["install-hygiene", str(project), "--apply"])
-    assert result.exit_code == 0, result.output
-    assert "APPLY" in result.output
-    assert (project / ".gitignore").exists()
-    assert hygiene.BEGIN_MARKER in (project / "CLAUDE.md").read_text()
-
-
-def test_all_flag_enumerates_and_respects_protected(
-    portfolio: Path, monkeypatch: pytest.MonkeyPatch
-):
-    _make_project(portfolio, "alpha")
-    _make_project(portfolio, "beta")
-    _make_project(portfolio, "openclaw")
-    monkeypatch.setattr(hygiene, "PROTECTED_PROJECTS", {"openclaw"})
-    runner = CliRunner()
-    result = runner.invoke(cli, ["install-hygiene", "--all"])
-    assert result.exit_code == 0, result.output
-    # Dry-run still shows the projects it would touch.
-    assert "alpha" in result.output
-    assert "beta" in result.output
-    # Excluded project not enumerated at all (not even as SKIP).
-    assert "openclaw" not in result.output
-
-
-def test_install_requires_target_or_all(portfolio: Path):
-    runner = CliRunner()
-    result = runner.invoke(cli, ["install-hygiene"])
-    assert result.exit_code != 0
-
-
-# ---------------------------------------------------------------------------
-# scaffold sync
-# ---------------------------------------------------------------------------
-
-
-def test_sync_reports_drift(portfolio: Path):
-    stale = (
-        "# CLAUDE.md - alpha\n\n"
-        f"{hygiene.BEGIN_MARKER}\n## stale\n{hygiene.END_MARKER}\n"
-    )
-    project = _make_project(portfolio, "alpha", claude_body=stale)
-    runner = CliRunner()
-    result = runner.invoke(cli, ["sync", str(project)])
-    assert result.exit_code == 0, result.output
-    assert "DRIFT" in result.output
-    # Block unchanged in detection mode
-    assert "## stale" in (project / "CLAUDE.md").read_text()
-
-
-def test_sync_apply_refreshes(portfolio: Path):
-    stale = (
-        "# CLAUDE.md - alpha\n\n"
-        f"{hygiene.BEGIN_MARKER}\n## stale\n{hygiene.END_MARKER}\n"
-    )
-    project = _make_project(portfolio, "alpha", claude_body=stale)
-    runner = CliRunner()
-    result = runner.invoke(cli, ["sync", str(project), "--apply"])
-    assert result.exit_code == 0, result.output
-    text = (project / "CLAUDE.md").read_text()
-    assert "## stale" not in text
-    assert "Locked Hygiene Contract" in text
-
-
-def test_sync_no_drift_after_install(portfolio: Path):
-    project = _make_project(portfolio, "alpha")
-    hygiene.apply_result(hygiene.plan_for_project(project))
-    reports = hygiene.detect_drift(project)
-    assert reports  # we did install CLAUDE.md
-    assert all(not r.drift for r in reports)
-
-
-def test_sync_treats_missing_markers_as_drift(portfolio: Path):
-    project = _make_project(portfolio, "alpha")  # CLAUDE.md but no markers
-    reports = hygiene.detect_drift(project)
-    assert any(r.drift and "no markers" in r.detail for r in reports)
