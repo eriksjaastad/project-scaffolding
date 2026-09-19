@@ -42,7 +42,7 @@
 - Agent switches to production when: *(explicit instruction, not implicit assumption)*
 - **Rule:** No agent should assume production readiness. Erik confirms via Doppler population + explicit go-ahead.
 
-**Already Exists (from EXTERNAL_RESOURCES.yaml):**
+**Already Exists (from project-tracker/EXTERNAL_RESOURCES.yaml):**
 - *(list services this project reuses from existing infrastructure)*
 
 ---
